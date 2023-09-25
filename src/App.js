@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import { BrowserRouter} from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+/* import { Header } from "./components/Header"; */
+import { Bookings } from "./components/Bookings";
+import { Dashboard } from "./components/Dashboard";
+import { useState } from "react";
+import { PrivateRoute } from "./components/PrivateRoute";
+import { Login } from "./components/Login";
+
+export const App = () => {
+
+    const [authenticated, setAuthenticated] = useState(false);
+
+    return (
+        <BrowserRouter>
+            {/* <Header title="Dashboard" /> */}
+            <Routes>
+                <Route path="/login" element={<Login setAuthenticated={setAuthenticated}/>}/>
+                <Route 
+                    path="/" 
+                    element={
+                        <PrivateRoute authenticated={authenticated}>
+                            <Dashboard/>
+                        </PrivateRoute>
+                    }     
+                />
+                <Route 
+                    path="/dashboard" 
+                    element={
+                        <PrivateRoute authenticated={authenticated}>
+                            <Dashboard/>
+                        </PrivateRoute>
+                    }     
+                />
+                <Route 
+                    path="/bookings" 
+                    element={
+                        <PrivateRoute authenticated={authenticated}>
+                            <Bookings/>
+                        </PrivateRoute>
+                    }     
+                />
+            </Routes>
+        </BrowserRouter>
+
+    )
 }
-
-export default App;
