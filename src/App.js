@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { BrowserRouter} from "react-router-dom";
 
-/* import { Header } from "./components/Header"; */
 import { Bookings } from "./components/Bookings";
 import { Dashboard } from "./components/Dashboard";
 import { useState } from "react";
@@ -13,12 +12,12 @@ import { Menu } from "./components/Menu";
 export const App = () => {
 
     const [authenticated, setAuthenticated] = useState(false);
+    const [titleHeader, setTitleHeader] = useState('Dashboard');
 
     return (
         <BrowserRouter>
-            {/* <Header title="Dashboard" /> */}
-            <Menu />
-            <Header title="Dashboard" />
+            <Menu  setHeaderTitle={setTitleHeader}/>
+            <Header title={titleHeader} />
             <Routes>
                 <Route path="/login" element={<Login setAuthenticated={setAuthenticated}/>}/>
                 <Route 

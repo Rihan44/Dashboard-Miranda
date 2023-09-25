@@ -7,10 +7,14 @@ import { LuUser2 } from "react-icons/lu";
 import { HiOutlinePuzzle } from "react-icons/hi";
 import { FaHotel } from "react-icons/fa6"
 
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { ProfileCompontent } from "./Profile";
 
-export const Menu = () => {
+export const Menu = ({setHeaderTitle}) => {
+    const handleHeaderTitle = (titleName) => {
+        setHeaderTitle(titleName);
+    }
+
     return(
         <AsideMenu id="aside_menu">
             <NavLink to="/" style={{
@@ -29,13 +33,13 @@ export const Menu = () => {
                 </SubTitle>
             </NavLink>
             <List>
-                <ItemsList>
+                <ItemsList onClick={() =>handleHeaderTitle('Dashboard')}>
                     <LuLayoutDashboard/>
                     <LinkStyled
                         to='/dashboard'>Dashboard
                     </LinkStyled>
                 </ItemsList>
-                <ItemsList>
+                <ItemsList  onClick={() =>handleHeaderTitle('Rooms')}>
                     <BiKey 
                         style={
                             {
@@ -49,21 +53,21 @@ export const Menu = () => {
                         Rooms
                     </LinkStyled>
                 </ItemsList>
-                <ItemsList>
+                <ItemsList  onClick={() =>handleHeaderTitle('Bookings')}>
                     <LuCalendarCheck2/>
                     <LinkStyled
                         to="/bookings">
                         Bookings
                     </LinkStyled>
                 </ItemsList>
-                <ItemsList>
+                <ItemsList  onClick={() =>handleHeaderTitle('Guest')}>
                     <LuUser2/>
                     <LinkStyled
                         to='/guest'>
                         Guest
                     </LinkStyled>
                 </ItemsList>
-                <ItemsList>
+                <ItemsList  onClick={() =>handleHeaderTitle('Concierge')}>
                     <HiOutlinePuzzle />
                     <LinkStyled
                         to='/concierge'>
@@ -117,7 +121,7 @@ const CreatorParagraph = styles.p`
     font-family: 'Poppins', sans-serif;
     margin-bottom: 40px;
     align-self: baseline;
-    margin-left: 35px;
+    margin-left: 40px;
 `;
 
 const List = styles.ul`
@@ -134,6 +138,13 @@ const ItemsList = styles.li`
     padding: 10px;
     border-radius: 0 6px 6px 0;
     transition: 0.3s;
+
+    &.active {
+        border-left: 4px solid #E23428;
+        svg {
+            color: #E23428;
+        }
+    }
 
     &:hover {
         border-left: 4px solid #E23428;
@@ -152,7 +163,7 @@ const ItemsList = styles.li`
     }
 `;
 
-const LinkStyled = styles(Link)`
+const LinkStyled = styles(NavLink)`
     font-size: "16px";
     font-family: 'Poppins', sans serif;
     color: #799283;
@@ -163,7 +174,12 @@ const LinkStyled = styles(Link)`
         color: #E23428;
         transition: color 0.3s ease-in-out;
     }
+
+    &.active {
+        color: #E23428;
+    }
 `;
+
 
 const SubTitle = styles.h2`
     display: flex;

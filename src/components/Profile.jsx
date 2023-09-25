@@ -64,5 +64,6 @@ const ProfileButton = styles.button`
 
     &:hover {
         background: #799283 0% 0% no-repeat padding-box;
+        color: #EBF1EF;
     }
 `;

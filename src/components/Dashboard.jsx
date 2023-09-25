@@ -1,12 +1,10 @@
 import styles from "styled-components";
 
-import { Header } from "./Header"
-import { Menu } from "./Menu"
-
 import { LiaBedSolid } from "react-icons/lia";
 import { LuCalendarCheck2 } from "react-icons/lu";
 import { GoSignOut } from "react-icons/go";
 import { GoSignIn } from "react-icons/go";
+import { LastestReview } from "./LastestReview";
 
 
 export const Dashboard = () => {
@@ -51,6 +49,7 @@ export const Dashboard = () => {
                         </div>
                     </Card>
                 </ContainerCards>
+                <LastestReview/>
             </Main>
         </>
     )
@@ -59,13 +58,13 @@ export const Dashboard = () => {
 const Main = styles.main`
     display: flex;
     flex-direction: column;
-    padding-left: 0px;
 `;
 
 const ContainerCards = styles.div`
     display: flex;
-    width: 100%;
     margin-top: 50px;
+    margin-left: 50px;
+    min-width: 1300px;
 `;
 
 const Card = styles.div`

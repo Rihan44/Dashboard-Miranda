@@ -8,7 +8,7 @@ import { MdOutlineMessage } from "react-icons/md";
 import { FiSearch } from "react-icons/fi";
 
 
-export const Header = ({ title}) => {
+export const Header = ({ title }) => {
 
     return (
         <HeaderTag>
@@ -53,6 +53,7 @@ const NavIcons = styles.nav`
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    min-width: 1300px;
 `;
 
 const ContainerTitle = styles.div`
