@@ -6,9 +6,9 @@ export const Bookings = () => {
         <>
             <Header title="Bookings"/>
             <Menu/>
-            <div>
+            <main>
                 <p>Bookings</p>
-            </div>
+            </main>
         </>
     )
 }

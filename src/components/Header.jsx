@@ -51,7 +51,7 @@ const HeaderTag = styles.header`
 
 const NavIcons = styles.nav`
     height: 120px;
-    width: 90%;
+    width: 100%;
     box-shadow: 0px 3px 10px #00000005;
     display: flex;
     align-items: center;

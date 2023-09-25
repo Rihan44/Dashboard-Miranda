@@ -30,7 +30,7 @@ export const Menu = () => {
             </NavLink>
             <List>
                 <ItemsList>
-                    <LuLayoutDashboard style={iconsClass} />
+                    <LuLayoutDashboard/>
                     <LinkStyled
                         to='/dashboard'>Dashboard
                     </LinkStyled>
@@ -41,7 +41,6 @@ export const Menu = () => {
                             {
                                 transform: "rotate(90deg) rotateX(-180deg)",
                                 fontSize: "32px",
-                                color: "#799283",
                                 marginLeft: "50px"
                             }
                     } />
@@ -51,21 +50,21 @@ export const Menu = () => {
                     </LinkStyled>
                 </ItemsList>
                 <ItemsList>
-                    <LuCalendarCheck2 style={iconsClass} />
+                    <LuCalendarCheck2/>
                     <LinkStyled
                         to="/bookings">
                         Bookings
                     </LinkStyled>
                 </ItemsList>
                 <ItemsList>
-                    <LuUser2 style={iconsClass} />
+                    <LuUser2/>
                     <LinkStyled
                         to='/guest'>
                         Guest
                     </LinkStyled>
                 </ItemsList>
                 <ItemsList>
-                    <HiOutlinePuzzle style={iconsClass} />
+                    <HiOutlinePuzzle />
                     <LinkStyled
                         to='/concierge'>
                         Concierge
@@ -81,12 +80,6 @@ export const Menu = () => {
         </AsideMenu>
 
     );
-}
-
-const iconsClass = {
-    fontSize: "27px",
-    color: "#799283",
-    marginLeft: "50px"
 }
 
 const AsideMenu = styles.aside`
@@ -146,6 +139,17 @@ const ItemsList = styles.li`
     &:hover {
         border-left: 4px solid #E23428;
         color: #E23428;
+
+        svg {
+            color: #E23428;
+        }
+        
+    }
+
+    svg {
+        font-size: 27px;
+        color: #799283;
+        margin-left: 50px;
     }
 `;
 
