@@ -5,9 +5,10 @@ import { LuCalendarCheck2 } from "react-icons/lu";
 import { GoSignOut } from "react-icons/go";
 import { GoSignIn } from "react-icons/go";
 import { LastestReview } from "./LastestReview";
-
+import { dashboardData } from "../data/dashboard";
 
 export const Dashboard = () => {
+
     return (
         <>
             <Main>
@@ -49,7 +50,7 @@ export const Dashboard = () => {
                         </div>
                     </Card>
                 </ContainerCards>
-                <LastestReview/>
+                <LastestReview dataDashboard={dashboardData}/>
             </Main>
         </>
     )

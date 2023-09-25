@@ -4,28 +4,31 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
 
-export const LastestReview = (props) => {
+export const LastestReview = ({dataDashboard}) => {
+
     return(
         <>
             <ContainerReview>
                 <Title>Latest Review by Customers</Title>
                 <CardContainer>
-                    <Card>
-                        <ReviewComent>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
-                        </ReviewComent>
-                        <InnerCard>
-                            <img />
-                            <ProfileContainer>
-                                <h4>Kusnaidi Anderson</h4>
-                                <p>4m ago</p>
-                            </ProfileContainer>
-                            <ButtonContainer>
-                                <Button $red><AiOutlineCheckCircle/></Button>
-                                <Button><AiOutlineCloseCircle/></Button>
-                            </ButtonContainer>
-                        </InnerCard>
-                    </Card>
+                    {dataDashboard.map((data) => (
+                        <Card key={data.id}>
+                            <ReviewComent>
+                                {data.reviewContent}
+                            </ReviewComent>
+                            <InnerCard>
+                                <img src={data.imgSrc} alt={data.id}/>
+                                <ProfileContainer>
+                                    <h4>{data.name}</h4>
+                                    <p>{data.date}</p>
+                                </ProfileContainer>
+                                <ButtonContainer>
+                                    <Button $red><AiOutlineCheckCircle/></Button>
+                                    <Button><AiOutlineCloseCircle/></Button>
+                                </ButtonContainer>
+                            </InnerCard>
+                        </Card>
+                    ))}
                 </CardContainer>
             </ContainerReview>
         </>
@@ -55,6 +58,7 @@ const CardContainer = styles.div`
     display: flex;
     margin-top: 30px;
     justify-content: space-between;
+    min-width: 1300px;
 `;
 
 const Card = styles.div`
@@ -79,7 +83,7 @@ const ReviewComent = styles.p`
     color: #4E4E4E;
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
-    margin-bottom: 52px;
+    margin-bottom: 30px;
 `;
 
 const ButtonContainer = styles.div`
