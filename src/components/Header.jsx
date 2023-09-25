@@ -44,18 +44,15 @@ const iconClass = {
 const HeaderTag = styles.header`
     display: flex;
     height: 120px;
-    width: 82%;
-    position: relative;
-    left: 345px;
 `;
 
 const NavIcons = styles.nav`
     height: 120px;
-    width: 100%;
     box-shadow: 0px 3px 10px #00000005;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
 `;
 
 const ContainerTitle = styles.div`

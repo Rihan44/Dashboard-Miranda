@@ -12,8 +12,6 @@ import { GoSignIn } from "react-icons/go";
 export const Dashboard = () => {
     return (
         <>
-            <Header title="Dashboard" />
-            <Menu />
             <Main>
                 <ContainerCards>
                     <Card>

@@ -89,8 +89,7 @@ const AsideMenu = styles.aside`
     flex-direction: column;
     align-items: center;
     box-shadow: 13px 3px 40px #00000005;
-    position: absolute;
-    top: 0px;
+    float: left;
 `;
 
 const ContainerFooter = styles.div`

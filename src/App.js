@@ -7,6 +7,8 @@ import { Dashboard } from "./components/Dashboard";
 import { useState } from "react";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { Login } from "./components/Login";
+import { Header } from "./components/Header";
+import { Menu } from "./components/Menu";
 
 export const App = () => {
 
@@ -15,6 +17,8 @@ export const App = () => {
     return (
         <BrowserRouter>
             {/* <Header title="Dashboard" /> */}
+            <Menu />
+            <Header title="Dashboard" />
             <Routes>
                 <Route path="/login" element={<Login setAuthenticated={setAuthenticated}/>}/>
                 <Route 
