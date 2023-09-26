@@ -12,9 +12,7 @@ export const Header = ({ title }) => {
     const navigate = useNavigate();
 
     const handleLogOut = () => {
-        localStorage.removeItem("auth");
-        localStorage.removeItem("user");
-        localStorage.removeItem("email");
+        localStorage.clear();
 
         navigate('/login');
     }
