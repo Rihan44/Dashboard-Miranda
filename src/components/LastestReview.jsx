@@ -12,12 +12,13 @@ export const LastestReview = ({ dataDashboard }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [checkMessage, setCheckMessage] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+    const [arrayId, setArrayId] = useState([]);
 
     const handleOpen = (data) => {
         setModalInfo(data.email_description);
         setModalOpen(true);
         setCheckMessage(true);
-        
+
         const updateChecked = ((prevChecked) => {
             return {
                 ...prevChecked,
@@ -27,6 +28,11 @@ export const LastestReview = ({ dataDashboard }) => {
 
         setIsChecked(updateChecked);
 
+        /* TODO ESTO */
+       /*  let dataID = data.id;
+        setArrayId(arrayId.concat(dataID));
+
+        localStorage.setItem('idMessage', data.id); */
         /* GUARDAR QUE EL CHECK SE QUEDE VERDE EN EL LOCAL Y QUE SOLO SE PONGA VERDE EL BOTON DEL MODAL QUE HACES CLICK */
     }
 
