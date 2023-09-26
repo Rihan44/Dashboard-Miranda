@@ -7,16 +7,16 @@ export const Login = ({setAuthenticated}) => {
     const navigate = useNavigate();
     
     const [inputTextValue, setInputTextValue] = useState('');
-    const [inputTextPass, setInputTextPass] = useState('');
+    const [inputTextEmail, setInputTextEmail] = useState('');
     const [isCorrect, setIsCorrect] = useState(false);
   
     const userAdmin = {
-        user: "admin",
-        password: "admin1234"
+        user: "ASDev",
+        email: "asmuela.dev@gmail.com"
     }
 
-    function handleChangePassword(e) {
-        setInputTextPass(e.target.value);   
+    function handleChangeEmail(e) {
+        setInputTextEmail(e.target.value);   
     }
 
     function handleChangeText(e) {
@@ -25,11 +25,13 @@ export const Login = ({setAuthenticated}) => {
 
     function handleSubmit(e){
         e.preventDefault();
-        if(inputTextValue === userAdmin.user && inputTextPass === userAdmin.password){
+        if(inputTextValue === userAdmin.user && inputTextEmail === userAdmin.email){
             setAuthenticated(true);
             setIsCorrect(false);
 
             localStorage.setItem('auth', true);
+            localStorage.setItem('user', inputTextValue);
+            localStorage.setItem('email', inputTextEmail);
             navigate('/');
         } else {
             setAuthenticated(false);
@@ -44,11 +46,11 @@ export const Login = ({setAuthenticated}) => {
             <FormContainer onSubmit={handleSubmit}>
                 <Label>User Name</Label>
                 <Input type="text" onChange={handleChangeText}/>
-                <Label>User Name</Label>
-                <Input type="password" onChange={handleChangePassword}/>
+                <Label>Email</Label>
+                <Input type="text" onChange={handleChangeEmail}/>
                 <Button>Login</Button>
-                <FormParagraph>User Test: <small>admin</small></FormParagraph>
-                <FormParagraph>Pass Test: <small>admin1234</small></FormParagraph>
+                <FormParagraph>User Test: <small>ASDev</small></FormParagraph>
+                <FormParagraph>Pass Test: <small>asmuela.dev@gmail.com</small></FormParagraph>
                 {isCorrect ? <WrongParagraph>El user o la pass son incorrectos</WrongParagraph>: ''}
             </FormContainer>
         </LoginContainer>

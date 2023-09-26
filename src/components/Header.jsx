@@ -1,14 +1,23 @@
 import styles from "styled-components";
 
 import { LuAlignLeft } from "react-icons/lu";
-import { LuHeart } from "react-icons/lu";
 import { HiOutlineMail } from "react-icons/hi";
 import { LuBell } from "react-icons/lu";
-import { MdOutlineMessage } from "react-icons/md";
-import { FiSearch } from "react-icons/fi";
+import { GoSignOut } from "react-icons/go";
+import { useNavigate } from "react-router-dom";
 
 
 export const Header = ({ title }) => {
+
+    const navigate = useNavigate();
+
+    const handleLogOut = () => {
+        localStorage.removeItem("auth");
+        localStorage.removeItem("user");
+        localStorage.removeItem("email");
+
+        navigate('/login');
+    }
 
     return (
         <HeaderTag>
@@ -18,18 +27,11 @@ export const Header = ({ title }) => {
                     <Title>{title}</Title>
                 </ContainerTitle>
                 <ContainerIcons>
-                    <ContainerInput>
-                        <Input type="text"/>
-                        <FiSearch style={{ color: "#6E6E6E" }} />
-                    </ContainerInput>
-                    <LuHeart style={iconClass} />
                     <HiOutlineMail style={iconClass} />
                     <LuBell style={iconClass} />
-                    <MdOutlineMessage style={iconClass} />
-                    <ImageProfile />
-                    <div>
-                        ES
-                    </div>
+                    <Button onClick={handleLogOut}>
+                        <GoSignOut style={iconClass} />
+                    </Button>
                 </ContainerIcons>
             </NavIcons>
         </HeaderTag>
@@ -80,31 +82,11 @@ const Title = styles.h1`
     margin-left: 30px;
 `;
 
-const Input = styles.input`
-    width: 90%;
-    height: 100%;
+
+const Button = styles.button`
     border: none;
-    outline: gray;
-    background: #FCFCFC;
-    padding-right: 20px;
-    direction: rtl;
+    background: none;
+    cursor: pointer;
 `;
-
-const ContainerInput = styles.div`
-    background: #FCFCFC;
-    width: 350px;
-    height: 57px;
-    display: flex; 
-    align-items: center;
-`;
-
-const ImageProfile = styles.div`
-    width: 60px;
-    height: 60px; 
-    background: #C5C5C5;
-    /* marginRight: "60px"; */
-`;
-
-
 
 

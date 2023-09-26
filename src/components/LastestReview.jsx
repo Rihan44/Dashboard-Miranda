@@ -3,7 +3,6 @@ import styles from "styled-components";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
-
 export const LastestReview = ({dataDashboard}) => {
 
     return(
@@ -23,8 +22,8 @@ export const LastestReview = ({dataDashboard}) => {
                                     <p>{data.date}</p>
                                 </ProfileContainer>
                                 <ButtonContainer>
-                                    <Button $red><AiOutlineCheckCircle/></Button>
-                                    <Button><AiOutlineCloseCircle/></Button>
+                                    <Button><AiOutlineCheckCircle/></Button>
+                                    <Button $red><AiOutlineCloseCircle/></Button>
                                 </ButtonContainer>
                             </InnerCard>
                         </Card>

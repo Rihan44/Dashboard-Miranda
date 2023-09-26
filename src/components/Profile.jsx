@@ -2,12 +2,20 @@ import styles from "styled-components";
 
 
 export const ProfileCompontent = () => {
+
+    const user = localStorage.getItem('user');
+    const email = localStorage.getItem('email');
+
+    const handleModal = () => {
+        /* PONER COSAS DEL MODAL */
+    }
+
     return(
         <ProfileContainer>
             <ImageProfile />
-            <ProfileTitle>Angel S Muela</ProfileTitle>
-            <ProfileParagraph>asmuela.dev@gmail.com</ProfileParagraph>
-            <ProfileButton>Contact us</ProfileButton>
+            <ProfileTitle>{user}</ProfileTitle>
+            <ProfileParagraph>{email}</ProfileParagraph>
+            <ProfileButton>Edit</ProfileButton>
         </ProfileContainer>
     )
 }

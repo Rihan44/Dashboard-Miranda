@@ -10,12 +10,12 @@ import { FaHotel } from "react-icons/fa6"
 import { NavLink } from "react-router-dom";
 import { ProfileCompontent } from "./Profile";
 
-export const Menu = ({setHeaderTitle}) => {
+export const Menu = ({ setHeaderTitle }) => {
     const handleHeaderTitle = (titleName) => {
         setHeaderTitle(titleName);
     }
 
-    return(
+    return (
         <AsideMenu id="aside_menu">
             <NavLink to="/" style={{
                 textDecoration: "none",
@@ -26,56 +26,66 @@ export const Menu = ({setHeaderTitle}) => {
                 marginTop: "40px",
                 marginBottom: "85px"
             }}>
-                <FaHotel style={{ fontSize: "40px", color: "#135846", marginLeft: "50px" }}/>
+                <FaHotel style={{ fontSize: "40px", color: "#135846", marginLeft: "50px" }} />
                 <SubTitle>
                     travl
                     <span>Hotel admin dashboard</span>
                 </SubTitle>
             </NavLink>
             <List>
-                <ItemsList onClick={() =>handleHeaderTitle('Dashboard')}>
-                    <LuLayoutDashboard/>
-                    <LinkStyled
-                        to='/dashboard'>Dashboard
-                    </LinkStyled>
-                </ItemsList>
-                <ItemsList  onClick={() =>handleHeaderTitle('Rooms')}>
-                    <BiKey 
-                        style={
-                            {
-                                transform: "rotate(90deg) rotateX(-180deg)",
-                                fontSize: "32px",
-                                marginLeft: "50px"
-                            }
+                <LinkStyled 
+                    onClick={() => handleHeaderTitle('Dashboard')}
+                    to='/dashboard'>
+                    <div>
+                    </div>
+                    <LuLayoutDashboard />
+                    Dashboard
+                </LinkStyled>
+
+                <LinkStyled 
+                    onClick={() => handleHeaderTitle('Rooms')}
+                    to="/rooms">
+                    <div>
+                    </div>
+                    <BiKey
+                    style={
+                        {
+                            transform: "rotate(90deg) rotateX(-180deg)",
+                            fontSize: "32px",
+                            marginRight: "30px"
+                        }
                     } />
-                    <LinkStyled
-                        to="/rooms">
-                        Rooms
-                    </LinkStyled>
-                </ItemsList>
-                <ItemsList  onClick={() =>handleHeaderTitle('Bookings')}>
-                    <LuCalendarCheck2/>
-                    <LinkStyled
-                        to="/bookings">
-                        Bookings
-                    </LinkStyled>
-                </ItemsList>
-                <ItemsList  onClick={() =>handleHeaderTitle('Guest')}>
-                    <LuUser2/>
-                    <LinkStyled
-                        to='/guest'>
-                        Guest
-                    </LinkStyled>
-                </ItemsList>
-                <ItemsList  onClick={() =>handleHeaderTitle('Concierge')}>
+                    Rooms
+                </LinkStyled>
+
+                <LinkStyled
+                    onClick={() => handleHeaderTitle('Bookings')}
+                    to="/bookings">
+                    <div>
+                    </div>
+                    <LuCalendarCheck2  />
+                    Bookings
+                </LinkStyled>
+
+                <LinkStyled
+                    onClick={() => handleHeaderTitle('Contact')}
+                    to='/contact'>
+                    <div>
+                    </div>
+                    <LuUser2 />
+                    Contact
+                </LinkStyled>
+
+                <LinkStyled
+                    onClick={() => handleHeaderTitle('Users')}
+                    to='/users'>
+                    <div>
+                    </div>
                     <HiOutlinePuzzle />
-                    <LinkStyled
-                        to='/concierge'>
-                        Concierge
-                    </LinkStyled>
-                </ItemsList>
+                    Users
+                </LinkStyled>
             </List>
-            <ProfileCompontent/>
+            <ProfileCompontent />
             <ContainerFooter>
                 <TitleFooter>Travl Hotel Admin Dashboard</TitleFooter>
                 <ParagraphFooter>© 2023 All Rights Reserved</ParagraphFooter>
@@ -124,59 +134,65 @@ const CreatorParagraph = styles.p`
     margin-left: 40px;
 `;
 
-const List = styles.ul`
+const List = styles.div`
     display: flex;
     flex-direction: column;
     width: 100%;
     list-style: none;
+    height: auto;
 `;
 
-const ItemsList = styles.li`
-    display: flex;
+
+const LinkStyled = styles(NavLink)`
+    font-family: 'Poppins', sans serif;
+    color: #799283;
+    text-decoration: none;
     width: 100%;
-    margin-bottom: 30px;
-    padding: 10px;
-    border-radius: 0 6px 6px 0;
-    transition: 0.3s;
-
-    &.active {
-        border-left: 4px solid #E23428;
-        svg {
-            color: #E23428;
-        }
-    }
-
-    &:hover {
-        border-left: 4px solid #E23428;
-        color: #E23428;
-
-        svg {
-            color: #E23428;
-        }
-        
-    }
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 50px;
 
     svg {
         font-size: 27px;
         color: #799283;
-        margin-left: 50px;
+        margin-left: 56px;
+        margin-right: 30px;
     }
-`;
-
-const LinkStyled = styles(NavLink)`
-    font-size: "16px";
-    font-family: 'Poppins', sans serif;
-    color: #799283;
-    text-decoration: none;
-    margin-left: 30px;
 
     &:hover {
         color: #E23428;
         transition: color 0.3s ease-in-out;
+
+        div {
+            height: 50px;
+            border: 5px solid #E23428;
+            border-radius: 0 6px 6px 0;
+            position: absolute;
+            left: 0px;
+            top: -15px
+        }
+
+        svg {
+            color: #E23428;
+        }
     }
 
     &.active {
         color: #E23428;
+
+        svg {
+            color: #E23428;
+        }
+
+        div {
+            height: 50px;
+            border: 5px solid #E23428;
+            border-radius: 0 6px 6px 0;
+            position: absolute;
+            left: 0px;
+            top: -15px
+        }
     }
 `;
 
