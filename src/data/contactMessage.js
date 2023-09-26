@@ -5,7 +5,7 @@ export const contactMessega = [
       "email": "johndoe@example.com",
       "phone": "123-456-7890",
       "email_subject": "Hello",
-      "email_description": "This is a sample email description."
+      "email_description": "This is a sample email description.This is a sample email description.This is a sample email description.This is a sample email description.This is a sample email description.This is a sample email description.This is a sample email description.This is a sample email description."
     },
     {
       "id": "67890",

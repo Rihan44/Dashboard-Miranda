@@ -44,6 +44,7 @@ export const ProfileCompontent = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setModalOpen(false);
     }
 
     return(

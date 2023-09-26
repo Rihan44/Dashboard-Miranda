@@ -116,6 +116,8 @@ const ModalInfo = styles.div`
         font-family: 'Poppins', sans-serif;
         font-size: 16px;
         margin-bottom: 30px;
+        max-height: 300px;
+        overflow: auto;
     }
 
     h4 {
@@ -187,6 +189,12 @@ const ReviewComent = styles.p`
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
     margin-bottom: 30px;
+    overflow: hidden;
+    height: 70px;
+
+    &::before {
+        content: "...";
+    }
 `;
 
 const InnerCard = styles.div`
