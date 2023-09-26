@@ -1,10 +1,10 @@
 import styles from "styled-components";
-import { bookingData } from "../data/bookingData";
+import {bookingData} from "../data/bookingData";
 
 import { BiDotsVerticalRounded } from "react-icons/bi";
 
 export const Bookings = () => {
-    return (
+    return(
         <>
             <Main>
                 <BookingContainer>
@@ -24,7 +24,7 @@ export const Bookings = () => {
                             </ButtonTabs>
                         </TabsContainer>
                         <Filters>
-                            <input type="text" placeholder="Customer Name..." />
+                            <input type="text" placeholder="Customer Name..."/>
                             <Select>
                                 <Option>Order Date</Option>
                                 <Option>Guest</Option>
@@ -33,7 +33,7 @@ export const Bookings = () => {
                             </Select>
                         </Filters>
                     </FilterContainer>
-                    <TableContainerTitle>
+                    <TableContainerTitle>    
                         <TableTitles>Guest</TableTitles>
                         <TableTitles>Order Date</TableTitles>
                         <TableTitles>Check IN</TableTitles>
@@ -42,35 +42,36 @@ export const Bookings = () => {
                         <TableTitles>Room Type</TableTitles>
                         <TableTitles>Status</TableTitles>
                     </TableContainerTitle>
-
-                    <TableContainerBody>
-                        <TableContainerBodyContent>
-                            <CostumerName>John Doe</CostumerName>
-                            <CostumerPhone>98527453</CostumerPhone>
-                            <ButtonID>#887412dedefROOM</ButtonID>
-                        </TableContainerBodyContent>
-                        <TableContainerBodyContent>
-                            <OrderDate>Oct 30th 2020 09:21 AM</OrderDate>
-                        </TableContainerBodyContent>
-                        <TableContainerBodyContent>
-                            <CheckInDate>Nov 2th, 2020</CheckInDate>
-                            <CheckInTime>9.46 PM</CheckInTime>
-                        </TableContainerBodyContent>
-                        <TableContainerBodyContent>
-                            <CheckOutDate>Nov 4th, 2020</CheckOutDate>
-                            <CheckOutTime>6.12 PM</CheckOutTime>
-                        </TableContainerBodyContent>
-                        <TableContainerBodyContent>
-                            <ViewNotesButton>View Notes</ViewNotesButton>
-                        </TableContainerBodyContent>
-                        <TableContainerBodyContent>
-                            <TypeRoom>Deluxe A - 02</TypeRoom>
-                        </TableContainerBodyContent>
-                        <TableContainerBodyContent>
-                            <Status>Check In</Status>
-                            <OptionsButton><BiDotsVerticalRounded /></OptionsButton>
-                        </TableContainerBodyContent>
-                    </TableContainerBody>
+                        {bookingData.map((data) => ( 
+                            <TableContainerBody>
+                                <TableContainerBodyContent>
+                                    <CostumerName>{data.guest}</CostumerName>
+                                    <CostumerPhone>{data.phone_number}</CostumerPhone>
+                                    <ButtonID>#{data.id}</ButtonID>
+                                </TableContainerBodyContent>
+                                <TableContainerBodyContent>
+                                    <OrderDate>{data.order_date}</OrderDate>
+                                </TableContainerBodyContent>
+                                <TableContainerBodyContent>
+                                    <CheckInDate>{data.check_in}</CheckInDate>
+                                    <CheckInTime>9.46 PM</CheckInTime>
+                                </TableContainerBodyContent>
+                                <TableContainerBodyContent>
+                                    <CheckOutDate>{data.check_out}</CheckOutDate>
+                                    <CheckOutTime>6.12 PM</CheckOutTime>
+                                </TableContainerBodyContent>
+                                <TableContainerBodyContent>
+                                    <ViewNotesButton>View Notes</ViewNotesButton>
+                                </TableContainerBodyContent>
+                                <TableContainerBodyContent>
+                                    <TypeRoom>{data.room_type}-{data.room_number}</TypeRoom>
+                                </TableContainerBodyContent>
+                                <TableContainerBodyContent>
+                                    <Status>{data.status}</Status>
+                                    <OptionsButton><BiDotsVerticalRounded/></OptionsButton>
+                                </TableContainerBodyContent>
+                            </TableContainerBody>
+                        ))}
                 </BookingContainer>
             </Main>
         </>
@@ -88,6 +89,7 @@ const BookingContainer = styles.div`
     min-width: 1400px;
     display: flex;
     flex-direction: column;
+    margin-bottom: 50px;
 `;
 
 const FilterContainer = styles.div`
@@ -221,7 +223,7 @@ const TableContainerBody = styles.div`
 const TableContainerBodyContent = styles.div`
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
-`;
+`;  
 
 const CostumerName = styles.p`
     color: #393939;
