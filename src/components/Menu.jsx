@@ -43,7 +43,7 @@ export const Menu = ({ setHeaderTitle }) => {
                 </LinkStyled>
 
                 <LinkStyled 
-                    onClick={() => handleHeaderTitle('Rooms')}
+                    onClick={() => handleHeaderTitle('Rooms List')}
                     to="/rooms">
                     <div>
                     </div>
@@ -97,7 +97,7 @@ export const Menu = ({ setHeaderTitle }) => {
 }
 
 const AsideMenu = styles.aside`
-    height: 120vh;
+    height: 100%;
     width: 345px;
     display: flex;
     flex-direction: column;
@@ -152,25 +152,32 @@ const LinkStyled = styles(NavLink)`
     display: flex;
     justify-content: flex-start;
     margin-bottom: 50px;
+    transition: 0.5s;
+
+    div {
+        height: 50px;
+        border: 5px solid #E23428;
+        border-radius: 0 6px 6px 0;
+        position: absolute;
+        left: 0px;
+        top: -10px;
+        opacity: 0;
+        transition: 0.3s;
+    }
 
     svg {
         font-size: 27px;
         color: #799283;
         margin-left: 56px;
         margin-right: 30px;
+        transition: 0.5s;
     }
 
     &:hover {
         color: #E23428;
-        transition: color 0.3s ease-in-out;
 
         div {
-            height: 50px;
-            border: 5px solid #E23428;
-            border-radius: 0 6px 6px 0;
-            position: absolute;
-            left: 0px;
-            top: -15px
+            opacity: 1;
         }
 
         svg {
@@ -186,12 +193,7 @@ const LinkStyled = styles(NavLink)`
         }
 
         div {
-            height: 50px;
-            border: 5px solid #E23428;
-            border-radius: 0 6px 6px 0;
-            position: absolute;
-            left: 0px;
-            top: -15px
+            opacity: 1;
         }
     }
 `;

@@ -30,7 +30,7 @@ export const Header = ({ title }) => {
                     <HiOutlineMail style={iconClass} />
                     <LuBell style={iconClass} />
                     <Button onClick={handleLogOut}>
-                        <GoSignOut style={iconClass} />
+                        <GoSignOut/>
                     </Button>
                 </ContainerIcons>
             </NavIcons>
@@ -87,6 +87,18 @@ const Button = styles.button`
     border: none;
     background: none;
     cursor: pointer;
+
+    svg {
+        color: #135846;
+        font-size: 24px;
+        transition: 0.5s;
+    }
+
+    &:hover {
+        svg {
+            color: #E23428;
+        }
+    }
 `;
 
 

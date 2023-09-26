@@ -1,29 +1,70 @@
 import styles from "styled-components";
 
 import { AiOutlineCheckCircle } from "react-icons/ai";
+import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
-export const LastestReview = ({dataDashboard}) => {
+import { useState } from "react";
 
-    return(
+export const LastestReview = ({ dataDashboard }) => {
+
+    const [modalInfo, setModalInfo] = useState('');
+    const [modalOpen, setModalOpen] = useState(false);
+    const [checkMessage, setCheckMessage] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
+
+    const handleOpen = (data) => {
+        setModalInfo(data.email_description);
+        setModalOpen(true);
+        setCheckMessage(true);
+        
+        const updateChecked = ((prevChecked) => {
+            return {
+                ...prevChecked,
+                [data.id]: !prevChecked[data.id]
+            };
+        });
+
+        setIsChecked(updateChecked);
+
+        /* GUARDAR QUE EL CHECK SE QUEDE VERDE EN EL LOCAL Y QUE SOLO SE PONGA VERDE EL BOTON DEL MODAL QUE HACES CLICK */
+    }
+
+    const handleCloseModal = () => {
+        setModalOpen(false);
+    }
+
+    return (
         <>
+            <Modal $modalOpen={modalOpen}>
+                <ModalInfo>
+                    <ButtonModalClose onClick={handleCloseModal}>
+                        <AiOutlineCloseCircle />
+                    </ButtonModalClose>
+                    <h4>Email Message</h4>
+                    <p>{modalInfo}</p>
+                </ModalInfo>
+            </Modal>
             <ContainerReview>
                 <Title>Latest Review by Customers</Title>
                 <CardContainer>
                     {dataDashboard.map((data) => (
                         <Card key={data.id}>
+                            <EmailSubject>
+                                {data.email_subject}
+                            </EmailSubject>
                             <ReviewComent>
-                                {data.reviewContent}
+                                {data.email_description}
                             </ReviewComent>
                             <InnerCard>
-                                <img src={data.imgSrc} alt={data.id}/>
                                 <ProfileContainer>
                                     <h4>{data.name}</h4>
-                                    <p>{data.date}</p>
+                                    <p>{data.email}</p>
+                                    <p>{data.phone}</p>
                                 </ProfileContainer>
                                 <ButtonContainer>
-                                    <Button><AiOutlineCheckCircle/></Button>
-                                    <Button $red><AiOutlineCloseCircle/></Button>
+                                    <Button $view={isChecked[data.id] ? checkMessage: false}><AiOutlineCheckCircle /></Button>
+                                    <ButtonOpen onClick={() => handleOpen(data)}><AiOutlineFullscreen /></ButtonOpen>
                                 </ButtonContainer>
                             </InnerCard>
                         </Card>
@@ -33,6 +74,66 @@ export const LastestReview = ({dataDashboard}) => {
         </>
     );
 }
+
+const Modal = styles.div`
+    display: ${props => props.$modalOpen === true ? 'block' : 'none'};
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+    transition: 0.5s;
+`;
+
+const ModalInfo = styles.div`
+    background:#ffff;
+    position: absolute; 
+    top: 25%;
+    left: 40%;
+    width: 450px;
+    height: 350px;
+    border: 1px solid #EBEBEB;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0px 4px 4px #00000010;
+    word-wrap: break-word;
+
+    p {
+        width: 90%;
+        margin: auto;
+        margin-top: 30px;
+        color: #4E4E4E;
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+        margin-bottom: 30px;
+    }
+
+    h4 {
+        margin: auto;
+        width: 40%;
+        font-family: 'Poppins', sans-serif;
+    }
+`;
+
+const ButtonModalClose = styles.button`
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    cursor: pointer;
+    font-size: 24px;
+    transition: 0.4s;
+    border: none;
+    background: none;
+
+    &:hover {
+        color: black;
+    }
+`;
 
 const ContainerReview = styles.div`
     box-shadow: 0px 4px 4px #00000010;
@@ -68,6 +169,20 @@ const Card = styles.div`
     padding: 30px;
 `;
 
+const EmailSubject = styles.h4`
+    color: #393939;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 10px;
+`;
+
+const ReviewComent = styles.p`
+    color: #4E4E4E;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    margin-bottom: 30px;
+`;
+
 const InnerCard = styles.div`
     display:flex;
     img {
@@ -78,11 +193,23 @@ const InnerCard = styles.div`
     }
 `;
 
-const ReviewComent = styles.p`
-    color: #4E4E4E;
-    font-family: 'Poppins', sans-serif;
-    font-size: 16px;
-    margin-bottom: 30px;
+const ProfileContainer = styles.div` 
+    width: 80%;
+
+    h4 {
+        color: #262626;
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    p {
+        color: #799283;
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
 `;
 
 const ButtonContainer = styles.div`
@@ -92,28 +219,18 @@ const ButtonContainer = styles.div`
     justify-content: space-between;
 `;
 
-const ProfileContainer = styles.div` 
-    width: 80%;
-    margin-left: 21px;
-
-    h4 {
-        color: #262626;
-        font-family: 'Poppins', sans-serif;
-        font-size: 16px;
-    }
-
-    p {
-        color: #799283;
-        font-family: 'Poppins', sans-serif;
-        font-size: 14px;
-    }
-
-`;
-
 const Button = styles.button`
     border: none;
     background: none;
     font-size: 24px;
     cursor: pointer;
-    color: ${props => props.$red ? '#E23428' : '#5AD07A'};
+    color: ${props => props.$view === false ? '#E23428' : '#5AD07A'};
+`;
+
+const ButtonOpen = styles.button`
+    border: none;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #575757;
 `;

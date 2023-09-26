@@ -23,7 +23,7 @@ export const contactMessega = [
       "email_subject": "Important Announcement",
       "email_description": "We have an important announcement regarding the upcoming event."
     },
-    {
+/*     {
       "id": "09876",
       "name": "Emily Davis",
       "email": "emilydavis@example.com",
@@ -78,5 +78,5 @@ export const contactMessega = [
       "phone": "432-765-0987",
       "email_subject": "Invitation",
       "email_description": "You are cordially invited to our annual gala event."
-    }
+    } */
   ]
