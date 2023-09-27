@@ -1,32 +1,80 @@
 import styled from "styled-components";
 
-import {bookingData} from "../data/bookingData";
+import { bookingData } from "../data/bookingData";
 
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import { useEffect, useState } from "react";
 
 export const Bookings = () => {
-    return(
+
+    let [dataBooking, setBookinData] = useState([]);
+    const [selectData, setSelectData] = useState('');
+    const [tabsSelect, setTabsSelect] = useState('');
+
+    const handleSelect = (e) => {
+        const optionValue = e.target.value;
+        setSelectData(optionValue);
+    }
+
+    const handleTab = (value) => {
+        setTabsSelect(value);
+    }
+
+    useEffect(() => {
+
+        let dataArray = [];
+        bookingData.forEach(data => {
+            dataArray.push(data);
+        });
+
+
+        switch (tabsSelect) {
+            case 'all_bookings':
+                dataBooking = dataArray;
+                break;
+            case 'check_in':
+                dataBooking = dataArray;
+                dataArray = dataBooking.filter(data => data.status === 'check_in');
+                break;
+            case 'check_out':
+                dataBooking = dataArray;
+                dataArray = dataBooking.filter(data => data.status === 'check_out');
+                break;
+            case 'in_progress':
+                dataBooking = dataArray;
+                dataArray = dataBooking.filter(data => data.status === 'in_progress');
+                break;
+            default: 
+                
+        }
+        setBookinData(dataArray);
+
+        dataBooking = dataBooking.sort((a, b) => b.order_date - a.order_date);
+
+    }, [tabsSelect, setBookinData])
+
+    return (
         <>
             <Main>
                 <BookingContainer>
                     <FilterContainer>
                         <TabsContainer>
-                            <ButtonTabs>
+                            <ButtonTabs onClick={() => handleTab('all_bookings')}>
                                 All Bookings
                             </ButtonTabs>
-                            <ButtonTabs>
+                            <ButtonTabs onClick={() => handleTab('check_in')}>
                                 Check In
                             </ButtonTabs>
-                            <ButtonTabs>
+                            <ButtonTabs onClick={() => handleTab('check_out')}>
                                 Check Out
                             </ButtonTabs>
-                            <ButtonTabs>
+                            <ButtonTabs onClick={() => handleTab('in_progress')}>
                                 In Progress
                             </ButtonTabs>
                         </TabsContainer>
                         <Filters>
-                            <input type="text" placeholder="Customer Name..."/>
-                            <Select>
+                            <input type="text" placeholder="Customer Name..." />
+                            <Select onChange={handleSelect}>
                                 <Option>Order Date</Option>
                                 <Option>Guest</Option>
                                 <Option>Check In</Option>
@@ -34,7 +82,7 @@ export const Bookings = () => {
                             </Select>
                         </Filters>
                     </FilterContainer>
-                    <TableContainerTitle>    
+                    <TableContainerTitle>
                         <TableTitles>Guest</TableTitles>
                         <TableTitles>Order Date</TableTitles>
                         <TableTitles>Check IN</TableTitles>
@@ -43,36 +91,36 @@ export const Bookings = () => {
                         <TableTitles>Room Type</TableTitles>
                         <TableTitles>Status</TableTitles>
                     </TableContainerTitle>
-                        {bookingData.map((data) => ( 
-                            <TableContainerBody key={data.id}>
-                                <TableContainerBodyContent>
-                                    <CostumerName>{data.guest}</CostumerName>
-                                    <CostumerPhone>{data.phone_number}</CostumerPhone>
-                                    <ButtonID>#{data.id}</ButtonID>
-                                </TableContainerBodyContent>
-                                <TableContainerBodyContent>
-                                    <OrderDate>{data.order_date}</OrderDate>
-                                </TableContainerBodyContent>
-                                <TableContainerBodyContent>
-                                    <CheckInDate>{data.check_in}</CheckInDate>
-                                    <CheckInTime>9.46 PM</CheckInTime>
-                                </TableContainerBodyContent>
-                                <TableContainerBodyContent>
-                                    <CheckOutDate>{data.check_out}</CheckOutDate>
-                                    <CheckOutTime>6.12 PM</CheckOutTime>
-                                </TableContainerBodyContent>
-                                <TableContainerBodyContent>
-                                    <ViewNotesButton>View Notes</ViewNotesButton>
-                                </TableContainerBodyContent>
-                                <TableContainerBodyContent>
-                                    <TypeRoom>{data.room_type}-{data.room_number}</TypeRoom>
-                                </TableContainerBodyContent>
-                                <TableContainerBodyContent>
-                                    <Status $status={data.status}>{data.status}</Status>
-                                    <OptionsButton><BiDotsVerticalRounded/></OptionsButton>
-                                </TableContainerBodyContent>
-                            </TableContainerBody>
-                        ))}
+                    {dataBooking.map((data) => (
+                        <TableContainerBody key={data.id}>
+                            <TableContainerBodyContent>
+                                <CostumerName>{data.guest}</CostumerName>
+                                <Paragraphs>{data.phone_number}</Paragraphs>
+                                <ButtonID>#{data.id}</ButtonID>
+                            </TableContainerBodyContent>
+                            <TableContainerBodyContent>
+                                <OrderDate>{data.order_date}</OrderDate>
+                            </TableContainerBodyContent>
+                            <TableContainerBodyContent>
+                                <CheckInDate>{data.check_in}</CheckInDate>
+                                <CheckInTime>9.46 PM</CheckInTime>
+                            </TableContainerBodyContent>
+                            <TableContainerBodyContent>
+                                <CheckOutDate>{data.check_out}</CheckOutDate>
+                                <CheckOutTime>6.12 PM</CheckOutTime>
+                            </TableContainerBodyContent>
+                            <TableContainerBodyContent>
+                                <ViewNotesButton>View Notes</ViewNotesButton>
+                            </TableContainerBodyContent>
+                            <TableContainerBodyContent>
+                                <TypeRoom>{data.room_type}-{data.room_number}</TypeRoom>
+                            </TableContainerBodyContent>
+                            <TableContainerBodyContent>
+                                <Status $status={data.status}>{data.status}</Status>
+                                <OptionsButton><BiDotsVerticalRounded /></OptionsButton>
+                            </TableContainerBodyContent>
+                        </TableContainerBody>
+                    ))}
                 </BookingContainer>
             </Main>
         </>
@@ -82,6 +130,12 @@ export const Bookings = () => {
 const Main = styled.main`
     display: flex;
     flex-direction: column;
+`;
+
+const Buttons = styled.button`
+    border: none;
+    background: none;
+    cursor: pointer;
 `;
 
 const BookingContainer = styled.div`
@@ -106,10 +160,8 @@ const TabsContainer = styled.div`
     align-self: center;
 `;
 
-const ButtonTabs = styled.button`
-    border: none;
-    background: none;
-    cursor: pointer;
+
+const ButtonTabs = styled(Buttons)`
     color: #6E6E6E;
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
@@ -120,6 +172,7 @@ const ButtonTabs = styled.button`
         color: #135846;
         border-bottom: 2px solid #135846;
     }
+
 `;
 
 const Filters = styled.div`
@@ -221,17 +274,18 @@ const TableContainerBody = styled.div`
     }
 `;
 
+const Paragraphs = styled.p`
+    color: #C5C5C5;
+
+`;
+
 const TableContainerBodyContent = styled.div`
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
-`;  
+`;
 
 const CostumerName = styled.p`
     color: #393939;
-`;
-
-const CostumerPhone = styled.p`
-    color: #C5C5C5;
 `;
 
 const ButtonID = styled.button`
@@ -246,7 +300,6 @@ const ButtonID = styled.button`
 `;
 
 const OrderDate = styled.p`
-    color: #C5C5C5;
     align-self: baseline;
 `;
 
@@ -254,8 +307,7 @@ const CheckInDate = styled.p`
     color: #393939;
 `;
 
-const CheckInTime = styled.p`
-    color: #C5C5C5;
+const CheckInTime = styled(Paragraphs)`
     font-size: 14px;
 `;
 
@@ -263,21 +315,17 @@ const CheckOutDate = styled.p`
     color: #393939;
 `;
 
-const CheckOutTime = styled.p`
-    color: #C5C5C5;
+const CheckOutTime = styled(Paragraphs)`
     font-size: 14px;
 `;
 
-const ViewNotesButton = styled.button`
-    border: none;
-    background: none;
+const ViewNotesButton = styled(Buttons)`
     color: #212121;
     font-size: 16px;
     background: #EEF9F2;
     padding: 15px;
     border-radius: 12px;
     font-weight: 500;
-    cursor: pointer;
     align-self: center;
     justify-center: center;
     width: 160px;
@@ -295,34 +343,31 @@ const TypeRoom = styled.p`
 
 const Status = styled.p`
     ${(props) => {
-        switch(props.$status) {
-        case 'check_in': 
-            return `
+        switch (props.$status) {
+            case 'check_in':
+                return `
                 background: #5AD07A;
             `;
-        case 'check_out': 
-            return `
+            case 'check_out':
+                return `
                 background: #FFEDEC;
             `;
-        case 'in_progress':
-            return` 
+            case 'in_progress':
+                return ` 
                 background: #E2E2E2;
             `;
-        default: 
-            return` 
+            default:
+                return ` 
                 background: #5AD07A;
             `
-    }   
+        }
     }}
 
     padding: 15px;
     border-radius: 12px;
 `;
 
-const OptionsButton = styled.button`
-    border: none;
-    background: none;
-    cursor: pointer;
+const OptionsButton = styled(Buttons)`
     font-size: 30px;
     color:#393939;
 `;
