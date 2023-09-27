@@ -3,6 +3,11 @@ import { useParams} from "react-router-dom";
 
 import { bookingData } from "../data/bookingData";
 
+import { LiaBedSolid } from "react-icons/lia";
+import { AiOutlineWifi } from "react-icons/ai";
+import { BsShieldCheck } from "react-icons/bs";
+
+
 import styled from "styled-components";
 
 
@@ -67,13 +72,16 @@ export const BookingFile = () => {
                                 <h3>Facilites</h3>
                                 <FacilitiesInner>
                                     <BigFacilitie>
-
+                                        <LiaBedSolid/>
+                                        3 Bed Space
                                     </BigFacilitie>
                                     <BigFacilitie>
-                                        
+                                        <BsShieldCheck/>
+                                        24 Hours Guard                                
                                     </BigFacilitie>
                                     <BigFacilitie>
-                                        
+                                        <AiOutlineWifi/>
+                                        Free Wifi
                                     </BigFacilitie>
                                     <SmallFacilitie>
                                         2 Bathroom
@@ -88,7 +96,13 @@ export const BookingFile = () => {
                         </FacilitiesRooms>
                     </InfoContinainer>
                     <ImageContainer>
-
+                        <StatusDecoration>
+                            {dataBooking.status}
+                        </StatusDecoration>
+                        <ImageDescription>
+                            <h3>Bed Room</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        </ImageDescription>
                     </ImageContainer>
                 </FileBookingContainer>
             </Main>
@@ -113,12 +127,6 @@ const FileBookingContainer = styled.div`
 const InfoContinainer = styled.div`
     width: 50%;
     padding: 40px;
-`;
-
-const ImageContainer = styled.div` 
-    width: 50%;
-    background: #C5C5C5;
-    border-radius: 0px 10px 10px 0px;
 `;
 
 const NameContainer = styled.div`
@@ -188,7 +196,13 @@ const InnerInfo = styled.div`
     display: flex;
     width: 80%;
     justify-content: space-between;
-    margin-bottom: 50px;
+    margin-bottom: 35px;
+
+    small {
+        color: #799283;
+        font-size: 14px;
+        margin-left: 15px;
+    }
 `;
 
 const RoomDescription = styled.p`
@@ -227,7 +241,13 @@ const FacilitiesTab = styled.div`
 `;
 
 const BigFacilitie = styled(FacilitiesTab)`
-
+    svg {
+        font-size: 20px;
+        margin-right: 15px;
+    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 const SmallFacilitie = styled(FacilitiesTab)`
@@ -236,4 +256,51 @@ const SmallFacilitie = styled(FacilitiesTab)`
     display: flex;
     align-items: center;
     justify-content: center;
+`;
+
+const ImageContainer = styled.div` 
+    width: 50%;
+    background: #C5C5C5;
+    border-radius: 0px 10px 10px 0px;
+    display: flex;
+    height: 100%;
+`;
+
+const ImageDescription = styled.div`
+    width: 100%;
+    padding: 80px;
+    align-self: end;
+    position: relative;
+
+    h3 {
+        color: #FFFFFF;
+        font-size: 24px;
+        font-family: 'Poppins', sans-serif;
+        margin-bottom: 20px;
+    }
+
+    p {
+        color: #FFFFFF70;
+        font-size: 14px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 300;
+    }
+
+`;
+
+const StatusDecoration = styled.div`
+    width: 160px;
+    height: 50px;
+    ${'' /* HACERLO CON PROPS */}
+    background: #5AD07A;
+    border-radius: 10px;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    position: absolute;
+    right: 100px;
+    top: 200px;
 `;
