@@ -14,6 +14,7 @@ export const Menu = ({ setHeaderTitle }) => {
 
     const handleHeaderTitle = (titleName) => {
         setHeaderTitle(titleName);
+        /* GUARDAR EN LOCAL? */
     }
 
     return (

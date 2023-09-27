@@ -3,30 +3,51 @@ import styled from "styled-components";
 import { bookingData } from "../data/bookingData";
 
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Bookings = () => {
 
     let [dataBooking, setBookinData] = useState([]);
     const [selectData, setSelectData] = useState('');
     const [tabsSelect, setTabsSelect] = useState('');
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalInfo, setModalInfo] = useState('');
+    
+    const navigate = useNavigate();
+
+    let options = {year: 'numeric', month: 'long', day: 'numeric' };
 
     const handleSelect = (e) => {
-        const optionValue = e.target.value;
-        setSelectData(optionValue);
+        setSelectData(e.target.value);
     }
 
     const handleTab = (value) => {
         setTabsSelect(value);
     }
 
+    const handleBookingId = (id) => {
+        navigate(`/bookings/${id}`);
+    }
+
+    const handleCloseModal = () => {
+        setModalOpen(false);
+    }
+
+    const handleOpenModal = (data) => {
+        setModalInfo(data);
+        setModalOpen(true);
+    }
+
     useEffect(() => {
 
-        let dataArray = [];
+      /*   let dataArray = [];
         bookingData.forEach(data => {
             dataArray.push(data);
-        });
-
+        }); */
+        let dataArray = [...bookingData];
 
         switch (tabsSelect) {
             case 'all_bookings':
@@ -45,11 +66,32 @@ export const Bookings = () => {
                 dataArray = dataBooking.filter(data => data.status === 'in_progress');
                 break;
             default: 
-                
+                dataBooking = dataArray;   
         }
-        setBookinData(dataArray);
 
-        dataBooking = dataBooking.sort((a, b) => b.order_date - a.order_date);
+        /* WIP */
+      switch(selectData) {
+            case 'Order Date':
+                dataArray.sort((a, b) => new Date(a.order_date) - new Date(b.order_date));
+                break;
+            case 'Guest':
+                dataArray.sort((a, b) => a.guest.localeCompare(b.guest));
+                break;
+            case 'Check In':
+                dataBooking = dataArray;
+                dataArray = dataBooking.filter(data => data.status === 'check_out');
+                break;
+            case 'Check Out':
+                dataBooking = dataArray;
+                dataArray = dataBooking.filter(data => data.status === 'in_progress');
+                break;
+            default: 
+        }
+
+        /* TODO ORDENADR POR NOMBRE, FECHA, FECHA DE CHECK-IN, CHECK_OUT */
+
+        dataArray.sort((a, b) => a.order_date - b.order_date);
+        setBookinData(dataArray);
 
     }, [tabsSelect, setBookinData])
 
@@ -57,8 +99,17 @@ export const Bookings = () => {
         <>
             <Main>
                 <BookingContainer>
+                <Modal $modalOpen={modalOpen}>
+                    <ModalInfo>
+                        <ButtonModalClose onClick={handleCloseModal}>
+                            <AiOutlineCloseCircle />
+                        </ButtonModalClose>
+                        <p>{modalInfo}</p>
+                    </ModalInfo>
+                </Modal>
                     <FilterContainer>
                         <TabsContainer>
+                        {/* todo que cuando se pulse un boton se quede verdde hasta pulsar el siguiente */}
                             <ButtonTabs onClick={() => handleTab('all_bookings')}>
                                 All Bookings
                             </ButtonTabs>
@@ -96,21 +147,30 @@ export const Bookings = () => {
                             <TableContainerBodyContent>
                                 <CostumerName>{data.guest}</CostumerName>
                                 <Paragraphs>{data.phone_number}</Paragraphs>
-                                <ButtonID>#{data.id}</ButtonID>
+                                <ButtonID onClick={() => handleBookingId(data.id)}>#{data.id}</ButtonID>
                             </TableContainerBodyContent>
                             <TableContainerBodyContent>
-                                <OrderDate>{data.order_date}</OrderDate>
+                                <OrderDate>{
+                                    new Date(data.order_date.split("-")[0], data.order_date.split("-")[1]-1, 
+                                    data.order_date.split("-")[2]).toLocaleDateString('en-EN', options)
+                                }</OrderDate>
                             </TableContainerBodyContent>
                             <TableContainerBodyContent>
-                                <CheckInDate>{data.check_in}</CheckInDate>
+                                <CheckInDate>{
+                                    new Date(data.check_in.split("-")[0], data.check_in.split("-")[1]-1, 
+                                    data.check_in.split("-")[2]).toLocaleDateString('en-EN', options)
+                                }</CheckInDate>
                                 <CheckInTime>9.46 PM</CheckInTime>
                             </TableContainerBodyContent>
                             <TableContainerBodyContent>
-                                <CheckOutDate>{data.check_out}</CheckOutDate>
+                                <CheckOutDate>{
+                                    new Date(data.check_out.split("-")[0], data.check_out.split("-")[1]-1, 
+                                    data.check_out.split("-")[2]).toLocaleDateString('en-EN', options)
+                                }</CheckOutDate>
                                 <CheckOutTime>6.12 PM</CheckOutTime>
                             </TableContainerBodyContent>
                             <TableContainerBodyContent>
-                                <ViewNotesButton>View Notes</ViewNotesButton>
+                                <ViewNotesButton onClick={() => handleOpenModal(data.special_request)}>View Notes</ViewNotesButton>
                             </TableContainerBodyContent>
                             <TableContainerBodyContent>
                                 <TypeRoom>{data.room_type}-{data.room_number}</TypeRoom>
@@ -126,6 +186,63 @@ export const Bookings = () => {
         </>
     )
 }
+
+const Modal = styled.div`
+    display: ${props => props.$modalOpen === true ? 'block' : 'none'};
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+    transition: 0.5s;
+`;
+
+const ModalInfo = styled.div`
+    background:#ffff;
+    position: absolute; 
+    top: 25%;
+    left: 40%;
+    width: 450px;
+    height: 250px;
+    border: 1px solid #EBEBEB;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0px 4px 4px #00000010;
+    word-wrap: break-word;
+    text-align: center;
+
+    p {
+        width: 90%;
+        margin: auto;
+        margin-top: 30px;
+        color: #4E4E4E;
+        font-family: 'Poppins', sans-serif;
+        font-size: 18px;
+        margin-bottom: 30px;
+        max-height: 300px;
+        overflow: auto;
+    }
+`;
+
+const ButtonModalClose = styled.button`
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    cursor: pointer;
+    font-size: 24px;
+    transition: 0.4s;
+    border: none;
+    background: none;
+
+    &:hover {
+        color: black;
+    }
+`;
 
 const Main = styled.main`
     display: flex;
