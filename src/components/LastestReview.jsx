@@ -1,4 +1,4 @@
-import styles from "styled-components";
+import styled from "styled-components";
 
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { AiOutlineFullscreen } from "react-icons/ai";
@@ -81,7 +81,7 @@ export const LastestReview = ({ dataDashboard }) => {
     );
 }
 
-const Modal = styles.div`
+const Modal = styled.div`
     display: ${props => props.$modalOpen === true ? 'block' : 'none'};
     position: fixed; 
     z-index: 1; 
@@ -95,7 +95,7 @@ const Modal = styles.div`
     transition: 0.5s;
 `;
 
-const ModalInfo = styles.div`
+const ModalInfo = styled.div`
     background:#ffff;
     position: absolute; 
     top: 25%;
@@ -127,7 +127,7 @@ const ModalInfo = styles.div`
     }
 `;
 
-const ButtonModalClose = styles.button`
+const ButtonModalClose = styled.button`
     color: #aaa;
     position: absolute;
     top: 15px;
@@ -143,7 +143,7 @@ const ButtonModalClose = styles.button`
     }
 `;
 
-const ContainerReview = styles.div`
+const ContainerReview = styled.div`
     box-shadow: 0px 4px 4px #00000010;
     border-radius: 20px;
     width: 1475px;
@@ -154,14 +154,14 @@ const ContainerReview = styles.div`
     padding: 30px;
 `;
 
-const Title = styles.h3`
+const Title = styled.h3`
     color: #393939;
     font-size: 20px;
     font-family: 'Poppins', sans-serif;
     margin-top: 30px;
 `;
 
-const CardContainer = styles.div`
+const CardContainer = styled.div`
     width: 100%;
     display: flex;
     margin-top: 30px;
@@ -169,7 +169,7 @@ const CardContainer = styles.div`
     min-width: 1300px;
 `;
 
-const Card = styles.div`
+const Card = styled.div`
     width: 431px;
     height: 275px;
     border: 1px solid #EBEBEB;
@@ -177,14 +177,14 @@ const Card = styles.div`
     padding: 30px;
 `;
 
-const EmailSubject = styles.h4`
+const EmailSubject = styled.h4`
     color: #393939;
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     margin-bottom: 10px;
 `;
 
-const ReviewComent = styles.p`
+const ReviewComent = styled.p`
     color: #4E4E4E;
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
@@ -197,7 +197,7 @@ const ReviewComent = styles.p`
     }
 `;
 
-const InnerCard = styles.div`
+const InnerCard = styled.div`
     display:flex;
     img {
         width: 56px;
@@ -207,7 +207,7 @@ const InnerCard = styles.div`
     }
 `;
 
-const ProfileContainer = styles.div` 
+const ProfileContainer = styled.div` 
     width: 80%;
 
     h4 {
@@ -226,14 +226,14 @@ const ProfileContainer = styles.div`
 
 `;
 
-const ButtonContainer = styles.div`
+const ButtonContainer = styled.div`
     width: 20%;
     align-self: end;
     display: flex;
     justify-content: space-between;
 `;
 
-const Button = styles.button`
+const Button = styled.button`
     border: none;
     background: none;
     font-size: 24px;
@@ -241,7 +241,7 @@ const Button = styles.button`
     color: ${props => props.$view === false ? '#E23428' : '#5AD07A'};
 `;
 
-const ButtonOpen = styles.button`
+const ButtonOpen = styled.button`
     border: none;
     background: none;
     font-size: 24px;

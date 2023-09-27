@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
-import styles from "styled-components"
+
+import styled from "styled-components"
 
 export const Login = ({setAuthenticated}) => {
 
@@ -57,7 +58,7 @@ export const Login = ({setAuthenticated}) => {
     )
 }
 
-const LoginContainer = styles.div`
+const LoginContainer = styled.div`
     width: 100%;
     height: 90vh;
     display: flex;
@@ -66,13 +67,13 @@ const LoginContainer = styles.div`
     align-items: center;
 `;
 
-const Title = styles.h2`
+const Title = styled.h2`
     font-size: 2em;
     color: #135846;
     font-family: 'Poppins', sans-serif;
 `;
 
-const FormContainer = styles.form`
+const FormContainer = styled.form`
     width: 350px;
     height: auto;
     box-shadow: 0px 3px 10px #00000030;
@@ -84,7 +85,7 @@ const FormContainer = styles.form`
     align-items: center;
 `;
 
-const Input = styles.input`
+const Input = styled.input`
     width: 90%;
     height: 50px;
     border: none;
@@ -96,7 +97,7 @@ const Input = styles.input`
     margin: 20px 20px;
 `;
 
-const Label = styles.label`
+const Label = styled.label`
     color: #135846;
     font-family: 'Poppins', sans-serif;
     &:nth-child(1) {
@@ -104,7 +105,7 @@ const Label = styles.label`
     }
 `;
 
-const Button = styles.button` 
+const Button = styled.button` 
     background: #EBF1EF 0% 0% no-repeat padding-box;
     border-radius: 8px;
     color: #135846;
@@ -123,7 +124,7 @@ const Button = styles.button`
     }
 `;
 
-const FormParagraph = styles.p`
+const FormParagraph = styled.p`
     color: #135846;
     font-family: 'Poppins', sans-serif;
     margin-bottom: 20px;
@@ -133,6 +134,6 @@ const FormParagraph = styles.p`
     }
 `
 
-const WrongParagraph = styles(FormParagraph)`
+const WrongParagraph = styled(FormParagraph)`
     color: #E23428;
 `;

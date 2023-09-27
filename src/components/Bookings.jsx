@@ -1,4 +1,5 @@
-import styles from "styled-components";
+import styled from "styled-components";
+
 import {bookingData} from "../data/bookingData";
 
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -43,7 +44,7 @@ export const Bookings = () => {
                         <TableTitles>Status</TableTitles>
                     </TableContainerTitle>
                         {bookingData.map((data) => ( 
-                            <TableContainerBody>
+                            <TableContainerBody key={data.id}>
                                 <TableContainerBodyContent>
                                     <CostumerName>{data.guest}</CostumerName>
                                     <CostumerPhone>{data.phone_number}</CostumerPhone>
@@ -67,7 +68,7 @@ export const Bookings = () => {
                                     <TypeRoom>{data.room_type}-{data.room_number}</TypeRoom>
                                 </TableContainerBodyContent>
                                 <TableContainerBodyContent>
-                                    <Status>{data.status}</Status>
+                                    <Status $status={data.status}>{data.status}</Status>
                                     <OptionsButton><BiDotsVerticalRounded/></OptionsButton>
                                 </TableContainerBodyContent>
                             </TableContainerBody>
@@ -78,12 +79,12 @@ export const Bookings = () => {
     )
 }
 
-const Main = styles.main`
+const Main = styled.main`
     display: flex;
     flex-direction: column;
 `;
 
-const BookingContainer = styles.div`
+const BookingContainer = styled.div`
     margin-top: 50px;
     margin-left: 50px;
     min-width: 1400px;
@@ -92,20 +93,20 @@ const BookingContainer = styles.div`
     margin-bottom: 50px;
 `;
 
-const FilterContainer = styles.div`
+const FilterContainer = styled.div`
     width: 100%;
     display: flex;
     height: 70px;
 `;
 
-const TabsContainer = styles.div`
+const TabsContainer = styled.div`
     width: 40%;
     display: flex;
     border-bottom: 1px solid #00000010;
     align-self: center;
 `;
 
-const ButtonTabs = styles.button`
+const ButtonTabs = styled.button`
     border: none;
     background: none;
     cursor: pointer;
@@ -121,7 +122,7 @@ const ButtonTabs = styles.button`
     }
 `;
 
-const Filters = styles.div`
+const Filters = styled.div`
     width: 60%;
     display: flex;
     justify-content: flex-end;
@@ -143,7 +144,7 @@ const Filters = styles.div`
     }
 `;
 
-const Select = styles.select`
+const Select = styled.select`
     width: 129px; 
     height: 50px;
     border: 1px solid #135846;
@@ -156,11 +157,11 @@ const Select = styles.select`
     
 `;
 
-const Option = styles.option`
+const Option = styled.option`
     background: #ffffff;
 `;
 
-const TableContainerTitle = styles.div`
+const TableContainerTitle = styled.div`
     border-radius: 20px 20px 0px 0px;
     border: 1px solid #00000015;
     height: 65px;
@@ -179,7 +180,7 @@ const TableContainerTitle = styles.div`
     }
 `;
 
-const TableTitles = styles.div`
+const TableTitles = styled.div`
     color: #393939;
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
@@ -189,7 +190,7 @@ const TableTitles = styles.div`
     margin-left: 10px;
 `;
 
-const TableContainerBody = styles.div`
+const TableContainerBody = styled.div`
     border: 1px solid #00000015;
     height: auto;
     width: 97%;
@@ -220,20 +221,20 @@ const TableContainerBody = styles.div`
     }
 `;
 
-const TableContainerBodyContent = styles.div`
+const TableContainerBodyContent = styled.div`
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
 `;  
 
-const CostumerName = styles.p`
+const CostumerName = styled.p`
     color: #393939;
 `;
 
-const CostumerPhone = styles.p`
+const CostumerPhone = styled.p`
     color: #C5C5C5;
 `;
 
-const ButtonID = styles.button`
+const ButtonID = styled.button`
     color: #799283;
     transition: 0.2s;
     border: none;
@@ -244,30 +245,30 @@ const ButtonID = styles.button`
     }
 `;
 
-const OrderDate = styles.p`
+const OrderDate = styled.p`
     color: #C5C5C5;
     align-self: baseline;
 `;
 
-const CheckInDate = styles.p`
+const CheckInDate = styled.p`
     color: #393939;
 `;
 
-const CheckInTime = styles.p`
+const CheckInTime = styled.p`
     color: #C5C5C5;
     font-size: 14px;
 `;
 
-const CheckOutDate = styles.p`
+const CheckOutDate = styled.p`
     color: #393939;
 `;
 
-const CheckOutTime = styles.p`
+const CheckOutTime = styled.p`
     color: #C5C5C5;
     font-size: 14px;
 `;
 
-const ViewNotesButton = styles.button`
+const ViewNotesButton = styled.button`
     border: none;
     background: none;
     color: #212121;
@@ -288,19 +289,37 @@ const ViewNotesButton = styles.button`
     }
 `;
 
-const TypeRoom = styles.p`
+const TypeRoom = styled.p`
     color: #393939;
 `;
 
-const Status = styles.p`
-    /* HACER LA LÓGICA DE LOS COLORES */
-    color: ##5AD07A;
-    background: #E8FFEE;
+const Status = styled.p`
+    ${(props) => {
+        switch(props.$status) {
+        case 'check_in': 
+            return `
+                background: #5AD07A;
+            `;
+        case 'check_out': 
+            return `
+                background: #FFEDEC;
+            `;
+        case 'in_progress':
+            return` 
+                background: #E2E2E2;
+            `;
+        default: 
+            return` 
+                background: #5AD07A;
+            `
+    }   
+    }}
+
     padding: 15px;
     border-radius: 12px;
 `;
 
-const OptionsButton = styles.button`
+const OptionsButton = styled.button`
     border: none;
     background: none;
     cursor: pointer;

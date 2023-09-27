@@ -1,4 +1,4 @@
-import styles from "styled-components";
+import styled from "styled-components";
 
 import { LuAlignLeft } from "react-icons/lu";
 import { HiOutlineMail } from "react-icons/hi";
@@ -41,12 +41,12 @@ const iconClass = {
     fontSize: "24px"
 }
 
-const HeaderTag = styles.header`
+const HeaderTag = styled.header`
     display: flex;
     height: 120px;
 `;
 
-const NavIcons = styles.nav`
+const NavIcons = styled.nav`
     height: 120px;
     box-shadow: 0px 3px 10px #00000005;
     display: flex;
@@ -56,7 +56,7 @@ const NavIcons = styles.nav`
     min-width: 1300px;
 `;
 
-const ContainerTitle = styles.div`
+const ContainerTitle = styled.div`
     display: flex; 
     width: 20%;
     justify-content: space-around;
@@ -64,7 +64,7 @@ const ContainerTitle = styles.div`
     align-items: center;
 `;
 
-const ContainerIcons = styles.div`
+const ContainerIcons = styled.div`
     display: flex; 
     margin-left: 150px;
     width: 80%;
@@ -72,7 +72,7 @@ const ContainerIcons = styles.div`
     align-items: center;
 `;
 
-const Title = styles.h1`
+const Title = styled.h1`
     font-size: 28px;
     color: #262626;
     font-family: 'Poppins', sans-serif;
@@ -81,7 +81,7 @@ const Title = styles.h1`
 `;
 
 
-const Button = styles.button`
+const Button = styled.button`
     border: none;
     background: none;
     cursor: pointer;

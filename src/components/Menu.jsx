@@ -1,4 +1,4 @@
-import styles from "styled-components";
+import styled from "styled-components";
 
 import { LuCalendarCheck2 } from "react-icons/lu";
 import { BiKey } from "react-icons/bi";
@@ -11,6 +11,7 @@ import { NavLink } from "react-router-dom";
 import { ProfileCompontent } from "./Profile";
 
 export const Menu = ({ setHeaderTitle }) => {
+
     const handleHeaderTitle = (titleName) => {
         setHeaderTitle(titleName);
     }
@@ -96,7 +97,7 @@ export const Menu = ({ setHeaderTitle }) => {
     );
 }
 
-const AsideMenu = styles.aside`
+const AsideMenu = styled.aside`
     height: 100%;
     width: 345px;
     display: flex;
@@ -106,26 +107,26 @@ const AsideMenu = styles.aside`
     float: left;
 `;
 
-const ContainerFooter = styles.div`
+const ContainerFooter = styled.div`
     display: flex;
     flex-direction: column;
     margin-bottom: 67px;
     align-items: baseline;
 `;
 
-const TitleFooter = styles.h4`
+const TitleFooter = styled.h4`
     color: #212121;
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
 `;
 
-const ParagraphFooter = styles.p`
+const ParagraphFooter = styled.p`
     color: #799283;
     font-size: 14px;
     font-family: 'Poppins', sans-serif;
 `;
 
-const CreatorParagraph = styles.p`
+const CreatorParagraph = styled.p`
     color: #799283;
     font-size: 14px; 
     font-family: 'Poppins', sans-serif;
@@ -134,7 +135,7 @@ const CreatorParagraph = styles.p`
     margin-left: 40px;
 `;
 
-const List = styles.div`
+const List = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -143,7 +144,7 @@ const List = styles.div`
 `;
 
 
-const LinkStyled = styles(NavLink)`
+const LinkStyled = styled(NavLink)`
     font-family: 'Poppins', sans serif;
     color: #799283;
     text-decoration: none;
@@ -199,7 +200,7 @@ const LinkStyled = styles(NavLink)`
 `;
 
 
-const SubTitle = styles.h2`
+const SubTitle = styled.h2`
     display: flex;
     flex-direction: column;
     justify-content: center;

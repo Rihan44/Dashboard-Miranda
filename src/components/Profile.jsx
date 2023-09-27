@@ -1,4 +1,4 @@
-import styles from "styled-components";
+import styled from "styled-components";
 
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useState } from "react";
@@ -72,7 +72,7 @@ export const ProfileCompontent = () => {
 }
 
 
-const Modal = styles.div`
+const Modal = styled.div`
     display: ${props => props.$modalOpen === true ? 'block' : 'none'};
     position: fixed; 
     z-index: 1; 
@@ -86,7 +86,7 @@ const Modal = styles.div`
     transition: 0.5s;
 `;
 
-const ModalInfo = styles.div`
+const ModalInfo = styled.div`
     background:#ffff;
     position: absolute; 
     top: 25%;
@@ -109,7 +109,7 @@ const ModalInfo = styles.div`
     }
 `;
 
-const ButtonSave = styles.button` 
+const ButtonSave = styled.button` 
     background: #EBF1EF 0% 0% no-repeat padding-box;
     border-radius: 8px;
     color: #135846;
@@ -128,7 +128,7 @@ const ButtonSave = styles.button`
     }
 `;
 
-const Input = styles.input`
+const Input = styled.input`
     width: 90%;
     height: 30px;
     border: none;
@@ -140,7 +140,7 @@ const Input = styles.input`
     margin: 20px 20px;
 `;
 
-const ButtonModalClose = styles.button`
+const ButtonModalClose = styled.button`
     color: #aaa;
     position: absolute;
     top: 15px;
@@ -156,7 +156,7 @@ const ButtonModalClose = styles.button`
     }
 `;
 
-const ImageUpdate = styles.img`
+const ImageUpdate = styled.img`
     width: 100px;
     height: 100px;
     background: #C5C5C5;
@@ -168,7 +168,7 @@ const ImageUpdate = styles.img`
 `;
 
 
-const ProfileContainer = styles.div`
+const ProfileContainer = styled.div`
     width: 233px;
     height: 170px;
     box-shadow: 0px 20px 30px #00000014;
@@ -178,7 +178,7 @@ const ProfileContainer = styles.div`
     margin-bottom: 62px;
 `;
 
-const ImageProfile = styles.img`
+const ImageProfile = styled.img`
     width: 60px;
     height: 60px; 
     background: #C5C5C5;
@@ -188,7 +188,7 @@ const ImageProfile = styles.img`
     border-radius: 10px;
 `;
 
-const ProfileTitle = styles.h3`
+const ProfileTitle = styled.h3`
     color: #393939;
     font-size: 16px;
     font-family: 
@@ -198,14 +198,14 @@ const ProfileTitle = styles.h3`
     margin-bottom: 9px;
 `;
 
-const ProfileParagraph = styles.p`
+const ProfileParagraph = styled.p`
     color: #B2B2B2;
     font-size: 12px;
     font-family: 'Poppins', sans-serif;
     margin-bottom: 16px;
 `;
 
-const ProfileButton = styles.button`
+const ProfileButton = styled.button`
     background: #EBF1EF 0% 0% no-repeat padding-box;
     border-radius: 8px;
     color: #135846;

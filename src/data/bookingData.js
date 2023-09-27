@@ -1,6 +1,6 @@
 export const bookingData = [
     {
-        "id": "1",
+        "id": "1232CEFE",
         "guest": "John Smith",
         "phone_number": "+1 123-456-7890",
         "order_date": "2023-09-27",
@@ -12,7 +12,7 @@ export const bookingData = [
         "status": "check_in"
     },
     {
-        "id": "2",
+        "id": "2232ADWDW",
         "guest": "Alice Johnson",
         "phone_number": "+1 234-567-8901",
         "order_date": "2023-09-28",
@@ -24,7 +24,7 @@ export const bookingData = [
         "status": "check_in"
     },
     {
-        "id": "3",
+        "id": "232CVFGR3",
         "guest": "David Lee",
         "phone_number": "+1 345-678-9012",
         "order_date": "2023-09-29",
@@ -36,7 +36,7 @@ export const bookingData = [
         "status": "check_in"
     },
     {
-        "id": "4",
+        "id": "FEEF2344",
         "guest": "Emily Wilson",
         "phone_number": "+1 456-789-0123",
         "order_date": "2023-09-30",
@@ -48,7 +48,7 @@ export const bookingData = [
         "status": "in_progress"
     },
     {
-        "id": "5",
+        "id": "5DWDW1232",
         "guest": "Michael Davis",
         "phone_number": "+1 567-890-1234",
         "order_date": "2023-10-01",
@@ -60,7 +60,7 @@ export const bookingData = [
         "status": "in_progress"
     },
     {
-        "id": "6",
+        "id": "623FEFE",
         "guest": "Sophia Martinez",
         "phone_number": "+1 678-901-2345",
         "order_date": "2023-10-02",
@@ -69,10 +69,10 @@ export const bookingData = [
         "special_request": "I'd like a bottle of champagne in the room.",
         "room_type": "Suite",
         "room_number": "205",
-        "status": "in_progress"
+        "status": "check_out"
     },
     {
-        "id": "7",
+        "id": "FEFE72",
         "guest": "William Brown",
         "phone_number": "+1 789-012-3456",
         "order_date": "2023-10-03",
@@ -84,7 +84,7 @@ export const bookingData = [
         "status": "in_progress"
     },
     {
-        "id": "8",
+        "id": "8FEFEFE3GVC",
         "guest": "Olivia Taylor",
         "phone_number": "+1 890-123-4567",
         "order_date": "2023-10-04",
@@ -93,10 +93,10 @@ export const bookingData = [
         "special_request": "I'd like a late check-out at 2 PM.",
         "room_type": "Standard",
         "room_number": "110",
-        "status": "in_progress"
+        "status": "check_out"
     },
     {
-        "id": "9",
+        "id": "232ZCECE9",
         "guest": "James Anderson",
         "phone_number": "+1 901-234-5678",
         "order_date": "2023-10-05",
@@ -108,7 +108,7 @@ export const bookingData = [
         "status": "in_progress"
     },
     {
-        "id": "10",
+        "id": "134VRVR0",
         "guest": "Emma White",
         "phone_number": "+1 012-345-6789",
         "order_date": "2023-10-06",
@@ -117,6 +117,6 @@ export const bookingData = [
         "special_request": "Please provide extra blankets.",
         "room_type": "Deluxe",
         "room_number": "059",
-        "status": "in_progress"
+        "status": "check_out"
     }
 ]

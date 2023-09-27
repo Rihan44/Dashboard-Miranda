@@ -1,4 +1,4 @@
-import styles from "styled-components";
+import styled from "styled-components";
 
 import { LiaBedSolid } from "react-icons/lia";
 import { LuCalendarCheck2 } from "react-icons/lu";
@@ -56,19 +56,19 @@ export const Dashboard = () => {
     )
 }
 
-const Main = styles.main`
+const Main = styled.main`
     display: flex;
     flex-direction: column;
 `;
 
-const ContainerCards = styles.div`
+const ContainerCards = styled.div`
     display: flex;
     margin-top: 50px;
     margin-left: 50px;
     min-width: 1300px;
 `;
 
-const Card = styles.div`
+const Card = styled.div`
     width: 340px;
     height: 125px;
     background: #FFFFFF 0% 0% no-repeat padding-box;
