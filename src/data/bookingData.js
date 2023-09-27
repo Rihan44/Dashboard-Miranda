@@ -9,7 +9,8 @@ export const bookingData = [
         "special_request": "Please provide extra towels.",
         "room_type": "Deluxe",
         "room_number": "049",
-        "status": "check_in"
+        "status": "check_in",
+        "price": "245.89"
     },
     {
         "id": "2232ADWDW",
@@ -21,7 +22,8 @@ export const bookingData = [
         "special_request": "I'd like a room with a view.",
         "room_type": "Standard",
         "room_number": "102",
-        "status": "check_in"
+        "status": "check_in",
+        "price": "2345.89"
     },
     {
         "id": "232CVFGR3",
@@ -33,7 +35,8 @@ export const bookingData = [
         "special_request": "I need a baby crib.",
         "room_type": "Suite",
         "room_number": "201",
-        "status": "check_in"
+        "status": "check_in",
+        "price": "555.89"
     },
     {
         "id": "FEEF2344",
@@ -45,7 +48,8 @@ export const bookingData = [
         "special_request": "Please provide vegan breakfast options.",
         "room_type": "Deluxe",
         "room_number": "051",
-        "status": "in_progress"
+        "status": "in_progress",
+        "price": "45.89"
     },
     {
         "id": "5DWDW1232",
@@ -57,7 +61,8 @@ export const bookingData = [
         "special_request": "I need a shuttle service from the airport.",
         "room_type": "Standard",
         "room_number": "108",
-        "status": "in_progress"
+        "status": "in_progress",
+        "price": "20.50"
     },
     {
         "id": "623FEFE",
@@ -69,7 +74,8 @@ export const bookingData = [
         "special_request": "I'd like a bottle of champagne in the room.",
         "room_type": "Suite",
         "room_number": "205",
-        "status": "check_out"
+        "status": "check_out",
+        "price": "89.34"
     },
     {
         "id": "FEFE72",
@@ -81,7 +87,8 @@ export const bookingData = [
         "special_request": "I prefer a non-smoking room.",
         "room_type": "Deluxe",
         "room_number": "054",
-        "status": "in_progress"
+        "status": "in_progress",
+        "price": "890"
     },
     {
         "id": "8FEFEFE3GVC",
@@ -93,7 +100,8 @@ export const bookingData = [
         "special_request": "I'd like a late check-out at 2 PM.",
         "room_type": "Standard",
         "room_number": "110",
-        "status": "check_out"
+        "status": "check_out",
+        "price": "350.20"
     },
     {
         "id": "232ZCECE9",
@@ -105,7 +113,8 @@ export const bookingData = [
         "special_request": "I need a wake-up call at 7 AM.",
         "room_type": "Suite",
         "room_number": "209",
-        "status": "in_progress"
+        "status": "in_progress",
+        "price": "120.50"
     },
     {
         "id": "134VRVR0",
@@ -117,6 +126,7 @@ export const bookingData = [
         "special_request": "Please provide extra blankets.",
         "room_type": "Deluxe",
         "room_number": "059",
-        "status": "check_out"
+        "status": "check_out",
+        "price": "738.20"
     }
 ]

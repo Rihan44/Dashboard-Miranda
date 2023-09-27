@@ -15,6 +15,7 @@ export const Bookings = () => {
     const [tabsSelect, setTabsSelect] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [modalInfo, setModalInfo] = useState('');
+    const [visibleActions, setVisibleActions] = useState(false);
     
     const navigate = useNavigate();
 
@@ -39,6 +40,10 @@ export const Bookings = () => {
     const handleOpenModal = (data) => {
         setModalInfo(data);
         setModalOpen(true);
+    }
+
+    const handleActionBox = () => {
+        setVisibleActions(true);
     }
 
     useEffect(() => {
@@ -177,7 +182,8 @@ export const Bookings = () => {
                             </TableContainerBodyContent>
                             <TableContainerBodyContent>
                                 <Status $status={data.status}>{data.status}</Status>
-                                <OptionsButton><BiDotsVerticalRounded /></OptionsButton>
+                                <OptionsButton onClick={handleActionBox}><BiDotsVerticalRounded /></OptionsButton>
+                                {/* <ActionsDiv><button>Delete Booking</button></ActionsDiv> */}
                             </TableContainerBodyContent>
                         </TableContainerBody>
                     ))}
@@ -399,8 +405,33 @@ const Paragraphs = styled.p`
 const TableContainerBodyContent = styled.div`
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
+    position: relative;
+
+    div {
+        height: 80px;
+        width: 140px;
+        position: absolute;
+        background: #ffffff;
+        top: -20px;
+        left: -30px;
+        box-shadow: 0px 4px 4px #00000010;
+        border-radius: 10px;
+        transition: 0.5s;
+    }
 `;
 
+/* const ActionsDiv = styled.div` 
+    height: 80px;
+    width: 140px;
+    position: absolute;
+    background: #ffffff;
+    top: -20px;
+    left: -20px;
+    box-shadow: 0px 4px 4px #00000010;
+    border-radius: 10px;
+    transition: 0.5s;
+`;
+ */
 const CostumerName = styled.p`
     color: #393939;
 `;
