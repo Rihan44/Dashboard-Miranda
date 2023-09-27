@@ -96,7 +96,7 @@ export const BookingFile = () => {
                         </FacilitiesRooms>
                     </InfoContinainer>
                     <ImageContainer>
-                        <StatusDecoration>
+                        <StatusDecoration $status={dataBooking.status}>
                             {dataBooking.status}
                         </StatusDecoration>
                         <ImageDescription>
@@ -291,13 +291,35 @@ const ImageDescription = styled.div`
 const StatusDecoration = styled.div`
     width: 160px;
     height: 50px;
-    ${'' /* HACERLO CON PROPS */}
-    background: #5AD07A;
+    ${(props) => {
+        switch (props.$status) {
+            case 'check_in':
+                return `
+                background: #5AD07A;
+                color: #FFFFFF;
+            `;
+            case 'check_out':
+                return `
+                background: #FFEDEC;
+                color: #212121;
+            `;
+            case 'in_progress':
+                return ` 
+                background: #E2E2E2;
+                color: #212121;
+            `;
+            default:
+                return ` 
+                background: #5AD07A;
+                color: #FFFFFF;
+            `
+        }
+    }}
+
     border-radius: 10px;
     display: flex; 
     align-items: center;
     justify-content: center;
-    color: #FFFFFF;
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     position: absolute;
