@@ -1,10 +1,10 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-import { LuAlignLeft } from "react-icons/lu";
 import { HiOutlineMail } from "react-icons/hi";
 import { LuBell } from "react-icons/lu";
 import { GoSignOut } from "react-icons/go";
-import { useNavigate } from "react-router-dom";
+import { TbArrowsLeftRight } from "react-icons/tb";
 
 
 export const Header = ({ title }) => {
@@ -21,7 +21,7 @@ export const Header = ({ title }) => {
         <HeaderTag>
             <NavIcons>
                 <ContainerTitle>
-                    <LuAlignLeft style={{ fontSize: "22px", cursor: "pointer" }} id=""/>
+                    <TbArrowsLeftRight style={{ fontSize: "22px", cursor: "pointer" }} id=""/>
                     <Title>{title}</Title>
                 </ContainerTitle>
                 <ContainerIcons>

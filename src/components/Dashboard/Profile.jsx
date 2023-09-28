@@ -12,8 +12,8 @@ export const ProfileCompontent = () => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [imgSrc, setImgSrc] = useState('');
-    const [userUpdate, setUserUpdate] = useState('');
-    const [userEmail, setEmailUpdate] = useState('');
+    const [setUserUpdate] = useState('');
+    const [setEmailUpdate] = useState('');
 
 
     const handleOpen = () => {

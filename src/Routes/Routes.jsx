@@ -1,18 +1,19 @@
-import { Route, Routes, useNavigate } from "react-router-dom"
-
-import { Login } from "../components/Login"
-import { PrivateRoute } from "../components/PrivateRoute"
-import { Dashboard } from "../components/Dashboard"
-import { Bookings } from "../components/Bookings"
+import { Route, Routes} from "react-router-dom"
 import { useState } from "react"
-import { BookingFile } from "../components/BookingFile"
+
+import { Login } from "../components/Login/Login"
+import { PrivateRoute } from "../components/Login/PrivateRoute"
+import { Bookings } from "../components/Bookings/Bookings"
+import { BookingFile } from "../components/Bookings/BookingsDetails"
+import { Dashboard } from "../components/Dashboard/Dashboard"
+import { RoomsList } from "../components/Rooms/RoomsList"
 
 
 export const RoutesComponent = () => {
     const [authenticated, setAuthenticated] = useState(false);
 
     const auth = localStorage.getItem('auth');
-    console.log(auth);
+  
     /*     const navigate = useNavigate();
         if(auth) {
     
@@ -51,6 +52,14 @@ export const RoutesComponent = () => {
                 element={
                     <PrivateRoute authenticated={authenticated}>
                         <BookingFile />
+                    </PrivateRoute>
+                }
+            />
+             <Route
+                path="/rooms"
+                element={
+                    <PrivateRoute authenticated={authenticated}>
+                        <RoomsList />
                     </PrivateRoute>
                 }
             />

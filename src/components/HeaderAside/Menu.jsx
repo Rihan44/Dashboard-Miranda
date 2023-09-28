@@ -8,7 +8,7 @@ import { HiOutlinePuzzle } from "react-icons/hi";
 import { FaHotel } from "react-icons/fa6"
 
 import { NavLink } from "react-router-dom";
-import { ProfileCompontent } from "./Profile";
+import { ProfileCompontent } from "../Dashboard/Profile";
 
 export const Menu = ({ setHeaderTitle }) => {
 

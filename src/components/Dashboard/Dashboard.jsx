@@ -4,14 +4,18 @@ import { LiaBedSolid } from "react-icons/lia";
 import { LuCalendarCheck2 } from "react-icons/lu";
 import { GoSignOut } from "react-icons/go";
 import { GoSignIn } from "react-icons/go";
+
+import { MainContainer } from "../Reusables/MainContainer";
+
+
 import { LastestReview } from "./LastestReview";
-import { contactMessega } from "../data/contactMessage";
+import { contactMessega } from "../../data/contactMessage";
 
 export const Dashboard = () => {
 
     return (
         <>
-            <Main>
+            <MainContainer>
                 <ContainerCards>
                     <Card>
                         <div>
@@ -51,15 +55,10 @@ export const Dashboard = () => {
                     </Card>
                 </ContainerCards>
                 <LastestReview dataDashboard={contactMessega}/>
-            </Main>
+            </MainContainer>
         </>
     )
 }
-
-const Main = styled.main`
-    display: flex;
-    flex-direction: column;
-`;
 
 const ContainerCards = styled.div`
     display: flex;

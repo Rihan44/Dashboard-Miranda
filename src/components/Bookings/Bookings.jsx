@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
-import { bookingData } from "../data/bookingData";
+import { bookingData } from "../../data/bookingData";
 
-import { BiDotsVerticalRounded } from "react-icons/bi";
+import { BsTrash } from "react-icons/bs";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { MainContainer } from "../Reusables/MainContainer";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,8 +16,14 @@ export const Bookings = () => {
     const [tabsSelect, setTabsSelect] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [modalInfo, setModalInfo] = useState('');
-    const [visibleActions, setVisibleActions] = useState(false);
-    
+    const [isActiveButton, setIsActiveButton] = useState(false);
+
+    const allBookings = isActiveButton === 'allBookings';
+    const checkIn = isActiveButton === 'checkIn';
+    const checkOut = isActiveButton === 'checkOut';
+    const inProgress = isActiveButton === 'inProgress';
+
+
     const navigate = useNavigate();
 
     let options = {year: 'numeric', month: 'long', day: 'numeric' };
@@ -25,8 +32,9 @@ export const Bookings = () => {
         setSelectData(e.target.value);
     }
 
-    const handleTab = (value) => {
+    const handleTab = (value, activeButton) => {
         setTabsSelect(value);
+        setIsActiveButton(activeButton);
     }
 
     const handleBookingId = (id) => {
@@ -42,16 +50,13 @@ export const Bookings = () => {
         setModalOpen(true);
     }
 
-    const handleActionBox = () => {
-        setVisibleActions(true);
+    const handleActionBox = (id) => {
+        console.log(id);
+        /* TODO CREAR UN POP UP AVISANDO QUE SE HA BORRADO */
     }
 
     useEffect(() => {
 
-      /*   let dataArray = [];
-        bookingData.forEach(data => {
-            dataArray.push(data);
-        }); */
         let dataArray = [...bookingData];
 
         switch (tabsSelect) {
@@ -102,7 +107,7 @@ export const Bookings = () => {
 
     return (
         <>
-            <Main>
+            <MainContainer>
                 <BookingContainer>
                 <Modal $modalOpen={modalOpen}>
                     <ModalInfo>
@@ -114,17 +119,16 @@ export const Bookings = () => {
                 </Modal>
                     <FilterContainer>
                         <TabsContainer>
-                        {/* todo que cuando se pulse un boton se quede verdde hasta pulsar el siguiente */}
-                            <ButtonTabs onClick={() => handleTab('all_bookings')}>
+                            <ButtonTabs $actived={allBookings} onClick={() => handleTab('all_bookings', 'allBookings')}>
                                 All Bookings
                             </ButtonTabs>
-                            <ButtonTabs onClick={() => handleTab('check_in')}>
+                            <ButtonTabs $actived={checkIn} onClick={() => handleTab('check_in', 'checkIn')}>
                                 Check In
                             </ButtonTabs>
-                            <ButtonTabs onClick={() => handleTab('check_out')}>
+                            <ButtonTabs $actived={checkOut} onClick={() => handleTab('check_out', 'checkOut')}>
                                 Check Out
                             </ButtonTabs>
-                            <ButtonTabs onClick={() => handleTab('in_progress')}>
+                            <ButtonTabs $actived={inProgress} onClick={() => handleTab('in_progress', 'inProgress')}>
                                 In Progress
                             </ButtonTabs>
                         </TabsContainer>
@@ -182,13 +186,12 @@ export const Bookings = () => {
                             </TableContainerBodyContent>
                             <TableContainerBodyContent>
                                 <Status $status={data.status}>{data.status}</Status>
-                                <OptionsButton onClick={handleActionBox}><BiDotsVerticalRounded /></OptionsButton>
-                                {/* <ActionsDiv><button>Delete Booking</button></ActionsDiv> */}
+                                <OptionsButton onClick={() => handleActionBox(data.id)}><BsTrash /></OptionsButton>
                             </TableContainerBodyContent>
                         </TableContainerBody>
                     ))}
                 </BookingContainer>
-            </Main>
+            </MainContainer>
         </>
     )
 }
@@ -250,11 +253,6 @@ const ButtonModalClose = styled.button`
     }
 `;
 
-const Main = styled.main`
-    display: flex;
-    flex-direction: column;
-`;
-
 const Buttons = styled.button`
     border: none;
     background: none;
@@ -285,7 +283,8 @@ const TabsContainer = styled.div`
 
 
 const ButtonTabs = styled(Buttons)`
-    color: #6E6E6E;
+    color: ${props => props.$actived ?  "#135846" : "#6E6E6E"};
+    border-bottom: ${props => props.$actived ? "2px solid #135846" : "none"};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     height: 30px;
@@ -347,9 +346,9 @@ const TableContainerTitle = styled.div`
     justify-content: space-space-between;
     padding: 20px;
 
-    div:nth-child(1), div:nth-child(2) {
+${'' /*     div:nth-child(1), div:nth-child(2) {
         width: 25%;
-    }
+    } */}
 
     div:nth-child(6){
         margin-left: 40px;
@@ -377,14 +376,9 @@ const TableContainerBody = styled.div`
     align-items: center;
 
     div {
-        width: 15%;
         width: 18%;
         margin-right: 10px;
         margin-left: 10px;
-    }
-
-    div:nth-child(1), div:nth-child(2) {
-        width: 25%;
     }
 
     div:last-child {
@@ -418,20 +412,9 @@ const TableContainerBodyContent = styled.div`
         border-radius: 10px;
         transition: 0.5s;
     }
+
 `;
 
-/* const ActionsDiv = styled.div` 
-    height: 80px;
-    width: 140px;
-    position: absolute;
-    background: #ffffff;
-    top: -20px;
-    left: -20px;
-    box-shadow: 0px 4px 4px #00000010;
-    border-radius: 10px;
-    transition: 0.5s;
-`;
- */
 const CostumerName = styled.p`
     color: #393939;
 `;
@@ -518,4 +501,14 @@ const Status = styled.p`
 const OptionsButton = styled(Buttons)`
     font-size: 30px;
     color:#393939;
+
+    svg {
+        color: #E23428;
+        margin-left: 10px;
+        transition: 0.5s;
+
+        &:hover {
+            transform: scale(1.1, 1.1);
+        }
+    }
 `;

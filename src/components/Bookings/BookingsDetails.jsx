@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams} from "react-router-dom";
 
-import { bookingData } from "../data/bookingData";
+import { bookingData } from "../../data/bookingData";
 
 import { LiaBedSolid } from "react-icons/lia";
 import { AiOutlineWifi } from "react-icons/ai";
@@ -9,9 +9,12 @@ import { BsShieldCheck } from "react-icons/bs";
 
 
 import styled from "styled-components";
+import { MainContainer } from "../Reusables/MainContainer";
 
 
 export const BookingFile = () => {
+
+    /* TODO HACER UNA FLECHA PARA VOLVER A BOOKINGS */
 
     const [dataBooking, setDataBooking] = useState('');
 
@@ -36,9 +39,11 @@ export const BookingFile = () => {
 
     },[id])
 
+    /* TODO SWIPER Y METER IMAGENES */
+
     return(
         <>
-            <Main>
+            <MainContainer>
                 <FileBookingContainer>
                     <InfoContinainer>
                         <NameContainer>
@@ -105,15 +110,11 @@ export const BookingFile = () => {
                         </ImageDescription>
                     </ImageContainer>
                 </FileBookingContainer>
-            </Main>
+            </MainContainer>
         </>
     )
 }
 
-const Main = styled.main`
-    display: flex;
-    flex-direction: column;
-`;
 
 const FileBookingContainer = styled.div`
     margin: 50px;
