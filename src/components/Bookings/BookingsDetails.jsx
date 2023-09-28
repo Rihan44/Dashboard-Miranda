@@ -15,6 +15,7 @@ import { MainContainer } from "../Reusables/MainContainer";
 export const BookingFile = () => {
 
     /* TODO HACER UNA FLECHA PARA VOLVER A BOOKINGS */
+    /*  */
 
     const [dataBooking, setDataBooking] = useState('');
 

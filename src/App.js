@@ -22,6 +22,9 @@ export const App = () => {
             case '/rooms':
                 setTitleHeader('Rooms');
                 break;
+            case '/rooms/add-room':
+                setTitleHeader('Add Room');
+                break;
             case '/contact':
                 setTitleHeader('Contact');
                 break;
@@ -29,7 +32,6 @@ export const App = () => {
                 setTitleHeader('Users');
                 break;
             default:
-                setTitleHeader('Dashboard');
         }
     }, [location.pathname]);
 

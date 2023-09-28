@@ -4,6 +4,7 @@ import { roomsData } from "../../data/roomsData";
 import { MainContainer } from "../Reusables/MainContainer";
 import { Table } from "../Reusables/Table";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 export const RoomsList = () => {
@@ -13,18 +14,18 @@ export const RoomsList = () => {
     const [tabsSelect, setTabsSelect] = useState('');
     let [dataRooms, setDataRooms] = useState([]);
 
-
     const allRooms = isActiveButton === 'allRooms';
     const statusAvailable = isActiveButton === 'statusAvailable';
     const statusBooked = isActiveButton === 'statusBooked';
     const price = isActiveButton === 'price';
+
+    const navigate = useNavigate();
 
     const handleTab = (value, activeButton) => {
         setTabsSelect(value);
         setIsActiveButton(activeButton);
     }
 
-    
     const handleSelect = (e) => {
         setSelectData(e.target.value);
     }
@@ -45,11 +46,20 @@ export const RoomsList = () => {
                 dataRooms = dataArray;
                 dataArray = roomsData.filter(data => data.state === 'booked');
                 break;
-            case 'price':
-                dataRooms = dataArray;
-                dataArray = roomsData.sort((a, b) => a.price - b.price);
-                break;
             default: 
+            dataRooms = dataArray;   
+        }
+
+        switch(selectData) {
+            case 'Price':
+                dataRooms = dataArray;
+                dataArray = roomsData.sort((a, b) => b.price - a.price);
+                break;
+            case 'Room Type':
+                dataRooms = dataArray;
+                dataArray = roomsData.sort((a, b) => b.room_type - a.room_type);
+                break;
+            default :
             dataRooms = dataArray;   
         }
 
@@ -88,7 +98,7 @@ export const RoomsList = () => {
             )
         },
         {
-            property: 'status', label: 'Status', display: ({ state }) => <StatusDecoration $status={state}>{state}</StatusDecoration>
+            property: 'status', label: 'Status', display: ({ state }) => <StatusDecoration $state={state}>{state}</StatusDecoration>
         }
     ]
 
@@ -107,12 +117,12 @@ export const RoomsList = () => {
                             <ButtonTabs $actived={statusBooked} onClick={() => handleTab('statusBook', 'statusBooked')}>
                                 All Booked 
                             </ButtonTabs>
-                            <ButtonTabs $actived={price} onClick={() => handleTab('price', 'price')}>
-                                Check Out
-                            </ButtonTabs>
+                            {/* <ButtonTabs $actived={price} onClick={() => handleTab('price', 'price')}>
+                                Price
+                            </ButtonTabs> */}
                         </TabsContainer>
                         <Filters>
-                            <ButtonCreateRoom>
+                            <ButtonCreateRoom onClick={() => navigate('/rooms/add-room')}>
                                 + New Room
                             </ButtonCreateRoom>
                             <Select onChange={handleSelect}>
@@ -183,6 +193,8 @@ const ButtonCreateRoom = styled(Buttons)`
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     transition: 0.3s;
+    box-shadow: 0px 3px 10px #00000030;
+    cursor: pointer;
 
     &:hover {
         background: #799283;
@@ -232,13 +244,13 @@ const StatusDecoration = styled.div`
     width: 10px;
     height: 50px;
     ${(props) => {
-        switch (props.$status) {
-            case 'Booked':
+        switch (props.$state) {
+            case 'booked':
                 return `
                 background: #E23428;
                 color: #FFFFFF;
             `;
-            case 'Available':
+            case 'available':
                 return `
                 background: #5AD07A;
                 color: #FFFFFF;
