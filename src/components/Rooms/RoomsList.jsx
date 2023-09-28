@@ -17,7 +17,7 @@ export const RoomsList = () => {
     const allRooms = isActiveButton === 'allRooms';
     const statusAvailable = isActiveButton === 'statusAvailable';
     const statusBooked = isActiveButton === 'statusBooked';
-    const price = isActiveButton === 'price';
+    /* const price = isActiveButton === 'price'; */
 
     const navigate = useNavigate();
 
@@ -69,7 +69,7 @@ export const RoomsList = () => {
 
     const cols = [
         {
-            property: 'image', label: 'Room Name', display: ({ image, room_type, id }) => (
+            property: 'image', label: 'Room Name', display: ({ image, id }) => (
                 <TableContainerBodyContent>
                     <img src={image || ''} alt="imagen" />
                     <IDparagraph>{id}</IDparagraph>

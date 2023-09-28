@@ -12,7 +12,6 @@ export const LastestReview = ({ dataDashboard }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [checkMessage, setCheckMessage] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
-    const [arrayId, setArrayId] = useState([]);
 
     const handleOpen = (data) => {
         setModalInfo(data.email_description);

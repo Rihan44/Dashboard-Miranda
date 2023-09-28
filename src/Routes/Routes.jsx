@@ -8,6 +8,7 @@ import { BookingFile } from "../components/Bookings/BookingsDetails"
 import { Dashboard } from "../components/Dashboard/Dashboard"
 import { RoomsList } from "../components/Rooms/RoomsList"
 import { RoomsForm } from "../components/Rooms/RoomsForm"
+import { Contact } from "../components/Contact/Contact"
 
 
 export const RoutesComponent = () => {
@@ -69,6 +70,14 @@ export const RoutesComponent = () => {
                 element={
                     <PrivateRoute authenticated={authenticated}>
                         <RoomsForm />
+                    </PrivateRoute>
+                }
+            />
+             <Route
+                path="/contact"
+                element={
+                    <PrivateRoute authenticated={authenticated}>
+                        <Contact />
                     </PrivateRoute>
                 }
             />
