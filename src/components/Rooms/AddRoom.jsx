@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { MainContainer } from "../Reusables/MainContainer"
 
-export const RoomsForm = () => {
+export const AddRoom = () => {
 
     const amenitiesList = [
         "1/3 Bed Space",

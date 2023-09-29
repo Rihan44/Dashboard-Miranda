@@ -4,7 +4,7 @@ import { MainContainer } from "./MainContainer"
 import { BsTrash } from "react-icons/bs";
 import React from "react";
 
-export const Table = ({ cols, data }) => {
+export const Table = ({ cols, data, totalCols = 6 }) => {
 
     const handleDelete = () => {
 
@@ -12,7 +12,7 @@ export const Table = ({ cols, data }) => {
 
     const displayRow = row => (
         <TableContainerBody key={row.id}>
-                <TableContainerBodyContent>
+                <TableContainerBodyContent totalCols={totalCols}>
             {cols.map((col, i) => (
                     <div key={i}>{typeof col.display === 'function' ? col.display(row) : row[col.property]}
                     </div>
@@ -71,7 +71,7 @@ const TableContainerBodyContent = styled.div`
     justify-content: space-between;
 
     div {
-        width: calc(1400px / 7); ${'' /* TODO PASARLO POR PARAMETRO */}
+        width: calc(1400px / ${props => props.totalCols});
         margin-right: 10px;
         margin-left: 10px;
         text-align: center;

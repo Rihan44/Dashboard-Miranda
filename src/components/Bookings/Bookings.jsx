@@ -13,7 +13,7 @@ export const Bookings = () => {
 
     let [dataBooking, setBookinData] = useState([]);
     const [selectData, setSelectData] = useState('');
-    const [tabsSelect, setTabsSelect] = useState('');
+    const [tabsSelect, setTabsSelect] = useState('allBookings');
     const [modalOpen, setModalOpen] = useState(false);
     const [modalInfo, setModalInfo] = useState('');
     const [isActiveButton, setIsActiveButton] = useState(false);

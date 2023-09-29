@@ -131,7 +131,7 @@ export const RoomsList = () => {
                             </Select>
                         </Filters>
                     </FilterContainer>
-                    <Table cols={cols} data={dataRooms}></Table>
+                    <Table cols={cols} data={dataRooms} totalCols={7}></Table>
                 </RoomsContainer>
             </MainContainer>
         </>
@@ -205,7 +205,7 @@ const Filters = styled.div`
     width: 60%;
     display: flex;
     justify-content: flex-end;
-    margin-right: 50px;
+    margin-right: 125px;
     align-items: end;
 
     input {

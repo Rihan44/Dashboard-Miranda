@@ -7,8 +7,9 @@ import { Bookings } from "../components/Bookings/Bookings"
 import { BookingFile } from "../components/Bookings/BookingsDetails"
 import { Dashboard } from "../components/Dashboard/Dashboard"
 import { RoomsList } from "../components/Rooms/RoomsList"
-import { RoomsForm } from "../components/Rooms/RoomsForm"
+import { AddRoom } from "../components/Rooms/AddRoom"
 import { Contact } from "../components/Contact/Contact"
+import { UsersList } from "../components/Users/UsersList"
 
 
 export const RoutesComponent = () => {
@@ -69,12 +70,28 @@ export const RoutesComponent = () => {
                 path="/rooms/add-room"
                 element={
                     <PrivateRoute authenticated={authenticated}>
-                        <RoomsForm />
+                        <AddRoom />
                     </PrivateRoute>
                 }
             />
-             <Route
+            <Route
                 path="/contact"
+                element={
+                    <PrivateRoute authenticated={authenticated}>
+                        <Contact />
+                    </PrivateRoute>
+                }
+            />
+            <Route
+                path="/users"
+                element={
+                    <PrivateRoute authenticated={authenticated}>
+                        <UsersList />
+                    </PrivateRoute>
+                }
+            />
+            <Route
+                path="/users/add-users"
                 element={
                     <PrivateRoute authenticated={authenticated}>
                         <Contact />

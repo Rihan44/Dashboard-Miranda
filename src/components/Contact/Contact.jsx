@@ -82,9 +82,10 @@ export const Contact = () => {
             )
         },
         {
-            property: 'email_subject', label: 'Emil Subject && Comment', display: ({ email_subject, email_description }) => (
+            property: 'email_subject', label: 'Email Subject && Comment', display: ({ email_subject, email_description }) => (
                 <EmaiLContactContainer>
                     <p>{email_subject}</p>
+                    {/* HACER UN BOTÓN PARA QUE SE VEA LA DESCRIPCION EN UN MODAL */}
                     <DescriptionContainer>{email_description}</DescriptionContainer>
                 </EmaiLContactContainer>
             )
@@ -127,7 +128,7 @@ export const Contact = () => {
                         </ButtonTabs>
                     </TabsContainer>
                 </FilterContainer>
-                <Table cols={cols} data={contactMessega}/>
+                <Table cols={cols} data={contactMessega} totalCols={5}/>
             </ContactContainer>
         </MainContainer>
     )
@@ -242,6 +243,11 @@ const ButtonTabs = styled(Buttons)`
 
 `;
 
+const IsAcrhivedParagraph = styled.div`
+    margin-right: 20px;
+    color: ${props => props.$isArchive ? '#E23428' : '#5AD07A'}
+`;
+
 const OptionsButton = styled(Buttons)`
     font-size: 30px;
     color:#393939;
@@ -298,9 +304,4 @@ const DescriptionContainer = styled.p`
     overflow: scroll;
     box-shadow: 0px 4px 4px #00000010;
     padding: 10px;
-`;
-
-const IsAcrhivedParagraph = styled.div`
-    margin-right: 20px;
-    color: ${props => props.$isArchive ? '#E23428' : '#5AD07A'}
 `;
