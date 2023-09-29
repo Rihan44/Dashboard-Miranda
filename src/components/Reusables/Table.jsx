@@ -85,6 +85,5 @@ const TableContainerBodyContent = styled.div`
 
 const TableBody = styled.div`
     height: 680px;
-    overflow-y: scroll;
     width: 1442px;
 `;

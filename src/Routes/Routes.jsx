@@ -10,6 +10,7 @@ import { RoomsList } from "../components/Rooms/RoomsList"
 import { AddRoom } from "../components/Rooms/AddRoom"
 import { Contact } from "../components/Contact/Contact"
 import { UsersList } from "../components/Users/UsersList"
+import { AddUser } from "../components/Users/AddUser"
 
 
 export const RoutesComponent = () => {
@@ -91,10 +92,10 @@ export const RoutesComponent = () => {
                 }
             />
             <Route
-                path="/users/add-users"
+                path="/users/add-user"
                 element={
                     <PrivateRoute authenticated={authenticated}>
-                        <Contact />
+                        <AddUser />
                     </PrivateRoute>
                 }
             />
