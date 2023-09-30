@@ -9,7 +9,7 @@ import { MainContainer } from "../Reusables/MainContainer";
 
 
 import { LastestReview } from "./LastestReview";
-import { contactMessega } from "../../data/contactMessage";
+import { contactMessage } from "../../data/contactMessage";
 
 export const Dashboard = () => {
 
@@ -54,7 +54,7 @@ export const Dashboard = () => {
                         </div>
                     </Card>
                 </ContainerCards>
-                <LastestReview dataDashboard={contactMessega}/>
+                <LastestReview dataDashboard={contactMessage}/>
             </MainContainer>
         </>
     )

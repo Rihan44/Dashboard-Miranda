@@ -3,6 +3,7 @@ export const roomsData = [
 		"id": "1ABCD123",
 		"room_photo": "https://example.com/room1.jpg",
 		"room_type": "Double Superior",
+		"room_number": 240,
 		"amenities": [
 			"1/3 Bed Space",
 			"24-Hour Guard",
@@ -23,6 +24,7 @@ export const roomsData = [
 		"id": "2EFGH456",
 		"room_photo": "https://example.com/room2.jpg",
 		"room_type": "Single Bed",
+		"room_number": 20,
 		"amenities": [
 			"1/3 Bed Space",
 			"Free Wifi",
@@ -40,6 +42,7 @@ export const roomsData = [
 		"id": "3IJKL789",
 		"room_photo": "https://example.com/room3.jpg",
 		"room_type": "Suite",
+		"room_number": 120,
 		"amenities": [
 			"1/3 Bed Space",
 			"24-Hour Guard",
@@ -62,6 +65,7 @@ export const roomsData = [
 		"id": "4MNOPQ101",
 		"room_photo": "https://example.com/room4.jpg",
 		"room_type": "Double Bed",
+		"room_number": 220,
 		"amenities": [
 			"1/2 Bathroom",
 			"Air Conditioner",
@@ -79,6 +83,7 @@ export const roomsData = [
 		"id": "5RSTU111",
 		"room_photo": "https://example.com/room5.jpg",
 		"room_type": "Double Superior",
+		"room_number": 10,
 		"amenities": [
 			"1/3 Bed Space",
 			"24-Hour Guard",
@@ -99,6 +104,7 @@ export const roomsData = [
 		"id": "6VWXYZ222",
 		"room_photo": "https://example.com/room6.jpg",
 		"room_type": "Double Bed",
+		"room_number": 2,
 		"amenities": [
 			"1/2 Bathroom",
 			"Air Conditioner",
@@ -116,6 +122,7 @@ export const roomsData = [
 		"id": "7ABCDEF333",
 		"room_photo": "https://example.com/room7.jpg",
 		"room_type": "Suite",
+		"room_number": 2220,
 		"amenities": [
 			"1/3 Bed Space",
 			"24-Hour Guard",
@@ -138,6 +145,7 @@ export const roomsData = [
 		"id": "8GHIJK444",
 		"room_photo": "https://example.com/room8.jpg",
 		"room_type": "Double Superior",
+		"room_number": 568,
 		"amenities": [
 			"1/3 Bed Space",
 			"24-Hour Guard",
@@ -158,6 +166,7 @@ export const roomsData = [
 		"id": "9LMNOP555",
 		"room_photo": "https://example.com/room9.jpg",
 		"room_type": "Single Bed",
+		"room_number": 489,
 		"amenities": [
 			"1/3 Bed Space",
 			"Free Wifi",
@@ -175,6 +184,7 @@ export const roomsData = [
 		"id": "10QRSTU666",
 		"room_photo": "https://example.com/room10.jpg",
 		"room_type": "Double Superior",
+		"room_number": 120,
 		"amenities": [
 			"1/3 Bed Space",
 			"24-Hour Guard",

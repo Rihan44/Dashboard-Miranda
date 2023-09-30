@@ -7,6 +7,9 @@ import { LiaBedSolid } from "react-icons/lia";
 import { AiOutlineWifi } from "react-icons/ai";
 import { BsShieldCheck } from "react-icons/bs";
 
+import { AiOutlineArrowLeft } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+
 
 import styled from "styled-components";
 import { MainContainer } from "../Reusables/MainContainer";
@@ -14,8 +17,7 @@ import { MainContainer } from "../Reusables/MainContainer";
 
 export const BookingFile = () => {
 
-    /* TODO HACER UNA FLECHA PARA VOLVER A BOOKINGS */
-    /*  */
+    const navigate = useNavigate();
 
     const [dataBooking, setDataBooking] = useState('');
 
@@ -46,6 +48,7 @@ export const BookingFile = () => {
         <>
             <MainContainer>
                 <FileBookingContainer>
+                    <ButtonBack onClick={() => navigate('/bookings')}><AiOutlineArrowLeft/></ButtonBack>
                     <InfoContinainer>
                         <NameContainer>
                             <h3>{dataBooking.guest}</h3>
@@ -124,6 +127,7 @@ const FileBookingContainer = styled.div`
     box-shadow: 0px 4px 4px #00000010;
     border-radius: 10px;
     display: flex;
+    position: relative;
 `;
 
 const InfoContinainer = styled.div`
@@ -327,4 +331,50 @@ const StatusDecoration = styled.div`
     position: absolute;
     right: 100px;
     top: 200px;
+`;
+
+const Button = styled.button` 
+    background: #EBF1EF 0% 0% no-repeat padding-box;
+    background: #135846;
+    color: #FFFFFF;
+    width: 150px;
+    height: 40px;
+    border-radius: 12px;
+    margin-right: 20px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    transition: 0.3s;
+    cursor: pointer;
+    margin-bottom: 20px;
+    border: none;
+    box-shadow: 0px 3px 10px #00000030;
+    position: absolute;
+    bottom: 0px;
+
+    &:hover {
+        background: #799283;
+    }
+
+    &:hover {
+        background: #799283 0% 0% no-repeat padding-box;
+        color: #EBF1EF;
+    }
+`;
+
+const ButtonBack = styled(Button)`
+    position: absolute;
+    top: -4%;
+    left: -1%;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+     &:hover {
+        transform: scale(1.1);
+        background: #135846;
+     }
 `;

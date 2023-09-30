@@ -11,29 +11,31 @@ import { useNavigate } from "react-router-dom";
 
 export const Bookings = () => {
 
-    let [dataBooking, setBookinData] = useState([]);
+    const [dataBooking, setBookingData] = useState([]);
     const [selectData, setSelectData] = useState('');
-    const [tabsSelect, setTabsSelect] = useState('allBookings');
     const [modalOpen, setModalOpen] = useState(false);
     const [modalInfo, setModalInfo] = useState('');
-    const [isActiveButton, setIsActiveButton] = useState(false);
+    const [isActiveButton, setIsActiveButton] = useState('allBookings');
+    const [searchData, setSearchData] = useState('');
 
     const allBookings = isActiveButton === 'allBookings';
     const checkIn = isActiveButton === 'checkIn';
     const checkOut = isActiveButton === 'checkOut';
     const inProgress = isActiveButton === 'inProgress';
 
-
     const navigate = useNavigate();
 
-    let options = {year: 'numeric', month: 'long', day: 'numeric' };
+    let options = { year: 'numeric', month: 'long', day: 'numeric' };
 
     const handleSelect = (e) => {
         setSelectData(e.target.value);
     }
 
-    const handleTab = (value, activeButton) => {
-        setTabsSelect(value);
+    const handleSearch = (e) => {
+        setSearchData(e.target.value.toLowerCase());
+    }
+
+    const handleTab = (activeButton) => {
         setIsActiveButton(activeButton);
     }
 
@@ -52,93 +54,80 @@ export const Bookings = () => {
 
     const handleActionBox = (id) => {
         console.log(id);
-        /* TODO CREAR UN POP UP AVISANDO QUE SE HA BORRADO */
     }
 
     useEffect(() => {
-
         let dataArray = [...bookingData];
+        let updatedDataArray = [...dataArray];
 
-        switch (tabsSelect) {
-            case 'all_bookings':
-                dataBooking = dataArray;
+        if (searchData.length !== '') {
+            updatedDataArray = dataArray.filter(data => data.guest.toLowerCase().includes(searchData));
+        }
+        switch (isActiveButton) {
+            case 'allBookings':
+            setBookingData(updatedDataArray);
                 break;
-            case 'check_in':
-                dataBooking = dataArray;
-                dataArray = dataBooking.filter(data => data.status === 'check_in');
+            case 'checkIn':
+                updatedDataArray = dataArray.filter(data => data.status === 'check_in');
                 break;
-            case 'check_out':
-                dataBooking = dataArray;
-                dataArray = dataBooking.filter(data => data.status === 'check_out');
+            case 'checOut':
+                updatedDataArray = dataArray.filter(data => data.status === 'check_out');
                 break;
-            case 'in_progress':
-                dataBooking = dataArray;
-                dataArray = dataBooking.filter(data => data.status === 'in_progress');
+            case 'inProgress':
+                updatedDataArray = dataArray.filter(data => data.status === 'in_progress');
                 break;
-            default: 
-                dataBooking = dataArray;   
+            default:
         }
 
-        /* WIP */
-      switch(selectData) {
+        switch (selectData) {
             case 'Order Date':
-                dataArray.sort((a, b) => new Date(a.order_date) - new Date(b.order_date));
+                updatedDataArray.sort((a, b) => {
+                    const dateA = new Date(a.order_date);
+                    const dateB = new Date(b.order_date);
+                    return dateA - dateB;
+                });
                 break;
             case 'Guest':
-                dataArray.sort((a, b) => a.guest.localeCompare(b.guest));
+                updatedDataArray.sort((a, b) => a.guest.localeCompare(b.guest));
                 break;
-            case 'Check In':
-                dataBooking = dataArray;
-                dataArray = dataBooking.filter(data => data.status === 'check_out');
-                break;
-            case 'Check Out':
-                dataBooking = dataArray;
-                dataArray = dataBooking.filter(data => data.status === 'in_progress');
-                break;
-            default: 
+            default:
         }
 
-        /* TODO ORDENADR POR NOMBRE, FECHA, FECHA DE CHECK-IN, CHECK_OUT */
-
-        dataArray.sort((a, b) => a.order_date - b.order_date);
-        setBookinData(dataArray);
-
-    }, [tabsSelect, setBookinData])
+        setBookingData(updatedDataArray);
+    }, [isActiveButton, selectData, searchData]);
 
     return (
         <>
             <MainContainer>
                 <BookingContainer>
-                <Modal $modalOpen={modalOpen}>
-                    <ModalInfo>
-                        <ButtonModalClose onClick={handleCloseModal}>
-                            <AiOutlineCloseCircle />
-                        </ButtonModalClose>
-                        <p>{modalInfo}</p>
-                    </ModalInfo>
-                </Modal>
+                    <Modal $modalOpen={modalOpen}>
+                        <ModalInfo>
+                            <ButtonModalClose onClick={handleCloseModal}>
+                                <AiOutlineCloseCircle />
+                            </ButtonModalClose>
+                            <p>{modalInfo}</p>
+                        </ModalInfo>
+                    </Modal>
                     <FilterContainer>
                         <TabsContainer>
-                            <ButtonTabs $actived={allBookings} onClick={() => handleTab('all_bookings', 'allBookings')}>
+                            <ButtonTabs $actived={allBookings} onClick={() => handleTab('allBookings')}>
                                 All Bookings
                             </ButtonTabs>
-                            <ButtonTabs $actived={checkIn} onClick={() => handleTab('check_in', 'checkIn')}>
+                            <ButtonTabs $actived={checkIn} onClick={() => handleTab('checkIn')}>
                                 Check In
                             </ButtonTabs>
-                            <ButtonTabs $actived={checkOut} onClick={() => handleTab('check_out', 'checkOut')}>
+                            <ButtonTabs $actived={checkOut} onClick={() => handleTab('checkOut')}>
                                 Check Out
                             </ButtonTabs>
-                            <ButtonTabs $actived={inProgress} onClick={() => handleTab('in_progress', 'inProgress')}>
+                            <ButtonTabs $actived={inProgress} onClick={() => handleTab('inProgress')}>
                                 In Progress
                             </ButtonTabs>
                         </TabsContainer>
                         <Filters>
-                            <input type="text" placeholder="Customer Name..." />
+                            <input type="text" placeholder="Customer Name..." onChange={handleSearch} />
                             <Select onChange={handleSelect}>
                                 <Option>Order Date</Option>
                                 <Option>Guest</Option>
-                                <Option>Check In</Option>
-                                <Option>Check Out</Option>
                             </Select>
                         </Filters>
                     </FilterContainer>
@@ -160,21 +149,21 @@ export const Bookings = () => {
                             </TableContainerBodyContent>
                             <TableContainerBodyContent>
                                 <OrderDate>{
-                                    new Date(data.order_date.split("-")[0], data.order_date.split("-")[1]-1, 
-                                    data.order_date.split("-")[2]).toLocaleDateString('en-EN', options)
+                                    new Date(data.order_date.split("-")[0], data.order_date.split("-")[1] - 1,
+                                        data.order_date.split("-")[2]).toLocaleDateString('en-EN', options)
                                 }</OrderDate>
                             </TableContainerBodyContent>
                             <TableContainerBodyContent>
                                 <CheckInDate>{
-                                    new Date(data.check_in.split("-")[0], data.check_in.split("-")[1]-1, 
-                                    data.check_in.split("-")[2]).toLocaleDateString('en-EN', options)
+                                    new Date(data.check_in.split("-")[0], data.check_in.split("-")[1] - 1,
+                                        data.check_in.split("-")[2]).toLocaleDateString('en-EN', options)
                                 }</CheckInDate>
                                 <CheckInTime>9.46 PM</CheckInTime>
                             </TableContainerBodyContent>
                             <TableContainerBodyContent>
                                 <CheckOutDate>{
-                                    new Date(data.check_out.split("-")[0], data.check_out.split("-")[1]-1, 
-                                    data.check_out.split("-")[2]).toLocaleDateString('en-EN', options)
+                                    new Date(data.check_out.split("-")[0], data.check_out.split("-")[1] - 1,
+                                        data.check_out.split("-")[2]).toLocaleDateString('en-EN', options)
                                 }</CheckOutDate>
                                 <CheckOutTime>6.12 PM</CheckOutTime>
                             </TableContainerBodyContent>
@@ -283,7 +272,7 @@ const TabsContainer = styled.div`
 
 
 const ButtonTabs = styled(Buttons)`
-    color: ${props => props.$actived ?  "#135846" : "#6E6E6E"};
+    color: ${props => props.$actived ? "#135846" : "#6E6E6E"};
     border-bottom: ${props => props.$actived ? "2px solid #135846" : "none"};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;

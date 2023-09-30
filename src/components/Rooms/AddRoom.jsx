@@ -1,7 +1,12 @@
 import styled from "styled-components"
 import { MainContainer } from "../Reusables/MainContainer"
 
+import { AiOutlineArrowLeft } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+
 export const AddRoom = () => {
+
+    const navigate = useNavigate();
 
     const amenitiesList = [
         "1/3 Bed Space",
@@ -28,6 +33,7 @@ export const AddRoom = () => {
         <>
             <MainContainer>
                 <AddRoomContainer>
+                <ButtonBack onClick={() => navigate('/rooms')}><AiOutlineArrowLeft/></ButtonBack>
                     <FormContainer>
                         <Title>Room Form</Title>
                         <Form onSubmit={handleSubmit}>
@@ -97,6 +103,7 @@ export const AddRoom = () => {
 
 const AddRoomContainer = styled.div`
     margin: 20px;
+    position: relative;
 `;
 
 const FormContainer = styled.div`
@@ -254,4 +261,23 @@ const CheckBoxContainer = styled.div`
         margin-top: 25px;
         justify-content: space-between;
     }
+`;
+
+
+const ButtonBack = styled(Button)`
+    position: absolute;
+    top: 1%;
+    left: 3%;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+     &:hover {
+        transform: scale(1.1);
+        background: #135846;
+     }
 `;

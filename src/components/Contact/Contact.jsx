@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { MainContainer } from "../Reusables/MainContainer"
 
-import { contactMessega } from "../../data/contactMessage";
+import { contactMessage } from "../../data/contactMessage";
 
 import { BiArchiveIn } from "react-icons/bi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
@@ -38,16 +38,26 @@ export const Contact = () => {
 
     useEffect(() => {
 
-        let dataArray = [...contactMessega];
+        let dataArray = [...contactMessage];
 
         switch (isActiveButton) {
             case 'allContacts':
+                dataArray.sort((a, b) => {
+                    const dateA = new Date(a.date);
+                    const dateB = new Date(b.date);
+                    return dateA - dateB;
+                });
                 setContactData(dataArray);
                 break;
             case 'archived':
                 setContactData(dataArray.filter(data => data.isArchived));
                 break;
             default:
+                dataArray.sort((a, b) => {
+                    const dateA = new Date(a.date);
+                    const dateB = new Date(b.date);
+                    return dateA - dateB;
+                });
                 setContactData(dataArray);
         }
 
@@ -110,7 +120,7 @@ export const Contact = () => {
             </Modal>
             <ContactContainer>
                 <CardsContainer>
-                    <Card handleOpen={handleOpen} data={contactMessega}></Card>
+                    <Card handleOpen={handleOpen} data={contactMessage}></Card>
                 </CardsContainer>
                 <FilterContainer>
                     <TabsContainer>

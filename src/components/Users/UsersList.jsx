@@ -38,7 +38,12 @@ export const UsersList = () => {
         } else {
             switch (isActiveButton) {
                 case 'allEmployee':
-                    setDataUsers(dataArray)
+                    dataArray.sort((a, b) => {
+                        const dateA = new Date(a.hire_date);
+                        const dateB = new Date(b.hire_date);
+                        return dateA - dateB;
+                    });
+                    setDataUsers(dataArray);
                     break;
                 case 'activeEmployee':
                     setDataUsers(dataArray.filter(data => !data.status))
@@ -47,6 +52,11 @@ export const UsersList = () => {
                     setDataUsers(dataArray.filter(data => data.status))
                     break;
                 default:
+                    dataArray.sort((a, b) => {
+                        const dateA = new Date(a.hire_date);
+                        const dateB = new Date(b.hire_date);
+                        return dateA - dateB;
+                    });
                     setDataUsers(dataArray);
             }
         }
@@ -63,7 +73,7 @@ export const UsersList = () => {
                         <h4>{name}</h4>
                         <p>{email}</p>
                         <p>{id}</p>
-                        <p>Joined on{
+                        <p>Joined on {
                             new Date(hire_date.split("-")[0], hire_date.split("-")[1] - 1,
                                 hire_date.split("-")[2]).toLocaleDateString('en-EN', options)
                         }</p>

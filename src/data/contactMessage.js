@@ -1,4 +1,4 @@
-export const contactMessega = [
+export const contactMessage = [
     {
       "id": "12345",
       "name": "John Doe",

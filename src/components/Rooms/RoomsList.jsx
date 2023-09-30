@@ -9,20 +9,17 @@ import { useNavigate } from "react-router-dom";
 
 export const RoomsList = () => {
 
-    const [isActiveButton, setIsActiveButton] = useState(false);
+    const [isActiveButton, setIsActiveButton] = useState('allRooms');
     const [selectData, setSelectData] = useState('');
-    const [tabsSelect, setTabsSelect] = useState('');
-    let [dataRooms, setDataRooms] = useState([]);
+    const [dataRooms, setDataRooms] = useState([]);
 
     const allRooms = isActiveButton === 'allRooms';
     const statusAvailable = isActiveButton === 'statusAvailable';
     const statusBooked = isActiveButton === 'statusBooked';
-    /* const price = isActiveButton === 'price'; */
 
     const navigate = useNavigate();
 
-    const handleTab = (value, activeButton) => {
-        setTabsSelect(value);
+    const handleTab = (activeButton) => {
         setIsActiveButton(activeButton);
     }
 
@@ -34,45 +31,44 @@ export const RoomsList = () => {
 
         let dataArray = [...roomsData];
 
-        switch (tabsSelect) {
-            case 'all_rooms':
-                dataRooms = dataArray;
+        /* TODO EN UN FUTURO HACER QUE SE PUEDAN USAR AMBOS FILTROS JUNTOS */
+
+        switch (isActiveButton) {
+            case 'allRooms':
+                dataArray.sort((a, b) => a.room_number - b.room_number);
+                setDataRooms(dataArray);
                 break;
-            case 'statusAval':
-                dataRooms = dataArray;
-                dataArray = roomsData.filter(data => data.state === 'available');
+            case 'statusAvailable':
+                setDataRooms(dataArray.filter(data => data.state === 'available'));
                 break;
-            case 'statusBook':
-                dataRooms = dataArray;
-                dataArray = roomsData.filter(data => data.state === 'booked');
+            case 'statusBooked':
+                setDataRooms(dataArray.filter(data => data.state === 'booked'));
                 break;
             default: 
-            dataRooms = dataArray;   
+            dataArray.sort((a, b) => a.room_number - b.room_number);
         }
 
         switch(selectData) {
             case 'Price':
-                dataRooms = dataArray;
-                dataArray = roomsData.sort((a, b) => b.price - a.price);
+                setDataRooms(dataArray.sort((a, b) => b.price - a.price));
                 break;
             case 'Room Type':
-                dataRooms = dataArray;
-                dataArray = roomsData.sort((a, b) => b.room_type - a.room_type);
+                setDataRooms(dataArray.sort((a, b) => a.room_type.localeCompare(b.room_type)));
                 break;
             default :
-            dataRooms = dataArray;   
+            dataArray.sort((a, b) => a.room_number - b.room_number);
         }
 
-        setDataRooms(dataArray);
 
-    }, [tabsSelect, setDataRooms])
+    }, [isActiveButton, setDataRooms, selectData])
 
     const cols = [
         {
-            property: 'image', label: 'Room Name', display: ({ image, id }) => (
+            property: 'image', label: 'Room Info', display: ({ image, id, room_number }) => (
                 <TableContainerBodyContent>
                     <img src={image || ''} alt="imagen" />
                     <IDparagraph>{id}</IDparagraph>
+                    <p>Room number {room_number}</p>
                 </TableContainerBodyContent>
             )
         },
@@ -94,7 +90,7 @@ export const RoomsList = () => {
         },
         {
             property: 'offer_price', label: 'Offer Price', display: ({offer_price, discount}) => (
-                <Discount>{offer_price === false ? 'No Offer Available' : discount+ '%'}</Discount>
+                <Discount existOffer={offer_price}>{offer_price === false ? 'No Offer' : discount+ '%'}</Discount>
             )
         },
         {
@@ -108,18 +104,15 @@ export const RoomsList = () => {
                 <RoomsContainer>
                     <FilterContainer>
                         <TabsContainer>
-                            <ButtonTabs $actived={allRooms} onClick={() => handleTab('all_rooms', 'allRooms')}>
+                            <ButtonTabs $actived={allRooms} onClick={() => handleTab('allRooms')}>
                                 All Rooms
                             </ButtonTabs>
-                            <ButtonTabs $actived={statusAvailable} onClick={() => handleTab('statusAval', 'statusAvailable')}>
+                            <ButtonTabs $actived={statusAvailable} onClick={() => handleTab('statusAvailable')}>
                                 All Available 
                             </ButtonTabs>
-                            <ButtonTabs $actived={statusBooked} onClick={() => handleTab('statusBook', 'statusBooked')}>
+                            <ButtonTabs $actived={statusBooked} onClick={() => handleTab('statusBooked')}>
                                 All Booked 
                             </ButtonTabs>
-                            {/* <ButtonTabs $actived={price} onClick={() => handleTab('price', 'price')}>
-                                Price
-                            </ButtonTabs> */}
                         </TabsContainer>
                         <Filters>
                             <ButtonCreateRoom onClick={() => navigate('/rooms/add-room')}>
@@ -316,7 +309,7 @@ const PriceParagraph = styled.p`
 `;
 
 const Discount = styled.div`
-    color: #212121;
+    color: ${props => props.existOffer === true ? '#5AD07A' : '#E23428'};
     font-weight: bold;
     font-size: 20px;
 `;
