@@ -10,64 +10,69 @@ import { BsFillTelephoneFill } from "react-icons/bs";
 
 
 export const UsersList = () => {
-    const [isActiveButton, setIsActiveButton] = useState(false);
-    const [tabsSelect, setTabsSelect] = useState('');
-    /* let [dataUsers, setDataUsers] = useState([]); */
+    const [isActiveButton, setIsActiveButton] = useState('allEmployee');
+    const [dataUsers, setDataUsers] = useState([]);
+    const [searchData, setSearchData] = useState('');
 
     const navigate = useNavigate();
-    let options = {year: 'numeric', month: 'long', day: 'numeric' };
-
+    let options = { year: 'numeric', month: 'long', day: 'numeric' };
 
     const allEmployee = isActiveButton === 'allEmployee';
     const activeEmployee = isActiveButton === 'activeEmployee';
     const inactiveEmployee = isActiveButton === 'inactiveEmployee';
 
-    const handleTab = (value, activeButton) => {
-        setTabsSelect(value);
+    const handleTab = (activeButton) => {
         setIsActiveButton(activeButton);
     }
 
-  /*   useEffect(() => {
+    const handleSearch = (e) => {
+        setSearchData(e.target.value.toLowerCase());
+    }
+
+    useEffect(() => {
 
         let dataArray = [...usersData];
 
-        switch (tabsSelect) {
-            case 'all_employee':
-                dataUsers = dataArray;
-                break;
-            case 'active_employee':
-                dataUsers = dataArray;
-                break;
-            case 'inactive_employee':
-                dataUsers = dataArray;
-                break;
-            default:
-                dataUsers = dataArray;
+        if (searchData !== '') {
+            setDataUsers(dataArray.filter(data => data.name.toLowerCase().includes(searchData)));
+        } else {
+            switch (isActiveButton) {
+                case 'allEmployee':
+                    setDataUsers(dataArray)
+                    break;
+                case 'activeEmployee':
+                    setDataUsers(dataArray.filter(data => !data.status))
+                    break;
+                case 'inactiveEmployee':
+                    setDataUsers(dataArray.filter(data => data.status))
+                    break;
+                default:
+                    setDataUsers(dataArray);
+            }
         }
 
-        setDataUsers(dataArray);
 
-    }, [tabsSelect, setDataUsers]) */
+    }, [isActiveButton, setDataUsers, searchData])
 
     const cols = [
         {
-            property: 'photo', label: 'Name',display: ({photo, name, id, email, hire_date}) => (
+            property: 'photo', label: 'Name', display: ({ photo, name, id, email, hire_date }) => (
                 <NameContainer>
-                    <img src='' alt="img"/>
+                    <img src='' alt="img" />
                     <NameInner>
                         <h4>{name}</h4>
                         <p>{email}</p>
                         <p>{id}</p>
                         <p>Joined on{
                             new Date(hire_date.split("-")[0], hire_date.split("-")[1] - 1,
-                            hire_date.split("-")[2]).toLocaleDateString('en-EN', options)
+                                hire_date.split("-")[2]).toLocaleDateString('en-EN', options)
                         }</p>
                     </NameInner>
                 </NameContainer>
             )
         },
         {
-            property: 'employee_position', label: 'Employee position', display: ({employee_position, job_description}) => (
+            property: 'employee_position', label: 'Employee position', display: ({ employee_position, job_description }) => (
                 <EmployeeContainer>
                     <h4>{employee_position}</h4>
                     <p>{job_description}</p>
@@ -75,19 +80,19 @@ export const UsersList = () => {
             )
         },
         {
-            property: 'phone_number', label: 'Contact', display: ({phone_number}) => (
+            property: 'phone_number', label: 'Contact', display: ({ phone_number }) => (
                 <PhoneContainer>
                     <Call to={`tel:${phone_number}`}>
-                        <BsFillTelephoneFill/>
+                        <BsFillTelephoneFill />
                         <p>{phone_number}</p>
                     </Call>
                 </PhoneContainer>
             )
         },
         {
-            property: 'status', label: 'Status', display: ({status}) => (
+            property: 'status', label: 'Status', display: ({ status }) => (
                 <StatusContainer isActive={status}>
-                    <p>{status ? 'Active' : 'Inactive'}</p>
+                    <p>{status ? 'Inactive' : 'Active'}</p>
                 </StatusContainer>
             )
         }
@@ -99,24 +104,24 @@ export const UsersList = () => {
                 <UsersListContainer>
                     <FilterContainer>
                         <TabsContainer>
-                            <ButtonTabs $actived={allEmployee} onClick={() => handleTab('all_employee', 'allEmployee')}>
+                            <ButtonTabs $actived={allEmployee} onClick={() => handleTab('allEmployee')}>
                                 All Employee
                             </ButtonTabs>
-                            <ButtonTabs $actived={activeEmployee} onClick={() => handleTab('active_employee', 'activeEmployee')}>
+                            <ButtonTabs $actived={activeEmployee} onClick={() => handleTab('activeEmployee')}>
                                 Active Employee
                             </ButtonTabs>
-                            <ButtonTabs $actived={inactiveEmployee} onClick={() => handleTab('inactive_employee', 'inactiveEmployee')}>
+                            <ButtonTabs $actived={inactiveEmployee} onClick={() => handleTab('inactiveEmployee')}>
                                 Inactive Employee
                             </ButtonTabs>
                         </TabsContainer>
-                            <Filters>
-                                <input type="text" placeholder="Employee name..." />
-                                <ButtonAddEmployee onClick={() => navigate('/users/add-user')}>
-                                    + New Employee
-                                </ButtonAddEmployee>
-                            </Filters>
+                        <Filters>
+                            <input type="text" placeholder="Employee name..." onChange={handleSearch} />
+                            <ButtonAddEmployee onClick={() => navigate('/users/add-user')}>
+                                + New Employee
+                            </ButtonAddEmployee>
+                        </Filters>
                     </FilterContainer>
-                    <Table cols={cols} data={usersData} totalCols={5} />
+                    <Table cols={cols} data={dataUsers} totalCols={5} />
                 </UsersListContainer>
             </MainContainer>
         </>

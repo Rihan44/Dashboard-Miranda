@@ -1,14 +1,8 @@
+import React from "react";
 import styled from "styled-components"
 import { MainContainer } from "./MainContainer"
 
-import { BsTrash } from "react-icons/bs";
-import React from "react";
-
-export const Table = ({ cols, data, totalCols = 6 }) => {
-
-    const handleDelete = () => {
-
-    }
+export const Table = ({ cols, data, totalCols}) => {
 
     const displayRow = row => (
         <TableContainerBody key={row.id}>

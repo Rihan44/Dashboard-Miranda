@@ -17,8 +17,8 @@ export const AddUser = () => {
     return (
         <>
             <MainContainer>
-            <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft/></ButtonBack>
                 <AddRoomContainer>
+                <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft/></ButtonBack>
                     <FormContainer>
                         <Title>Add User Form</Title>
                         <Form onSubmit={handleSubmit}>
@@ -91,6 +91,7 @@ export const AddUser = () => {
 const AddRoomContainer = styled.div`
     margin: 20px;
     min-width: 1400px;
+    position: relative;
 `;
 
 const FormContainer = styled.div`
@@ -246,9 +247,20 @@ const CheckBoxContainer = styled.div`
 
 const ButtonBack = styled(Button)`
     position: absolute;
-    top: 15%;
-    left: 24%;
+    top: 1%;
+    left: 3%;
     width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+     &:hover {
+        transform: scale(1.1);
+        background: #135846;
+     }
 `;
 
 const StatusContainer = styled.div`
