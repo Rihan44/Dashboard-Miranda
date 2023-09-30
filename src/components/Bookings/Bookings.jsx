@@ -5,6 +5,8 @@ import { bookingData } from "../../data/bookingData";
 import { BsTrash } from "react-icons/bs";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { MainContainer } from "../Reusables/MainContainer";
+import { Table } from "../Reusables/Table";
+
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -65,7 +67,7 @@ export const Bookings = () => {
         }
         switch (isActiveButton) {
             case 'allBookings':
-            setBookingData(updatedDataArray);
+                setBookingData(updatedDataArray);
                 break;
             case 'checkIn':
                 updatedDataArray = dataArray.filter(data => data.status === 'check_in');
@@ -95,6 +97,72 @@ export const Bookings = () => {
 
         setBookingData(updatedDataArray);
     }, [isActiveButton, selectData, searchData]);
+
+    const cols = [
+        {
+            property: 'guest', label: 'Guest', display: ({ guest, phone_number, id }) => (
+                <TableContainerBodyContent>
+                    <CostumerName>{guest}</CostumerName>
+                    <Paragraphs>{phone_number}</Paragraphs>
+                    <ButtonID onClick={() => handleBookingId(id)}>#{id}</ButtonID>
+                </TableContainerBodyContent>
+            )
+        },
+        {
+            property: 'order_date', label: 'Order Date', display: ({ order_date }) => (
+                <TableContainerBodyContent>
+                    <OrderDate>{
+                        new Date(order_date.split("-")[0], order_date.split("-")[1] - 1,
+                            order_date.split("-")[2]).toLocaleDateString('en-EN', options)
+                    }</OrderDate>
+                </TableContainerBodyContent>
+            )
+        },
+        {
+            property: 'check_in', label: 'Check In', display: ({ check_in }) => (
+                <TableContainerBodyContent>
+                    <CheckInDate>{
+                        new Date(check_in.split("-")[0], check_in.split("-")[1] - 1,
+                            check_in.split("-")[2]).toLocaleDateString('en-EN', options)
+                    }</CheckInDate>
+                    <CheckInTime>9.46 PM</CheckInTime>
+                </TableContainerBodyContent>
+            )
+        },
+        {
+            property: 'check_out', label: 'Check Out', display: ({ check_out }) => (
+                <TableContainerBodyContent>
+                    <CheckOutDate>{
+                        new Date(check_out.split("-")[0], check_out.split("-")[1] - 1,
+                            check_out.split("-")[2]).toLocaleDateString('en-EN', options)
+                    }</CheckOutDate>
+                    <CheckOutTime>6.12 PM</CheckOutTime>
+                </TableContainerBodyContent>
+            )
+        },
+        {
+            property: 'special_request', label: 'Special Request', display: ({ special_request }) => (
+                <TableContainerBodyContent>
+                    <ViewNotesButton onClick={() => handleOpenModal(special_request)}>View Notes</ViewNotesButton>
+                </TableContainerBodyContent>
+            )
+        },
+        {
+            property: 'room_type', label: 'Room Type', display: ({ room_type, room_number }) => (
+                <TableContainerBodyContent>
+                    <TypeRoom>{room_type}-{room_number}</TypeRoom>
+                </TableContainerBodyContent>
+            )
+        },
+        {
+            property: 'status', label: 'Status', display: ({ status, id }) => (
+                <StatusContent>
+                    <Status $status={status}>{status}</Status>
+                    <OptionsButton onClick={() => handleActionBox(id)}><BsTrash /></OptionsButton>
+                </StatusContent>
+            )
+        }
+    ]
 
     return (
         <>
@@ -131,54 +199,7 @@ export const Bookings = () => {
                             </Select>
                         </Filters>
                     </FilterContainer>
-                    <TableContainerTitle>
-                        <TableTitles>Guest</TableTitles>
-                        <TableTitles>Order Date</TableTitles>
-                        <TableTitles>Check IN</TableTitles>
-                        <TableTitles>Check Out</TableTitles>
-                        <TableTitles>Special Request</TableTitles>
-                        <TableTitles>Room Type</TableTitles>
-                        <TableTitles>Status</TableTitles>
-                    </TableContainerTitle>
-                    {dataBooking.map((data) => (
-                        <TableContainerBody key={data.id}>
-                            <TableContainerBodyContent>
-                                <CostumerName>{data.guest}</CostumerName>
-                                <Paragraphs>{data.phone_number}</Paragraphs>
-                                <ButtonID onClick={() => handleBookingId(data.id)}>#{data.id}</ButtonID>
-                            </TableContainerBodyContent>
-                            <TableContainerBodyContent>
-                                <OrderDate>{
-                                    new Date(data.order_date.split("-")[0], data.order_date.split("-")[1] - 1,
-                                        data.order_date.split("-")[2]).toLocaleDateString('en-EN', options)
-                                }</OrderDate>
-                            </TableContainerBodyContent>
-                            <TableContainerBodyContent>
-                                <CheckInDate>{
-                                    new Date(data.check_in.split("-")[0], data.check_in.split("-")[1] - 1,
-                                        data.check_in.split("-")[2]).toLocaleDateString('en-EN', options)
-                                }</CheckInDate>
-                                <CheckInTime>9.46 PM</CheckInTime>
-                            </TableContainerBodyContent>
-                            <TableContainerBodyContent>
-                                <CheckOutDate>{
-                                    new Date(data.check_out.split("-")[0], data.check_out.split("-")[1] - 1,
-                                        data.check_out.split("-")[2]).toLocaleDateString('en-EN', options)
-                                }</CheckOutDate>
-                                <CheckOutTime>6.12 PM</CheckOutTime>
-                            </TableContainerBodyContent>
-                            <TableContainerBodyContent>
-                                <ViewNotesButton onClick={() => handleOpenModal(data.special_request)}>View Notes</ViewNotesButton>
-                            </TableContainerBodyContent>
-                            <TableContainerBodyContent>
-                                <TypeRoom>{data.room_type}-{data.room_number}</TypeRoom>
-                            </TableContainerBodyContent>
-                            <TableContainerBodyContent>
-                                <Status $status={data.status}>{data.status}</Status>
-                                <OptionsButton onClick={() => handleActionBox(data.id)}><BsTrash /></OptionsButton>
-                            </TableContainerBodyContent>
-                        </TableContainerBody>
-                    ))}
+                    <Table cols={cols} data={dataBooking} totalCols={8}/>
                 </BookingContainer>
             </MainContainer>
         </>
@@ -382,13 +403,17 @@ const TableContainerBody = styled.div`
 
 const Paragraphs = styled.p`
     color: #C5C5C5;
-
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 `;
 
 const TableContainerBodyContent = styled.div`
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     position: relative;
+    display: flex;
+    flex-direction: column;
 
     div {
         height: 80px;
@@ -500,4 +525,9 @@ const OptionsButton = styled(Buttons)`
             transform: scale(1.1, 1.1);
         }
     }
+`;
+
+const StatusContent = styled(TableContainerBodyContent)`
+    display: flex;
+    flex-direction: row;
 `;
