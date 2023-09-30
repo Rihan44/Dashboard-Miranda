@@ -14,9 +14,8 @@ import { Table } from "../Reusables/Table";
 export const Contact = () => {
     const [modalInfo, setModalInfo] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
-    const [isActiveButton, setIsActiveButton] = useState(false);
-    const [tabsSelect, setTabsSelect] = useState('');
-    let [contactData, setContactData] = useState([]);
+    const [isActiveButton, setIsActiveButton] = useState('allContacts');
+    const [contactData, setContactData] = useState([]);
 
     let options = {year: 'numeric', month: 'long', day: 'numeric' };
 
@@ -33,8 +32,7 @@ export const Contact = () => {
     }
 
 
-    const handleTab = (value, activeButton) => {
-        setTabsSelect(value);
+    const handleTab = (activeButton) => {
         setIsActiveButton(activeButton);
     }
 
@@ -42,21 +40,19 @@ export const Contact = () => {
 
         let dataArray = [...contactMessega];
 
-        switch (tabsSelect) {
-            case 'all_contacts':
-                contactData = dataArray;
+        switch (isActiveButton) {
+            case 'allContacts':
+                setContactData(dataArray);
                 break;
             case 'archived':
-                contactData = dataArray;
-                dataArray = contactData.filter(data => data.isArchived);
+                setContactData(dataArray.filter(data => data.isArchived));
                 break;
             default:
-                contactData = dataArray;
+                setContactData(dataArray);
         }
 
-        setContactData(dataArray);
 
-    }, [tabsSelect, setContactData])
+    }, [isActiveButton, setContactData])
 
 
     const cols = [
@@ -92,16 +88,14 @@ export const Contact = () => {
         },
         {
             property: 'isArchived', label: 'Status', display: ({ isArchived }) => (
-                /* TODO HACER EL ONCLIK PARA BORRAR */
+                /* TODO HACER EL ONCLIK PARA ARCHIVAR */
                 <div>
                     <IsAcrhivedParagraph $isArchive={isArchived}>{isArchived ? 'Archived' : 'Publish'}</IsAcrhivedParagraph>
-                    {/* TODO CAMBIAR EL COLOR DEL BOTON */}
-                    {isArchived ? <OptionsButton><BiArchiveIn /></OptionsButton> : <OptionsButton><BiArchiveOut /></OptionsButton>}
+                    {isArchived ? <OptionsButton style={{color: '#5AD07A'}}><BiArchiveIn /></OptionsButton> : <OptionsButton style={{color: '#E23428'}}><BiArchiveOut /></OptionsButton>}
                 </div>
             )
-        }
-    ]
-
+    }
+]
 
     return (
         <MainContainer>
@@ -120,15 +114,15 @@ export const Contact = () => {
                 </CardsContainer>
                 <FilterContainer>
                     <TabsContainer>
-                        <ButtonTabs $actived={allContacts} onClick={() => handleTab('all_contacts', 'allContacts')}>
+                        <ButtonTabs $actived={allContacts} onClick={() => handleTab('allContacts')}>
                             All Contacts
                         </ButtonTabs>
-                        <ButtonTabs $actived={archived} onClick={() => handleTab('archived', 'archived')}>
+                        <ButtonTabs $actived={archived} onClick={() => handleTab('archived')}>
                             Archived
                         </ButtonTabs>
                     </TabsContainer>
                 </FilterContainer>
-                <Table cols={cols} data={contactMessega} totalCols={5}/>
+                <Table cols={cols} data={contactData} totalCols={5}/>
             </ContactContainer>
         </MainContainer>
     )
@@ -208,9 +202,10 @@ const CardsContainer = styled.div`
 `;
 
 const FilterContainer = styled.div`
-    width: 100%;
+    width: 1400px;
     display: flex;
     height: 70px;
+    max-width: 1400px;
 `;
 
 const TabsContainer = styled.div`
@@ -253,7 +248,6 @@ const OptionsButton = styled(Buttons)`
     color:#393939;
 
     svg { 
-        color: ${props => props.$isArchive ? '#E23428' : '#5AD07A'}
         margin-left: 10px;
         transition: 0.5s;
 
