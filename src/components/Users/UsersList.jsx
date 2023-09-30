@@ -34,33 +34,32 @@ export const UsersList = () => {
         let dataArray = [...usersData];
 
         if (searchData !== '') {
-            setDataUsers(dataArray.filter(data => data.name.toLowerCase().includes(searchData)));
-        } else {
-            switch (isActiveButton) {
-                case 'allEmployee':
-                    dataArray.sort((a, b) => {
-                        const dateA = new Date(a.hire_date);
-                        const dateB = new Date(b.hire_date);
-                        return dateA - dateB;
-                    });
-                    setDataUsers(dataArray);
-                    break;
-                case 'activeEmployee':
-                    setDataUsers(dataArray.filter(data => !data.status))
-                    break;
-                case 'inactiveEmployee':
-                    setDataUsers(dataArray.filter(data => data.status))
-                    break;
-                default:
-                    dataArray.sort((a, b) => {
-                        const dateA = new Date(a.hire_date);
-                        const dateB = new Date(b.hire_date);
-                        return dateA - dateB;
-                    });
-                    setDataUsers(dataArray);
-            }
+            dataArray = dataArray.filter(data => data.name.toLowerCase().includes(searchData));
+        }
+        
+        switch (isActiveButton) {
+            case 'allEmployee':
+                dataArray.sort((a, b) => {
+                    const dateA = new Date(a.hire_date);
+                    const dateB = new Date(b.hire_date);
+                    return dateA - dateB;
+                });
+                break;
+            case 'activeEmployee':
+                dataArray = dataArray.filter(data => !data.status);
+                break;
+            case 'inactiveEmployee':
+                dataArray = dataArray.filter(data => data.status);
+                break;
+            default:
+                dataArray.sort((a, b) => {
+                    const dateA = new Date(a.hire_date);
+                    const dateB = new Date(b.hire_date);
+                    return dateA - dateB;
+                });
         }
 
+        setDataUsers(dataArray);
 
     }, [isActiveButton, setDataUsers, searchData])
 

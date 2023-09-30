@@ -60,42 +60,42 @@ export const Bookings = () => {
 
     useEffect(() => {
         let dataArray = [...bookingData];
-        let updatedDataArray = [...dataArray];
 
         if (searchData.length !== '') {
-            updatedDataArray = dataArray.filter(data => data.guest.toLowerCase().includes(searchData));
+            dataArray = dataArray.filter(data => data.guest.toLowerCase().includes(searchData));
         }
         switch (isActiveButton) {
             case 'allBookings':
-                setBookingData(updatedDataArray);
+                setBookingData(dataArray);
                 break;
             case 'checkIn':
-                updatedDataArray = dataArray.filter(data => data.status === 'check_in');
+                dataArray = dataArray.filter(data => data.status === 'check_in');
                 break;
-            case 'checOut':
-                updatedDataArray = dataArray.filter(data => data.status === 'check_out');
+            case 'checkOut':
+                dataArray = dataArray.filter(data => data.status === 'check_out');
                 break;
             case 'inProgress':
-                updatedDataArray = dataArray.filter(data => data.status === 'in_progress');
+                dataArray = dataArray.filter(data => data.status === 'in_progress');
                 break;
             default:
         }
 
         switch (selectData) {
             case 'Order Date':
-                updatedDataArray.sort((a, b) => {
+                dataArray.sort((a, b) => {
                     const dateA = new Date(a.order_date);
                     const dateB = new Date(b.order_date);
                     return dateA - dateB;
                 });
                 break;
             case 'Guest':
-                updatedDataArray.sort((a, b) => a.guest.localeCompare(b.guest));
+                dataArray.sort((a, b) => a.guest.localeCompare(b.guest));
                 break;
             default:
         }
 
-        setBookingData(updatedDataArray);
+        setBookingData(dataArray);
+        
     }, [isActiveButton, selectData, searchData]);
 
     const cols = [

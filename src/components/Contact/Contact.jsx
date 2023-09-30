@@ -47,10 +47,9 @@ export const Contact = () => {
                     const dateB = new Date(b.date);
                     return dateA - dateB;
                 });
-                setContactData(dataArray);
                 break;
             case 'archived':
-                setContactData(dataArray.filter(data => data.isArchived));
+                dataArray = dataArray.filter(data => data.isArchived);
                 break;
             default:
                 dataArray.sort((a, b) => {
@@ -58,8 +57,9 @@ export const Contact = () => {
                     const dateB = new Date(b.date);
                     return dateA - dateB;
                 });
-                setContactData(dataArray);
         }
+
+        setContactData(dataArray);
 
 
     }, [isActiveButton, setContactData])

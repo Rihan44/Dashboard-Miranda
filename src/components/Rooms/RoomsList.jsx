@@ -36,13 +36,12 @@ export const RoomsList = () => {
         switch (isActiveButton) {
             case 'allRooms':
                 dataArray.sort((a, b) => a.room_number - b.room_number);
-                setDataRooms(dataArray);
                 break;
             case 'statusAvailable':
-                setDataRooms(dataArray.filter(data => data.state === 'available'));
+                dataArray = dataArray.filter(data => data.state === 'available');
                 break;
             case 'statusBooked':
-                setDataRooms(dataArray.filter(data => data.state === 'booked'));
+                dataArray = dataArray.filter(data => data.state === 'booked');
                 break;
             default: 
             dataArray.sort((a, b) => a.room_number - b.room_number);
@@ -50,15 +49,16 @@ export const RoomsList = () => {
 
         switch(selectData) {
             case 'Price':
-                setDataRooms(dataArray.sort((a, b) => b.price - a.price));
+                dataArray = dataArray.sort((a, b) => b.price - a.price);
                 break;
             case 'Room Type':
-                setDataRooms(dataArray.sort((a, b) => a.room_type.localeCompare(b.room_type)));
+                dataArray = dataArray.sort((a, b) => a.room_type.localeCompare(b.room_type));
                 break;
             default :
             dataArray.sort((a, b) => a.room_number - b.room_number);
         }
 
+        setDataRooms(dataArray);
 
     }, [isActiveButton, setDataRooms, selectData])
 
