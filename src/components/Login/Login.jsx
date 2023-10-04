@@ -1,57 +1,61 @@
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 
 import styled from "styled-components"
+import { AuthContext } from "../Context/AuthContainer";
 
-export const Login = ({setAuthenticated}) => {
+export const Login = (/* {setAuthenticated} */) => {
 
     const navigate = useNavigate();
     
-    const [inputTextValue, setInputTextValue] = useState('');
     const [inputTextEmail, setInputTextEmail] = useState('');
+    const [inputTextPass, setInputTextPass] = useState('');
     const [isCorrect, setIsCorrect] = useState(false);
-  
+    const {auth, authDispatch} = useContext(AuthContext);
+
+    useEffect(() => {
+        if (auth.authenticated) {
+          navigate('/');
+        }
+      }, [auth.authenticated, navigate]);
+
     const userAdmin = {
         user: "ASDev",
-        email: "asmuela.dev@gmail.com"
+        email: "asmuela.dev@gmail.com",
+        password: 123456
     }
 
     function handleChangeEmail(e) {
         setInputTextEmail(e.target.value);   
     }
 
-    function handleChangeText(e) {
-        setInputTextValue(e.target.value);   
+    function handleChangePass(e) {
+        setInputTextPass(parseInt(e.target.value));   
     }
 
     function handleSubmit(e){
         e.preventDefault();
-        if(inputTextValue === userAdmin.user && inputTextEmail === userAdmin.email){
-            setAuthenticated(true);
+        if(inputTextEmail === userAdmin.email && inputTextPass === userAdmin.password){
             setIsCorrect(false);
-
-            localStorage.setItem('auth', true);
-            localStorage.setItem('user', inputTextValue);
-            localStorage.setItem('email', inputTextEmail);
+            authDispatch({type: 'LOGIN', payload: {authenticated: true, username: userAdmin.user, email: userAdmin.email}})
             navigate('/');
         } else {
-            setAuthenticated(false);
             setIsCorrect(true);
-            localStorage.setItem('auth', false);
         }
     }
 
     return(
+        
         <LoginContainer>
             <Title>Login</Title>
             <FormContainer onSubmit={handleSubmit}>
-                <Label>User Name</Label>
-                <Input type="text" onChange={handleChangeText}/>
                 <Label>Email</Label>
                 <Input type="text" onChange={handleChangeEmail}/>
+                <Label>Password</Label>
+                <Input type="text" onChange={handleChangePass}/>
                 <Button>Login</Button>
-                <FormParagraph>User Test: <small>ASDev</small></FormParagraph>
-                <FormParagraph>Pass Test: <small>asmuela.dev@gmail.com</small></FormParagraph>
+                <FormParagraph>Email Test: <small>asmuela.dev@gmail.com</small></FormParagraph>
+                <FormParagraph>Pass Test: <small>123456</small></FormParagraph>
                 {isCorrect ? <WrongParagraph>El user o la pass son incorrectos</WrongParagraph>: ''}
             </FormContainer>
         </LoginContainer>

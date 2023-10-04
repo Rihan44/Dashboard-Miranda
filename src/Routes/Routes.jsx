@@ -1,5 +1,4 @@
 import { Route, Routes} from "react-router-dom"
-import { useState } from "react"
 
 import { Login } from "../components/Login/Login"
 import { PrivateRoute } from "../components/Login/PrivateRoute"
@@ -11,94 +10,88 @@ import { AddRoom } from "../components/Rooms/AddRoom"
 import { Contact } from "../components/Contact/Contact"
 import { UsersList } from "../components/Users/UsersList"
 import { AddUser } from "../components/Users/AddUser"
+import { AuthContainer} from "../components/Context/AuthContainer"
 
 
 export const RoutesComponent = () => {
-    const [authenticated, setAuthenticated] = useState(false);
-
-    const auth = localStorage.getItem('auth');
-  
-    /*     const navigate = useNavigate();
-        if(auth) {
-    
-        } */
 
     return (
-        <Routes>
-            {/* SI ESTOY LOGEADO NO PUEDO IR AL LOGIN */}
-            <Route path="/login" element={<Login setAuthenticated={setAuthenticated} />} />
-            <Route
-                path="/"
-                element={
-                    <PrivateRoute authenticated={authenticated}>
-                        <Dashboard />
-                    </PrivateRoute>
-                }
-            />
-            <Route
-                path="/dashboard"
-                element={
-                    <PrivateRoute authenticated={authenticated}>
-                        <Dashboard />
-                    </PrivateRoute>
-                }
-            />
-            <Route
-                path="/bookings"
-                element={
-                    <PrivateRoute authenticated={authenticated}>
-                        <Bookings />
-                    </PrivateRoute>
-                }
-            />
-            <Route
-                path="/bookings/:id"
-                element={
-                    <PrivateRoute authenticated={authenticated}>
-                        <BookingFile />
-                    </PrivateRoute>
-                }
-            />
-             <Route
-                path="/rooms"
-                element={
-                    <PrivateRoute authenticated={authenticated}>
-                        <RoomsList />
-                    </PrivateRoute>
-                }
-            />
-            <Route
-                path="/rooms/add-room"
-                element={
-                    <PrivateRoute authenticated={authenticated}>
-                        <AddRoom />
-                    </PrivateRoute>
-                }
-            />
-            <Route
-                path="/contact"
-                element={
-                    <PrivateRoute authenticated={authenticated}>
-                        <Contact />
-                    </PrivateRoute>
-                }
-            />
-            <Route
-                path="/users"
-                element={
-                    <PrivateRoute authenticated={authenticated}>
-                        <UsersList />
-                    </PrivateRoute>
-                }
-            />
-            <Route
-                path="/users/add-user"
-                element={
-                    <PrivateRoute authenticated={authenticated}>
-                        <AddUser />
-                    </PrivateRoute>
-                }
-            />
-        </Routes>
+        <AuthContainer> 
+                <Routes>
+                    <Route path="/login" element={<Login/>} />
+                    <Route
+                        path="/"
+                        element={
+                            <PrivateRoute>
+                                <Dashboard />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/dashboard"
+                        element={
+                            <PrivateRoute>
+                                <Dashboard />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/bookings"
+                        element={
+                            <PrivateRoute>
+                                <Bookings />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/bookings/:id"
+                        element={
+                            <PrivateRoute>
+                                <BookingFile />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/rooms"
+                        element={
+                            <PrivateRoute>
+                                <RoomsList />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/rooms/add-room"
+                        element={
+                            <PrivateRoute>
+                                <AddRoom />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/contact"
+                        element={
+                            <PrivateRoute>
+                                <Contact />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/users"
+                        element={
+                            <PrivateRoute>
+                                <UsersList />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/users/add-user"
+                        element={
+                            <PrivateRoute>
+                                <AddUser />
+                            </PrivateRoute>
+                        }
+                    />
+                </Routes> 
+        </AuthContainer>
     )
 }

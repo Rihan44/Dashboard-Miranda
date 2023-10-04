@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../Context/AuthContainer";
 
 
 export const ProfileCompontent = () => {
@@ -14,6 +15,7 @@ export const ProfileCompontent = () => {
     const [imgSrc, setImgSrc] = useState('');
     const [setUserUpdate] = useState('');
     const [setEmailUpdate] = useState('');
+    const {auth, setAuthDispatch} = useContext(AuthContext);
 
 
     const handleOpen = () => {
@@ -27,19 +29,19 @@ export const ProfileCompontent = () => {
     const handleFile = (e) => {
         const fileImage = URL.createObjectURL(e.target.files[0]);
         setImgSrc(fileImage);
-        localStorage.setItem('imgProfile',fileImage);
+        setAuthDispatch({type: 'UPDATE', payload: {imageSrc: fileImage}})
     }
 
     const handleUser = (e) => {
         const newUser = e.target.value;
         setUserUpdate(newUser === '' ? user : newUser);
-        localStorage.setItem('user', newUser);
+        setAuthDispatch({type: 'UPDATE', payload: {username: newUser}})
     }
 
     const handleEmail = (e) => {
         const newEmail = e.target.value;
         setEmailUpdate(newEmail=== '' ? email : newEmail);
-        localStorage.setItem('email', newEmail);
+        setAuthDispatch({type: 'UPDATE', payload: {email: newEmail}})
     }
 
     const handleSubmit = (e) => {

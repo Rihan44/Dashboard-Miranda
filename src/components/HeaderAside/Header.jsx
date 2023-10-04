@@ -5,14 +5,18 @@ import { HiOutlineMail } from "react-icons/hi";
 import { LuBell } from "react-icons/lu";
 import { GoSignOut } from "react-icons/go";
 import { TbArrowsLeftRight } from "react-icons/tb";
+import { useContext } from "react";
+import { AuthContext } from "../Context/AuthContainer";
 
 
 export const Header = ({ title }) => {
 
     const navigate = useNavigate();
+    const {auth, authDispatch} = useContext(AuthContext);
 
     const handleLogOut = () => {
-        localStorage.clear();
+
+        authDispatch({type: 'LOGOUT'});
 
         navigate('/login');
     }
