@@ -12,11 +12,11 @@ import { AuthContext } from "../Context/AuthContainer";
 export const Header = ({ title }) => {
 
     const navigate = useNavigate();
-    const {auth, authDispatch} = useContext(AuthContext);
+    const {authDispatch} = useContext(AuthContext);
 
     const handleLogOut = () => {
 
-        authDispatch({type: 'LOGOUT'});
+       authDispatch({type: 'LOGOUT'});
 
         navigate('/login');
     }

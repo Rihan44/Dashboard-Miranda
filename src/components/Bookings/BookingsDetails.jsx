@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react"
-import { useParams} from "react-router-dom";
 
-import { bookingData } from "../../data/bookingData";
+import { InfinitySpin } from 'react-loader-spinner'
 
 import { LiaBedSolid } from "react-icons/lia";
 import { AiOutlineWifi } from "react-icons/ai";
 import { BsShieldCheck } from "react-icons/bs";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useParams } from "react-router-dom";
 
 import styled from "styled-components";
 import { MainContainer } from "../Reusables/MainContainer";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllBookings, getBookingDetail } from "../../features/bookingsSlice";
 
 
 export const BookingFile = () => {
@@ -20,76 +20,82 @@ export const BookingFile = () => {
     const navigate = useNavigate();
 
     const [dataBooking, setDataBooking] = useState('');
+    const bookingDataDetail = useSelector((state) => state.bookings.data);
+    const status = useSelector((state) => state.bookings.status);
+    
+    const {id} = useParams();
+    const dispatch = useDispatch();
 
-    const { id } = useParams();
+    let options = { year: 'numeric', month: 'long', day: 'numeric' };
 
-    let options = {year: 'numeric', month: 'long', day: 'numeric' };
+    const checkOutDate = dataBooking ? new Date(dataBooking.check_out.split("-")[0], dataBooking.check_out.split("-")[1] - 1,
+        dataBooking.check_out.split("-")[2]).toLocaleDateString('en-EN', options) : '';
 
-    const checkOutDate = dataBooking ? new Date(dataBooking.check_out.split("-")[0], dataBooking.check_out.split("-")[1]-1, 
-    dataBooking.check_out.split("-")[2]).toLocaleDateString('en-EN', options) : '';
-
-    const checkInDate = dataBooking ? new Date(dataBooking.check_in.split("-")[0], dataBooking.check_in.split("-")[1]-1, 
-    dataBooking.check_in.split("-")[2]).toLocaleDateString('en-EN', options) : '';
+    const checkInDate = dataBooking ? new Date(dataBooking.check_in.split("-")[0], dataBooking.check_in.split("-")[1] - 1,
+        dataBooking.check_in.split("-")[2]).toLocaleDateString('en-EN', options) : '';
 
     useEffect(() => {
-        let data = [...bookingData];
-
-        data.map(e => {
-            if(e.id === id) {
-                setDataBooking(e);
-            }
+        let data = [...bookingDataDetail];
+        
+        data.forEach(e => {
+            setDataBooking(e);
         });
 
-    },[id])
+    }, [bookingDataDetail])
 
-    /* TODO SWIPER Y METER IMAGENES */
+    useEffect(() => {
+        dispatch(getAllBookings());
+        dispatch(getBookingDetail(id));
 
-    return(
+    }, [dispatch, id])
+
+    return (
         <>
             <MainContainer>
-                <FileBookingContainer>
-                    <ButtonBack onClick={() => navigate('/bookings')}><AiOutlineArrowLeft/></ButtonBack>
-                    <InfoContinainer>
-                        <NameContainer>
-                            <h3>{dataBooking.guest}</h3>
-                            <p>{id}</p>
-                        </NameContainer>
-                        <CheckContainer>
-                            <div>
-                                <h3>Check In</h3>
-                                <p>{checkInDate}</p>
-                            </div>
-                            <div>
-                                <h3>Check Out</h3>
-                              <p>{checkOutDate}</p> 
-                            </div>
-                        </CheckContainer>
-                        <RoomInfoContainer>
-                            <InnerInfo>
+                {status === 'fulfilled' ?
+                    <FileBookingContainer>
+                        <ButtonBack onClick={() => navigate('/bookings')}><AiOutlineArrowLeft /></ButtonBack>
+                        <InfoContainer>
+                            <NameContainer>
+                                <h3>{dataBooking.guest}</h3>
+                                <p>{dataBooking.id}</p>
+                            </NameContainer>
+                            <CheckContainer>
                                 <div>
-                                    <h3>Room Info</h3>
-                                    <p>{dataBooking.room_type}</p>
+                                    <h3>Check In</h3>
+                                    <p>{checkInDate}</p>
                                 </div>
                                 <div>
-                                    <h3>Price</h3>
-                                    <p>{dataBooking.price}<small>/night</small></p>
+                                    <h3>Check Out</h3>
+                                    <p>{checkOutDate}</p>
                                 </div>
-                            </InnerInfo>
-                            <RoomDescription>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</RoomDescription>
-                        </RoomInfoContainer>
-                        <FacilitiesRooms>
+                            </CheckContainer>
+                            <RoomInfoContainer>
+                                <InnerInfo>
+                                    <div>
+                                        <h3>Room Info</h3>
+                                        <p>{dataBooking.room_type}</p>
+                                    </div>
+                                    <div>
+                                        <h3>Price</h3>
+                                        <p>{dataBooking.price}<small>/night</small></p>
+                                    </div>
+                                </InnerInfo>
+                                <RoomDescription>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</RoomDescription>
+                            </RoomInfoContainer>
+                            <FacilitiesRooms>
                                 <h3>Facilites</h3>
                                 <FacilitiesInner>
                                     <BigFacilitie>
-                                        <LiaBedSolid/>
+                                        <LiaBedSolid />
                                         3 Bed Space
                                     </BigFacilitie>
                                     <BigFacilitie>
-                                        <BsShieldCheck/>
-                                        24 Hours Guard                                
+                                        <BsShieldCheck />
+                                        24 Hours Guard
                                     </BigFacilitie>
                                     <BigFacilitie>
-                                        <AiOutlineWifi/>
+                                        <AiOutlineWifi />
                                         Free Wifi
                                     </BigFacilitie>
                                     <SmallFacilitie>
@@ -102,18 +108,25 @@ export const BookingFile = () => {
                                         Television
                                     </SmallFacilitie>
                                 </FacilitiesInner>
-                        </FacilitiesRooms>
-                    </InfoContinainer>
-                    <ImageContainer>
-                        <StatusDecoration $status={dataBooking.status}>
-                            {dataBooking.status}
-                        </StatusDecoration>
-                        <ImageDescription>
-                            <h3>Bed Room</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        </ImageDescription>
-                    </ImageContainer>
-                </FileBookingContainer>
+                            </FacilitiesRooms>
+                        </InfoContainer>
+                        <ImageContainer>
+                            <StatusDecoration $status={dataBooking.status}>
+                                {dataBooking.status}
+                            </StatusDecoration>
+                            <ImageDescription>
+                                <h3>Bed Room</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            </ImageDescription>
+                        </ImageContainer>
+                    </FileBookingContainer>
+                    : status === 'rejected' ? alert('Algo falló')
+                        : <SpinnerContainer>
+                            <InfinitySpin
+                                width='200'
+                                color="#135846"
+                            />
+                        </SpinnerContainer>}
             </MainContainer>
         </>
     )
@@ -130,7 +143,7 @@ const FileBookingContainer = styled.div`
     position: relative;
 `;
 
-const InfoContinainer = styled.div`
+const InfoContainer = styled.div`
     width: 50%;
     padding: 40px;
 `;
@@ -377,4 +390,10 @@ const ButtonBack = styled(Button)`
         transform: scale(1.1);
         background: #135846;
      }
+`;
+
+const SpinnerContainer = styled.div`
+    position: absolute;
+    top: 35%;
+    left: 50%;
 `;

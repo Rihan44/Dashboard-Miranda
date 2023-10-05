@@ -7,7 +7,7 @@ export const PrivateRoute = ({children}) => {
 
    const { auth } = useContext(AuthContext)
 
-    if(auth){
+    if(auth.authenticated){
         return (
             children
             );

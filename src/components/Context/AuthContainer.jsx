@@ -22,7 +22,7 @@ function authReducer(state, action) {
         case 'LOGIN':
             return {...action.payload};
         case 'LOGOUT':
-            return {authenticated: false, username: null, email: null};
+            return {...state, authenticated: false, username: null, email: null};
         case 'UPDATE':
             return {...state, ...action.payload};
         default :

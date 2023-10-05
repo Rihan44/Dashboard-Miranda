@@ -284,6 +284,7 @@ const TableContainerBodyContent = styled.div`
         height: 120px;
         background: #C5C5C5;
         margin-left: 40px;
+        border-radius: 10px;
     }
 
 `;

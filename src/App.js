@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { RoutesComponent } from "./Routes/Routes";
 import { Header } from "./components/HeaderAside/Header";
 import { Menu } from "./components/HeaderAside/Menu";
+import { AuthContainer } from "./components/Context/AuthContainer";
 
 export const App = () => {
 
@@ -36,11 +37,11 @@ export const App = () => {
     }, [location.pathname]);
 
     return (
-        <>
+        <AuthContainer>
             {location.pathname !== '/login' && <Menu setHeaderTitle={setTitleHeader} />}
             {location.pathname !== '/login' && <Header title={titleHeader} />}
             <RoutesComponent />
-        </>
+        </AuthContainer>
 
     )
 }

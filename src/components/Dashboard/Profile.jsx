@@ -17,7 +17,6 @@ export const ProfileCompontent = () => {
     const [setEmailUpdate] = useState('');
     const {auth, setAuthDispatch} = useContext(AuthContext);
 
-
     const handleOpen = () => {
         setModalOpen(true);
     }
@@ -57,17 +56,17 @@ export const ProfileCompontent = () => {
                         <AiOutlineCloseCircle />
                     </ButtonModalClose>
                     <ImageUpdate src={imgSrc} alt="imgProfile"/>
-                    <form onSubmit={handleSubmit} action="../../form-result.php" method="post" encType="multipart/form-data" target="_blank">
+                    <form onSubmit={handleSubmit} method="post" encType="multipart/form-data" target="_blank">
                         <Input type="file" name="img" multiple onChange={handleFile}/>
-                        <Input type="text" placeholder={user} onChange={handleUser}/>
-                        <Input type="text" placeholder={email} onChange={handleEmail}/>
+                        <Input type="text" placeholder={auth.username} onChange={handleUser}/>
+                        <Input type="text" placeholder={auth.email} onChange={handleEmail}/>
                         <ButtonSave type="submit">Save</ButtonSave>
                     </form>
                 </ModalInfo>
             </Modal>
             <ImageProfile src={imagenProfileSrc}/>
-            <ProfileTitle>{user}</ProfileTitle>
-            <ProfileParagraph>{email}</ProfileParagraph>
+            <ProfileTitle>{auth.username}</ProfileTitle>
+            <ProfileParagraph>{auth.email}</ProfileParagraph>
             <ProfileButton onClick={handleOpen}>Edit</ProfileButton>
         </ProfileContainer>
     )

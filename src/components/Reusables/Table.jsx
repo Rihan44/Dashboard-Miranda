@@ -6,7 +6,7 @@ export const Table = ({ cols, data, totalCols}) => {
 
     const displayRow = row => (
         <TableContainerBody key={row.id}>
-                <TableContainerBodyContent totalCols={totalCols}>
+                <TableContainerBodyContent totalcols={totalCols}>
             {cols.map((col, i) => (
                     <div key={i}>{typeof col.display === 'function' ? col.display(row) : row[col.property]}
                     </div>
@@ -70,7 +70,7 @@ const TableContainerBodyContent = styled.div`
     justify-content: space-between;
 
     div {
-        width: calc(1400px / ${props => props.totalCols});
+        width: calc(1400px / ${props => props.totalcols});
         margin-right: 10px;
         margin-left: 10px;
         text-align: center;

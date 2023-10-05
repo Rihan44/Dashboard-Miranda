@@ -1,15 +1,17 @@
 import styled from "styled-components";
-
-import { bookingData } from "../../data/bookingData";
-
-import { BsTrash } from "react-icons/bs";
-import { AiOutlineCloseCircle } from "react-icons/ai";
-import { MainContainer } from "../Reusables/MainContainer";
-import { Table } from "../Reusables/Table";
-
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import { InfinitySpin } from 'react-loader-spinner'
+import { BsTrash } from "react-icons/bs";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { AiFillEdit } from "react-icons/ai";
+
+import { MainContainer } from "../Reusables/MainContainer";
+import { Table } from "../Reusables/Table";
+import { deleteBooking, getAllBookings, getBookingDetail } from "../../features/bookingsSlice";
+
 
 export const Bookings = () => {
 
@@ -19,6 +21,11 @@ export const Bookings = () => {
     const [modalInfo, setModalInfo] = useState('');
     const [isActiveButton, setIsActiveButton] = useState('allBookings');
     const [searchData, setSearchData] = useState('');
+
+    const bookingsSliceData = useSelector((state) => state.bookings.data);
+    const status = useSelector((state) => state.bookings.status);
+
+    const dispatch = useDispatch();
 
     const allBookings = isActiveButton === 'allBookings';
     const checkIn = isActiveButton === 'checkIn';
@@ -43,6 +50,7 @@ export const Bookings = () => {
 
     const handleBookingId = (id) => {
         navigate(`/bookings/${id}`);
+        dispatch(getBookingDetail(id));
     }
 
     const handleCloseModal = () => {
@@ -55,15 +63,24 @@ export const Bookings = () => {
     }
 
     const handleActionBox = (id) => {
-        console.log(id);
+        dispatch(deleteBooking(id));
     }
 
     useEffect(() => {
-        let dataArray = [...bookingData];
+        let dataArray = [];
+
+        if (status === 'fulfilled') {
+            bookingsSliceData.forEach(booking => {
+                dataArray.push(booking);
+            });
+
+            setBookingData(dataArray);
+        }
 
         if (searchData.length !== '') {
             dataArray = dataArray.filter(data => data.guest.toLowerCase().includes(searchData));
         }
+
         switch (isActiveButton) {
             case 'allBookings':
                 setBookingData(dataArray);
@@ -95,8 +112,12 @@ export const Bookings = () => {
         }
 
         setBookingData(dataArray);
-        
-    }, [isActiveButton, selectData, searchData]);
+
+    }, [isActiveButton, selectData, searchData, bookingsSliceData, status]);
+
+    useEffect(() => {
+        dispatch(getAllBookings());
+    }, [dispatch])
 
     const cols = [
         {
@@ -158,7 +179,10 @@ export const Bookings = () => {
             property: 'status', label: 'Status', display: ({ status, id }) => (
                 <StatusContent>
                     <Status $status={status}>{status}</Status>
-                    <OptionsButton onClick={() => handleActionBox(id)}><BsTrash /></OptionsButton>
+                    <OptionsButton>
+                        <BsTrash  onClick={() => handleActionBox(id)}/>
+                        <AiFillEdit/>
+                    </OptionsButton>
                 </StatusContent>
             )
         }
@@ -199,7 +223,16 @@ export const Bookings = () => {
                             </Select>
                         </Filters>
                     </FilterContainer>
-                    <Table cols={cols} data={dataBooking} totalCols={8}/>
+                    {status === 'fulfilled'
+                        ? <Table cols={cols} data={dataBooking} totalCols={8} />
+                        : status === 'rejected' ? alert('Algo falló')
+                        :  <SpinnerContainer>
+                            <InfinitySpin
+                                width='200'
+                                color="#135846"
+                            />
+                        </SpinnerContainer>
+                    }
                 </BookingContainer>
             </MainContainer>
         </>
@@ -271,7 +304,7 @@ const Buttons = styled.button`
 
 const BookingContainer = styled.div`
     margin-top: 50px;
-    margin-left: 50px;
+    margin-left: 80px;
     min-width: 1400px;
     display: flex;
     flex-direction: column;
@@ -282,6 +315,7 @@ const FilterContainer = styled.div`
     width: 100%;
     display: flex;
     height: 70px;
+    max-width: 1400px;
 `;
 
 const TabsContainer = styled.div`
@@ -311,7 +345,6 @@ const Filters = styled.div`
     width: 60%;
     display: flex;
     justify-content: flex-end;
-    margin-right: 50px;
     align-items: end;
 
     input {
@@ -346,60 +379,6 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const TableContainerTitle = styled.div`
-    border-radius: 20px 20px 0px 0px;
-    border: 1px solid #00000015;
-    height: 65px;
-    margin-top: 35px;
-    width: 97%;
-    display: flex;
-    justify-content: space-space-between;
-    padding: 20px;
-
-${'' /*     div:nth-child(1), div:nth-child(2) {
-        width: 25%;
-    } */}
-
-    div:nth-child(6){
-        margin-left: 40px;
-    }
-`;
-
-const TableTitles = styled.div`
-    color: #393939;
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    width: 18%;
-    margin-right: 10px;
-    margin-left: 10px;
-`;
-
-const TableContainerBody = styled.div`
-    border: 1px solid #00000015;
-    height: auto;
-    width: 97%;
-    display: flex;
-    justify-content: space-space-between;
-    padding: 20px;
-    margin-right: 10px;
-    align-items: center;
-
-    div {
-        width: 18%;
-        margin-right: 10px;
-        margin-left: 10px;
-    }
-
-    div:last-child {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    div:nth-child(6){
-        margin-left: 40px;
-    }
-`;
 
 const Paragraphs = styled.p`
     color: #C5C5C5;
@@ -516,8 +495,18 @@ const OptionsButton = styled(Buttons)`
     font-size: 30px;
     color:#393939;
 
-    svg {
+    svg:nth-child(1) {
         color: #E23428;
+        margin-left: 10px;
+        transition: 0.5s;
+
+        &:hover {
+            transform: scale(1.1, 1.1);
+        }
+    }
+
+    svg:nth-child(2) {
+        color: #5AD07A;
         margin-left: 10px;
         transition: 0.5s;
 
@@ -530,4 +519,10 @@ const OptionsButton = styled(Buttons)`
 const StatusContent = styled(TableContainerBodyContent)`
     display: flex;
     flex-direction: row;
+`;
+
+const SpinnerContainer = styled.div`
+    position: absolute;
+    top: 35%;
+    left: 50%;
 `;
