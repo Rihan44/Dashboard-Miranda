@@ -6,6 +6,7 @@ import { RoutesComponent } from "./Routes/Routes";
 import { Header } from "./components/HeaderAside/Header";
 import { Menu } from "./components/HeaderAside/Menu";
 import { AuthContainer } from "./components/Context/AuthContainer";
+import { ToggleAsideContext } from "./components/Context/ToggleAsideContext";
 
 export const App = () => {
 
@@ -38,9 +39,11 @@ export const App = () => {
 
     return (
         <AuthContainer>
-            {location.pathname !== '/login' && <Menu setHeaderTitle={setTitleHeader} />}
-            {location.pathname !== '/login' && <Header title={titleHeader} />}
-            <RoutesComponent />
+            <ToggleAsideContext>
+                {location.pathname !== '/login' && <Menu setHeaderTitle={setTitleHeader} />}
+                {location.pathname !== '/login' && <Header title={titleHeader} />}
+                <RoutesComponent />
+            </ToggleAsideContext>
         </AuthContainer>
 
     )

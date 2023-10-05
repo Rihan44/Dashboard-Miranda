@@ -125,7 +125,7 @@ export const UsersList = () => {
         },
         {
             property: 'status', label: 'Status', display: ({ status, id }) => (
-                <StatusContainer is_active={status}>
+                <StatusContainer is_active={status.toString()}>
                     <p>{status ? 'Inactive' : 'Active'}</p>
                     <OptionsButton>
                         <BsTrash onClick={() => handleDelete(id)} />
@@ -322,7 +322,7 @@ const Call = styled(NavLink)`
 
 const StatusContainer = styled.div`
     p {
-        color: ${props => props.is_active ? '#E23428' : '#5AD07A'};
+        color: ${props => props.is_active === 'true' ? '#E23428' : '#5AD07A'};
     }
 `;
 

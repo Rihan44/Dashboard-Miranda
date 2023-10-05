@@ -9,16 +9,19 @@ import { FaHotel } from "react-icons/fa6"
 
 import { NavLink } from "react-router-dom";
 import { ProfileCompontent } from "../Dashboard/Profile";
+import { useContext } from "react";
+import { AsideContext } from "../Context/ToggleAsideContext";
 
 export const Menu = ({ setHeaderTitle }) => {
 
+    const {asideState} = useContext(AsideContext);
+
     const handleHeaderTitle = (titleName) => {
         setHeaderTitle(titleName);
-        /* GUARDAR EN LOCAL? */
     }
 
     return (
-        <AsideMenu id="aside_menu">
+        <AsideMenu context={asideState.asideVisible.toString()} id="aside_menu">
             <NavLink to="/" style={{
                 textDecoration: "none",
                 display: "flex",
@@ -94,18 +97,20 @@ export const Menu = ({ setHeaderTitle }) => {
             </ContainerFooter>
             <CreatorParagraph>Made with ♥ by ASDev</CreatorParagraph>
         </AsideMenu>
-
     );
 }
 
 const AsideMenu = styled.aside`
-    height: 100%;
+    height: 100vh;
     width: 345px;
     display: flex;
     flex-direction: column;
     align-items: center;
     box-shadow: 13px 3px 40px #00000005;
     float: left;
+    transition: left 0.5s;
+    position: ${props => props.context === 'true' ? 'absolute' : 'none'};
+    left: ${props => props.context === 'true' && '-350px'};
 `;
 
 const ContainerFooter = styled.div`

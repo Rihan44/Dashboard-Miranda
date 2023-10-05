@@ -7,12 +7,14 @@ import { GoSignOut } from "react-icons/go";
 import { TbArrowsLeftRight } from "react-icons/tb";
 import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContainer";
+import { AsideContext } from "../Context/ToggleAsideContext";
 
 
 export const Header = ({ title }) => {
 
     const navigate = useNavigate();
     const {authDispatch} = useContext(AuthContext);
+    const {asideDispatch} = useContext(AsideContext); 
 
     const handleLogOut = () => {
 
@@ -21,11 +23,15 @@ export const Header = ({ title }) => {
         navigate('/login');
     }
 
+    const handleToggle = () => {
+        asideDispatch({type: 'Close_aside'});
+    }
+
     return (
         <HeaderTag>
             <NavIcons>
                 <ContainerTitle>
-                    <TbArrowsLeftRight style={{ fontSize: "22px", cursor: "pointer" }} id=""/>
+                    <TbArrowsLeftRight onClick={handleToggle} style={{ fontSize: "22px", cursor: "pointer" }} id=""/>
                     <Title>{title}</Title>
                 </ContainerTitle>
                 <ContainerIcons>
