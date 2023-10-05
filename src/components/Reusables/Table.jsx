@@ -55,7 +55,7 @@ const TableTitles = styled.div`
 const TableContainerBody = styled.div`
     border: 1px solid #00000015;
     width: 1400px;
-    transition: 0.5s;
+    transition: transform 0.5s;
 
     &:hover {
         transform: scale(1.02);

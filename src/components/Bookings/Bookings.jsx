@@ -68,19 +68,15 @@ export const Bookings = () => {
 
     const handleUpdate = (id) => {
         /* dispatch(updateBooking(id));
-        navigate(`bookings/update/${id}`); */
+        navigate(`/bookings/update-booking/${id}`); */
         console.log(id)
     }
 
 
     useEffect(() => {
-        let dataArray = [];
+        let dataArray = [...bookingsSliceData];
 
         if (status === 'fulfilled') {
-            bookingsSliceData.forEach(booking => {
-                dataArray.push(booking);
-            });
-
             setBookingData(dataArray);
         }
 
@@ -115,6 +111,15 @@ export const Bookings = () => {
             case 'Guest':
                 dataArray.sort((a, b) => a.guest.localeCompare(b.guest));
                 break;
+           /*  case 'Check In':
+                dataArray.sort((a, b) => a.check_in.localeCompare(b.check_in));
+                break;
+            case 'Check Out':
+                dataArray.sort((a, b) => a.check_out.localeCompare(b.check_out));
+                break;
+            case 'In Progress':
+                dataArray.sort((a, b) => a.in_progress.localeCompare(b.in_progress));
+                break; */
             default:
         }
 
@@ -187,8 +192,8 @@ export const Bookings = () => {
                 <StatusContent>
                     <Status $status={status}>{status}</Status>
                     <OptionsButton>
-                        <BsTrash onClick={() => handleDelete(id)}/>
-                        <AiFillEdit onClick={() => handleUpdate(id)}/>
+                        <BsTrash onClick={() => handleDelete(id)} />
+                        <AiFillEdit onClick={() => handleUpdate(id)} />
                     </OptionsButton>
                 </StatusContent>
             )
@@ -227,18 +232,21 @@ export const Bookings = () => {
                             <Select onChange={handleSelect}>
                                 <Option>Order Date</Option>
                                 <Option>Guest</Option>
+                                {/* <Option>Check In</Option>
+                                <Option>Check Out</Option>
+                                <Option>In Progress</Option> */}
                             </Select>
                         </Filters>
                     </FilterContainer>
                     {status === 'fulfilled'
                         ? <Table cols={cols} data={dataBooking} totalCols={8} />
                         : status === 'rejected' ? alert('Algo falló')
-                        :  <SpinnerContainer>
-                            <InfinitySpin
-                                width='200'
-                                color="#135846"
-                            />
-                        </SpinnerContainer>
+                            : <SpinnerContainer>
+                                <InfinitySpin
+                                    width='200'
+                                    color="#135846"
+                                />
+                            </SpinnerContainer>
                     }
                 </BookingContainer>
             </MainContainer>

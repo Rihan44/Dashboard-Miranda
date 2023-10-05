@@ -10,6 +10,7 @@ import { AddRoom } from "../components/Rooms/AddRoom"
 import { Contact } from "../components/Contact/Contact"
 import { UsersList } from "../components/Users/UsersList"
 import { AddUser } from "../components/Users/AddUser"
+import { UpdateRoom } from "../components/Rooms/UpdateRoom"
 
 
 export const RoutesComponent = () => {
@@ -29,6 +30,7 @@ export const RoutesComponent = () => {
                                 <Route path="/bookings/:id" element={<BookingFile />}/>
                                 <Route path="/rooms" element={<RoomsList />}/>
                                 <Route path="/rooms/add-room" element={<AddRoom/>}/>
+                                <Route path="/rooms/update-room/:id" element={<UpdateRoom/>}/>
                                 <Route path="/contact" element={<Contact />}/>
                                 <Route path="/users" element={ <UsersList /> }/>
                                 <Route path="/users/add-user" element={ <AddUser/>}/>

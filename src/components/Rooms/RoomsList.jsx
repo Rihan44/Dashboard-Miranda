@@ -1,11 +1,15 @@
 import styled from "styled-components";
-import { roomsData } from "../../data/roomsData";
-
-import { MainContainer } from "../Reusables/MainContainer";
-import { Table } from "../Reusables/Table";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { InfinitySpin } from 'react-loader-spinner'
+import { BsTrash } from "react-icons/bs";
+import { AiFillEdit } from "react-icons/ai";
+
+import { MainContainer } from "../Reusables/MainContainer";
+import { Table } from "../Reusables/Table";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteRoom, getAllRooms, getRoom} from "../../features/roomsSlice";
 
 export const RoomsList = () => {
 
@@ -17,7 +21,11 @@ export const RoomsList = () => {
     const statusAvailable = isActiveButton === 'statusAvailable';
     const statusBooked = isActiveButton === 'statusBooked';
 
+    const roomsData = useSelector((state) => state.rooms.data);
+    const status = useSelector((state) => state.rooms.status);
+
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleTab = (activeButton) => {
         setIsActiveButton(activeButton);
@@ -27,11 +35,22 @@ export const RoomsList = () => {
         setSelectData(e.target.value);
     }
 
+    const handleDelete = (id) => {
+        dispatch(deleteRoom(id));
+    }
+
+    const handleUpdate = (id) => {
+        dispatch(getRoom(id));
+        navigate(`/rooms/update-room/${id}`);
+    }
+
     useEffect(() => {
 
         let dataArray = [...roomsData];
 
-        /* TODO EN UN FUTURO HACER QUE SE PUEDAN USAR AMBOS FILTROS JUNTOS */
+        if (status === 'fulfilled') {
+            setDataRooms(dataArray);
+        }
 
         switch (isActiveButton) {
             case 'allRooms':
@@ -43,32 +62,38 @@ export const RoomsList = () => {
             case 'statusBooked':
                 dataArray = dataArray.filter(data => data.state === 'booked');
                 break;
-            default: 
-            dataArray.sort((a, b) => a.room_number - b.room_number);
+            default:
+                dataArray.sort((a, b) => a.room_number - b.room_number);
         }
 
-        switch(selectData) {
+        switch (selectData) {
             case 'Price':
                 dataArray = dataArray.sort((a, b) => b.price - a.price);
                 break;
             case 'Room Type':
                 dataArray = dataArray.sort((a, b) => a.room_type.localeCompare(b.room_type));
                 break;
-            default :
-            dataArray.sort((a, b) => a.room_number - b.room_number);
+            default:
+                dataArray.sort((a, b) => a.room_number - b.room_number);
         }
 
         setDataRooms(dataArray);
 
-    }, [isActiveButton, setDataRooms, selectData])
+    }, [isActiveButton, setDataRooms, selectData, roomsData, status])
+
+    useEffect(() => {
+        dispatch(getAllRooms());
+    }, [dispatch]);
 
     const cols = [
         {
             property: 'image', label: 'Room Info', display: ({ image, id, room_number }) => (
                 <TableContainerBodyContent>
                     <img src={image || ''} alt="imagen" />
-                    <IDparagraph>{id}</IDparagraph>
-                    <p>Room number {room_number}</p>
+                    <div>
+                        <IDparagraph>{id}</IDparagraph>
+                        <p>Room number {room_number}</p>
+                    </div>
                 </TableContainerBodyContent>
             )
         },
@@ -77,24 +102,33 @@ export const RoomsList = () => {
             property: 'room_type', label: 'Room Type'
         },
         {
-            property: 'amenities', label: 'Amenities', display: ({amenities}) =>(
+            property: 'amenities', label: 'Amenities', display: ({ amenities }) => (
                 <AmenitiesContainer>
-                    <p>{amenities}</p>
+                    <p>{amenities.join(', ')}</p>
                 </AmenitiesContainer>
             )
         },
         {
-            property: 'price', label: 'Price', display: ({price}) => (
-                <PriceParagraph>${price}<small>/Night</small></PriceParagraph>
+            property: 'price', label: 'Price', display: ({ price, offer_price }) => (
+                <PriceParagraph>
+                    {offer_price ? <><del>{price}</del><small>/Night</small></> : <>{price}<small>/Night</small></>}
+                </PriceParagraph>
             )
         },
         {
-            property: 'offer_price', label: 'Offer Price', display: ({offer_price, discount}) => (
-                <Discount existOffer={offer_price}>{offer_price === false ? 'No Offer' : discount+ '%'}</Discount>
+            property: 'offer_price', label: 'Offer Price', display: ({ offer_price, discount, price }) => (
+                <Discount>{offer_price === false ? <del>No Offer</del> : ( price - (discount * price / 100))}</Discount>
             )
         },
         {
-            property: 'status', label: 'Status', display: ({ state }) => <StatusDecoration $state={state}>{state}</StatusDecoration>
+            property: 'status', label: 'Status', display: ({ state, id }) =>
+                <StatusContent>
+                    <Status $status={state}>{state}</Status>
+                    <OptionsButton>
+                        <BsTrash onClick={() => handleDelete(id)} />
+                        <AiFillEdit onClick={() => handleUpdate(id)} />
+                    </OptionsButton>
+                </StatusContent>
         }
     ]
 
@@ -108,10 +142,10 @@ export const RoomsList = () => {
                                 All Rooms
                             </ButtonTabs>
                             <ButtonTabs $actived={statusAvailable} onClick={() => handleTab('statusAvailable')}>
-                                All Available 
+                                All Available
                             </ButtonTabs>
                             <ButtonTabs $actived={statusBooked} onClick={() => handleTab('statusBooked')}>
-                                All Booked 
+                                All Booked
                             </ButtonTabs>
                         </TabsContainer>
                         <Filters>
@@ -124,7 +158,16 @@ export const RoomsList = () => {
                             </Select>
                         </Filters>
                     </FilterContainer>
-                    <Table cols={cols} data={dataRooms} totalCols={7}></Table>
+                    {status === 'fulfilled'
+                        ? <Table cols={cols} data={dataRooms} totalCols={6}></Table>
+                        : status === 'rejected' ? alert('Algo falló')
+                            : <SpinnerContainer>
+                                <InfinitySpin
+                                    width='200'
+                                    color="#135846"
+                                />
+                            </SpinnerContainer>
+                    }
                 </RoomsContainer>
             </MainContainer>
         </>
@@ -134,7 +177,7 @@ export const RoomsList = () => {
 
 const RoomsContainer = styled.div`
     margin-top: 10px;
-    margin-left: 50px;
+    margin-left: 70px;
     min-width: 1400px;
     display: flex;
     flex-direction: column;
@@ -162,7 +205,7 @@ const Buttons = styled.button`
 `;
 
 const ButtonTabs = styled(Buttons)`
-    color: ${props => props.$actived ?  "#135846" : "#6E6E6E"};
+    color: ${props => props.$actived ? "#135846" : "#6E6E6E"};
     border-bottom: ${props => props.$actived ? "2px solid #135846" : "none"};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
@@ -233,35 +276,81 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const StatusDecoration = styled.div`
-    width: 10px;
-    height: 50px;
+const Status = styled.p`
     ${(props) => {
-        switch (props.$state) {
-            case 'booked':
-                return `
-                background: #E23428;
-                color: #FFFFFF;
-            `;
+        switch (props.$status) {
             case 'available':
                 return `
                 background: #5AD07A;
-                color: #FFFFFF;
+            `;
+            case 'booked':
+                return `
+                background: #E23428;
+                color: #ffffff; 
             `;
             default:
                 return ` 
                 background: #5AD07A;
-                color: #FFFFFF;
             `
         }
     }}
 
-    border-radius: 10px;
-    display: flex; 
-    align-items: center;
-    justify-content: center;
+    padding: 15px;
+    border-radius: 12px;
+`;
+
+const TableBodyContent = styled.div`
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    div {
+        height: 80px;
+        width: 140px;
+        position: absolute;
+        background: #ffffff;
+        top: -20px;
+        left: -30px;
+        box-shadow: 0px 4px 4px #00000010;
+        border-radius: 10px;
+        transition: 0.5s;
+    }
+
+`;
+
+const StatusContent = styled(TableBodyContent)`
+    display: flex;
+    flex-direction: row;
+`;
+
+const OptionsButton = styled(Buttons)`
+    font-size: 30px;
+    color:#393939;
+    display: flex;
+    flex-direction: column;
+
+    svg:nth-child(1) {
+        color: #E23428;
+        margin-left: 10px;
+        transition: 0.5s;
+        font-size: 1.05em;
+
+        &:hover {
+            transform: scale(1.1, 1.1);
+        }
+    }
+
+    svg:nth-child(2) {
+        color: #5AD07A;
+        margin-left: 10px;
+        transition: 0.5s;
+
+        &:hover {
+            transform: scale(1.1, 1.1);
+        }
+    }
 `;
 
 
@@ -270,7 +359,6 @@ const TableContainerBodyContent = styled.div`
     font-family: 'Poppins', sans-serif;
     position: relative;
     display: flex;
-    flex-direction: column;
     justify-content: center;
 
     p {
@@ -280,11 +368,16 @@ const TableContainerBodyContent = styled.div`
     }
 
     img {
-        width: 120px;
+        width: 70%;
         height: 120px;
         background: #C5C5C5;
-        margin-left: 40px;
         border-radius: 10px;
+    }
+
+    div {
+        display: flex;
+        flex-direction: column;
+        width: 30%;
     }
 
 `;
@@ -310,7 +403,13 @@ const PriceParagraph = styled.p`
 `;
 
 const Discount = styled.div`
-    color: ${props => props.existOffer === true ? '#5AD07A' : '#E23428'};
+    color: #212121;
     font-weight: bold;
     font-size: 20px;
+`;
+
+const SpinnerContainer = styled.div`
+    position: absolute;
+    top: 35%;
+    left: 50%;
 `;
