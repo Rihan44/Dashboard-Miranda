@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { InfinitySpin } from 'react-loader-spinner'
 import { BsTrash } from "react-icons/bs";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { AiFillEdit } from "react-icons/ai";
@@ -11,6 +10,7 @@ import { AiFillEdit } from "react-icons/ai";
 import { MainContainer } from "../Reusables/MainContainer";
 import { Table } from "../Reusables/Table";
 import { deleteBooking, getAllBookings, getBookingDetail, updateBooking } from "../../features/bookingsSlice";
+import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 
 
 export const Bookings = () => {
@@ -241,12 +241,7 @@ export const Bookings = () => {
                     {status === 'fulfilled'
                         ? <Table cols={cols} data={dataBooking} totalCols={8} />
                         : status === 'rejected' ? alert('Algo falló')
-                            : <SpinnerContainer>
-                                <InfinitySpin
-                                    width='200'
-                                    color="#135846"
-                                />
-                            </SpinnerContainer>
+                            : <SpinnerLoader></SpinnerLoader>
                     }
                 </BookingContainer>
             </MainContainer>
@@ -539,8 +534,3 @@ const StatusContent = styled(TableContainerBodyContent)`
     flex-direction: row;
 `;
 
-const SpinnerContainer = styled.div`
-    position: absolute;
-    top: 35%;
-    left: 50%;
-`;

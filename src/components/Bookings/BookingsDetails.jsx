@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react"
-
-import { InfinitySpin } from 'react-loader-spinner'
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
 
 import { LiaBedSolid } from "react-icons/lia";
 import { AiOutlineWifi } from "react-icons/ai";
 import { BsShieldCheck } from "react-icons/bs";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { useNavigate, useParams } from "react-router-dom";
 
-import styled from "styled-components";
 import { MainContainer } from "../Reusables/MainContainer";
-import { useDispatch, useSelector } from "react-redux";
 import { getAllBookings, getBookingDetail } from "../../features/bookingsSlice";
+import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 
 
 export const BookingFile = () => {
@@ -121,12 +120,7 @@ export const BookingFile = () => {
                         </ImageContainer>
                     </FileBookingContainer>
                     : status === 'rejected' ? alert('Algo falló')
-                        : <SpinnerContainer>
-                            <InfinitySpin
-                                width='200'
-                                color="#135846"
-                            />
-                        </SpinnerContainer>}
+                        : <SpinnerLoader></SpinnerLoader>}
             </MainContainer>
         </>
     )
@@ -392,8 +386,3 @@ const ButtonBack = styled(Button)`
      }
 `;
 
-const SpinnerContainer = styled.div`
-    position: absolute;
-    top: 35%;
-    left: 50%;
-`;

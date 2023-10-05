@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { InfinitySpin } from 'react-loader-spinner'
 import { BsTrash } from "react-icons/bs";
 import { AiFillEdit } from "react-icons/ai";
 
@@ -10,6 +9,7 @@ import { MainContainer } from "../Reusables/MainContainer";
 import { Table } from "../Reusables/Table";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteRoom, getAllRooms, getRoom} from "../../features/roomsSlice";
+import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 
 export const RoomsList = () => {
 
@@ -161,12 +161,7 @@ export const RoomsList = () => {
                     {status === 'fulfilled'
                         ? <Table cols={cols} data={dataRooms} totalCols={6}></Table>
                         : status === 'rejected' ? alert('Algo falló')
-                            : <SpinnerContainer>
-                                <InfinitySpin
-                                    width='200'
-                                    color="#135846"
-                                />
-                            </SpinnerContainer>
+                            : <SpinnerLoader></SpinnerLoader>
                     }
                 </RoomsContainer>
             </MainContainer>

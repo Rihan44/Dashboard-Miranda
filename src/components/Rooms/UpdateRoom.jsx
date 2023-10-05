@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { MainContainer } from "../Reusables/MainContainer";
 
-import { InfinitySpin } from 'react-loader-spinner';
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
 import { useNavigate } from "react-router-dom";
 import { updateRoom } from "../../features/roomsSlice";
+import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 
 export const UpdateRoom = () => {
 
@@ -138,12 +138,7 @@ export const UpdateRoom = () => {
                     </FormContainer>
                     </>
                     : status === 'rejected' ? alert('Algo falló')
-                        : <SpinnerContainer>
-                            <InfinitySpin
-                                width='200'
-                                color="#135846"
-                            />
-                        </SpinnerContainer>}
+                        : <SpinnerLoader></SpinnerLoader>}
             </UpdateRoomContainer>
         </MainContainer>
     )
@@ -155,11 +150,7 @@ const UpdateRoomContainer = styled.div`
     max-width: 1300px;
 `;
 
-const SpinnerContainer = styled.div`
-    position: absolute;
-    top: 35%;
-    left: 50%;
-`;
+
 const FormContainer = styled.div`
     width: 100%;
     display: flex;

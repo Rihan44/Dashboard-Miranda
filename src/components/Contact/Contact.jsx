@@ -1,15 +1,20 @@
 import styled from "styled-components"
-import { MainContainer } from "../Reusables/MainContainer"
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { contactMessage } from "../../data/contactMessage";
+import { archiveMessage, deleteMessage, getAllMessages, unArchiveMessage } from "../../features/contactSlice";
 
 import { BiArchiveIn } from "react-icons/bi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { BiArchiveOut } from "react-icons/bi";
+import { BsTrash } from "react-icons/bs";
+
 
 import { Card } from "../Dashboard/Card";
-import { useEffect, useState } from "react";
 import { Table } from "../Reusables/Table";
+import { MainContainer } from "../Reusables/MainContainer"
+import { SpinnerLoader } from "../Reusables/SpinnerLoader";
+
 
 export const Contact = () => {
     const [modalInfo, setModalInfo] = useState('');
@@ -17,10 +22,15 @@ export const Contact = () => {
     const [isActiveButton, setIsActiveButton] = useState('allContacts');
     const [contactData, setContactData] = useState([]);
 
+    const dataContact = useSelector((state) => state.contact.data);
+    const status = useSelector((state) => state.contact.status);
+
     let options = {year: 'numeric', month: 'long', day: 'numeric' };
 
     const allContacts = isActiveButton === 'allContacts';
     const archived = isActiveButton === 'archived';
+
+    const dispatch = useDispatch();
 
     const handleOpen = (data) => {
         setModalInfo(data.email_description);
@@ -31,14 +41,29 @@ export const Contact = () => {
         setModalOpen(false);
     }
 
-
     const handleTab = (activeButton) => {
         setIsActiveButton(activeButton);
     }
 
+    const handleDelete = (id) => {
+        dispatch(deleteMessage(id));
+    }
+
+    const handleArchive = (id) => {
+        dispatch(archiveMessage(id));
+    }
+
+    const handleUnArchive = (id) => {
+        dispatch(unArchiveMessage(id));
+    }
+
     useEffect(() => {
 
-        let dataArray = [...contactMessage];
+        let dataArray = [...dataContact];
+
+        if(status === 'fulfilled') {
+            setContactData(dataArray);
+        }
 
         switch (isActiveButton) {
             case 'allContacts':
@@ -62,7 +87,11 @@ export const Contact = () => {
         setContactData(dataArray);
 
 
-    }, [isActiveButton, setContactData])
+    }, [isActiveButton, setContactData, dataContact, status]);
+
+    useEffect(()=> {
+        dispatch(getAllMessages());
+    },[dispatch]);
 
 
     const cols = [
@@ -97,11 +126,20 @@ export const Contact = () => {
             )
         },
         {
-            property: 'isArchived', label: 'Status', display: ({ isArchived }) => (
+            property: 'isArchived', label: 'Status', display: ({ isArchived, id }) => (
                 /* TODO HACER EL ONCLIK PARA ARCHIVAR */
                 <div>
                     <IsAcrhivedParagraph $isArchive={isArchived}>{isArchived ? 'Archived' : 'Publish'}</IsAcrhivedParagraph>
-                    {isArchived ? <OptionsButton style={{color: '#5AD07A'}}><BiArchiveIn /></OptionsButton> : <OptionsButton style={{color: '#E23428'}}><BiArchiveOut /></OptionsButton>}
+                    {isArchived 
+                    ? 
+                        <OptionsButton style={{color: '#5AD07A'}}>
+                            <BiArchiveIn onClick={() => handleUnArchive(id)}/>
+                            <BsTrash style={{color: '#E23428'}} onClick={() => handleDelete(id)} />
+                        </OptionsButton> 
+                    :   <OptionsButton style={{color: '#E23428'}}>
+                            <BiArchiveOut onClick={() => handleArchive(id)}/>
+                            <BsTrash style={{color: '#E23428'}} onClick={() => handleDelete(id)} />
+                        </OptionsButton>}
                 </div>
             )
     }
@@ -119,8 +157,12 @@ export const Contact = () => {
                 </ModalInfo>
             </Modal>
             <ContactContainer>
-                <CardsContainer>
-                    <Card handleOpen={handleOpen} data={contactMessage}></Card>
+                <CardsContainer>  
+                    {status === 'fulfilled'
+                        ? <Card handleOpen={handleOpen} data={contactData}></Card>
+                        : status === 'rejected' ? alert('Algo falló')
+                            : <SpinnerLoader></SpinnerLoader>
+                    }
                 </CardsContainer>
                 <FilterContainer>
                     <TabsContainer>
@@ -132,7 +174,11 @@ export const Contact = () => {
                         </ButtonTabs>
                     </TabsContainer>
                 </FilterContainer>
-                <Table cols={cols} data={contactData} totalCols={5}/>
+                {status === 'fulfilled'
+                        ? <Table cols={cols} data={contactData} totalCols={5}/>
+                        : status === 'rejected' ? alert('Algo falló')
+                            : <SpinnerLoader></SpinnerLoader>
+                    }
             </ContactContainer>
         </MainContainer>
     )
@@ -256,6 +302,8 @@ const IsAcrhivedParagraph = styled.div`
 const OptionsButton = styled(Buttons)`
     font-size: 30px;
     color:#393939;
+    display: flex;
+    margin-right: 20px;
 
     svg { 
         margin-left: 10px;

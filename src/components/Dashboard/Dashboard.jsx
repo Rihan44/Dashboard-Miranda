@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { LiaBedSolid } from "react-icons/lia";
 import { LuCalendarCheck2 } from "react-icons/lu";
@@ -6,12 +8,32 @@ import { GoSignOut } from "react-icons/go";
 import { GoSignIn } from "react-icons/go";
 
 import { MainContainer } from "../Reusables/MainContainer";
-
-
 import { LastestReview } from "./LastestReview";
-import { contactMessage } from "../../data/contactMessage";
+import { getAllMessages } from "../../features/contactSlice";
+import { SpinnerLoader } from "../Reusables/SpinnerLoader";
+
 
 export const Dashboard = () => {
+
+    const [dataContact, setDataContact] = useState([]);
+
+    const contactData = useSelector((state) => state.contact.data);
+    const status = useSelector((state) => state.contact.status);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        let dataArray = [...contactData];
+
+        if (status === 'fulfilled') {
+            setDataContact(dataArray);
+        }
+
+    }, [contactData, status]);
+
+    useEffect(() => {
+        dispatch(getAllMessages());
+    }, [dispatch]);
 
     return (
         <>
@@ -53,8 +75,12 @@ export const Dashboard = () => {
                             <p>Check Out</p>
                         </div>
                     </Card>
-                </ContainerCards>
-                <LastestReview dataDashboard={contactMessage}/>
+                </ContainerCards> 
+                {status === 'fulfilled'
+                        ? <LastestReview dataDashboard={dataContact}/>
+                        : status === 'rejected' ? alert('Algo falló')
+                            : <SpinnerLoader></SpinnerLoader>
+                    }
             </MainContainer>
         </>
     )

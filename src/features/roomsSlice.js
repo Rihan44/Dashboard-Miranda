@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { roomsData } from "../data/roomsData";
 
-const delay = (data) => {
+const delay = (data, timeWait = 600) => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve(data);
-        }, 600)
+        }, timeWait)
     });
 }
 
@@ -18,7 +18,7 @@ export const getRoom = createAsyncThunk("rooms/getRoom", async (id) => {
 });
 
 export const deleteRoom = createAsyncThunk("rooms/deleteRoom", async (id) => {
-    return await delay(id);
+    return await delay(id, 300);
 });
 
 export const updateRoom = createAsyncThunk("rooms/updateRoom", async (id) => {
