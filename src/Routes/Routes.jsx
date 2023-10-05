@@ -18,78 +18,24 @@ export const RoutesComponent = () => {
         <>
             <Routes>
                 <Route path="/login" element={<Login />} />
-                <Route
-                    path="/"
+                <Route 
+                    path="/*"
                     element={
                         <PrivateRoute>
-                            <Dashboard />
+                            <Routes>
+                                <Route index element={<Dashboard />}/>
+                                <Route path="/dashboard" element={<Dashboard />}/>
+                                <Route path="/bookings" element={<Bookings />}/>
+                                <Route path="/bookings/:id" element={<BookingFile />}/>
+                                <Route path="/rooms" element={<RoomsList />}/>
+                                <Route path="/rooms/add-room" element={<AddRoom/>}/>
+                                <Route path="/contact" element={<Contact />}/>
+                                <Route path="/users" element={ <UsersList /> }/>
+                                <Route path="/users/add-user" element={ <AddUser/>}/>
+                            </Routes>
                         </PrivateRoute>
                     }
-                />
-                <Route
-                    path="/dashboard"
-                    element={
-                        <PrivateRoute>
-                            <Dashboard />
-                        </PrivateRoute>
-                    }
-                />
-                <Route
-                    path="/bookings"
-                    element={
-                        <PrivateRoute>
-                            <Bookings />
-                        </PrivateRoute>
-                    }
-                />
-                <Route
-                    path="/bookings/:id"
-                    element={
-                        <PrivateRoute>
-                            <BookingFile />
-                        </PrivateRoute>
-                    }
-                />
-                <Route
-                    path="/rooms"
-                    element={
-                        <PrivateRoute>
-                            <RoomsList />
-                        </PrivateRoute>
-                    }
-                />
-                <Route
-                    path="/rooms/add-room"
-                    element={
-                        <PrivateRoute>
-                            <AddRoom />
-                        </PrivateRoute>
-                    }
-                />
-                <Route
-                    path="/contact"
-                    element={
-                        <PrivateRoute>
-                            <Contact />
-                        </PrivateRoute>
-                    }
-                />
-                <Route
-                    path="/users"
-                    element={
-                        <PrivateRoute>
-                            <UsersList />
-                        </PrivateRoute>
-                    }
-                />
-                <Route
-                    path="/users/add-user"
-                    element={
-                        <PrivateRoute>
-                            <AddUser />
-                        </PrivateRoute>
-                    }
-                />
+             />
             </Routes>
         </>
     )
