@@ -1,26 +1,53 @@
-import styled from "styled-components"
-
-import { MainContainer } from "../Reusables/MainContainer"
+import styled from "styled-components";
+import { MainContainer } from "../Reusables/MainContainer";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { updateUser } from "../../features/usersSlice";
+import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 
+export const UpdateUser = () => {
 
-export const AddUser = () => {
+    const [dataUsers, setDataUsers] = useState([]);
 
     const navigate = useNavigate();
+
+    const usersData = useSelector((state) => state.rooms.data);
+    const status = useSelector((state) => state.rooms.status);
+
+    console.log(usersData)
+
+    const dispatch = useDispatch();
 
     const handleSubmit = (e) => {
         e.preventDefault();
     }
 
+    const handleUpdate = () => {
+        dispatch(updateUser());
+        navigate('/rooms');
+    }
+
+
+    useEffect(() => {
+        let data = [...usersData];
+        data.forEach(info => {
+            setDataUsers(info);
+        });
+
+    }, [usersData]);
+
     return (
         <>
             <MainContainer>
-                <AddUserContainer>
-                <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft/></ButtonBack>
+                <UpdateUserContainer>
+               
+                <>
+                    <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft /></ButtonBack>
                     <FormContainer>
-                        <Title>Add User Form</Title>
+                        <Title>Update User</Title>
                         <Form onSubmit={handleSubmit}>
                             <FormBox>
                                 <FormBoxInner>
@@ -30,7 +57,7 @@ export const AddUser = () => {
                                     </div>
                                     <div>
                                         <Label>Full Name</Label>
-                                        <Input type="text" placeholder="Full name..." />
+                                        <Input type="text" placeholder={dataUsers ? dataUsers.name : 'Full name...'} />
                                     </div>
                                     <div>
                                         <Label>Position</Label>
@@ -42,34 +69,34 @@ export const AddUser = () => {
                                     </div>
                                     <div>
                                         <Label>Email</Label>
-                                        <Input type="text" placeholder="Email..." />
+                                        <Input type="text" placeholder={dataUsers ? dataUsers.email : "Email..."} />
                                     </div>
                                     <div>
                                         <Label>Phone Number</Label>
-                                        <Input type="text" placeholder="Phone number..." />
+                                        <Input type="text" placeholder={dataUsers ? dataUsers.phone_number : "Phone number..."} />
                                     </div>
                                     <div>
                                         <Label>Start Date</Label>
-                                        <Input type="date" placeholder="Start date..." />
+                                        <Input type="date" placeholder={dataUsers ? dataUsers.hire_date : "Start date..."} />
                                     </div>
                                     <div>
                                         <Label>Functions Descriptions</Label>
-                                        <TextArea type="text" placeholder="Job description..." ></TextArea>
+                                        <TextArea type="text" placeholder={dataUsers ? dataUsers.job_description : "Job description..."} ></TextArea>
                                     </div>
                                     <div>
                                         <Label>Password</Label>
-                                        <Input type="password" placeholder="Password..." />
+                                        <Input type="password" placeholder={dataUsers ? dataUsers.password_hash : "Password..."} />
                                     </div>
                                     <StatusContainer>
                                         <Label>Status</Label>
                                         <CheckBoxContainer>
                                             <div>
-                                                <Label  style={{color: '#5AD07A'}}>Active</Label>
-                                                <Input type="checkbox" value="Active"/>
+                                                <Label style={{ color: '#5AD07A' }}>Active</Label>
+                                                <Input type="checkbox" value="Active" checked={dataUsers.status}/>
                                             </div>
                                             <div>
-                                                <Label style={{color: '#E23428'}}>Inactive</Label>
-                                                <Input type="checkbox" value="Inactive"/>
+                                                <Label style={{ color: '#E23428' }}>Inactive</Label>
+                                                <Input type="checkbox" value="Inactive" checked={dataUsers.status}/>
                                             </div>
                                         </CheckBoxContainer>
                                     </StatusContainer>
@@ -78,13 +105,15 @@ export const AddUser = () => {
                             <Button>Add User</Button>
                         </Form>
                     </FormContainer>
-                </AddUserContainer>
+                    </>
+                    
+                </UpdateUserContainer>
             </MainContainer>
         </>
     )
 }
 
-const AddUserContainer = styled.div`
+const UpdateUserContainer = styled.div`
     margin: 20px;
     min-width: 1400px;
     position: relative;
@@ -253,10 +282,10 @@ const ButtonBack = styled(Button)`
     align-items: center;
     justify-content: center;
 
-     &:hover {
+    &:hover {
         transform: scale(1.1);
         background: #135846;
-     }
+    }
 `;
 
 const StatusContainer = styled.div`

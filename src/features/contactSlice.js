@@ -9,19 +9,19 @@ const delay = (data, timeWait = 600) => {
     });
 }
 
-export const getAllMessages = createAsyncThunk("rooms/getAllRooms", async () => {
+export const getAllMessages = createAsyncThunk("contact/getAllRooms", async () => {
     return await delay(contactMessage);
 });
 
-export const deleteMessage = createAsyncThunk("rooms/deleteMessage", async (id) => {
+export const deleteMessage = createAsyncThunk("contact/deleteMessage", async (id) => {
     return await delay(id);
 });
 
-export const archiveMessage = createAsyncThunk("rooms/archiveMessage", async (id) => {
+export const archiveMessage = createAsyncThunk("contact/archiveMessage", async (id) => {
     return await delay(id);
 });
 
-export const unArchiveMessage = createAsyncThunk("rooms/unArchiveMessage", async (id) => {
+export const unArchiveMessage = createAsyncThunk("contact/unArchiveMessage", async (id) => {
     return await delay(id);
 });
 

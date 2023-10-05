@@ -1,15 +1,18 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import { deleteRoom, getAllRooms, getRoom} from "../../features/roomsSlice";
+
+import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 
 import { BsTrash } from "react-icons/bs";
 import { AiFillEdit } from "react-icons/ai";
 
 import { MainContainer } from "../Reusables/MainContainer";
 import { Table } from "../Reusables/Table";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteRoom, getAllRooms, getRoom} from "../../features/roomsSlice";
-import { SpinnerLoader } from "../Reusables/SpinnerLoader";
+
 
 export const RoomsList = () => {
 
@@ -39,7 +42,7 @@ export const RoomsList = () => {
         dispatch(deleteRoom(id));
     }
 
-    const handleUpdate = (id) => {
+    const handleEdit = (id) => {
         dispatch(getRoom(id));
         navigate(`/rooms/update-room/${id}`);
     }
@@ -104,7 +107,7 @@ export const RoomsList = () => {
         {
             property: 'amenities', label: 'Amenities', display: ({ amenities }) => (
                 <AmenitiesContainer>
-                    <p>{amenities.join(', ')}</p>
+                    <p>{amenities !== null ? amenities.join(', ') : ''}</p>
                 </AmenitiesContainer>
             )
         },
@@ -126,7 +129,7 @@ export const RoomsList = () => {
                     <Status $status={state}>{state}</Status>
                     <OptionsButton>
                         <BsTrash onClick={() => handleDelete(id)} />
-                        <AiFillEdit onClick={() => handleUpdate(id)} />
+                        <AiFillEdit onClick={() => handleEdit(id)} />
                     </OptionsButton>
                 </StatusContent>
         }

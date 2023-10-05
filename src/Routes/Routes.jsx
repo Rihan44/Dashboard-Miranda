@@ -1,7 +1,8 @@
 import { Route, Routes } from "react-router-dom"
 
-import { Login } from "../components/Login/Login"
 import { PrivateRoute } from "../components/Login/PrivateRoute"
+
+import { Login } from "../components/Login/Login"
 import { Bookings } from "../components/Bookings/Bookings"
 import { BookingFile } from "../components/Bookings/BookingsDetails"
 import { Dashboard } from "../components/Dashboard/Dashboard"
@@ -11,6 +12,7 @@ import { Contact } from "../components/Contact/Contact"
 import { UsersList } from "../components/Users/UsersList"
 import { AddUser } from "../components/Users/AddUser"
 import { UpdateRoom } from "../components/Rooms/UpdateRoom"
+import { UpdateUser } from "../components/Users/UpdateUser"
 
 
 export const RoutesComponent = () => {
@@ -34,6 +36,7 @@ export const RoutesComponent = () => {
                                 <Route path="/contact" element={<Contact />}/>
                                 <Route path="/users" element={ <UsersList /> }/>
                                 <Route path="/users/add-user" element={ <AddUser/>}/>
+                                <Route path="/users/update-user" element={ <UpdateUser/>}/>
                             </Routes>
                         </PrivateRoute>
                     }

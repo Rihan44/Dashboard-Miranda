@@ -1,20 +1,28 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import { MainContainer } from "../Reusables/MainContainer"
 import { Table } from "../Reusables/Table";
-import { NavLink, useNavigate } from "react-router-dom";
-import { usersData } from "../../data/usersData";
 
+import { BsTrash } from "react-icons/bs";
+import { AiFillEdit } from "react-icons/ai";
 import { BsFillTelephoneFill } from "react-icons/bs";
-
+import { useDispatch, useSelector } from "react-redux";
+import { deleteUser, getAllUsers, getUser } from "../../features/usersSlice";
+import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 
 export const UsersList = () => {
     const [isActiveButton, setIsActiveButton] = useState('allEmployee');
     const [dataUsers, setDataUsers] = useState([]);
     const [searchData, setSearchData] = useState('');
 
+    const usersData = useSelector((state) => state.users.data);
+    const status = useSelector((state) => state.users.status);
+    
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     let options = { year: 'numeric', month: 'long', day: 'numeric' };
 
     const allEmployee = isActiveButton === 'allEmployee';
@@ -29,9 +37,22 @@ export const UsersList = () => {
         setSearchData(e.target.value.toLowerCase());
     }
 
+    const handleDelete = (id) => {
+        dispatch(deleteUser(id));
+    }
+
+    const handleEdit = (id) => {
+        dispatch(getUser(id));
+        navigate(`/users/update-user/${id}`);
+    }
+
     useEffect(() => {
 
         let dataArray = [...usersData];
+
+        if(status === 'fulfilled'){
+            setDataUsers(dataArray);
+        }
 
         if (searchData !== '') {
             dataArray = dataArray.filter(data => data.name.toLowerCase().includes(searchData));
@@ -61,7 +82,11 @@ export const UsersList = () => {
 
         setDataUsers(dataArray);
 
-    }, [isActiveButton, setDataUsers, searchData])
+    }, [isActiveButton, setDataUsers, searchData, status, usersData])
+
+    useEffect(() => {
+        dispatch(getAllUsers());
+    }, [dispatch]);
 
     const cols = [
         {
@@ -71,7 +96,7 @@ export const UsersList = () => {
                     <NameInner>
                         <h4>{name}</h4>
                         <p>{email}</p>
-                        <p>{id}</p>
+                        <p style={{color: '#799283', fontSize: '16px'}}>{id}</p>
                         <p>Joined on {
                             new Date(hire_date.split("-")[0], hire_date.split("-")[1] - 1,
                                 hire_date.split("-")[2]).toLocaleDateString('en-EN', options)
@@ -99,9 +124,13 @@ export const UsersList = () => {
             )
         },
         {
-            property: 'status', label: 'Status', display: ({ status }) => (
-                <StatusContainer isActive={status}>
+            property: 'status', label: 'Status', display: ({ status, id }) => (
+                <StatusContainer is_active={status}>
                     <p>{status ? 'Inactive' : 'Active'}</p>
+                    <OptionsButton>
+                        <BsTrash onClick={() => handleDelete(id)} />
+                        <AiFillEdit onClick={() => handleEdit(id)} />
+                    </OptionsButton>
                 </StatusContainer>
             )
         }
@@ -129,8 +158,12 @@ export const UsersList = () => {
                                 + New Employee
                             </ButtonAddEmployee>
                         </Filters>
-                    </FilterContainer>
-                    <Table cols={cols} data={dataUsers} totalCols={5} />
+                    </FilterContainer>            
+                    {status === 'fulfilled'
+                        ? <Table cols={cols} data={dataUsers} totalCols={5} />
+                        : status === 'rejected' ? alert('Algo falló')
+                            : <SpinnerLoader></SpinnerLoader>
+                    }
                 </UsersListContainer>
             </MainContainer>
         </>
@@ -223,7 +256,7 @@ const NameContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 20%;
+
     img {
         width: 88px;
         height: 88px;
@@ -289,6 +322,34 @@ const Call = styled(NavLink)`
 
 const StatusContainer = styled.div`
     p {
-        color: ${props => props.isActive ? '#E23428' : '#5AD07A'};
+        color: ${props => props.is_active ? '#E23428' : '#5AD07A'};
+    }
+`;
+
+const OptionsButton = styled(Buttons)`
+    font-size: 30px;
+    color:#393939;
+    display: flex;
+    margin-left: 20px;
+
+    svg:nth-child(1) {
+        color: #E23428;
+        margin-left: 10px;
+        transition: 0.5s;
+        font-size: 1.05em;
+
+        &:hover {
+            transform: scale(1.1, 1.1);
+        }
+    }
+
+    svg:nth-child(2) {
+        color: #5AD07A;
+        margin-left: 10px;
+        transition: 0.5s;
+
+        &:hover {
+            transform: scale(1.1, 1.1);
+        }
     }
 `;
