@@ -10,7 +10,7 @@ import { AiFillEdit } from "react-icons/ai";
 
 import { MainContainer } from "../Reusables/MainContainer";
 import { Table } from "../Reusables/Table";
-import { deleteBooking, getAllBookings, getBookingDetail } from "../../features/bookingsSlice";
+import { deleteBooking, getAllBookings, getBookingDetail, updateBooking } from "../../features/bookingsSlice";
 
 
 export const Bookings = () => {
@@ -62,9 +62,16 @@ export const Bookings = () => {
         setModalOpen(true);
     }
 
-    const handleActionBox = (id) => {
+    const handleDelete = (id) => {
         dispatch(deleteBooking(id));
     }
+
+    const handleUpdate = (id) => {
+        /* dispatch(updateBooking(id));
+        navigate(`bookings/update/${id}`); */
+        console.log(id)
+    }
+
 
     useEffect(() => {
         let dataArray = [];
@@ -180,8 +187,8 @@ export const Bookings = () => {
                 <StatusContent>
                     <Status $status={status}>{status}</Status>
                     <OptionsButton>
-                        <BsTrash  onClick={() => handleActionBox(id)}/>
-                        <AiFillEdit/>
+                        <BsTrash onClick={() => handleDelete(id)}/>
+                        <AiFillEdit onClick={() => handleUpdate(id)}/>
                     </OptionsButton>
                 </StatusContent>
             )
@@ -494,11 +501,14 @@ const Status = styled.p`
 const OptionsButton = styled(Buttons)`
     font-size: 30px;
     color:#393939;
+    display: flex;
+    flex-direction: column;
 
     svg:nth-child(1) {
         color: #E23428;
         margin-left: 10px;
         transition: 0.5s;
+        font-size: 1.05em;
 
         &:hover {
             transform: scale(1.1, 1.1);

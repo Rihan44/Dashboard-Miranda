@@ -7,15 +7,11 @@ import { AuthContext } from "../Context/AuthContainer";
 
 export const ProfileCompontent = () => {
 
-    const user = localStorage.getItem('user');
-    const email = localStorage.getItem('email');
-    const imagenProfileSrc = localStorage.getItem('imgProfile');
-
     const [modalOpen, setModalOpen] = useState(false);
     const [imgSrc, setImgSrc] = useState('');
-    const [setUserUpdate] = useState('');
-    const [setEmailUpdate] = useState('');
-    const {auth, setAuthDispatch} = useContext(AuthContext);
+    const [email, setUserUpdate] = useState('');
+    const [user, setEmailUpdate] = useState('');
+    const {auth, authDispatch} = useContext(AuthContext);
 
     const handleOpen = () => {
         setModalOpen(true);
@@ -28,19 +24,19 @@ export const ProfileCompontent = () => {
     const handleFile = (e) => {
         const fileImage = URL.createObjectURL(e.target.files[0]);
         setImgSrc(fileImage);
-        setAuthDispatch({type: 'UPDATE', payload: {imageSrc: fileImage}})
+        authDispatch({type: 'UPDATE', payload: {imageSrc: fileImage}})
     }
 
     const handleUser = (e) => {
         const newUser = e.target.value;
-        setUserUpdate(newUser === '' ? user : newUser);
-        setAuthDispatch({type: 'UPDATE', payload: {username: newUser}})
+        setUserUpdate(newUser);
+        authDispatch({type: 'UPDATE', payload: {username: newUser}}) 
     }
 
     const handleEmail = (e) => {
         const newEmail = e.target.value;
-        setEmailUpdate(newEmail=== '' ? email : newEmail);
-        setAuthDispatch({type: 'UPDATE', payload: {email: newEmail}})
+        setEmailUpdate(newEmail);
+        authDispatch({type: 'UPDATE', payload: {email: newEmail}})
     }
 
     const handleSubmit = (e) => {
@@ -64,7 +60,7 @@ export const ProfileCompontent = () => {
                     </form>
                 </ModalInfo>
             </Modal>
-            <ImageProfile src={imagenProfileSrc}/>
+            <ImageProfile src={auth.imageSrc || ''}/>
             <ProfileTitle>{auth.username}</ProfileTitle>
             <ProfileParagraph>{auth.email}</ProfileParagraph>
             <ProfileButton onClick={handleOpen}>Edit</ProfileButton>
