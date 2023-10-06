@@ -108,9 +108,8 @@ const AsideMenu = styled.aside`
     align-items: center;
     box-shadow: 13px 3px 40px #00000005;
     float: left;
-    transition: left 0.5s;
-    position: ${props => props.context === 'true' ? 'absolute' : 'none'};
-    left: ${props => props.context === 'true' && '-350px'};
+    transition: 0.5s;
+    margin-left: ${props => props.context === 'true' ? '-345px' : '0'};
 `;
 
 const ContainerFooter = styled.div`

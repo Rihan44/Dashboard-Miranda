@@ -46,7 +46,6 @@ export const usersSlice = createSlice({
         })
         .addCase(getUser.fulfilled, (state, action) => {
             state.status = "fulfilled";
-            console.log(action.payload)
             state.data = state.data.filter(data => {return data.id === action.payload})
         })
         .addCase(getUser.pending, (state) => {state.status = "pending"})

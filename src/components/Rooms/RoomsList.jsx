@@ -186,6 +186,7 @@ const FilterContainer = styled.div`
     width: 100%;
     display: flex;
     height: 70px;
+    max-width: 1400px;
 `;
 
 const TabsContainer = styled.div`
@@ -239,7 +240,6 @@ const Filters = styled.div`
     width: 60%;
     display: flex;
     justify-content: flex-end;
-    margin-right: 125px;
     align-items: end;
 
     input {
