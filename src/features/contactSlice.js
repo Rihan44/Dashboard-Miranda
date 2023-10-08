@@ -18,11 +18,11 @@ export const deleteMessage = createAsyncThunk("contact/deleteMessage", async (id
 });
 
 export const archiveMessage = createAsyncThunk("contact/archiveMessage", async (id) => {
-    return await delay(id);
+    return await delay(id, 300);
 });
 
 export const unArchiveMessage = createAsyncThunk("contact/unArchiveMessage", async (id) => {
-    return await delay(id);
+    return await delay(id, 300);
 });
 
 export const contactSlice = createSlice({

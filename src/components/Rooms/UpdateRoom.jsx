@@ -6,13 +6,20 @@ import { MainContainer } from "../Reusables/MainContainer";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
-import { useNavigate } from "react-router-dom";
-import { updateRoom } from "../../features/roomsSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { getAllRooms, getRoom, updateRoom } from "../../features/roomsSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 
 export const UpdateRoom = () => {
 
-    const [dataRoom, setDataRoom] = useState([]);
+    const [roomTypeState, setRoomTypeState] = useState('');
+    const [roomNumberState, setRoomNumberState] = useState(0);
+    const [offerState, setOfferState] = useState(false);
+    const [priceState, setPriceState] = useState(0);
+    const [discountState, setDiscountState] = useState(0);
+    const [amenitiesState, setAmenitiesState] = useState([]);
+
+    const {id} = useParams();
 
     const roomsData = useSelector((state) => state.rooms.data);
     const status = useSelector((state) => state.rooms.status);
@@ -40,17 +47,67 @@ export const UpdateRoom = () => {
     }
 
     const handleUpdate = () => {
-        dispatch(updateRoom());
+        const dataUpdate = {
+            id: id,
+            room_type: roomTypeState,
+            room_number: roomNumberState,
+            offer_price: offerState,
+            price: priceState,
+            discount: discountState,
+            amenities: amenitiesState
+        }
+        dispatch(updateRoom(dataUpdate));
         navigate('/rooms');
+    }
+
+    const handleSelectType = (e) => {
+        setRoomTypeState(e.target.value);
+    }
+
+    const handleRoomNumber = (e) => {
+        setRoomNumberState(e.target.value);
+    }
+
+    const handleSelectOffer = (e) => {
+        setOfferState(e.target.value);
+    }
+
+    const handlePrice = (e) => {
+        setPriceState(e.target.value);
+    }
+
+    const handleDiscount = (e) => {
+        setDiscountState(e.target.value);
+    }
+
+    const handleAmenities = (e, amenity) => {
+        if (e.target.checked) {
+            setAmenitiesState([...amenitiesState, amenity]);
+          } else {
+            setAmenitiesState(amenitiesState.filter((item) => item !== amenity));
+          }
     }
 
     useEffect(() => {
         let data = [...roomsData];
-        data.forEach(info => {
-            setDataRoom(info);
-        });
+
+        try {
+            setRoomTypeState(data[0].room_type);
+            setRoomNumberState(data[0].room_number);
+            setOfferState(data[0].offer_price);
+            setPriceState(data[0].price);
+            setDiscountState(data[0].discount);
+            setAmenitiesState(data[0].amenities);
+        } catch {
+            console.log('Un error inesperado');
+        }
 
     }, [roomsData]);
+
+    useEffect(() => {
+        dispatch(getAllRooms());
+        dispatch(getRoom(id));
+    }, [dispatch, id]);
 
     return(
         <MainContainer>
@@ -69,8 +126,8 @@ export const UpdateRoom = () => {
                                     </div>
                                     <div>
                                         <Label>Room Type</Label>
-                                        <Select>
-                                            <Option selected="true">{dataRoom ? dataRoom.room_type : 'Room type...'}</Option>
+                                        <Select onChange={handleSelectType}>
+                                            <Option>{roomTypeState}</Option>
                                             <Option>Single Bed</Option>
                                             <Option>Double Bed</Option>
                                             <Option>Suite</Option>
@@ -79,7 +136,7 @@ export const UpdateRoom = () => {
                                     </div>
                                     <div>
                                         <Label>Room Number</Label>
-                                        <Input type="text" placeholder={dataRoom ? dataRoom.room_number : '186...'} />
+                                        <Input type="text" value={roomNumberState} onChange={handleRoomNumber}/>
                                     </div>
                                     <div>
                                         <Label>Description</Label>
@@ -87,45 +144,33 @@ export const UpdateRoom = () => {
                                     </div>
                                     <div>
                                         <Label>Offer</Label>
-                                        <Select>
-                                            <Option selected="true">{dataRoom && dataRoom.offer_price}</Option>
+                                        <Select onChange={handleSelectOffer}>
+                                            <Option>{offerState ? 'Yes' : 'No'}</Option>
                                             <Option>Yes</Option>
                                             <Option>No</Option>
                                         </Select>
                                     </div>
                                     <div>
                                         <Label>Price /Night</Label>
-                                        <Input type="text" placeholder={dataRoom ? dataRoom.price :"296.50..."} value={dataRoom.price}/>
+                                        <Input type="text" value={priceState} onChange={handlePrice}/>
                                     </div>
                                     <div>
                                         <Label>Discount</Label>
-                                        <Input type="number" min="0" max="100" placeholder={dataRoom ? dataRoom.discount + '%': "20%..."} />
+                                        <Input type="number" min="0" max="100" value={discountState} onChange={handleDiscount}/>
                                     </div>                              
                                     <div>
                                     <Label>Cancellation</Label>
                                         <TextArea type="text" placeholder="Cancellation..." ></TextArea>
                                     </div>
                                 </FormBoxInner>
+         
                                 <AmenetiesBox>
                                     <Label>Amenities</Label>
                                     <CheckBoxContainer>
-                                        {/* {dataRoom ? dataRoom.amenities.map(e =>
-                                            <div>
-                                                <Label>{e}</Label>
-                                                <Input type="checkbox" value={e} />
-                                            </div>
-                                        )
-                                        
-                                        : amenitiesList.map(e =>
-                                            <div>
-                                                <Label>{e}</Label>
-                                                <Input type="checkbox" value={e} />
-                                            </div>
-                                        )} */}
-                                        {amenitiesList.map(e =>
-                                            <div>
-                                                <Label>{e}</Label>
-                                                <Input type="checkbox" value={e} />
+                                        {amenitiesList.map((amenity, index) =>
+                                            <div key={index}>
+                                                <Label>{amenity}</Label>
+                                                <Input type="checkbox" checked={amenitiesState.includes(amenity)} onChange={(e) => handleAmenities(e, amenity)}/>
                                             </div>
                                         )}
  
@@ -204,7 +249,7 @@ const FormBoxInner = styled.div`
 `;
 
 const Select = styled.select`
-    width: 129px; 
+    width: 140px; 
     height: 30px;
     border: 1px solid #135846;
     border-radius: 12px;

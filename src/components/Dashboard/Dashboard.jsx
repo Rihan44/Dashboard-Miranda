@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -41,7 +42,7 @@ export const Dashboard = () => {
                 <ContainerCards>
                     <Card>
                         <div>
-                            <LiaBedSolid/>
+                            <LiaBedSolid />
                         </div>
                         <div>
                             <h4>8,461</h4>
@@ -50,7 +51,7 @@ export const Dashboard = () => {
                     </Card>
                     <Card>
                         <div>
-                            <LuCalendarCheck2/>
+                            <LuCalendarCheck2 />
                         </div>
                         <div>
                             <h4>963</h4>
@@ -59,7 +60,7 @@ export const Dashboard = () => {
                     </Card>
                     <Card>
                         <div>
-                            <GoSignOut/>
+                            <GoSignOut />
                         </div>
                         <div>
                             <h4>753</h4>
@@ -68,19 +69,19 @@ export const Dashboard = () => {
                     </Card>
                     <Card>
                         <div>
-                            <GoSignIn/>
+                            <GoSignIn />
                         </div>
                         <div>
                             <h4>516</h4>
                             <p>Check Out</p>
                         </div>
                     </Card>
-                </ContainerCards> 
+                </ContainerCards>
                 {status === 'fulfilled'
-                        ? <LastestReview dataDashboard={dataContact}/>
-                        : status === 'rejected' ? alert('Algo falló')
-                            : <SpinnerLoader></SpinnerLoader>
-                    }
+                    ? <LastestReview dataDashboard={dataContact} />
+                    : status === 'rejected' ? alert('Algo falló')
+                        : <SpinnerLoader></SpinnerLoader>
+                }
             </MainContainer>
         </>
     )
@@ -105,6 +106,9 @@ const Card = styled.div`
     transition: 0.5s;
 
     &:hover {
+
+        transform: scale(1.1);
+
         div:nth-child(1) {
             background: #E23428;
             svg {

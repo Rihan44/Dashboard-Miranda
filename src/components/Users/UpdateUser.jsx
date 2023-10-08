@@ -102,7 +102,7 @@ export const UpdateUser = () => {
                                     </StatusContainer>
                                 </FormBoxInner>
                             </FormBox>
-                            <Button>Add User</Button>
+                            <Button>Update User</Button>
                         </Form>
                     </FormContainer>
                     </>

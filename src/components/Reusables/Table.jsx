@@ -10,6 +10,7 @@ export const Table = ({ cols, data, totalCols}) => {
             {cols.map((col, i) => (
                     <div key={i}>{typeof col.display === 'function' ? col.display(row) : row[col.property]}
                     </div>
+                   
             ))}
                 </TableContainerBodyContent>
         </TableContainerBody>
@@ -46,7 +47,7 @@ const TableTitles = styled.div`
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
-    width: calc(1400px / 6); ${'' /* TODO PASARLO POR PARAMETRO */}
+    width: calc(1400px / 6); 
     margin-right: 10px;
     margin-left: 10px;
     text-align: center;
@@ -58,7 +59,7 @@ const TableContainerBody = styled.div`
     transition: transform 0.5s;
 
     &:hover {
-        transform: scale(1.02);
+        transform: scale(1.01);
     }
 `;
 
@@ -78,6 +79,7 @@ const TableContainerBodyContent = styled.div`
         align-items: center;
         justify-content: center;
         padding: 10px;
+        ${'' /* border-right: 1px solid #00000015; */}
     }
 
 `;

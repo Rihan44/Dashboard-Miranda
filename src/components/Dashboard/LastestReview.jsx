@@ -1,10 +1,17 @@
 import styled from "styled-components";
+import { useState } from "react";
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, A11y } from 'swiper/modules';
+
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/scrollbar'
 
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-
-import { useState } from "react";
 
 export const LastestReview = ({ dataDashboard }) => {
 
@@ -28,10 +35,10 @@ export const LastestReview = ({ dataDashboard }) => {
         setIsChecked(updateChecked);
 
         /* TODO ESTO */
-       /*  let dataID = data.id;
-        setArrayId(arrayId.concat(dataID));
-
-        localStorage.setItem('idMessage', data.id); */
+        /*  let dataID = data.id;
+         setArrayId(arrayId.concat(dataID));
+ 
+         localStorage.setItem('idMessage', data.id); */
         /* GUARDAR QUE EL CHECK SE QUEDE VERDE EN EL LOCAL Y QUE SOLO SE PONGA VERDE EL BOTON DEL MODAL QUE HACES CLICK */
     }
 
@@ -53,27 +60,34 @@ export const LastestReview = ({ dataDashboard }) => {
             <ContainerReview>
                 <Title>Latest Review by Customers</Title>
                 <CardContainer>
-                    {dataDashboard.map((data) => (
-                        <Card key={data.id}>
-                            <EmailSubject>
-                                {data.email_subject}
-                            </EmailSubject>
-                            <ReviewComent>
-                                {data.email_description}
-                            </ReviewComent>
-                            <InnerCard>
-                                <ProfileContainer>
-                                    <h4>{data.name}</h4>
-                                    <p>{data.email}</p>
-                                    <p>{data.phone}</p>
-                                </ProfileContainer>
-                                <ButtonContainer>
-                                    <Button $view={isChecked[data.id] ? checkMessage: false}><AiOutlineCheckCircle /></Button>
-                                    <ButtonOpen onClick={() => handleOpen(data)}><AiOutlineFullscreen /></ButtonOpen>
-                                </ButtonContainer>
-                            </InnerCard>
-                        </Card>
-                    ))}
+                   {/*  <Swiper
+								modules={[Navigation, A11y]}
+								spaceBetween={0}
+								slidesPerView={3}
+								navigation
+							> */}
+                        {dataDashboard.map((data, index) => (
+                                <Card key={index}>
+                                    <EmailSubject>
+                                        {data.email_subject}
+                                    </EmailSubject>
+                                    <ReviewComent>
+                                        {data.email_description}
+                                    </ReviewComent>
+                                    <InnerCard>
+                                        <ProfileContainer>
+                                            <h4>{data.name}</h4>
+                                            <p>{data.email}</p>
+                                            <p>{data.phone}</p>
+                                        </ProfileContainer>
+                                        <ButtonContainer>
+                                            <Button $view={isChecked[data.id] ? checkMessage : false}><AiOutlineCheckCircle /></Button>
+                                            <ButtonOpen onClick={() => handleOpen(data)}><AiOutlineFullscreen /></ButtonOpen>
+                                        </ButtonContainer>
+                                    </InnerCard>
+                                </Card>
+                        ))}
+                  {/*  </Swiper> */}
                 </CardContainer>
             </ContainerReview>
         </>
@@ -174,6 +188,12 @@ const Card = styled.div`
     border: 1px solid #EBEBEB;
     border-radius: 20px;
     padding: 30px;
+    box-shadow: 0px 3px 10px #00000030;
+    transition: transform 0.5s;
+
+    &:hover {
+        transform: scale(1.02);
+    }
 `;
 
 const EmailSubject = styled.h4`

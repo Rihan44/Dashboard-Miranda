@@ -38,6 +38,12 @@ const CardContainer = styled.div`
     border: 1px solid #EBEBEB;
     border-radius: 20px;
     padding: 30px;
+    transition: transform 0.5s;
+    box-shadow: 0px 3px 10px #00000030;
+
+    &:hover {
+        transform: scale(1.02);
+    }
 `;
 
 const EmailSubject = styled.h4`

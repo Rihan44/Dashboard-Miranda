@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { deleteRoom, getAllRooms, getRoom} from "../../features/roomsSlice";
+import { deleteRoom, getAllRooms, getRoom } from "../../features/roomsSlice";
 
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 
 import { BsTrash } from "react-icons/bs";
-import { AiFillEdit } from "react-icons/ai";
+import { FiEdit } from "react-icons/fi";
 
 import { MainContainer } from "../Reusables/MainContainer";
 import { Table } from "../Reusables/Table";
@@ -56,14 +56,14 @@ export const RoomsList = () => {
         }
 
         switch (isActiveButton) {
-            case 'allRooms':
-                dataArray.sort((a, b) => a.room_number - b.room_number);
-                break;
             case 'statusAvailable':
                 dataArray = dataArray.filter(data => data.state === 'available');
                 break;
             case 'statusBooked':
                 dataArray = dataArray.filter(data => data.state === 'booked');
+                break;
+            case 'allRooms':
+                dataArray.sort((a, b) => a.room_number - b.room_number);
                 break;
             default:
                 dataArray.sort((a, b) => a.room_number - b.room_number);
@@ -90,12 +90,18 @@ export const RoomsList = () => {
 
     const cols = [
         {
-            property: 'image', label: 'Room Info', display: ({ image, id, room_number }) => (
+            property: 'image', label: 'Room Photo', display: ({ image}) => (
                 <TableContainerBodyContent>
-                    <img src={image || ''} alt="imagen" />
+                    <img src={image || 'https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/65045f093c166fdddb4a94a5_x-65045f0266217.webp'} alt="imagen" />
+                </TableContainerBodyContent>
+            )
+        },
+        {
+            property: 'room_number', label: 'Room Info', display: ({ id, room_number }) => (
+                <TableContainerBodyContent>
                     <div>
                         <IDparagraph>{id}</IDparagraph>
-                        <p>Room number {room_number}</p>
+                        <p>N. {room_number}</p>
                     </div>
                 </TableContainerBodyContent>
             )
@@ -120,7 +126,7 @@ export const RoomsList = () => {
         },
         {
             property: 'offer_price', label: 'Offer Price', display: ({ offer_price, discount, price }) => (
-                <Discount>{offer_price === false ? <del>No Offer</del> : ( price - (discount * price / 100))}</Discount>
+                <Discount>{offer_price === false ? <del>No Offer</del> : (price - (discount * price / 100))}</Discount>
             )
         },
         {
@@ -129,7 +135,7 @@ export const RoomsList = () => {
                     <Status $status={state}>{state}</Status>
                     <OptionsButton>
                         <BsTrash onClick={() => handleDelete(id)} />
-                        <AiFillEdit onClick={() => handleEdit(id)} />
+                        <FiEdit onClick={() => handleEdit(id)} />
                     </OptionsButton>
                 </StatusContent>
         }
@@ -161,10 +167,10 @@ export const RoomsList = () => {
                             </Select>
                         </Filters>
                     </FilterContainer>
-                    {status === 'fulfilled'
-                        ? <Table cols={cols} data={dataRooms} totalCols={6}></Table>
+                    {status === 'fulfilled' || status === 'loading'
+                        ? <Table cols={cols} data={dataRooms} totalCols={8}></Table>
                         : status === 'rejected' ? alert('Algo falló')
-                            : <SpinnerLoader></SpinnerLoader>
+                        : <SpinnerLoader></SpinnerLoader>
                     }
                 </RoomsContainer>
             </MainContainer>
@@ -342,8 +348,10 @@ const OptionsButton = styled(Buttons)`
 
     svg:nth-child(2) {
         color: #5AD07A;
-        margin-left: 10px;
+        margin-left: 13px;
+        margin-top: 8px;
         transition: 0.5s;
+        font-size: 0.9em;
 
         &:hover {
             transform: scale(1.1, 1.1);
@@ -361,12 +369,11 @@ const TableContainerBodyContent = styled.div`
 
     p {
         font-family: inherit;
-        margin-left: 40px;
-        margin-top: 10px;
+        font-size: 1.1em;
     }
 
     img {
-        width: 70%;
+        width: 100%;
         height: 120px;
         background: #C5C5C5;
         border-radius: 10px;
@@ -375,12 +382,14 @@ const TableContainerBodyContent = styled.div`
     div {
         display: flex;
         flex-direction: column;
-        width: 30%;
+        width: 100%;
+        margin-left: 20px;
     }
 
 `;
 const IDparagraph = styled.p`
     color: #799283;
+    font-size: 16px;
 `;
 
 const AmenitiesContainer = styled.div`

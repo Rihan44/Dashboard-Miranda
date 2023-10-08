@@ -336,8 +336,9 @@ const StatusDecoration = styled.div`
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     position: absolute;
-    right: 100px;
-    top: 200px;
+    right: 0px;
+    top: 5%;
+    transform: rotate(30deg);
 `;
 
 const Button = styled.button` 

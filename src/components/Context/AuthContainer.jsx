@@ -3,9 +3,9 @@ import { createContext, useEffect, useReducer } from "react"
 
 export const AuthContext = createContext({});
 
-const authData = localStorage.getItem('auth');
-
 function initialAuthState() {
+    const authData = localStorage.getItem('auth');
+
     if (authData) {
         try {
             return JSON.parse(authData);

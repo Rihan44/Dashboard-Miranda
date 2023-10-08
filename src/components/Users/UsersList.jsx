@@ -1,14 +1,15 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { MainContainer } from "../Reusables/MainContainer"
 import { Table } from "../Reusables/Table";
 
 import { BsTrash } from "react-icons/bs";
-import { AiFillEdit } from "react-icons/ai";
 import { BsFillTelephoneFill } from "react-icons/bs";
-import { useDispatch, useSelector } from "react-redux";
+import { FiEdit } from "react-icons/fi";
+
 import { deleteUser, getAllUsers, getUser } from "../../features/usersSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 
@@ -92,7 +93,7 @@ export const UsersList = () => {
         {
             property: 'photo', label: 'Name', display: ({ photo, name, id, email, hire_date }) => (
                 <NameContainer>
-                    <img src='' alt="img" />
+                    <img src={'https://robohash.org/'+ name} alt="img" />
                     <NameInner>
                         <h4>{name}</h4>
                         <p>{email}</p>
@@ -129,7 +130,7 @@ export const UsersList = () => {
                     <p>{status ? 'Inactive' : 'Active'}</p>
                     <OptionsButton>
                         <BsTrash onClick={() => handleDelete(id)} />
-                        <AiFillEdit onClick={() => handleEdit(id)} />
+                        <FiEdit onClick={() => handleEdit(id)} />
                     </OptionsButton>
                 </StatusContainer>
             )
@@ -258,9 +259,8 @@ const NameContainer = styled.div`
     justify-content: center;
 
     img {
-        width: 88px;
-        height: 88px;
-        background: #C5C5C5;
+        width: 150px;
+        height: 110px;
         border-radius: 10px;
     }
 `;

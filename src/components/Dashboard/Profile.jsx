@@ -51,7 +51,7 @@ export const ProfileCompontent = () => {
                     <ButtonModalClose onClick={handleCloseModal}>
                         <AiOutlineCloseCircle />
                     </ButtonModalClose>
-                    <ImageUpdate src={imgSrc} alt="imgProfile"/>
+                    <ImageUpdate src={'https://robohash.org/'+auth.username} alt="imgProfile"/>
                     <form onSubmit={handleSubmit} method="post" encType="multipart/form-data" target="_blank">
                         <Input type="file" name="img" multiple onChange={handleFile}/>
                         <Input type="text" placeholder={auth.username} onChange={handleUser}/>
@@ -60,7 +60,7 @@ export const ProfileCompontent = () => {
                     </form>
                 </ModalInfo>
             </Modal>
-            <ImageProfile src={auth.imageSrc || ''}/>
+            <ImageProfile src={'https://robohash.org/'+auth.username}/>
             <ProfileTitle>{auth.username}</ProfileTitle>
             <ProfileParagraph>{auth.email}</ProfileParagraph>
             <ProfileButton onClick={handleOpen}>Edit</ProfileButton>
@@ -156,7 +156,6 @@ const ButtonModalClose = styled.button`
 const ImageUpdate = styled.img`
     width: 100px;
     height: 100px;
-    background: #C5C5C5;
     position: absolute;
     top: -75px;
     left: 38%;
@@ -178,7 +177,6 @@ const ProfileContainer = styled.div`
 const ImageProfile = styled.img`
     width: 60px;
     height: 60px; 
-    background: #C5C5C5;
     position: absolute;
     top: -35px;
     left: 38%;
