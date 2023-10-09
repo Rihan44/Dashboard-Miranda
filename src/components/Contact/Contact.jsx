@@ -14,6 +14,7 @@ import { Card } from "../Dashboard/Card";
 import { Table } from "../Reusables/Table";
 import { MainContainer } from "../Reusables/MainContainer"
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
+import { TablePrueba } from "../Reusables/TablePrueba";
 
 
 export const Contact = () => {
@@ -148,6 +149,7 @@ export const Contact = () => {
     return (
         <MainContainer>
             <Modal $modalOpen={modalOpen}>
+            {/* TODO HACER UN MODAL NUEVO PARA LOS MENSAJES COMO EN BOOKINGS */}
                 <ModalInfo>
                     <ButtonModalClose onClick={handleCloseModal}>
                         <AiOutlineCloseCircle />
@@ -175,7 +177,7 @@ export const Contact = () => {
                     </TabsContainer>
                 </FilterContainer>
                 {status === 'fulfilled'
-                        ? <Table cols={cols} data={contactData} totalCols={5}/>
+                        ? <TablePrueba cols={cols} data={contactData} totalCols={4} totalHeaders={4}/>
                         : status === 'rejected' ? alert('Algo falló')
                             : <SpinnerLoader></SpinnerLoader>
                     }
@@ -207,7 +209,6 @@ const ModalInfo = styled.div`
     height: 350px;
     border: 1px solid #EBEBEB;
     border-radius: 20px;
-    padding: 30px;
     box-shadow: 0px 4px 4px #00000010;
     word-wrap: break-word;
 
@@ -248,11 +249,10 @@ const ButtonModalClose = styled.button`
 
 const ContactContainer = styled.div`
     margin: 50px;
+    margin-left: 80px;
 `;
 
 const CardsContainer = styled.div`
-    ${'' /* display: flex;
-    width: 1400px; */}
     margin-bottom: 86.5px;
 `;
 
@@ -303,6 +303,7 @@ const OptionsButton = styled(Buttons)`
     color:#393939;
     display: flex;
     margin-right: 20px;
+    margin-top: 20px;
 
     svg { 
         margin-left: 10px;
@@ -318,7 +319,6 @@ const DateContactContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-left: 20px;
 
     p {
         margin-bottom: 10px;
@@ -332,6 +332,7 @@ const DateContactContainer = styled.div`
 const CustomerContactContainer = styled.div`
     display: flex;
     flex-direction: column;
+    align-items: center;
 
     p {
         margin-bottom: 10px;
@@ -341,6 +342,8 @@ const CustomerContactContainer = styled.div`
 const EmaiLContactContainer = styled.div` 
     display: flex;
     flex-direction: column;
+    align-items: center;
+
 
     p:nth-child(1) {
         margin-bottom: 10px;
@@ -354,5 +357,4 @@ const DescriptionContainer = styled.p`
     width: 200px;
     overflow: scroll;
     box-shadow: 0px 4px 4px #00000010;
-    padding: 10px;
 `;

@@ -240,7 +240,7 @@ export const Bookings = () => {
                         </Filters>
                     </FilterContainer>
                     {status === 'fulfilled'
-                        ? <TablePrueba cols={cols} data={dataBooking} totalCols={7} />
+                        ? <TablePrueba cols={cols} data={dataBooking} totalCols={7} totalHeaders={7} />
                         : status === 'rejected' ? alert('Algo falló')
                             : <SpinnerLoader></SpinnerLoader>
                     }

@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components"
 import { MainContainer } from "./MainContainer"
 
-export const TablePrueba = ({ cols, data, totalCols }) => {
+export const TablePrueba = ({ cols, data, totalCols, totalHeaders}) => {
 
     const displayRow = row => (
-        <TableContainerBodyContent totalcols={totalCols}>
+        <TableContainerBodyContent totalcols={totalCols} key={row.id}>
             {cols.map((col, i) => (
                 <td key={i}>{typeof col.display === 'function' ? col.display(row) : row[col.property]}
                 </td>
@@ -19,7 +19,7 @@ export const TablePrueba = ({ cols, data, totalCols }) => {
                 <TableContainerTitle>
                     <TableContainerTitleTR>
                         {cols?.map((col, i) =>
-                            <TableTitles key={i}>{col.label && col.label}</TableTitles>
+                            <TableTitles totalheaders={totalHeaders} key={i}>{col.label && col.label}</TableTitles>
                         )}
                     </TableContainerTitleTR>
                 </TableContainerTitle>
@@ -59,7 +59,7 @@ const TableTitles = styled.th`
     font-weight: 600;
     display: flex;
     justify-content: center;
-    width: calc(1400px / 7); 
+    width: calc(1400px / ${props => props.totalheaders});
 `;
 
 
