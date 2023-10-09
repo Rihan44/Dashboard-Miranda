@@ -18,6 +18,7 @@ import { Tabla } from "../Reusables/Tabla";
 export const Contact = () => {
     const [modalInfo, setModalInfo] = useState({});
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalInfoCard, setModalInfoCard] = useState('');
     const [isActiveButton, setIsActiveButton] = useState('allContacts');
     const [contactData, setContactData] = useState([]);
 
@@ -34,6 +35,7 @@ export const Contact = () => {
 
     const handleOpenModal = (data, subject, email) => {
         setModalInfo({emailInfo: data, emailSubject: subject, emailUser: email});
+        setModalInfoCard(data);
         setModalOpen(true);
     }
     console.log(modalInfo)

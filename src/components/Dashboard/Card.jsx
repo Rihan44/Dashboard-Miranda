@@ -11,40 +11,40 @@ import 'swiper/css/scrollbar'
 import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 
-export const Card = ({data, handleOpen}) => {
+export const Card = ({ data, handleOpen }) => {
 
     return (
         <>
-        <SwiperContainer
-                        modules={[Navigation, A11y]}
-                        spaceBetween={40}
-                        slidesPerView={3}
-                        navigation
-                    >
-            {data.map((dataCard) => (
-                <SwiperSlide key={dataCard.id}>
-                    <CardContainer>
-                        <EmailSubject>
-                            {dataCard.email_subject}
-                        </EmailSubject>
-                        <ReviewComent>
-                            {dataCard.email_description}
-                        </ReviewComent>
-                        <InnerCard>
-                            <ProfileContainer>
-                                <h4>{dataCard.name}</h4>
-                                <p>{dataCard.email}</p>
-                                <p>{dataCard.phone}</p>
-                            </ProfileContainer>
-                            <ButtonContainer>
-                                <Button><AiOutlineCheckCircle /></Button>
-                                <ButtonOpen onClick={() => handleOpen(dataCard)}><AiOutlineFullscreen /></ButtonOpen>
-                            </ButtonContainer>
-                        </InnerCard>
-                    </CardContainer>
-                </SwiperSlide>
-            ))}
-        </SwiperContainer>
+            <SwiperContainer
+                modules={[Navigation, A11y]}
+                spaceBetween={40}
+                slidesPerView={3}
+                navigation
+            >
+                {data.map((dataCard) => (
+                    <SwiperSlide key={dataCard.id}>
+                        <CardContainer>
+                            <EmailSubject>
+                                {dataCard.email_subject}
+                            </EmailSubject>
+                            <ReviewComent>
+                                {dataCard.email_description}
+                            </ReviewComent>
+                            <InnerCard>
+                                <ProfileContainer>
+                                    <h4>{dataCard.name}</h4>
+                                    <p>{dataCard.email}</p>
+                                    <p>{dataCard.phone}</p>
+                                </ProfileContainer>
+                                <ButtonContainer>
+                                    <Button><AiOutlineCheckCircle /></Button>
+                                    <ButtonOpen onClick={() => handleOpen(dataCard)}><AiOutlineFullscreen /></ButtonOpen>
+                                </ButtonContainer>
+                            </InnerCard>
+                        </CardContainer>
+                    </SwiperSlide>
+                ))}
+            </SwiperContainer>
         </>
     )
 }
@@ -135,7 +135,7 @@ const ButtonOpen = styled.button`
     color: #575757;
 `;
 
-const SwiperContainer = styled(Swiper) `
+const SwiperContainer = styled(Swiper)`
     padding: 10px;
     min-width: 1400px;
 

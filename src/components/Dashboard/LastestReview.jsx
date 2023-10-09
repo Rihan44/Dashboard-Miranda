@@ -15,13 +15,13 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 
 export const LastestReview = ({ dataDashboard }) => {
 
-    const [modalInfo, setModalInfo] = useState('');
+    const [modalInfo, setModalInfo] = useState({});
     const [modalOpen, setModalOpen] = useState(false);
     const [checkMessage, setCheckMessage] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
 
     const handleOpen = (data) => {
-        setModalInfo(data.email_description);
+        setModalInfo({emailInfo: data.email_description, emailSubject: data.email_subject, emailUser: data.email});
         setModalOpen(true);
         setCheckMessage(true);
 
@@ -53,8 +53,9 @@ export const LastestReview = ({ dataDashboard }) => {
                     <ButtonModalClose onClick={handleCloseModal}>
                         <AiOutlineCloseCircle />
                     </ButtonModalClose>
-                    <h4>Email Message</h4>
-                    <p>{modalInfo}</p>
+                    <h4>{modalInfo.emailSubject}</h4>
+                    <p>{modalInfo.emailUser}</p>
+                    <p>{modalInfo.emailInfo}</p>
                 </ModalInfo>
             </Modal>
             <ContainerReview>
@@ -99,7 +100,6 @@ export const LastestReview = ({ dataDashboard }) => {
 const Modal = styled.div`
     display: ${props => props.$modalOpen === true ? 'block' : 'none'};
     position: fixed; 
-    z-index: 1; 
     left: 0;
     top: 0;
     width: 100%; 
@@ -108,11 +108,13 @@ const Modal = styled.div`
     background-color: rgb(0,0,0); 
     background-color: rgba(0,0,0,0.4); 
     transition: 0.5s;
+    z-index: 10;
 `;
 
 const SwiperContainer = styled(Swiper) `
     padding: 20px;
     min-width: 1400px;
+    z-index: 1;
     
     div.swiper-button-next {
         width: 56px;
@@ -161,6 +163,7 @@ const ModalInfo = styled.div`
     padding: 30px;
     box-shadow: 0px 4px 4px #00000010;
     word-wrap: break-word;
+    overflow: scroll;
 
     p {
         width: 90%;
@@ -172,12 +175,21 @@ const ModalInfo = styled.div`
         margin-bottom: 30px;
         max-height: 300px;
         overflow: auto;
+        text-align: center;
+    }
+
+    p:first-of-type {
+        color: #799283; 
+        font-size: 14px;
     }
 
     h4 {
         margin: auto;
-        width: 40%;
+        width: 60%;
         font-family: 'Poppins', sans-serif;
+        font-size: 22px;
+        color: #135846;
+        text-align: center;
     }
 `;
 
