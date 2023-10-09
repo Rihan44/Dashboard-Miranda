@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components"
 import { MainContainer } from "./MainContainer"
 
-export const TablePrueba = ({ cols, data, totalCols, totalHeaders}) => {
+export const Tabla = ({ cols, data, totalCols, totalHeaders}) => {
 
     const displayRow = row => (
         <TableContainerBodyContent totalcols={totalCols} key={row.id}>

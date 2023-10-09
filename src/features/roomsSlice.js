@@ -18,7 +18,7 @@ export const getRoom = createAsyncThunk("rooms/getRoom", async (id) => {
 });
 
 export const deleteRoom = createAsyncThunk("rooms/deleteRoom", async (id) => {
-    return await delay(id, 300);
+    return await delay(id, 600);
 });
 
 export const updateRoom = createAsyncThunk("rooms/updateRoom", async (dataUpdate) => {
@@ -31,6 +31,7 @@ export const roomsSlice = createSlice({
         data: [],
         singleData: null,
         status: 'idle',
+        statusDelete: 'idle',
         error: null
     },
     reducers: {},
@@ -55,9 +56,10 @@ export const roomsSlice = createSlice({
         })
         .addCase(deleteRoom.fulfilled, (state, action) => {
             state.status = "fulfilled";
+            state.statusDelete= "fulfilled";
             state.data = state.data.filter(data => {return data.id !== action.payload})
         })
-        .addCase(deleteRoom.pending, (state) => {state.status = "loading"}) /* TODO CAMBIAR EL STATUS AL BORRAR PARA QUE NO CARGUE EL SPINNER */
+        .addCase(deleteRoom.pending, (state) => {state.statusDelete = "pending"}) /* TODO CAMBIAR EL STATUS AL BORRAR PARA QUE NO CARGUE EL SPINNER */
         .addCase(deleteRoom.rejected, (state, action) => {
             state.status = "rejected";
             state.error = action.error.message;

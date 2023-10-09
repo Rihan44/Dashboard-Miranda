@@ -9,13 +9,11 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { BiArchiveOut } from "react-icons/bi";
 import { BsTrash } from "react-icons/bs";
 
-
 import { Card } from "../Dashboard/Card";
-import { Table } from "../Reusables/Table";
 import { MainContainer } from "../Reusables/MainContainer"
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
-import { TablePrueba } from "../Reusables/TablePrueba";
-
+import { RotatingLines } from 'react-loader-spinner'
+import { Tabla } from "../Reusables/Tabla";
 
 export const Contact = () => {
     const [modalInfo, setModalInfo] = useState('');
@@ -25,6 +23,7 @@ export const Contact = () => {
 
     const dataContact = useSelector((state) => state.contact.data);
     const status = useSelector((state) => state.contact.status);
+    const statusArchive = useSelector((state) => state.contact.statusArchive);
 
     let options = {year: 'numeric', month: 'long', day: 'numeric' };
 
@@ -159,6 +158,15 @@ export const Contact = () => {
                 </ModalInfo>
             </Modal>
             <ContactContainer>
+                {statusArchive === 'pending' && 
+                    <RotatingsContainer>
+                        <RotatingLines
+                            strokeColor="#135846"
+                            strokeWidth="5"
+                            animationDuration="0.75"
+                            width="96"
+                        />
+                    </RotatingsContainer>}
                 <CardsContainer>  
                     {status === 'fulfilled'
                         ? <Card handleOpen={handleOpen} data={contactData}></Card>
@@ -177,7 +185,7 @@ export const Contact = () => {
                     </TabsContainer>
                 </FilterContainer>
                 {status === 'fulfilled'
-                        ? <TablePrueba cols={cols} data={contactData} totalCols={4} totalHeaders={4}/>
+                        ? <Tabla cols={cols} data={contactData} totalCols={4} totalHeaders={4}/>
                         : status === 'rejected' ? alert('Algo falló')
                             : <SpinnerLoader></SpinnerLoader>
                     }
@@ -357,4 +365,10 @@ const DescriptionContainer = styled.p`
     width: 200px;
     overflow: scroll;
     box-shadow: 0px 4px 4px #00000010;
+`;
+
+const RotatingsContainer = styled.div`
+    position: fixed;
+    top: 50%;
+    left: 53%;
 `;

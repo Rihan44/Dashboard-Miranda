@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { BsTrash } from "react-icons/bs";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { AiFillEdit } from "react-icons/ai";
+import { FiEdit } from "react-icons/fi";
 
 import { MainContainer } from "../Reusables/MainContainer";
-import { Table } from "../Reusables/Table";
 import { deleteBooking, getAllBookings, getBookingDetail, updateBooking } from "../../features/bookingsSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
-import { TablePrueba } from "../Reusables/TablePrueba";
+import { Tabla } from "../Reusables/Tabla";
+import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 
 
 export const Bookings = () => {
@@ -25,6 +25,7 @@ export const Bookings = () => {
 
     const bookingsSliceData = useSelector((state) => state.bookings.data);
     const status = useSelector((state) => state.bookings.status);
+    const statusDelete = useSelector((state) => state.bookings.statusDelete);
 
     const dispatch = useDispatch();
 
@@ -194,7 +195,7 @@ export const Bookings = () => {
                     <Status $status={status}>{status}</Status>
                     <OptionsButton>
                         <BsTrash onClick={() => handleDelete(id)} />
-                        <AiFillEdit onClick={() => handleUpdate(id)} />
+                        <FiEdit onClick={() => handleUpdate(id)} />
                     </OptionsButton>
                 </StatusContent>
             )
@@ -205,6 +206,7 @@ export const Bookings = () => {
         <>
             <MainContainer>
                 <BookingContainer>
+                    {statusDelete === 'pending' && <DeleteSpinner/>}
                     <Modal $modalOpen={modalOpen}>
                         <ModalInfo>
                             <ButtonModalClose onClick={handleCloseModal}>
@@ -240,7 +242,7 @@ export const Bookings = () => {
                         </Filters>
                     </FilterContainer>
                     {status === 'fulfilled'
-                        ? <TablePrueba cols={cols} data={dataBooking} totalCols={7} totalHeaders={7} />
+                        ? <Tabla cols={cols} data={dataBooking} totalCols={7} totalHeaders={7} />
                         : status === 'rejected' ? alert('Algo falló')
                             : <SpinnerLoader></SpinnerLoader>
                     }
@@ -477,6 +479,9 @@ const TypeRoom = styled.p`
 `;
 
 const Status = styled.p`
+    display: flex;
+    align-items: center;
+    
     ${(props) => {
         switch (props.$status) {
             case 'check_in':
@@ -521,8 +526,10 @@ const OptionsButton = styled(Buttons)`
 
     svg:nth-child(2) {
         color: #5AD07A;
-        margin-left: 10px;
+        margin-left: 13px;
+        margin-top: 10px;
         transition: 0.5s;
+        font-size: 0.9em;
 
         &:hover {
             transform: scale(1.1, 1.1);

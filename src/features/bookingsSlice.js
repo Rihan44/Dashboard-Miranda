@@ -30,6 +30,7 @@ export const bookingsSlice = createSlice({
     initialState: {
         data: [],
         status: 'idle',
+        statusDelete: 'idle',
         error: null
     },
     reducers: {},
@@ -54,9 +55,10 @@ export const bookingsSlice = createSlice({
         })
         .addCase(deleteBooking.fulfilled, (state, action) => {
             state.status = "fulfilled";
+            state.statusDelete= "fulfilled";
             state.data = state.data.filter(data => {return data.id !== action.payload})
         })
-        .addCase(deleteBooking.pending, (state) => {state.status = "pending"})
+        .addCase(deleteBooking.pending, (state) => {state.statusDelete = "pending"})
         .addCase(deleteBooking.rejected, (state, action) => {
             state.status = "rejected";
             state.error = action.error.message;

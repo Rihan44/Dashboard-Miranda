@@ -30,6 +30,7 @@ export const contactSlice = createSlice({
     initialState: {
         data: [],
         status: 'idle',
+        statusArchive: 'idle',
         error: null
     },
     reducers: {},
@@ -45,6 +46,7 @@ export const contactSlice = createSlice({
         })
         .addCase(archiveMessage.fulfilled, (state, action) => {
             state.status = "fulfilled";
+            state.statusArchive = "fulfilled";
             state.data = state.data.map(data => {
                 if (data.id === action.payload) {
                   return { ...data, isArchived: true };
@@ -52,13 +54,14 @@ export const contactSlice = createSlice({
                 return data;
             });
         })
-        .addCase(archiveMessage.pending, (state) => {state.status = "pending"})
+        .addCase(archiveMessage.pending, (state) => {state.statusArchive = "pending"})
         .addCase(archiveMessage.rejected, (state, action) => {
             state.status = "rejected";
             state.error = action.error.message;
         })
         .addCase(unArchiveMessage.fulfilled, (state, action) => {
             state.status = "fulfilled";
+            state.statusArchive = "fulfilled";
             state.data = state.data.map(data => {
                 if (data.id === action.payload) {
                   return { ...data, isArchived: false };
@@ -66,16 +69,17 @@ export const contactSlice = createSlice({
                 return data;
             });
         })
-        .addCase(unArchiveMessage.pending, (state) => {state.status = "pending"})
+        .addCase(unArchiveMessage.pending, (state) => {state.statusArchive = "pending"})
         .addCase(unArchiveMessage.rejected, (state, action) => {
             state.status = "rejected";
             state.error = action.error.message;
         })
         .addCase(deleteMessage.fulfilled, (state, action) => {
             state.status = "fulfilled";
+            state.statusArchive = "fulfilled";
             state.data = state.data.filter(data => data.id !== action.payload);
         })
-        .addCase(deleteMessage.pending, (state) => {state.status = "pending"})
+        .addCase(deleteMessage.pending, (state) => {state.statusArchive = "pending"})
         .addCase(deleteMessage.rejected, (state, action) => {
             state.status = "rejected";
             state.error = action.error.message;

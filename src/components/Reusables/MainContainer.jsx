@@ -15,4 +15,5 @@ const Main = styled.main`
     display: flex;
     flex-direction: column;
     height: auto;
+    max-width: 1400px;
 `

@@ -3,16 +3,17 @@ import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
+import { deleteUser, getAllUsers, getUser } from "../../features/usersSlice";
+
 import { MainContainer } from "../Reusables/MainContainer"
-import { Table } from "../Reusables/Table";
 
 import { BsTrash } from "react-icons/bs";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 
-import { deleteUser, getAllUsers, getUser } from "../../features/usersSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
-import { TablePrueba } from "../Reusables/TablePrueba";
+import { Tabla } from "../Reusables/Tabla";
+import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 
 export const UsersList = () => {
     const [isActiveButton, setIsActiveButton] = useState('allEmployee');
@@ -21,6 +22,7 @@ export const UsersList = () => {
 
     const usersData = useSelector((state) => state.users.data);
     const status = useSelector((state) => state.users.status);
+    const statusDelete = useSelector((state) => state.users.statusDelete);
     
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -146,6 +148,7 @@ export const UsersList = () => {
         <>
             <MainContainer>
                 <UsersListContainer>
+                {statusDelete === 'pending' && <DeleteSpinner/>}
                     <FilterContainer>
                         <TabsContainer>
                             <ButtonTabs $actived={allEmployee} onClick={() => handleTab('allEmployee')}>
@@ -166,7 +169,7 @@ export const UsersList = () => {
                         </Filters>
                     </FilterContainer>            
                     {status === 'fulfilled'
-                        ? <TablePrueba cols={cols} data={dataUsers} totalCols={5} totalHeaders={5}/>
+                        ? <Tabla cols={cols} data={dataUsers} totalCols={5} totalHeaders={5}/>
                         : status === 'rejected' ? alert('Algo falló')
                             : <SpinnerLoader></SpinnerLoader>
                     }
@@ -182,10 +185,11 @@ const UsersListContainer = styled.div`
 `;
 
 const FilterContainer = styled.div`
-    width: 100%;
     display: flex;
     height: 70px;
-    min-width: 1500px;
+    min-width: 1400px;
+    max-width: 1400px;
+    justify-content: space-between;
 `;
 
 const TabsContainer = styled.div`
@@ -222,7 +226,6 @@ const Filters = styled.div`
     width: 50%;
     display: flex;
     justify-content: flex-end;
-    margin-right: 50px;
     align-items: end;
 
     input {

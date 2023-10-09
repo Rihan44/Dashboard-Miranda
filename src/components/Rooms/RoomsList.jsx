@@ -6,14 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteRoom, getAllRooms, getRoom } from "../../features/roomsSlice";
 
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
+import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 
 import { BsTrash } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 
 import { MainContainer } from "../Reusables/MainContainer";
-import { Table } from "../Reusables/Table";
-import { TablePrueba } from "../Reusables/TablePrueba";
-
+import { Tabla } from "../Reusables/Tabla";
 
 export const RoomsList = () => {
 
@@ -27,6 +26,7 @@ export const RoomsList = () => {
 
     const roomsData = useSelector((state) => state.rooms.data);
     const status = useSelector((state) => state.rooms.status);
+    const statusDelete = useSelector((state) => state.rooms.statusDelete);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -91,7 +91,7 @@ export const RoomsList = () => {
 
     const cols = [
         {
-            property: 'image', label: 'Room Photo', display: ({ image}) => (
+            property: 'image', label: 'Room Photo', display: ({ image }) => (
                 <TableContainerBodyContent>
                     <img src={image || 'https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/65045f093c166fdddb4a94a5_x-65045f0266217.webp'} alt="imagen" />
                 </TableContainerBodyContent>
@@ -107,7 +107,6 @@ export const RoomsList = () => {
                 </TableContainerBodyContent>
             )
         },
-
         {
             property: 'room_type', label: 'Room Type'
         },
@@ -136,7 +135,7 @@ export const RoomsList = () => {
                     <Status $status={state}>{state}</Status>
                     <OptionsButton>
                         <BsTrash onClick={() => handleDelete(id)} />
-                        <FiEdit onClick={() => handleEdit(id)} />
+                        <FiEdit onClick={() => handleEdit(id)} /> 
                     </OptionsButton>
                 </StatusContent>
         }
@@ -147,6 +146,7 @@ export const RoomsList = () => {
             <MainContainer>
                 <RoomsContainer>
                     <FilterContainer>
+                    {statusDelete === 'pending' && <DeleteSpinner/>}
                         <TabsContainer>
                             <ButtonTabs $actived={allRooms} onClick={() => handleTab('allRooms')}>
                                 All Rooms
@@ -169,9 +169,9 @@ export const RoomsList = () => {
                         </Filters>
                     </FilterContainer>
                     {status === 'fulfilled' || status === 'loading'
-                        ? <TablePrueba cols={cols} data={dataRooms} totalCols={7} totalHeaders={7}/>
+                        ? <Tabla cols={cols} data={dataRooms} totalCols={7} totalHeaders={7} />
                         : status === 'rejected' ? alert('Algo falló')
-                        : <SpinnerLoader></SpinnerLoader>
+                            : <SpinnerLoader></SpinnerLoader>
                     }
                 </RoomsContainer>
             </MainContainer>
@@ -181,7 +181,7 @@ export const RoomsList = () => {
 }
 
 const RoomsContainer = styled.div`
-    margin-top: 10px;
+    margin-top: 50px;
     margin-left: 70px;
     min-width: 1400px;
     display: flex;
@@ -328,6 +328,11 @@ const TableBodyContent = styled.div`
 const StatusContent = styled(TableBodyContent)`
     display: flex;
     flex-direction: row;
+    
+    p {
+        display: flex;
+        align-items: center;
+    }
 `;
 
 const OptionsButton = styled(Buttons)`
@@ -407,6 +412,7 @@ const PriceParagraph = styled.p`
     small {
         color: #799283;
         font-size: 14px;
+        margin-left: 5px;
     }
 `;
 
@@ -416,8 +422,8 @@ const Discount = styled.div`
     font-size: 20px;
 `;
 
-const SpinnerContainer = styled.div`
+const RotatingsContainer = styled.div`
     position: absolute;
     top: 35%;
-    left: 50%;
+    left: 53%;
 `;
