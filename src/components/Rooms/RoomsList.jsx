@@ -12,6 +12,7 @@ import { FiEdit } from "react-icons/fi";
 
 import { MainContainer } from "../Reusables/MainContainer";
 import { Table } from "../Reusables/Table";
+import { TablePrueba } from "../Reusables/TablePrueba";
 
 
 export const RoomsList = () => {
@@ -168,7 +169,7 @@ export const RoomsList = () => {
                         </Filters>
                     </FilterContainer>
                     {status === 'fulfilled' || status === 'loading'
-                        ? <Table cols={cols} data={dataRooms} totalCols={8}></Table>
+                        ? <TablePrueba cols={cols} data={dataRooms} totalCols={7}></TablePrueba>
                         : status === 'rejected' ? alert('Algo falló')
                         : <SpinnerLoader></SpinnerLoader>
                     }
@@ -366,6 +367,7 @@ const TableContainerBodyContent = styled.div`
     position: relative;
     display: flex;
     justify-content: center;
+    padding: 10px;
 
     p {
         font-family: inherit;
@@ -393,19 +395,18 @@ const IDparagraph = styled.p`
 `;
 
 const AmenitiesContainer = styled.div`
-    width: 15%;
+    width: 100%;
     font-size: 14px;
+    padding: 10px;
 `;
 
 const PriceParagraph = styled.p`
     color: #212121;
     font-weight: bold;
     font-size: 20px;
-    margin-left: 40px;
     small {
         color: #799283;
         font-size: 14px;
-        margin-left: 10px;
     }
 `;
 

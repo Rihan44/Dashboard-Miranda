@@ -251,9 +251,8 @@ const ContactContainer = styled.div`
 `;
 
 const CardsContainer = styled.div`
-    display: flex;
-    width: 1400px;
-    justify-content: space-around;
+    ${'' /* display: flex;
+    width: 1400px; */}
     margin-bottom: 86.5px;
 `;
 

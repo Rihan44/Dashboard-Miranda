@@ -1,5 +1,13 @@
 import styled from "styled-components";
 
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, A11y } from 'swiper/modules';
+
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/scrollbar'
+
 import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 
@@ -7,27 +15,36 @@ export const Card = ({data, handleOpen}) => {
 
     return (
         <>
+        <SwiperContainer
+                        modules={[Navigation, A11y]}
+                        spaceBetween={40}
+                        slidesPerView={3}
+                        navigation
+                    >
             {data.map((dataCard) => (
-            <CardContainer key={dataCard.id}>
-                <EmailSubject>
-                    {dataCard.email_subject}
-                </EmailSubject>
-                <ReviewComent>
-                    {dataCard.email_description}
-                </ReviewComent>
-                <InnerCard>
-                    <ProfileContainer>
-                        <h4>{dataCard.name}</h4>
-                        <p>{dataCard.email}</p>
-                        <p>{dataCard.phone}</p>
-                    </ProfileContainer>
-                    <ButtonContainer>
-                        <Button><AiOutlineCheckCircle /></Button>
-                        <ButtonOpen onClick={() => handleOpen(dataCard)}><AiOutlineFullscreen /></ButtonOpen>
-                    </ButtonContainer>
-                </InnerCard>
-            </CardContainer>
+                <SwiperSlide key={dataCard.id}>
+                    <CardContainer>
+                        <EmailSubject>
+                            {dataCard.email_subject}
+                        </EmailSubject>
+                        <ReviewComent>
+                            {dataCard.email_description}
+                        </ReviewComent>
+                        <InnerCard>
+                            <ProfileContainer>
+                                <h4>{dataCard.name}</h4>
+                                <p>{dataCard.email}</p>
+                                <p>{dataCard.phone}</p>
+                            </ProfileContainer>
+                            <ButtonContainer>
+                                <Button><AiOutlineCheckCircle /></Button>
+                                <ButtonOpen onClick={() => handleOpen(dataCard)}><AiOutlineFullscreen /></ButtonOpen>
+                            </ButtonContainer>
+                        </InnerCard>
+                    </CardContainer>
+                </SwiperSlide>
             ))}
+        </SwiperContainer>
         </>
     )
 }
@@ -116,4 +133,43 @@ const ButtonOpen = styled.button`
     font-size: 24px;
     cursor: pointer;
     color: #575757;
+`;
+
+const SwiperContainer = styled(Swiper) `
+    padding: 10px;
+    min-width: 1400px;
+
+    div.swiper-button-next {
+        width: 56px;
+        height: 56px;
+        background-color:#135846;
+        border-radius: 12px;
+        transition: 0.5s;
+        
+        &::after {
+            font-size: 22px;
+            color: #ffff;
+        }
+
+        &:hover {
+            background-color:#799283;
+        }
+    }
+
+    div.swiper-button-prev {
+        width: 56px;
+        height: 56px;
+        background-color:#135846;
+        border-radius: 12px;
+        transition: 0.5s;
+        
+        &::after {
+            font-size: 22px;
+            color: #ffff;
+        }
+
+        &:hover {
+            background-color:#799283;
+        }
+    }
 `;

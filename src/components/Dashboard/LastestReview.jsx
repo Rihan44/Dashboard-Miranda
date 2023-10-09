@@ -59,15 +59,16 @@ export const LastestReview = ({ dataDashboard }) => {
             </Modal>
             <ContainerReview>
                 <Title>Latest Review by Customers</Title>
-                <CardContainer>
-                   {/*  <Swiper
-								modules={[Navigation, A11y]}
-								spaceBetween={0}
-								slidesPerView={3}
-								navigation
-							> */}
+                <CardContainer> 
+                    <SwiperContainer
+                        modules={[Navigation, A11y]}
+                        spaceBetween={40}
+                        slidesPerView={3}
+                        navigation
+                    >
                         {dataDashboard.map((data, index) => (
-                                <Card key={index}>
+                            <SwiperSlide key={index}>
+                                <Card>
                                     <EmailSubject>
                                         {data.email_subject}
                                     </EmailSubject>
@@ -86,8 +87,9 @@ export const LastestReview = ({ dataDashboard }) => {
                                         </ButtonContainer>
                                     </InnerCard>
                                 </Card>
+                            </SwiperSlide>
                         ))}
-                  {/*  </Swiper> */}
+                    </SwiperContainer>
                 </CardContainer>
             </ContainerReview>
         </>
@@ -106,6 +108,45 @@ const Modal = styled.div`
     background-color: rgb(0,0,0); 
     background-color: rgba(0,0,0,0.4); 
     transition: 0.5s;
+`;
+
+const SwiperContainer = styled(Swiper) `
+    padding: 20px;
+    min-width: 1400px;
+    
+    div.swiper-button-next {
+        width: 56px;
+        height: 56px;
+        background-color:#135846;
+        border-radius: 12px;
+        transition: 0.5s;
+        
+        &::after {
+            font-size: 22px;
+            color: #ffff;
+        }
+
+        &:hover {
+            background-color:#799283;
+        }
+    }
+
+    div.swiper-button-prev {
+        width: 56px;
+        height: 56px;
+        background-color:#135846;
+        border-radius: 12px;
+        transition: 0.5s;
+        
+        &::after {
+            font-size: 22px;
+            color: #ffff;
+        }
+
+        &:hover {
+            background-color:#799283;
+        }
+    }
 `;
 
 const ModalInfo = styled.div`
@@ -159,11 +200,11 @@ const ButtonModalClose = styled.button`
 const ContainerReview = styled.div`
     box-shadow: 0px 4px 4px #00000010;
     border-radius: 20px;
-    width: 1475px;
+    width: 1450px;
     height: 433px;
     margin-left: 50px;
     margin-top: 40px;
-    min-width: 1300px;
+    max-width: 1450px;
     padding: 30px;
 `;
 
@@ -175,11 +216,7 @@ const Title = styled.h3`
 `;
 
 const CardContainer = styled.div`
-    width: 100%;
-    display: flex;
-    margin-top: 30px;
-    justify-content: space-between;
-    min-width: 1300px;
+    margin-top: 10px;
 `;
 
 const Card = styled.div`

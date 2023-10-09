@@ -85,6 +85,6 @@ const TableContainerBodyContent = styled.div`
 `;
 
 const TableBody = styled.div`
-    height: 680px;
+    height: auto;
     width: 1442px;
 `;

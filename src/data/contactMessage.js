@@ -32,8 +32,8 @@ export const contactMessage = [
       "isArchived": false,
       "dateTime":"22:30pm",
     },
-/*     {
-      "id": "12345",
+   {
+      "id": "1234232325",
       "name": "Alice Johnson",
       "email": "alicejohnsone@example.com",
       "phone": "123-456-7890",
@@ -44,7 +44,7 @@ export const contactMessage = [
       "isArchived": true
     },
     {
-      "id": "67890",
+      "id": "643d37890",
       "name": "Albert Garcia",
       "email": "agarciah@example.com",
       "phone": "987-654-3210",
@@ -55,7 +55,7 @@ export const contactMessage = [
       "dateTime":"04:50am",
     },
     {
-      "id": "54321",
+      "id": "541see321",
       "name": "Robert Marlon",
       "email": "robertmarlon@example.com",
       "phone": "456-789-0123",
@@ -66,7 +66,7 @@ export const contactMessage = [
       "dateTime":"22:30pm",
     },
     {
-      "id": "12345",
+      "id": "1213212345",
       "name": "Anthony Smith",
       "email": "smith@example.com",
       "phone": "123-456-7890",
@@ -77,7 +77,7 @@ export const contactMessage = [
       "isArchived": true
     },
     {
-      "id": "67890",
+      "id": "67cece1890",
       "name": "Obi Wan",
       "email": "obiwan@example.com",
       "phone": "987-654-3210",
@@ -88,7 +88,7 @@ export const contactMessage = [
       "dateTime":"04:50am",
     },
     {
-      "id": "54321",
+      "id": "54vreq2321",
       "name": "Anakin Skywalker",
       "email": "anisky@example.com",
       "phone": "456-789-0123",
@@ -97,5 +97,5 @@ export const contactMessage = [
       "date": "2023-01-28",
       "isArchived": false,
       "dateTime":"22:30pm",
-    }, */
+    },
   ]

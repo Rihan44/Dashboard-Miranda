@@ -101,7 +101,7 @@ export const Menu = ({ setHeaderTitle }) => {
 }
 
 const AsideMenu = styled.aside`
-    height: 100vh;
+    height: auto;
     width: 345px;
     display: flex;
     flex-direction: column;
