@@ -16,7 +16,7 @@ import { RotatingLines } from 'react-loader-spinner'
 import { Tabla } from "../Reusables/Tabla";
 
 export const Contact = () => {
-    const [modalInfo, setModalInfo] = useState('');
+    const [modalInfo, setModalInfo] = useState({});
     const [modalOpen, setModalOpen] = useState(false);
     const [isActiveButton, setIsActiveButton] = useState('allContacts');
     const [contactData, setContactData] = useState([]);
@@ -32,10 +32,11 @@ export const Contact = () => {
 
     const dispatch = useDispatch();
 
-    const handleOpen = (data) => {
-        setModalInfo(data.email_description);
+    const handleOpenModal = (data, subject, email) => {
+        setModalInfo({emailInfo: data, emailSubject: subject, emailUser: email});
         setModalOpen(true);
     }
+    console.log(modalInfo)
 
     const handleCloseModal = () => {
         setModalOpen(false);
@@ -117,17 +118,14 @@ export const Contact = () => {
             )
         },
         {
-            property: 'email_subject', label: 'Email Subject && Comment', display: ({ email_subject, email_description }) => (
+            property: 'email_subject', label: 'Email Subject && Comment', display: ({ email_subject, email_description, email }) => (
                 <EmaiLContactContainer>
-                    <p>{email_subject}</p>
-                    {/* HACER UN BOTÓN PARA QUE SE VEA LA DESCRIPCION EN UN MODAL */}
-                    <DescriptionContainer>{email_description}</DescriptionContainer>
+                    <ViewNotesButton onClick={() => handleOpenModal(email_description, email_subject, email)}>View Notes</ViewNotesButton>
                 </EmaiLContactContainer>
             )
         },
         {
             property: 'isArchived', label: 'Status', display: ({ isArchived, id }) => (
-                /* TODO HACER EL ONCLIK PARA ARCHIVAR */
                 <div>
                     <IsAcrhivedParagraph $isArchive={isArchived}>{isArchived ? 'Archived' : 'Publish'}</IsAcrhivedParagraph>
                     {isArchived 
@@ -148,13 +146,13 @@ export const Contact = () => {
     return (
         <MainContainer>
             <Modal $modalOpen={modalOpen}>
-            {/* TODO HACER UN MODAL NUEVO PARA LOS MENSAJES COMO EN BOOKINGS */}
                 <ModalInfo>
                     <ButtonModalClose onClick={handleCloseModal}>
                         <AiOutlineCloseCircle />
                     </ButtonModalClose>
-                    <h4>Email Message</h4>
-                    <p>{modalInfo}</p>
+                    <h4>{modalInfo.emailSubject}</h4>
+                    <p>{modalInfo.emailUser}</p>
+                    <p>{modalInfo.emailInfo}</p>
                 </ModalInfo>
             </Modal>
             <ContactContainer>
@@ -169,7 +167,7 @@ export const Contact = () => {
                     </RotatingsContainer>}
                 <CardsContainer>  
                     {status === 'fulfilled'
-                        ? <Card handleOpen={handleOpen} data={contactData}></Card>
+                        ? <Card handleOpen={handleOpenModal} data={contactData}></Card>
                         : status === 'rejected' ? alert('Algo falló')
                             : <SpinnerLoader></SpinnerLoader>
                     }
@@ -197,7 +195,7 @@ export const Contact = () => {
 const Modal = styled.div`
     display: ${props => props.$modalOpen === true ? 'block' : 'none'};
     position: fixed; 
-    z-index: 1; 
+    z-index: 10; 
     left: 0;
     top: 0;
     width: 100%; 
@@ -219,6 +217,7 @@ const ModalInfo = styled.div`
     border-radius: 20px;
     box-shadow: 0px 4px 4px #00000010;
     word-wrap: break-word;
+    overflow: scroll;
 
     p {
         width: 90%;
@@ -230,12 +229,22 @@ const ModalInfo = styled.div`
         margin-bottom: 30px;
         max-height: 300px;
         overflow: auto;
+        text-align: center;
+    }
+
+    p:first-of-type {
+        color: #799283; 
+        font-size: 14px;
     }
 
     h4 {
         margin: auto;
-        width: 40%;
+        margin-top: 30px;
+        width: 60%;
         font-family: 'Poppins', sans-serif;
+        font-size: 18px;
+        color: #135846;
+        text-align: center;
     }
 `;
 
@@ -371,4 +380,22 @@ const RotatingsContainer = styled.div`
     position: fixed;
     top: 50%;
     left: 53%;
+`;
+
+const ViewNotesButton = styled(Buttons)`
+    color: #212121;
+    font-size: 16px;
+    background: #EEF9F2;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: 500;
+    align-self: center;
+    justify-center: center;
+    width: 160px;
+    transition: 0.3s;
+
+    &:hover {
+        background: #135846;
+        color: #EEF9F2;
+    }
 `;
