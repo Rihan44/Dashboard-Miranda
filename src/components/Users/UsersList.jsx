@@ -12,6 +12,7 @@ import { FiEdit } from "react-icons/fi";
 
 import { deleteUser, getAllUsers, getUser } from "../../features/usersSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
+import { TablePrueba } from "../Reusables/TablePrueba";
 
 export const UsersList = () => {
     const [isActiveButton, setIsActiveButton] = useState('allEmployee');
@@ -91,9 +92,14 @@ export const UsersList = () => {
 
     const cols = [
         {
-            property: 'photo', label: 'Name', display: ({ photo, name, id, email, hire_date }) => (
+            property: 'photo', label: 'User Photo', display: ({photo, name}) => (
                 <NameContainer>
                     <img src={'https://robohash.org/'+ name} alt="img" />
+                </NameContainer>
+            )
+        },
+        {
+            property: 'name', label: 'Name', display: ({ name, id, email, hire_date }) => (
                     <NameInner>
                         <h4>{name}</h4>
                         <p>{email}</p>
@@ -103,7 +109,6 @@ export const UsersList = () => {
                                 hire_date.split("-")[2]).toLocaleDateString('en-EN', options)
                         }</p>
                     </NameInner>
-                </NameContainer>
             )
         },
         {
@@ -161,7 +166,7 @@ export const UsersList = () => {
                         </Filters>
                     </FilterContainer>            
                     {status === 'fulfilled'
-                        ? <Table cols={cols} data={dataUsers} totalCols={5} />
+                        ? <TablePrueba cols={cols} data={dataUsers} totalCols={5} totalHeaders={5}/>
                         : status === 'rejected' ? alert('Algo falló')
                             : <SpinnerLoader></SpinnerLoader>
                     }
@@ -300,7 +305,10 @@ const EmployeeContainer = styled.div`
 `;
 
 const PhoneContainer = styled.div`
-
+    svg {
+        font-size: 40px;
+        margin-right: 10px;
+    }
 `;
 
 const Call = styled(NavLink)`
@@ -330,11 +338,10 @@ const OptionsButton = styled(Buttons)`
     font-size: 30px;
     color:#393939;
     display: flex;
-    margin-left: 20px;
+    margin-top: 15px;
 
     svg:nth-child(1) {
         color: #E23428;
-        margin-left: 10px;
         transition: 0.5s;
         font-size: 1.05em;
 
