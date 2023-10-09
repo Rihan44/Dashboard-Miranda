@@ -169,7 +169,7 @@ export const RoomsList = () => {
                         </Filters>
                     </FilterContainer>
                     {status === 'fulfilled' || status === 'loading'
-                        ? <TablePrueba cols={cols} data={dataRooms} totalCols={7}></TablePrueba>
+                        ? <TablePrueba cols={cols} data={dataRooms} totalCols={7} />
                         : status === 'rejected' ? alert('Algo falló')
                         : <SpinnerLoader></SpinnerLoader>
                     }

@@ -17,11 +17,11 @@ export const TablePrueba = ({ cols, data, totalCols }) => {
         <MainContainer>
             <TableContainer>
                 <TableContainerTitle>
-                    <TableContainerTitleTH>
+                    <TableContainerTitleTR>
                         {cols?.map((col, i) =>
                             <TableTitles key={i}>{col.label && col.label}</TableTitles>
                         )}
-                    </TableContainerTitleTH>
+                    </TableContainerTitleTR>
                 </TableContainerTitle>
                 <TableBody>
                     {data?.map(displayRow)}
@@ -46,7 +46,7 @@ const TableContainerTitle = styled.thead`
     display: flex;
 `;
 
-const TableContainerTitleTH = styled.tr`
+const TableContainerTitleTR = styled.tr`
     display: flex;
     padding: 20px;
     width: 100%;
@@ -69,6 +69,11 @@ const TableContainerBodyContent = styled.tr`
     width: 1400px;
     display: flex;
     justify-content: space-between;
+    transition: transform 0.5s;
+
+    &:hover {
+        transform: scale(1.01);
+    }
 
     td {
         width: calc(1400px / ${props => props.totalcols});
@@ -77,6 +82,7 @@ const TableContainerBodyContent = styled.tr`
         align-items: center;
         justify-content: center;
         border: 1px solid #00000015;
+        padding: 10px;
     }
 
 `;

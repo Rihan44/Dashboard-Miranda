@@ -11,6 +11,7 @@ import { MainContainer } from "../Reusables/MainContainer";
 import { Table } from "../Reusables/Table";
 import { deleteBooking, getAllBookings, getBookingDetail, updateBooking } from "../../features/bookingsSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
+import { TablePrueba } from "../Reusables/TablePrueba";
 
 
 export const Bookings = () => {
@@ -239,7 +240,7 @@ export const Bookings = () => {
                         </Filters>
                     </FilterContainer>
                     {status === 'fulfilled'
-                        ? <Table cols={cols} data={dataBooking} totalCols={8} />
+                        ? <TablePrueba cols={cols} data={dataBooking} totalCols={7} />
                         : status === 'rejected' ? alert('Algo falló')
                             : <SpinnerLoader></SpinnerLoader>
                     }
