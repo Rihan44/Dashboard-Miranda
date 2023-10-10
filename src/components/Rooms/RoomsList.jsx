@@ -123,14 +123,14 @@ export const RoomsList = () => {
         },
         {
             property: 'price', label: 'Price', display: ({ price, offer_price }) => (
-                <PriceParagraph>
+                <PriceParagraph darkmode={asideState.darkMode}>
                     {offer_price ? <><del>{price}</del><small>/Night</small></> : <>{price}<small>/Night</small></>}
                 </PriceParagraph>
             )
         },
         {
             property: 'offer_price', label: 'Offer Price', display: ({ offer_price, discount, price }) => (
-                <Discount>{offer_price === false ? <del>No Offer</del> : (price - (discount * price / 100))}</Discount>
+                <Discount darkmode={asideState.darkMode}>{offer_price === false ? <del>No Offer</del> : (price - (discount * price / 100))}</Discount>
             )
         },
         {
@@ -410,9 +410,11 @@ const AmenitiesContainer = styled.div`
 `;
 
 const PriceParagraph = styled.p`
-    color: #212121;
+    color: ${props => props.darkmode ? '#fff' : '#212121'};
     font-weight: bold;
     font-size: 20px;
+    transition: 0.5s;
+
     small {
         color: #799283;
         font-size: 14px;
@@ -421,9 +423,10 @@ const PriceParagraph = styled.p`
 `;
 
 const Discount = styled.div`
-    color: #212121;
     font-weight: bold;
     font-size: 20px;
+    color: ${props => props.darkmode ? '#fff' : '#212121'};
+    transition: 0.5s;
 `;
 
 const RotatingsContainer = styled.div`

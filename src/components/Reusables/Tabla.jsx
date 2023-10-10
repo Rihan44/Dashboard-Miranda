@@ -17,20 +17,20 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}) => {
     )
 
     return (
-        <MainContainer>
+        <>
             <TableContainer>
-                <TableContainerTitle>
+                <TableContainerTitle darkmode={asideState.darkMode}>
                     <TableContainerTitleTR>
                         {cols?.map((col, i) =>
-                            <TableTitles totalheaders={totalHeaders} key={i}>{col.label && col.label}</TableTitles>
+                            <TableTitles darkmode={asideState.darkMode} totalheaders={totalHeaders} key={i}>{col.label && col.label}</TableTitles>
                         )}
                     </TableContainerTitleTR>
                 </TableContainerTitle>
-                <TableBody>
+                <TableBody darkmode={asideState.darkMode}>
                     {data?.map(displayRow)}
                 </TableBody>
             </TableContainer>
-        </MainContainer>
+        </>
     )
 }
 
@@ -47,6 +47,8 @@ const TableContainerTitle = styled.thead`
     height: 65px;
     width: 1400px;
     display: flex;
+    transition: 0.5s;
+    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
 `;
 
 const TableContainerTitleTR = styled.tr`
@@ -56,13 +58,14 @@ const TableContainerTitleTR = styled.tr`
 `;
 
 const TableTitles = styled.th`
-    color: #393939;
+    color: ${props => props.darkmode ? '#fff' : '#393939'};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
-    font-weight: 600;
+    font-weight: ${props => props.darkmode ? 'normal' : 600};
     display: flex;
     justify-content: center;
     width: calc(1400px / ${props => props.totalheaders});
+    transition: 0.5s;
 `;
 
 
@@ -93,4 +96,8 @@ const TableContainerBodyContent = styled.tr`
 const TableBody = styled.tbody`
     height: auto;
     width: 1442px;
+    color: ${props => props.darkmode ? '#fff' : '#393939'};
+    transition: 0.5s;
+    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
+
 `;
