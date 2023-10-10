@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useContext, useState } from "react";
 import { AuthContext } from "../Context/AuthContainer";
+import { AsideContext } from "../Context/ToggleAsideContext";
 
 
 export const ProfileCompontent = () => {
@@ -12,6 +13,7 @@ export const ProfileCompontent = () => {
     const [email, setUserUpdate] = useState('');
     const [user, setEmailUpdate] = useState('');
     const {auth, authDispatch} = useContext(AuthContext);
+    const {asideState} = useContext(AsideContext);
 
     const handleOpen = () => {
         setModalOpen(true);
@@ -45,7 +47,7 @@ export const ProfileCompontent = () => {
     }
 
     return(
-        <ProfileContainer>
+        <ProfileContainer darkmode={asideState.darkMode}>
             <Modal $modalOpen={modalOpen}>
                 <ModalInfo>
                     <ButtonModalClose onClick={handleCloseModal}>
@@ -61,7 +63,7 @@ export const ProfileCompontent = () => {
                 </ModalInfo>
             </Modal>
             <ImageProfile src={'https://robohash.org/'+auth.username}/>
-            <ProfileTitle>{auth.username}</ProfileTitle>
+            <ProfileTitle darkmode={asideState.darkMode}>{auth.username}</ProfileTitle>
             <ProfileParagraph>{auth.email}</ProfileParagraph>
             <ProfileButton onClick={handleOpen}>Edit</ProfileButton>
         </ProfileContainer>
@@ -72,7 +74,7 @@ export const ProfileCompontent = () => {
 const Modal = styled.div`
     display: ${props => props.$modalOpen === true ? 'block' : 'none'};
     position: fixed; 
-    z-index: 1; 
+    z-index: 10; 
     left: 0;
     top: 0;
     width: 100%; 
@@ -170,8 +172,11 @@ const ProfileContainer = styled.div`
     box-shadow: 0px 20px 30px #00000014;
     text-align: center;
     position: relative;
-    margin-top: 50px;
-    margin-bottom: 62px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    background-color: ${props => props.darkmode ? '#292828' : '#ffff'};
+    border-radius: 18px;
+    transition: 0.5s;
 `;
 
 const ImageProfile = styled.img`
@@ -184,13 +189,14 @@ const ImageProfile = styled.img`
 `;
 
 const ProfileTitle = styled.h3`
-    color: #393939;
+    color: ${props => props.darkmode ? '#ffff' : '#393939'};
     font-size: 16px;
     font-family: 
     font-family: 'Poppins', sans-serif;
     font-weight: medium;
     padding-top: 40px;
     margin-bottom: 9px;
+    transition: color 0.5s;
 `;
 
 const ProfileParagraph = styled.p`

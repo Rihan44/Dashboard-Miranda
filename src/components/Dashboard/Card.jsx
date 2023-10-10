@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, A11y } from 'swiper/modules';
+import { useLocation } from "react-router-dom";
 
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -12,6 +13,8 @@ import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 
 export const Card = ({ data, handleOpen }) => {
+
+    const location = useLocation();
 
     return (
         <>
@@ -38,7 +41,7 @@ export const Card = ({ data, handleOpen }) => {
                                 </ProfileContainer>
                                 <ButtonContainer>
                                     <Button><AiOutlineCheckCircle /></Button>
-                                    <ButtonOpen onClick={() => handleOpen(dataCard)}><AiOutlineFullscreen /></ButtonOpen>
+                                    {location.pathname !== '/contact' && <ButtonOpen onClick={() => handleOpen(dataCard)}><AiOutlineFullscreen /></ButtonOpen>}
                                 </ButtonContainer>
                             </InnerCard>
                         </CardContainer>

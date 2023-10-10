@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { LiaBedSolid } from "react-icons/lia";
@@ -12,11 +12,13 @@ import { MainContainer } from "../Reusables/MainContainer";
 import { LastestReview } from "./LastestReview";
 import { getAllMessages } from "../../features/contactSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
+import { AsideContext } from "../Context/ToggleAsideContext";
 
 
 export const Dashboard = () => {
 
     const [dataContact, setDataContact] = useState([]);
+    const {asideState} = useContext(AsideContext);
 
     const contactData = useSelector((state) => state.contact.data);
     const status = useSelector((state) => state.contact.status);
@@ -40,7 +42,7 @@ export const Dashboard = () => {
         <>
             <MainContainer>
                 <ContainerCards>
-                    <Card>
+                    <Card darkmode={asideState.darkMode}>
                         <div>
                             <LiaBedSolid />
                         </div>
@@ -49,7 +51,7 @@ export const Dashboard = () => {
                             <p>New Booking</p>
                         </div>
                     </Card>
-                    <Card>
+                    <Card darkmode={asideState.darkMode}>
                         <div>
                             <LuCalendarCheck2 />
                         </div>
@@ -58,7 +60,7 @@ export const Dashboard = () => {
                             <p>Scheduled Room</p>
                         </div>
                     </Card>
-                    <Card>
+                    <Card darkmode={asideState.darkMode}>
                         <div>
                             <GoSignOut />
                         </div>
@@ -67,7 +69,7 @@ export const Dashboard = () => {
                             <p>Check In</p>
                         </div>
                     </Card>
-                    <Card>
+                    <Card darkmode={asideState.darkMode}>
                         <div>
                             <GoSignIn />
                         </div>
@@ -78,7 +80,7 @@ export const Dashboard = () => {
                     </Card>
                 </ContainerCards>
                 {status === 'fulfilled'
-                    ? <LastestReview dataDashboard={dataContact} />
+                    ? <LastestReview darkMode={asideState.darkMode} dataDashboard={dataContact} />
                     : status === 'rejected' ? alert('Algo falló')
                         : <SpinnerLoader></SpinnerLoader>
                 }
@@ -91,13 +93,13 @@ const ContainerCards = styled.div`
     display: flex;
     margin-top: 50px;
     margin-left: 50px;
-    min-width: 1300px;
+    min-width: 1485px;
 `;
 
 const Card = styled.div`
     width: 340px;
     height: 125px;
-    background: #FFFFFF 0% 0% no-repeat padding-box;
+    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
     box-shadow: 0px 4px 4px #00000010;
     border-radius: 12px;
     margin-right: 38px;
@@ -108,7 +110,6 @@ const Card = styled.div`
     &:hover {
 
         transform: scale(1.1);
-
         div:nth-child(1) {
             background: #E23428;
             svg {
@@ -118,7 +119,7 @@ const Card = styled.div`
     }
 
     div:nth-child(1) {
-        background: #FFEDEC;
+        background-color: ${props => props.darkmode ? '#E234281C' : '#FFEDEC'};
         width: 65px;
         height: 65px;
         border-radius: 8px;
@@ -139,7 +140,8 @@ const Card = styled.div`
         h4 {
             font-family: 'Poppins', sans-serif;
             font-size: 30px;
-            color: #393939;
+            transition: color 0.5s;
+            color: ${props => props.darkmode ? '#FFEDEC' : '#393939'};
         }
 
         p {

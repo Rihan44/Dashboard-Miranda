@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components"
 import { MainContainer } from "./MainContainer"
+import { AsideContext } from "../Context/ToggleAsideContext";
 
 export const Tabla = ({ cols, data, totalCols, totalHeaders}) => {
+
+    const {asideState} = useContext(AsideContext);
 
     const displayRow = row => (
         <TableContainerBodyContent totalcols={totalCols} key={row.id}>

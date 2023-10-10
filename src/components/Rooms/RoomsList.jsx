@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { deleteRoom, getAllRooms, getRoom } from "../../features/roomsSlice";
+import { deleteRoom, getAllRooms, getRoom, updateRoom } from "../../features/roomsSlice";
 
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
@@ -13,8 +13,11 @@ import { FiEdit } from "react-icons/fi";
 
 import { MainContainer } from "../Reusables/MainContainer";
 import { Tabla } from "../Reusables/Tabla";
+import { AsideContext } from "../Context/ToggleAsideContext";
 
 export const RoomsList = () => {
+
+    const {asideState} = useContext(AsideContext);
 
     const [isActiveButton, setIsActiveButton] = useState('allRooms');
     const [selectData, setSelectData] = useState('');
@@ -47,6 +50,7 @@ export const RoomsList = () => {
         dispatch(getRoom(id));
         navigate(`/rooms/update-room/${id}`);
     }
+
 
     useEffect(() => {
 

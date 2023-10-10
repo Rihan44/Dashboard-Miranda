@@ -16,4 +16,5 @@ const Main = styled.main`
     flex-direction: column;
     height: auto;
     max-width: 1400px;
+    ${'' /* background-color: #171717; */}
 `

@@ -62,6 +62,7 @@ export const contactSlice = createSlice({
         .addCase(unArchiveMessage.fulfilled, (state, action) => {
             state.status = "fulfilled";
             state.statusArchive = "fulfilled";
+
             state.data = state.data.map(data => {
                 if (data.id === action.payload) {
                   return { ...data, isArchived: false };

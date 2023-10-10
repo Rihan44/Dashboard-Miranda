@@ -66,10 +66,11 @@ export const roomsSlice = createSlice({
         })
         .addCase(updateRoom.fulfilled, (state, action) => {
             state.status = "fulfilled";
-            
+            const updatedRoom = action.payload;
+
             state.data = state.data.map(data => {
-                if (data.id === action.payload.id) {
-                  return { ...data, room_number: action.payload.room_number};
+                if (data.id === updatedRoom.id) {
+                  return {...data, ...updatedRoom};
                 }
                 return data;
             });

@@ -38,7 +38,6 @@ export const Contact = () => {
         setModalInfoCard(data);
         setModalOpen(true);
     }
-    console.log(modalInfo)
 
     const handleCloseModal = () => {
         setModalOpen(false);

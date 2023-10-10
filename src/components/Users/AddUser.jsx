@@ -20,7 +20,7 @@ export const AddUser = () => {
                 <AddUserContainer>
                 <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft/></ButtonBack>
                     <FormContainer>
-                        <Title>Add User Form</Title>
+                        <Title>Add User</Title>
                         <Form onSubmit={handleSubmit}>
                             <FormBox>
                                 <FormBoxInner>

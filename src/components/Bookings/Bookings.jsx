@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -12,9 +12,12 @@ import { deleteBooking, getAllBookings, getBookingDetail, updateBooking } from "
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
+import { AsideContext } from "../Context/ToggleAsideContext";
 
 
 export const Bookings = () => {
+
+    const {asideState} = useContext(AsideContext);
 
     const [dataBooking, setBookingData] = useState([]);
     const [selectData, setSelectData] = useState('');
