@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, A11y } from 'swiper/modules';
 import { useLocation } from "react-router-dom";
+import { useContext } from "react";
 
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -11,8 +12,10 @@ import 'swiper/css/scrollbar'
 
 import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineCheckCircle } from "react-icons/ai";
+import { AsideContext } from "../Context/ToggleAsideContext";
 
 export const Card = ({ data, handleOpen }) => {
+    const {asideState} = useContext(AsideContext);
 
     const location = useLocation();
 
@@ -26,15 +29,16 @@ export const Card = ({ data, handleOpen }) => {
             >
                 {data.map((dataCard) => (
                     <SwiperSlide key={dataCard.id}>
-                        <CardContainer>
-                            <EmailSubject>
+                        <CardContainer darkmode={asideState.darkMode}>
+                            <EmailSubject darkmode={asideState.darkMode}>
                                 {dataCard.email_subject}
                             </EmailSubject>
-                            <ReviewComent>
+                            <ReviewComent darkmode={asideState.darkMode}>
                                 {dataCard.email_description}
                             </ReviewComent>
                             <InnerCard>
-                                <ProfileContainer>
+                                <ImgProfile src={'https://robohash.org/'+dataCard.name}/>
+                                <ProfileContainer darkmode={asideState.darkMode}>
                                     <h4>{dataCard.name}</h4>
                                     <p>{dataCard.email}</p>
                                     <p>{dataCard.phone}</p>
@@ -55,10 +59,10 @@ export const Card = ({ data, handleOpen }) => {
 const CardContainer = styled.div`
     width: 431px;
     height: 275px;
-    border: 1px solid #EBEBEB;
+    border: ${props => props.darkmode ? '1px solid #3D3D3D' : '1px solid #EBEBEB'};
     border-radius: 20px;
     padding: 30px;
-    transition: transform 0.5s;
+    transition: 0.5s;
     box-shadow: 0px 3px 10px #00000030;
 
     &:hover {
@@ -67,19 +71,21 @@ const CardContainer = styled.div`
 `;
 
 const EmailSubject = styled.h4`
-    color: #393939;
+    color: ${props => props.darkmode ? '#FFE' : '#393939'};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     margin-bottom: 10px;
+    transition: 0.5s;
 `;
 
 const ReviewComent = styled.p`
-    color: #4E4E4E;
+    color: ${props => props.darkmode ? '#fff' : '#4E4E4E'};
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
     margin-bottom: 30px;
     overflow: hidden;
     height: 70px;
+    transition: 0.5s;
 
     &::before {
         content: "...";
@@ -88,11 +94,12 @@ const ReviewComent = styled.p`
 
 const InnerCard = styled.div`
     display:flex;
+    align-items: center;
+
     img {
         width: 56px;
         height: 56px;
         border-radius: 8px;
-        background-color: #C5C5C5;
     }
 `;
 
@@ -100,7 +107,8 @@ const ProfileContainer = styled.div`
     width: 80%;
 
     h4 {
-        color: #262626;
+        color: ${props => props.darkmode ? '#FFE' : '#262626'};
+        transition: 0.5s;
         font-family: 'Poppins', sans-serif;
         font-size: 16px;
         margin-bottom: 10px;
@@ -135,12 +143,14 @@ const ButtonOpen = styled.button`
     background: none;
     font-size: 24px;
     cursor: pointer;
-    color: #575757;
+    color: ${props => props.darkmode ? '#FFE' : '#575757'};
+    transition: 0.5s;
 `;
 
 const SwiperContainer = styled(Swiper)`
     padding: 10px;
     min-width: 1400px;
+    margin-bottom: 0px;
 
     div.swiper-button-next {
         width: 56px;
@@ -175,4 +185,11 @@ const SwiperContainer = styled(Swiper)`
             background-color:#799283;
         }
     }
+`;
+
+const ImgProfile = styled.img`
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    margin-right: 20px;
 `;

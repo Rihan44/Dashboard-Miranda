@@ -4,11 +4,14 @@ import { MainContainer } from "../Reusables/MainContainer"
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { AsideContext } from "../Context/ToggleAsideContext";
+import { useContext } from "react";
 
 
 export const AddUser = () => {
 
     const navigate = useNavigate();
+    const {asideState} = useContext(AsideContext);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -21,7 +24,7 @@ export const AddUser = () => {
                 <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft/></ButtonBack>
                     <FormContainer>
                         <Title>Add User</Title>
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit} darkmode={asideState.darkMode}>
                             <FormBox>
                                 <FormBoxInner>
                                     <div>
@@ -116,6 +119,8 @@ const Form = styled.form`
     justify-content: center;
     align-items: center;
     position: relative;
+    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
+    transition: 0.5s;
 
     div {
         display: flex;

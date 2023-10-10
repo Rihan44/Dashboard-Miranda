@@ -4,9 +4,9 @@ import { MainContainer } from "../Reusables/MainContainer";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { updateUser } from "../../features/usersSlice";
-import { SpinnerLoader } from "../Reusables/SpinnerLoader";
+import { AsideContext } from "../Context/ToggleAsideContext";
 
 export const UpdateUser = () => {
 
@@ -17,9 +17,8 @@ export const UpdateUser = () => {
     const usersData = useSelector((state) => state.rooms.data);
     const status = useSelector((state) => state.rooms.status);
 
-    console.log(usersData)
-
     const dispatch = useDispatch();
+    const {asideState} = useContext(AsideContext);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -48,7 +47,7 @@ export const UpdateUser = () => {
                     <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft /></ButtonBack>
                     <FormContainer>
                         <Title>Update User</Title>
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit} darkmode={asideState.darkMode}>
                             <FormBox>
                                 <FormBoxInner>
                                     <div>
@@ -145,6 +144,8 @@ const Form = styled.form`
     justify-content: center;
     align-items: center;
     position: relative;
+    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
+    transition: 0.5s;
 
     div {
         display: flex;

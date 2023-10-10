@@ -1,12 +1,17 @@
 import styled from "styled-components"
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+
 import { MainContainer } from "../Reusables/MainContainer"
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import { AsideContext } from "../Context/ToggleAsideContext";
 
 export const AddRoom = () => {
 
     const navigate = useNavigate();
+
+    const {asideState} = useContext(AsideContext);
 
     const amenitiesList = [
         "1/3 Bed Space",
@@ -34,9 +39,9 @@ export const AddRoom = () => {
             <MainContainer>
                 <AddRoomContainer>
                 <ButtonBack onClick={() => navigate('/rooms')}><AiOutlineArrowLeft/></ButtonBack>
-                    <FormContainer>
+                    <FormContainer >
                         <Title>Room Form</Title>
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit} darkmode={asideState.darkMode}>
                             <FormBox>
                                 <FormBoxInner>
                                     <div>
@@ -131,6 +136,8 @@ const Form = styled.form`
     justify-content: center;
     align-items: center;
     position: relative;
+    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
+    transition: 0.5s;
 
     div {
         display: flex;

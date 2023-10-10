@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -14,8 +14,11 @@ import { FiEdit } from "react-icons/fi";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
+import { AsideContext } from "../Context/ToggleAsideContext";
 
 export const UsersList = () => {
+    const {asideState} = useContext(AsideContext);
+
     const [isActiveButton, setIsActiveButton] = useState('allEmployee');
     const [dataUsers, setDataUsers] = useState([]);
     const [searchData, setSearchData] = useState('');
@@ -102,7 +105,7 @@ export const UsersList = () => {
         },
         {
             property: 'name', label: 'Name', display: ({ name, id, email, hire_date }) => (
-                    <NameInner>
+                    <NameInner darkmode={asideState.darkMode}>
                         <h4>{name}</h4>
                         <p>{email}</p>
                         <p style={{color: '#799283', fontSize: '16px'}}>{id}</p>
@@ -115,7 +118,7 @@ export const UsersList = () => {
         },
         {
             property: 'employee_position', label: 'Employee position', display: ({ employee_position, job_description }) => (
-                <EmployeeContainer>
+                <EmployeeContainer darkmode={asideState.darkMode}>
                     <h4>{employee_position}</h4>
                     <p>{job_description}</p>
                 </EmployeeContainer>
@@ -124,7 +127,7 @@ export const UsersList = () => {
         {
             property: 'phone_number', label: 'Contact', display: ({ phone_number }) => (
                 <PhoneContainer>
-                    <Call to={`tel:${phone_number}`}>
+                    <Call darkmode={asideState.darkMode} to={`tel:${phone_number}`}>
                         <BsFillTelephoneFill />
                         <p>{phone_number}</p>
                     </Call>
@@ -279,8 +282,9 @@ const NameInner = styled.div`
     font-family: 'Poppins', sans-serif;
 
     h4 {
-        color: #212121;
         font-size: 16px; 
+        color: ${props => props.darkmode ? '#fff' : '#212121'};
+        transition: 0.5s;
     }
 
     p {
@@ -297,13 +301,16 @@ const EmployeeContainer = styled.div`
 
     h4 {
         color: #212121;
+        color: ${props => props.darkmode ? '#fff' : '#212121'};
         font-size: 16px; 
         margin-bottom: 20px;
+        transition: 0.5s;
     }
 
     p {
         color: #393939;
         font-size: 16px;
+        transition: 0.5s;
     }
 `;
 
@@ -320,7 +327,7 @@ const Call = styled(NavLink)`
     width: 90%;
     justify-content: space-around;
     font-size: 20px;
-    color: #212121;
+    color: ${props => props.darkmode ? '#fff' : '#212121'};
     letter-spacing: 2px;
     align-items: center;
     transition: 0.5s;

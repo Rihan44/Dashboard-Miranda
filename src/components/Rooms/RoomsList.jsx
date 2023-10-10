@@ -152,13 +152,13 @@ export const RoomsList = () => {
                     <FilterContainer>
                     {statusDelete === 'pending' && <DeleteSpinner/>}
                         <TabsContainer>
-                            <ButtonTabs $actived={allRooms} onClick={() => handleTab('allRooms')}>
+                            <ButtonTabs darkmode={asideState.darkMode} $actived={allRooms} onClick={() => handleTab('allRooms')}>
                                 All Rooms
                             </ButtonTabs>
-                            <ButtonTabs $actived={statusAvailable} onClick={() => handleTab('statusAvailable')}>
+                            <ButtonTabs darkmode={asideState.darkMode} $actived={statusAvailable} onClick={() => handleTab('statusAvailable')}>
                                 All Available
                             </ButtonTabs>
-                            <ButtonTabs $actived={statusBooked} onClick={() => handleTab('statusBooked')}>
+                            <ButtonTabs darkmode={asideState.darkMode} $actived={statusBooked} onClick={() => handleTab('statusBooked')}>
                                 All Booked
                             </ButtonTabs>
                         </TabsContainer>

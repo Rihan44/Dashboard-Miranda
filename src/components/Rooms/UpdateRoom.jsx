@@ -1,13 +1,16 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { MainContainer } from "../Reusables/MainContainer";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
-import { useNavigate, useParams } from "react-router-dom";
 import { getAllRooms, getRoom, updateRoom } from "../../features/roomsSlice";
+import { AsideContext } from "../Context/ToggleAsideContext";
+
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 
 export const UpdateRoom = () => {
@@ -20,6 +23,7 @@ export const UpdateRoom = () => {
     const [amenitiesState, setAmenitiesState] = useState([]);
 
     const {id} = useParams();
+    const {asideState} = useContext(AsideContext);
 
     const roomsData = useSelector((state) => state.rooms.data);
     const status = useSelector((state) => state.rooms.status);
@@ -117,7 +121,7 @@ export const UpdateRoom = () => {
                     <ButtonBack onClick={() => navigate('/rooms')}><AiOutlineArrowLeft/></ButtonBack>
                     <FormContainer>
                         <Title>Update Room</Title>
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit} darkmode={asideState.darkMode}>
                         <FormBox>
                                 <FormBoxInner>
                                     <div>
@@ -221,6 +225,8 @@ const Form = styled.form`
     justify-content: center;
     align-items: center;
     position: relative;
+    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
+    transition: 0.5s;
 
     div {
         display: flex;

@@ -271,7 +271,7 @@ const ContactContainer = styled.div`
 `;
 
 const CardsContainer = styled.div`
-    margin-bottom: 86.5px;
+    margin-bottom: 50px;
 `;
 
 const FilterContainer = styled.div`
