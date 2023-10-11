@@ -13,6 +13,7 @@ import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 import { AsideContext } from "../Context/ToggleAsideContext";
+import { StatusParagraph } from "../Reusables/StatusParagraph";
 
 
 export const Bookings = () => {
@@ -188,14 +189,15 @@ export const Bookings = () => {
         {
             property: 'room_type', label: 'Room Type', display: ({ room_type, room_number }) => (
                 <TableContainerBodyContent>
-                    <TypeRoom>{room_type}-{room_number}</TypeRoom>
+                    <TypeRoom darkmode={asideState.darkMode}>{room_type}-{room_number}</TypeRoom>
                 </TableContainerBodyContent>
             )
         },
         {
             property: 'status', label: 'Status', display: ({ status, id }) => (
                 <StatusContent>
-                    <Status $status={status}>{status}</Status>
+                    {/* <Status $status={status}>{status}</Status> */}
+                    <StatusParagraph status={status}>{status}</StatusParagraph>
                     <OptionsButton>
                         <BsTrash onClick={() => handleDelete(id)} />
                         <FiEdit onClick={() => handleUpdate(id)} />
@@ -478,10 +480,10 @@ const ViewNotesButton = styled(Buttons)`
 `;
 
 const TypeRoom = styled.p`
-    color: #393939;
+    color: ${props => props.darkmode ? '#fff' : '#393939'};
 `;
 
-const Status = styled.p`
+/* const Status = styled.p`
     display: flex;
     align-items: center;
     
@@ -508,7 +510,7 @@ const Status = styled.p`
 
     padding: 15px;
     border-radius: 12px;
-`;
+`; */
 
 const OptionsButton = styled(Buttons)`
     font-size: 30px;

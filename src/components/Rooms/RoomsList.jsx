@@ -18,6 +18,7 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 export const RoomsList = () => {
 
     const {asideState} = useContext(AsideContext);
+    /* TODO AÑADIR LA ANIMACIÓN AL BORRAR */
 
     const [isActiveButton, setIsActiveButton] = useState('allRooms');
     const [selectData, setSelectData] = useState('');

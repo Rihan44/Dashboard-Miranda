@@ -54,7 +54,7 @@ export const Login = (/* {setAuthenticated} */) => {
                 <Input type="text" onChange={handleChangeEmail}/>
                 <Label>Password</Label>
                 <Input type="text" onChange={handleChangePass}/>
-                <Button>Login</Button>
+                <Button data-cy="login">Login</Button>
                 <FormParagraph>Email Test: <small>asmuela.dev@gmail.com</small></FormParagraph>
                 <FormParagraph>Pass Test: <small>123456</small></FormParagraph>
                 {isCorrect ? <WrongParagraph>El user o la pass son incorrectos</WrongParagraph>: ''}

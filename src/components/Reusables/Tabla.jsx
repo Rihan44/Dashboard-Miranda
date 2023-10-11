@@ -1,14 +1,13 @@
 import React, { useContext } from "react";
 import styled from "styled-components"
-import { MainContainer } from "./MainContainer"
 import { AsideContext } from "../Context/ToggleAsideContext";
 
 export const Tabla = ({ cols, data, totalCols, totalHeaders}) => {
 
     const {asideState} = useContext(AsideContext);
-
+    
     const displayRow = row => (
-        <TableContainerBodyContent totalcols={totalCols} key={row.id}>
+        <TableContainerBodyContent darkmode={asideState.darkMode}  totalcols={totalCols} key={row.id}>
             {cols.map((col, i) => (
                 <td key={i}>{typeof col.display === 'function' ? col.display(row) : row[col.property]}
                 </td>
@@ -41,7 +40,7 @@ const TableContainer = styled.table`
 `;
 
 const TableContainerTitle = styled.thead`
-    border: 1px solid #00000015;
+    border: ${props => props.darkmode ? '1px solid #0004' : '1px solid #00000015'};
     border-radius: 20px 20px 0px 0px;
     border-bottom: none;
     height: 65px;
@@ -68,7 +67,6 @@ const TableTitles = styled.th`
     transition: 0.5s;
 `;
 
-
 const TableContainerBodyContent = styled.tr`
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
@@ -88,6 +86,7 @@ const TableContainerBodyContent = styled.tr`
         align-items: center;
         justify-content: center;
         border: 1px solid #00000015;
+        border: ${props => props.darkmode ? '1px solid #0004' : '1px solid #00000015'};
         padding: 10px;
     }
 
@@ -99,5 +98,4 @@ const TableBody = styled.tbody`
     color: ${props => props.darkmode ? '#fff' : '#393939'};
     transition: 0.5s;
     background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
-
 `;
