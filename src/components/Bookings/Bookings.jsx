@@ -196,7 +196,6 @@ export const Bookings = () => {
         {
             property: 'status', label: 'Status', display: ({ status, id }) => (
                 <StatusContent>
-                    {/* <Status $status={status}>{status}</Status> */}
                     <StatusParagraph status={status}>{status}</StatusParagraph>
                     <OptionsButton>
                         <BsTrash onClick={() => handleDelete(id)} />
@@ -482,35 +481,6 @@ const ViewNotesButton = styled(Buttons)`
 const TypeRoom = styled.p`
     color: ${props => props.darkmode ? '#fff' : '#393939'};
 `;
-
-/* const Status = styled.p`
-    display: flex;
-    align-items: center;
-    
-    ${(props) => {
-        switch (props.$status) {
-            case 'check_in':
-                return `
-                background: #5AD07A;
-            `;
-            case 'check_out':
-                return `
-                background: #FFEDEC;
-            `;
-            case 'in_progress':
-                return ` 
-                background: #E2E2E2;
-            `;
-            default:
-                return ` 
-                background: #5AD07A;
-            `
-        }
-    }}
-
-    padding: 15px;
-    border-radius: 12px;
-`; */
 
 const OptionsButton = styled(Buttons)`
     font-size: 30px;

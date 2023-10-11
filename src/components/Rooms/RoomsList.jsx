@@ -14,11 +14,11 @@ import { FiEdit } from "react-icons/fi";
 import { MainContainer } from "../Reusables/MainContainer";
 import { Tabla } from "../Reusables/Tabla";
 import { AsideContext } from "../Context/ToggleAsideContext";
+import { StatusParagraph } from "../Reusables/StatusParagraph";
 
 export const RoomsList = () => {
 
     const {asideState} = useContext(AsideContext);
-    /* TODO AÑADIR LA ANIMACIÓN AL BORRAR */
 
     const [isActiveButton, setIsActiveButton] = useState('allRooms');
     const [selectData, setSelectData] = useState('');
@@ -137,7 +137,7 @@ export const RoomsList = () => {
         {
             property: 'status', label: 'Status', display: ({ state, id }) =>
                 <StatusContent>
-                    <Status $status={state}>{state}</Status>
+                    <StatusParagraph status={state}>{state}</StatusParagraph>
                     <OptionsButton>
                         <BsTrash onClick={() => handleDelete(id)} />
                         <FiEdit onClick={() => handleEdit(id)} /> 
@@ -286,29 +286,6 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const Status = styled.p`
-    ${(props) => {
-        switch (props.$status) {
-            case 'available':
-                return `
-                background: #5AD07A;
-            `;
-            case 'booked':
-                return `
-                background: #E23428;
-                color: #ffffff; 
-            `;
-            default:
-                return ` 
-                background: #5AD07A;
-            `
-        }
-    }}
-
-    padding: 15px;
-    border-radius: 12px;
-`;
-
 const TableBodyContent = styled.div`
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
@@ -430,8 +407,3 @@ const Discount = styled.div`
     transition: 0.5s;
 `;
 
-const RotatingsContainer = styled.div`
-    position: absolute;
-    top: 35%;
-    left: 53%;
-`;
