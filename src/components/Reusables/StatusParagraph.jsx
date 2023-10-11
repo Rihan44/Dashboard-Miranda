@@ -1,10 +1,11 @@
 import styled from "styled-components";
+import React from 'react';
 
 
 export const StatusParagraph = ({status, children}) => {
     return(
         <>
-            <Status $status={status}>
+            <Status $status={status} data-testid='statusParagraph'>
                 {children}
             </Status>
         </>
