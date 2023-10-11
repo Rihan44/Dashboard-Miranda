@@ -1,10 +1,12 @@
 import React, { useContext } from "react";
 import styled from "styled-components"
 import { AsideContext } from "../Context/ToggleAsideContext";
+/* import autoAnimate from '@formkit/auto-animate' */
 
 export const Tabla = ({ cols, data, totalCols, totalHeaders}) => {
 
     const {asideState} = useContext(AsideContext);
+    /* const [{tableRef}] = autoAnimate(); */
     
     const displayRow = row => (
         <TableContainerBodyContent darkmode={asideState.darkMode}  totalcols={totalCols} key={row.id}>

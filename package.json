@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@formkit/auto-animate": "^0.8.0",
     "@react-icons/all-files": "^4.1.0",
     "@reduxjs/toolkit": "^1.9.6",
     "@testing-library/react": "^13.4.0",
