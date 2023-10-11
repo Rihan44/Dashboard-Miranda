@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import styled from "styled-components"
 import { AsideContext } from "../Context/ToggleAsideContext";
-/* import autoAnimate from '@formkit/auto-animate' */
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 export const Tabla = ({ cols, data, totalCols, totalHeaders}) => {
 
     const {asideState} = useContext(AsideContext);
-    /* const [{tableRef}] = autoAnimate(); */
+    const [tableRef] = useAutoAnimate();
     
     const displayRow = row => (
         <TableContainerBodyContent darkmode={asideState.darkMode}  totalcols={totalCols} key={row.id}>
@@ -27,7 +27,7 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}) => {
                         )}
                     </TableContainerTitleTR>
                 </TableContainerTitle>
-                <TableBody darkmode={asideState.darkMode}>
+                <TableBody darkmode={asideState.darkMode} ref={tableRef}>
                     {data?.map(displayRow)}
                 </TableBody>
             </TableContainer>

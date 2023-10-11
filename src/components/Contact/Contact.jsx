@@ -14,6 +14,7 @@ import { MainContainer } from "../Reusables/MainContainer"
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { RotatingLines } from 'react-loader-spinner'
 import { Tabla } from "../Reusables/Tabla";
+import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 
 export const Contact = () => {
     const [modalInfo, setModalInfo] = useState({});
@@ -157,15 +158,7 @@ export const Contact = () => {
                 </ModalInfo>
             </Modal>
             <ContactContainer>
-                {statusArchive === 'pending' && 
-                    <RotatingsContainer>
-                        <RotatingLines
-                            strokeColor="#135846"
-                            strokeWidth="5"
-                            animationDuration="0.75"
-                            width="96"
-                        />
-                    </RotatingsContainer>}
+                {statusArchive === 'pending' && <DeleteSpinner/>}
                 <CardsContainer>  
                     {status === 'fulfilled'
                         ? <Card handleOpen={handleOpenModal} data={contactData}></Card>
