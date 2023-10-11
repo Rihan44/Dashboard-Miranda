@@ -141,7 +141,7 @@ export const Bookings = () => {
         {
             property: 'guest', label: 'Guest', display: ({ guest, phone_number, id }) => (
                 <TableContainerBodyContent>
-                    <CostumerName>{guest}</CostumerName>
+                    <CostumerName darkmode={asideState.darkMode}>{guest}</CostumerName>
                     <Paragraphs>{phone_number}</Paragraphs>
                     <ButtonID onClick={() => handleBookingId(id)}>#{id}</ButtonID>
                 </TableContainerBodyContent>
@@ -160,7 +160,7 @@ export const Bookings = () => {
         {
             property: 'check_in', label: 'Check In', display: ({ check_in }) => (
                 <TableContainerBodyContent>
-                    <CheckInDate>{
+                    <CheckInDate darkmode={asideState.darkMode}>{
                         new Date(check_in.split("-")[0], check_in.split("-")[1] - 1,
                             check_in.split("-")[2]).toLocaleDateString('en-EN', options)
                     }</CheckInDate>
@@ -171,7 +171,7 @@ export const Bookings = () => {
         {
             property: 'check_out', label: 'Check Out', display: ({ check_out }) => (
                 <TableContainerBodyContent>
-                    <CheckOutDate>{
+                    <CheckOutDate darkmode={asideState.darkMode}>{
                         new Date(check_out.split("-")[0], check_out.split("-")[1] - 1,
                             check_out.split("-")[2]).toLocaleDateString('en-EN', options)
                     }</CheckOutDate>
@@ -426,7 +426,8 @@ const TableContainerBodyContent = styled.div`
 `;
 
 const CostumerName = styled.p`
-    color: #393939;
+    transition: 0.5s;
+    color: ${props => props.darkmode ? '#fff' : '#393939'};
 `;
 
 const ButtonID = styled.button`
@@ -445,7 +446,8 @@ const OrderDate = styled.p`
 `;
 
 const CheckInDate = styled.p`
-    color: #393939;
+    transition: 0.5s;
+    color: ${props => props.darkmode ? '#fff' : '#393939'};
 `;
 
 const CheckInTime = styled(Paragraphs)`
@@ -453,7 +455,8 @@ const CheckInTime = styled(Paragraphs)`
 `;
 
 const CheckOutDate = styled.p`
-    color: #393939;
+    transition: 0.5s;
+    color: ${props => props.darkmode ? '#fff' : '#393939'};
 `;
 
 const CheckOutTime = styled(Paragraphs)`
@@ -479,6 +482,7 @@ const ViewNotesButton = styled(Buttons)`
 `;
 
 const TypeRoom = styled.p`
+    transition: 0.5s;
     color: ${props => props.darkmode ? '#fff' : '#393939'};
 `;
 
@@ -515,5 +519,9 @@ const OptionsButton = styled(Buttons)`
 const StatusContent = styled(TableContainerBodyContent)`
     display: flex;
     flex-direction: row;
+
+    p {
+        color: ${props => props.darkmode ? '#ffffff' : '#212121'};
+    }
 `;
 

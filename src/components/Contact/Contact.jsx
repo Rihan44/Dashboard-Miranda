@@ -12,7 +12,6 @@ import { BsTrash } from "react-icons/bs";
 import { Card } from "../Dashboard/Card";
 import { MainContainer } from "../Reusables/MainContainer"
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
-import { RotatingLines } from 'react-loader-spinner'
 import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 
