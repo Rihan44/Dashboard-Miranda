@@ -57,7 +57,7 @@ export const Login = (/* {setAuthenticated} */) => {
                 <Button data-cy="loginButton">Login</Button>
                 <FormParagraph>Email Test: <small>asmuela.dev@gmail.com</small></FormParagraph>
                 <FormParagraph>Pass Test: <small>123456</small></FormParagraph>
-                {isCorrect ? <WrongParagraph>El user o la pass son incorrectos</WrongParagraph>: ''}
+                {isCorrect ? <WrongParagraph data-cy="loginError">El user o la pass son incorrectos</WrongParagraph>: ''}
             </FormContainer>
         </LoginContainer>
     )
