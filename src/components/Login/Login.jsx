@@ -51,10 +51,10 @@ export const Login = (/* {setAuthenticated} */) => {
             <Title>Login</Title>
             <FormContainer onSubmit={handleSubmit}>
                 <Label>Email</Label>
-                <Input type="text" onChange={handleChangeEmail}/>
+                <Input type="text" onChange={handleChangeEmail} data-cy='inputUserEmail'/>
                 <Label>Password</Label>
-                <Input type="text" onChange={handleChangePass}/>
-                <Button data-cy="login">Login</Button>
+                <Input type="text" onChange={handleChangePass} data-cy='inputPasswordUser'/>
+                <Button data-cy="loginButton">Login</Button>
                 <FormParagraph>Email Test: <small>asmuela.dev@gmail.com</small></FormParagraph>
                 <FormParagraph>Pass Test: <small>123456</small></FormParagraph>
                 {isCorrect ? <WrongParagraph>El user o la pass son incorrectos</WrongParagraph>: ''}

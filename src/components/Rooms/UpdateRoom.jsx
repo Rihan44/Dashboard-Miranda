@@ -61,6 +61,7 @@ export const UpdateRoom = () => {
             amenities: amenitiesState
         }
         dispatch(updateRoom(dataUpdate));
+        /* dispatch(getAllRooms()); */
         navigate('/rooms');
     }
 
@@ -109,7 +110,7 @@ export const UpdateRoom = () => {
     }, [roomsData]);
 
     useEffect(() => {
-        dispatch(getAllRooms());
+        /* dispatch(getAllRooms()); */
         dispatch(getRoom(id));
     }, [dispatch, id]);
 

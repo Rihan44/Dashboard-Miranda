@@ -29,6 +29,7 @@ export const roomsSlice = createSlice({
     name: 'rooms',
     initialState: {
         data: [],
+        updatedData: [],
         singleData: null,
         status: 'idle',
         statusDelete: 'idle',
@@ -66,14 +67,18 @@ export const roomsSlice = createSlice({
         })
         .addCase(updateRoom.fulfilled, (state, action) => {
             state.status = "fulfilled";
-            const updatedRoom = action.payload;
+            state.updatedData = [...state.data];
 
-            state.data = state.data.map(data => {
-                if (data.id === updatedRoom.id) {
-                  return {...data, ...updatedRoom};
+            state.updatedData = state.updatedData.map(data => {
+                if (data.id === action.payload.id) {
+                    return {
+                        ...data, 
+                        room_number: action.payload.room_number, 
+                        room_type: action.payload.room_type
+                    };
                 }
                 return data;
-            });
+            })
         })
         .addCase(updateRoom.pending, (state) => {state.status = "pending"})
         .addCase(updateRoom.rejected, (state, action) => {

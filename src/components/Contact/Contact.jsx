@@ -14,6 +14,8 @@ import { MainContainer } from "../Reusables/MainContainer"
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+
 
 export const Contact = () => {
     const [modalInfo, setModalInfo] = useState({});
@@ -21,6 +23,8 @@ export const Contact = () => {
     const [modalInfoCard, setModalInfoCard] = useState('');
     const [isActiveButton, setIsActiveButton] = useState('allContacts');
     const [contactData, setContactData] = useState([]);
+
+    const [tableRef] = useAutoAnimate();
 
     const dataContact = useSelector((state) => state.contact.data);
     const status = useSelector((state) => state.contact.status);
@@ -158,7 +162,7 @@ export const Contact = () => {
             </Modal>
             <ContactContainer>
                 {statusArchive === 'pending' && <DeleteSpinner/>}
-                <CardsContainer>  
+                <CardsContainer ref={tableRef}>  
                     {status === 'fulfilled'
                         ? <Card handleOpen={handleOpenModal} data={contactData}></Card>
                         : status === 'rejected' ? alert('Algo falló')

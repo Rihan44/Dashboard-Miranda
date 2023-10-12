@@ -29,6 +29,7 @@ export const RoomsList = () => {
     const statusBooked = isActiveButton === 'statusBooked';
 
     const roomsData = useSelector((state) => state.rooms.data);
+
     const status = useSelector((state) => state.rooms.status);
     const statusDelete = useSelector((state) => state.rooms.statusDelete);
 
@@ -118,7 +119,7 @@ export const RoomsList = () => {
         {
             property: 'amenities', label: 'Amenities', display: ({ amenities }) => (
                 <AmenitiesContainer>
-                    <p>{amenities !== null ? amenities.join(', ') : ''}</p>
+                    <p>{amenities !== undefined ? amenities.join(', ') : ''}</p>
                 </AmenitiesContainer>
             )
         },
