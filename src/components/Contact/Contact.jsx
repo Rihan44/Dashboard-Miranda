@@ -132,7 +132,7 @@ export const Contact = () => {
         {
             property: 'isArchived', label: 'Status', display: ({ isArchived, id }) => (
                 <div>
-                    <IsAcrhivedParagraph $isArchive={isArchived}>{isArchived ? 'Archived' : 'Publish'}</IsAcrhivedParagraph>
+                    <IsAcrhivedParagraph isArchive={isArchived}>{isArchived ? 'Archived' : 'Publish'}</IsAcrhivedParagraph>
                     {isArchived 
                     ? 
                         <OptionsButton style={{color: '#5AD07A'}}>
@@ -171,10 +171,10 @@ export const Contact = () => {
                 </CardsContainer>
                 <FilterContainer>
                     <TabsContainer>
-                        <ButtonTabs $actived={allContacts} onClick={() => handleTab('allContacts')}>
+                        <ButtonTabs actived={allContacts} onClick={() => handleTab('allContacts')}>
                             All Contacts
                         </ButtonTabs>
-                        <ButtonTabs $actived={archived} onClick={() => handleTab('archived')}>
+                        <ButtonTabs actived={archived} onClick={() => handleTab('archived')}>
                             Archived
                         </ButtonTabs>
                     </TabsContainer>
@@ -293,8 +293,8 @@ const Buttons = styled.button`
 `;
 
 const ButtonTabs = styled(Buttons)`
-    color: ${props => props.$actived ? "#135846" : "#6E6E6E"};
-    border-bottom: ${props => props.$actived ? "2px solid #135846" : "none"};
+    color: ${props => props.actived ? "#135846" : "#6E6E6E"};
+    border-bottom: ${props => props.actived ? "2px solid #135846" : "none"};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     height: 30px;
@@ -309,7 +309,7 @@ const ButtonTabs = styled(Buttons)`
 
 const IsAcrhivedParagraph = styled.div`
     margin-right: 20px;
-    color: ${props => props.$isArchive ? '#E23428' : '#5AD07A'}
+    color: ${props => props.isArchive ? '#E23428' : '#5AD07A'}
 `;
 
 const OptionsButton = styled(Buttons)`

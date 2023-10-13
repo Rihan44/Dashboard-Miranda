@@ -48,7 +48,7 @@ export const LastestReview = ({ darkMode, dataDashboard }) => {
 
     return (
         <>
-            <Modal $modalOpen={modalOpen}>
+            <Modal modalOpen={modalOpen}>
                 <ModalInfo>
                     <ButtonModalClose onClick={handleCloseModal}>
                         <AiOutlineCloseCircle />
@@ -84,7 +84,7 @@ export const LastestReview = ({ darkMode, dataDashboard }) => {
                                             <p>{data.phone}</p>
                                         </ProfileContainer>
                                         <ButtonContainer>
-                                            <Button $view={isChecked[data.id] ? checkMessage : false}><AiOutlineCheckCircle /></Button>
+                                            <Button view={isChecked[data.id] ? checkMessage : false}><AiOutlineCheckCircle /></Button>
                                             <ButtonOpen onClick={() => handleOpen(data)}><AiOutlineFullscreen /></ButtonOpen>
                                         </ButtonContainer>
                                     </InnerCard>
@@ -99,7 +99,7 @@ export const LastestReview = ({ darkMode, dataDashboard }) => {
 }
 
 const Modal = styled.div`
-    display: ${props => props.$modalOpen === true ? 'block' : 'none'};
+    display: ${props => props.modalOpen === true ? 'block' : 'none'};
     position: fixed; 
     left: 0;
     top: 0;
@@ -315,7 +315,7 @@ const Button = styled.button`
     background: none;
     font-size: 24px;
     cursor: pointer;
-    color: ${props => props.$view === false ? '#E23428' : '#5AD07A'};
+    color: ${props => props.view === false ? '#E23428' : '#5AD07A'};
 `;
 
 const ButtonOpen = styled.button`

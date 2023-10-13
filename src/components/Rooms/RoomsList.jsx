@@ -154,13 +154,13 @@ export const RoomsList = () => {
                     <FilterContainer>
                     {statusDelete === 'pending' && <DeleteSpinner/>}
                         <TabsContainer>
-                            <ButtonTabs darkmode={asideState.darkMode} $actived={allRooms} onClick={() => handleTab('allRooms')}>
+                            <ButtonTabs darkmode={asideState.darkMode} actived={allRooms} onClick={() => handleTab('allRooms')}>
                                 All Rooms
                             </ButtonTabs>
-                            <ButtonTabs darkmode={asideState.darkMode} $actived={statusAvailable} onClick={() => handleTab('statusAvailable')}>
+                            <ButtonTabs darkmode={asideState.darkMode} actived={statusAvailable} onClick={() => handleTab('statusAvailable')}>
                                 All Available
                             </ButtonTabs>
-                            <ButtonTabs darkmode={asideState.darkMode} $actived={statusBooked} onClick={() => handleTab('statusBooked')}>
+                            <ButtonTabs darkmode={asideState.darkMode} actived={statusBooked} onClick={() => handleTab('statusBooked')}>
                                 All Booked
                             </ButtonTabs>
                         </TabsContainer>
@@ -217,8 +217,8 @@ const Buttons = styled.button`
 `;
 
 const ButtonTabs = styled(Buttons)`
-    color: ${props => props.$actived ? "#135846" : "#6E6E6E"};
-    border-bottom: ${props => props.$actived ? "2px solid #135846" : "none"};
+    color: ${props => props.actived ? "#135846" : "#6E6E6E"};
+    border-bottom: ${props => props.actived ? "2px solid #135846" : "none"};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     height: 30px;

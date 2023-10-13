@@ -15,7 +15,6 @@ import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { StatusParagraph } from "../Reusables/StatusParagraph";
 
-
 export const Bookings = () => {
 
     const {asideState} = useContext(AsideContext);
@@ -117,15 +116,6 @@ export const Bookings = () => {
             case 'Guest':
                 dataArray.sort((a, b) => a.guest.localeCompare(b.guest));
                 break;
-           /*  case 'Check In':
-                dataArray.sort((a, b) => a.check_in.localeCompare(b.check_in));
-                break;
-            case 'Check Out':
-                dataArray.sort((a, b) => a.check_out.localeCompare(b.check_out));
-                break;
-            case 'In Progress':
-                dataArray.sort((a, b) => a.in_progress.localeCompare(b.in_progress));
-                break; */
             default:
         }
 
@@ -211,7 +201,7 @@ export const Bookings = () => {
             <MainContainer>
                 <BookingContainer>
                     {statusDelete === 'pending' && <DeleteSpinner/>}
-                    <Modal $modalOpen={modalOpen}>
+                    <Modal modalOpen={modalOpen}>
                         <ModalInfo>
                             <ButtonModalClose onClick={handleCloseModal}>
                                 <AiOutlineCloseCircle />
@@ -221,16 +211,16 @@ export const Bookings = () => {
                     </Modal>
                     <FilterContainer>
                         <TabsContainer>
-                            <ButtonTabs $actived={allBookings} onClick={() => handleTab('allBookings')}>
+                            <ButtonTabs actived={allBookings} onClick={() => handleTab('allBookings')}>
                                 All Bookings
                             </ButtonTabs>
-                            <ButtonTabs $actived={checkIn} onClick={() => handleTab('checkIn')}>
+                            <ButtonTabs actived={checkIn} onClick={() => handleTab('checkIn')}>
                                 Check In
                             </ButtonTabs>
-                            <ButtonTabs $actived={checkOut} onClick={() => handleTab('checkOut')}>
+                            <ButtonTabs actived={checkOut} onClick={() => handleTab('checkOut')}>
                                 Check Out
                             </ButtonTabs>
-                            <ButtonTabs $actived={inProgress} onClick={() => handleTab('inProgress')}>
+                            <ButtonTabs actived={inProgress} onClick={() => handleTab('inProgress')}>
                                 In Progress
                             </ButtonTabs>
                         </TabsContainer>
@@ -239,9 +229,6 @@ export const Bookings = () => {
                             <Select onChange={handleSelect}>
                                 <Option>Order Date</Option>
                                 <Option>Guest</Option>
-                                {/* <Option>Check In</Option>
-                                <Option>Check Out</Option>
-                                <Option>In Progress</Option> */}
                             </Select>
                         </Filters>
                     </FilterContainer>
@@ -257,7 +244,7 @@ export const Bookings = () => {
 }
 
 const Modal = styled.div`
-    display: ${props => props.$modalOpen === true ? 'block' : 'none'};
+    display: ${props => props.modalOpen === true ? 'block' : 'none'};
     position: fixed; 
     z-index: 1; 
     left: 0;
@@ -344,8 +331,8 @@ const TabsContainer = styled.div`
 
 
 const ButtonTabs = styled(Buttons)`
-    color: ${props => props.$actived ? "#135846" : "#6E6E6E"};
-    border-bottom: ${props => props.$actived ? "2px solid #135846" : "none"};
+    color: ${props => props.actived ? "#135846" : "#6E6E6E"};
+    border-bottom: ${props => props.actived ? "2px solid #135846" : "none"};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     height: 30px;

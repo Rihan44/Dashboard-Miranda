@@ -48,7 +48,7 @@ export const ProfileCompontent = () => {
 
     return(
         <ProfileContainer darkmode={asideState.darkMode}>
-            <Modal $modalOpen={modalOpen}>
+            <Modal modalOpen={modalOpen}>
                 <ModalInfo>
                     <ButtonModalClose onClick={handleCloseModal}>
                         <AiOutlineCloseCircle />
@@ -72,7 +72,7 @@ export const ProfileCompontent = () => {
 
 
 const Modal = styled.div`
-    display: ${props => props.$modalOpen === true ? 'block' : 'none'};
+    display: ${props => props.modalOpen === true ? 'block' : 'none'};
     position: fixed; 
     z-index: 10; 
     left: 0;
