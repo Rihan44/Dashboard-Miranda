@@ -18,7 +18,7 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 export const Dashboard = () => {
 
     const [dataContact, setDataContact] = useState([]);
-    const {asideState} = useContext(AsideContext);
+    const { asideState } = useContext(AsideContext);
 
     const contactData = useSelector((state) => state.contact.data);
     const status = useSelector((state) => state.contact.status);

@@ -14,6 +14,7 @@ import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { StatusParagraph } from "../Reusables/StatusParagraph";
+import { ToastAlert } from "../Reusables/ToastAlert";
 
 export const Bookings = () => {
 
@@ -234,7 +235,8 @@ export const Bookings = () => {
                     </FilterContainer>
                     {status === 'fulfilled'
                         ? <Tabla cols={cols} data={dataBooking} totalCols={7} totalHeaders={7} />
-                        : status === 'rejected' ? alert('Algo falló')
+                        : status === 'rejected' 
+                            ? <ToastAlert></ToastAlert>
                             : <SpinnerLoader></SpinnerLoader>
                     }
                 </BookingContainer>
