@@ -1,11 +1,12 @@
 import styled from "styled-components";
 
+import hotelIcon from '../../assets/hotel_icon.png';
+
 import { LuCalendarCheck2 } from "react-icons/lu";
 import { BiKey } from "react-icons/bi";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { LuUser2 } from "react-icons/lu";
 import { HiOutlinePuzzle } from "react-icons/hi";
-import { FaHotel } from "react-icons/fa6"
 
 import { NavLink } from "react-router-dom";
 import { ProfileCompontent } from "../Dashboard/Profile";
@@ -31,7 +32,7 @@ export const Menu = ({ setHeaderTitle }) => {
                 marginTop: "40px",
                 marginBottom: "85px"
             }}>
-                <FaHotel style={{ fontSize: "40px", color: "#135846", marginLeft: "50px" }} />
+                <ImgIcon src={hotelIcon}/>
                 <SubTitle darkmode={asideState.darkMode}>
                     travl
                     <span>Hotel admin dashboard</span>
@@ -213,7 +214,6 @@ const LinkStyled = styled(NavLink)`
     }
 `;
 
-
 const SubTitle = styled.h2`
     display: flex;
     flex-direction: column;
@@ -232,3 +232,13 @@ const SubTitle = styled.h2`
     }
 `;
 
+const ImgIcon = styled.img`
+    width: 80px;
+    height: 80px;
+    transition: 0.5s;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
+`;

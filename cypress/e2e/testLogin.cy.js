@@ -1,6 +1,8 @@
 
 describe('Login test ', () => {
 
+  /* Añadir beforeeach */
+
   it('Si meto los detalles correctos me lleva a /', () => {
     cy.visit('http://localhost:3000/login')
     

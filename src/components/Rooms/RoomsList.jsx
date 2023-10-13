@@ -176,7 +176,7 @@ export const RoomsList = () => {
                     </FilterContainer>
                     {status === 'fulfilled' || status === 'loading'
                         ? <Tabla cols={cols} data={dataRooms} totalCols={7} totalHeaders={7} />
-                        : status === 'rejected' ? alert('Algo falló')
+                        : status === 'rejected' ? 'CAMBIAR A TOSTIFY'
                             : <SpinnerLoader></SpinnerLoader>
                     }
                 </RoomsContainer>

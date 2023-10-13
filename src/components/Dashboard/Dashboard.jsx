@@ -93,7 +93,7 @@ const ContainerCards = styled.div`
     display: flex;
     margin-top: 50px;
     margin-left: 50px;
-    max-width: 1485px;
+    min-width: 1485px;
 `;
 
 const Card = styled.div`
