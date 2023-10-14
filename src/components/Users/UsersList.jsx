@@ -76,10 +76,10 @@ export const UsersList = () => {
                 });
                 break;
             case 'activeEmployee':
-                dataArray = dataArray.filter(data => !data.status);
+                dataArray = dataArray.filter(data => data.status);
                 break;
             case 'inactiveEmployee':
-                dataArray = dataArray.filter(data => data.status);
+                dataArray = dataArray.filter(data => !data.status);
                 break;
             default:
                 dataArray.sort((a, b) => {
@@ -290,9 +290,10 @@ const NameInner = styled.div`
     }
 
     p {
-        color: #393939;
+        color: ${props => props.darkmode ? '#fff' : '#393939'};
         font-size: 13px;
         margin: 2px;
+        transition: 0.5s;
     }
 `;
 
@@ -310,7 +311,7 @@ const EmployeeContainer = styled.div`
     }
 
     p {
-        color: #393939;
+        color: ${props => props.darkmode ? '#fff' : '#393939'};
         font-size: 16px;
         transition: 0.5s;
     }

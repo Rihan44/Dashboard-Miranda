@@ -63,7 +63,12 @@ export const roomsSlice = createSlice({
         .addCase(deleteRoom.fulfilled, (state, action) => {
             state.status = "fulfilled";
             state.statusDelete= "fulfilled";
-            state.data = state.data.filter(data => {return data.id !== action.payload});
+
+            if(state.updatedDataRoom.length !== 0){
+                state.updatedDataRoom = state.updatedDataRoom.filter(data => {return data.id !== action.payload});
+            } else {
+                state.data = state.data.filter(data => {return data.id !== action.payload});
+            }
         })
         .addCase(deleteRoom.pending, (state) => {state.statusDelete = "pending"}) 
         .addCase(deleteRoom.rejected, (state, action) => {

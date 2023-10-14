@@ -27,9 +27,11 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}) => {
                         )}
                     </TableContainerTitleTR>
                 </TableContainerTitle>
-                <TableBody darkmode={asideState.darkMode} ref={tableRef}>
-                    {data?.map(displayRow)}
-                </TableBody>
+                <TableBodyContainer>
+                    <TableBody darkmode={asideState.darkMode} ref={tableRef}>
+                        {data?.map(displayRow)}
+                    </TableBody>
+                </TableBodyContainer>
             </TableContainer>
         </>
     )
@@ -100,4 +102,10 @@ const TableBody = styled.tbody`
     color: ${props => props.darkmode ? '#fff' : '#393939'};
     transition: 0.5s;
     background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
+`;
+
+const TableBodyContainer = styled.div`
+  max-height: 59vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
 `;
