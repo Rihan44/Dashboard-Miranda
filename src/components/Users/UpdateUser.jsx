@@ -1,12 +1,16 @@
 import styled from "styled-components";
-import { MainContainer } from "../Reusables/MainContainer";
-
-import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
+
+import { MainContainer } from "../Reusables/MainContainer";
+
+import { AiOutlineArrowLeft } from "react-icons/ai";
 import { updateUser } from "../../features/usersSlice";
 import { AsideContext } from "../Context/ToggleAsideContext";
+import { ToastAlert } from "../Reusables/ToastAlert";
+import { SpinnerLoader } from "../Reusables/SpinnerLoader";
+
 
 export const UpdateUser = () => {
 
@@ -14,7 +18,8 @@ export const UpdateUser = () => {
 
     const navigate = useNavigate();
 
-    const usersData = useSelector((state) => state.rooms.data);
+    const userData = useSelector((state) => state.rooms.dataUser);
+
     const status = useSelector((state) => state.rooms.status);
 
     const dispatch = useDispatch();
@@ -31,18 +36,18 @@ export const UpdateUser = () => {
 
 
     useEffect(() => {
-        let data = [...usersData];
+        let data = [...userData];
         data.forEach(info => {
             setDataUsers(info);
         });
 
-    }, [usersData]);
+    }, [userData]);
 
     return (
         <>
             <MainContainer>
                 <UpdateUserContainer>
-               
+                {status === 'fulfilled' ?
                 <>
                     <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft /></ButtonBack>
                     <FormContainer>
@@ -105,7 +110,8 @@ export const UpdateUser = () => {
                         </Form>
                     </FormContainer>
                     </>
-                    
+                    : status === 'rejected' ? <ToastAlert></ToastAlert>
+                        : <SpinnerLoader></SpinnerLoader>}
                 </UpdateUserContainer>
             </MainContainer>
         </>

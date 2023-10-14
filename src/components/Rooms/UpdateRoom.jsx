@@ -8,10 +8,11 @@ import { MainContainer } from "../Reusables/MainContainer";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
-import { getAllRooms, getRoom, updateRoom } from "../../features/roomsSlice";
+import { getRoom, updateRoom } from "../../features/roomsSlice";
 import { AsideContext } from "../Context/ToggleAsideContext";
 
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
+import { ToastAlert } from "../Reusables/ToastAlert";
 
 export const UpdateRoom = () => {
 
@@ -25,7 +26,8 @@ export const UpdateRoom = () => {
     const {id} = useParams();
     const {asideState} = useContext(AsideContext);
 
-    const roomsData = useSelector((state) => state.rooms.data);
+    const roomData = useSelector((state) => state.rooms.dataRoom);
+
     const status = useSelector((state) => state.rooms.status);
 
     const dispatch = useDispatch();
@@ -57,11 +59,10 @@ export const UpdateRoom = () => {
             room_number: roomNumberState,
             offer_price: offerState,
             price: priceState,
-            discount: discountState,
+            discount: offerState ? discountState : 0,
             amenities: amenitiesState
         }
         dispatch(updateRoom(dataUpdate));
-        /* dispatch(getAllRooms()); */
         navigate('/rooms');
     }
 
@@ -74,7 +75,11 @@ export const UpdateRoom = () => {
     }
 
     const handleSelectOffer = (e) => {
-        setOfferState(e.target.value);
+        if(e.target.value === "Yes") {
+            setOfferState(true);    
+        } else {
+            setOfferState(false);    
+        }
     }
 
     const handlePrice = (e) => {
@@ -94,23 +99,24 @@ export const UpdateRoom = () => {
     }
 
     useEffect(() => {
-        let data = [...roomsData];
+        let data =[...roomData];
 
-        try {
-            setRoomTypeState(data[0].room_type);
-            setRoomNumberState(data[0].room_number);
-            setOfferState(data[0].offer_price);
-            setPriceState(data[0].price);
-            setDiscountState(data[0].discount);
-            setAmenitiesState(data[0].amenities);
-        } catch {
-            console.log('Un error inesperado');
+        if(status === 'fulfilled') { 
+            try {
+                setRoomTypeState(data[0].room_type);
+                setRoomNumberState(data[0].room_number);
+                setOfferState(data[0].offer_price);
+                setPriceState(data[0].price);
+                setDiscountState(data[0].discount);
+                setAmenitiesState(data[0].amenities);
+            } catch {
+                <ToastAlert></ToastAlert>
+            }
         }
 
-    }, [roomsData]);
+    }, [roomData, status]);
 
     useEffect(() => {
-        /* dispatch(getAllRooms()); */
         dispatch(getRoom(id));
     }, [dispatch, id]);
 
@@ -161,7 +167,10 @@ export const UpdateRoom = () => {
                                     </div>
                                     <div>
                                         <Label>Discount</Label>
-                                        <Input type="number" min="0" max="100" value={discountState} onChange={handleDiscount}/>
+                                        {!offerState 
+                                            ? <Input type="number" min="0" max="100" value={0} onChange={handleDiscount} disabled/>
+                                            : <Input type="number" min="0" max="100" value={discountState} onChange={handleDiscount}/>
+                                        }  
                                     </div>                              
                                     <div>
                                     <Label>Cancellation</Label>
@@ -187,7 +196,7 @@ export const UpdateRoom = () => {
                         </Form>
                     </FormContainer>
                     </>
-                    : status === 'rejected' ? alert('Algo falló')
+                    : status === 'rejected' ? <ToastAlert></ToastAlert>
                         : <SpinnerLoader></SpinnerLoader>}
             </UpdateRoomContainer>
         </MainContainer>

@@ -10,7 +10,7 @@ import { BsShieldCheck } from "react-icons/bs";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
 import { MainContainer } from "../Reusables/MainContainer";
-import { getAllBookings, getBookingDetail } from "../../features/bookingsSlice";
+import { getBookingDetail } from "../../features/bookingsSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 
 
@@ -19,7 +19,7 @@ export const BookingFile = () => {
     const navigate = useNavigate();
 
     const [dataBooking, setDataBooking] = useState('');
-    const bookingDataDetail = useSelector((state) => state.bookings.data);
+    const bookingDataDetail = useSelector((state) => state.bookings.dataBooking);
     const status = useSelector((state) => state.bookings.status);
     
     const {id} = useParams();
@@ -43,7 +43,6 @@ export const BookingFile = () => {
     }, [bookingDataDetail])
 
     useEffect(() => {
-        dispatch(getAllBookings());
         dispatch(getBookingDetail(id));
 
     }, [dispatch, id])

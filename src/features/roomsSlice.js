@@ -29,7 +29,8 @@ export const roomsSlice = createSlice({
     name: 'rooms',
     initialState: {
         data: [],
-        updatedData: [],
+        updatedDataRoom: [],
+        dataRoom: [],
         singleData: null,
         status: 'idle',
         statusDelete: 'idle',
@@ -48,7 +49,11 @@ export const roomsSlice = createSlice({
         })
         .addCase(getRoom.fulfilled, (state, action) => {
             state.status = "fulfilled";
-            state.data = state.data.filter(data => {return data.id === action.payload})
+            if(state.updatedDataRoom.length !== 0){
+                state.dataRoom = state.updatedDataRoom.filter(data => {return data.id === action.payload});
+            } else {
+                state.dataRoom = state.data.filter(data => {return data.id === action.payload});
+            }
         })
         .addCase(getRoom.pending, (state) => {state.status = "pending"})
         .addCase(getRoom.rejected, (state, action) => {
@@ -58,27 +63,35 @@ export const roomsSlice = createSlice({
         .addCase(deleteRoom.fulfilled, (state, action) => {
             state.status = "fulfilled";
             state.statusDelete= "fulfilled";
-            state.data = state.data.filter(data => {return data.id !== action.payload})
+            state.data = state.data.filter(data => {return data.id !== action.payload});
         })
-        .addCase(deleteRoom.pending, (state) => {state.statusDelete = "pending"}) /* TODO CAMBIAR EL STATUS AL BORRAR PARA QUE NO CARGUE EL SPINNER */
+        .addCase(deleteRoom.pending, (state) => {state.statusDelete = "pending"}) 
         .addCase(deleteRoom.rejected, (state, action) => {
             state.status = "rejected";
             state.error = action.error.message;
         })
         .addCase(updateRoom.fulfilled, (state, action) => {
             state.status = "fulfilled";
-            state.updatedData = [...state.data];
+            if(state.updatedDataRoom.length === 0) {
+                state.updatedDataRoom = [...state.data];
+            }
 
-            state.updatedData = state.updatedData.map(data => {
+            state.updatedDataRoom = state.updatedDataRoom.map(data => {
                 if (data.id === action.payload.id) {
                     return {
                         ...data, 
-                        room_number: action.payload.room_number, 
-                        room_type: action.payload.room_type
+                        room_number: action.payload.room_number,
+                        discount: action.payload.discount,
+                        room_type: action.payload.room_type,
+                        offer_price: action.payload.offer_price,
+                        price: action.payload.price,
+                        amenities: action.payload.amenities
                     };
-                }
+                } 
+
                 return data;
             })
+            
         })
         .addCase(updateRoom.pending, (state) => {state.status = "pending"})
         .addCase(updateRoom.rejected, (state, action) => {

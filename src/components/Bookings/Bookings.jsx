@@ -8,7 +8,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 
 import { MainContainer } from "../Reusables/MainContainer";
-import { deleteBooking, getAllBookings, getBookingDetail, updateBooking } from "../../features/bookingsSlice";
+import { deleteBooking, getAllBookings, getBookingDetail} from "../../features/bookingsSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
@@ -28,6 +28,8 @@ export const Bookings = () => {
     const [searchData, setSearchData] = useState('');
 
     const bookingsSliceData = useSelector((state) => state.bookings.data);
+    const bookingsSliceDataUpdated = useSelector((state) => state.bookings.bookingUpdateData);
+
     const status = useSelector((state) => state.bookings.status);
     const statusDelete = useSelector((state) => state.bookings.statusDelete);
 
@@ -73,14 +75,12 @@ export const Bookings = () => {
     }
 
     const handleUpdate = (id) => {
-        /* dispatch(updateBooking(id));
-        navigate(`/bookings/update-booking/${id}`); */
-        console.log(id)
+        dispatch(getBookingDetail(id));
+        navigate(`/bookings/update-bookings/${id}`);
     }
 
-
     useEffect(() => {
-        let dataArray = [...bookingsSliceData];
+        let dataArray = bookingsSliceDataUpdated.length !== 0 ? [ ...bookingsSliceDataUpdated] : [...bookingsSliceData];
 
         if (status === 'fulfilled') {
             setBookingData(dataArray);
@@ -122,7 +122,7 @@ export const Bookings = () => {
 
         setBookingData(dataArray);
 
-    }, [isActiveButton, selectData, searchData, bookingsSliceData, status]);
+    }, [isActiveButton, selectData, searchData, bookingsSliceData, status, bookingsSliceDataUpdated]);
 
     useEffect(() => {
         dispatch(getAllBookings());

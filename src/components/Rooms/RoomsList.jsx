@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { deleteRoom, getAllRooms, getRoom, updateRoom } from "../../features/roomsSlice";
+import { deleteRoom, getAllRooms, getRoom } from "../../features/roomsSlice";
 
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
@@ -29,6 +29,7 @@ export const RoomsList = () => {
     const statusBooked = isActiveButton === 'statusBooked';
 
     const roomsData = useSelector((state) => state.rooms.data);
+    const roomsDataUpdated = useSelector((state) => state.rooms.updatedDataRoom);
 
     const status = useSelector((state) => state.rooms.status);
     const statusDelete = useSelector((state) => state.rooms.statusDelete);
@@ -53,10 +54,11 @@ export const RoomsList = () => {
         navigate(`/rooms/update-room/${id}`);
     }
 
+    console.log(dataRooms)
 
     useEffect(() => {
 
-        let dataArray = [...roomsData];
+        let dataArray = roomsDataUpdated.length !== 0 ? [ ...roomsDataUpdated] : [...roomsData];
 
         if (status === 'fulfilled') {
             setDataRooms(dataArray);
@@ -89,7 +91,7 @@ export const RoomsList = () => {
 
         setDataRooms(dataArray);
 
-    }, [isActiveButton, setDataRooms, selectData, roomsData, status])
+    }, [isActiveButton, setDataRooms, selectData, roomsData, status, roomsDataUpdated])
 
     useEffect(() => {
         dispatch(getAllRooms());
@@ -125,14 +127,14 @@ export const RoomsList = () => {
         },
         {
             property: 'price', label: 'Price', display: ({ price, offer_price }) => (
-                <PriceParagraph darkmode={asideState.darkMode}>
+                <PriceParagraph darkmode={asideState.darkMode.toString()}>
                     {offer_price ? <><del>{price}</del><small>/Night</small></> : <>{price}<small>/Night</small></>}
                 </PriceParagraph>
             )
         },
         {
             property: 'offer_price', label: 'Offer Price', display: ({ offer_price, discount, price }) => (
-                <Discount darkmode={asideState.darkMode}>{offer_price === false ? <del>No Offer</del> : (price - (discount * price / 100))}</Discount>
+                <Discount darkmode={asideState.darkMode.toString()}>{offer_price === false ? <del>No Offer</del> : (price - (discount * price / 100))}</Discount>
             )
         },
         {
@@ -154,13 +156,13 @@ export const RoomsList = () => {
                     <FilterContainer>
                     {statusDelete === 'pending' && <DeleteSpinner/>}
                         <TabsContainer>
-                            <ButtonTabs darkmode={asideState.darkMode} actived={allRooms} onClick={() => handleTab('allRooms')}>
+                            <ButtonTabs darkmode={asideState.darkMode.toString()} actived={allRooms} onClick={() => handleTab('allRooms')}>
                                 All Rooms
                             </ButtonTabs>
-                            <ButtonTabs darkmode={asideState.darkMode} actived={statusAvailable} onClick={() => handleTab('statusAvailable')}>
+                            <ButtonTabs darkmode={asideState.darkMode.toString()} actived={statusAvailable} onClick={() => handleTab('statusAvailable')}>
                                 All Available
                             </ButtonTabs>
-                            <ButtonTabs darkmode={asideState.darkMode} actived={statusBooked} onClick={() => handleTab('statusBooked')}>
+                            <ButtonTabs darkmode={asideState.darkMode.toString()} actived={statusBooked} onClick={() => handleTab('statusBooked')}>
                                 All Booked
                             </ButtonTabs>
                         </TabsContainer>
@@ -389,7 +391,7 @@ const AmenitiesContainer = styled.div`
 `;
 
 const PriceParagraph = styled.p`
-    color: ${props => props.darkmode ? '#fff' : '#212121'};
+    color: ${props => props.darkmode === 'true' ? '#fff' : '#212121'};
     font-weight: bold;
     font-size: 20px;
     transition: 0.5s;
@@ -404,7 +406,7 @@ const PriceParagraph = styled.p`
 const Discount = styled.div`
     font-weight: bold;
     font-size: 20px;
-    color: ${props => props.darkmode ? '#fff' : '#212121'};
+    color: ${props => props.darkmode === 'true' ? '#fff' : '#212121'};
     transition: 0.5s;
 `;
 

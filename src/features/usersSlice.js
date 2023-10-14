@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { usersData } from "../data/usersData";
 
-
 const delay = (data, timeWait = 600) => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -30,6 +29,8 @@ export const usersSlice = createSlice({
     name: 'users',
     initialState: {
         data: [],
+        updatedUsers:[],
+        dataUser: [],
         status: 'idle',
         statusDelete: 'idle',
         error: null
@@ -48,7 +49,11 @@ export const usersSlice = createSlice({
         .addCase(getUser.fulfilled, (state, action) => {
             state.status = "fulfilled";
             
-            state.data = state.data.filter(data => {return data.id === action.payload})
+            if(state.updatedUsers.length !== 0){
+                state.dataUser = state.updatedUsers.filter(data => {return data.id === action.payload});
+            } else {
+                state.dataUser = state.data.filter(data => {return data.id === action.payload});
+            }
         })
         .addCase(getUser.pending, (state) => {state.status = "pending"})
         .addCase(getUser.rejected, (state, action) => {
@@ -67,7 +72,29 @@ export const usersSlice = createSlice({
         })
         .addCase(updateUser.fulfilled, (state, action) => {
             state.status = "fulfilled";
-            /* WIP */
+
+            if(state.updatedUsers.length === 0) {
+                state.updatedUsers = [...state.data];
+            }
+
+            state.updatedUsers = state.updatedUsers.map(data => {
+                if (data.id === action.payload.id) {
+                    return {
+                        ...data, 
+                        name: action.payload.name,
+                        email: action.payload.email,
+                        employee_position: action.payload.employee_position,
+                        phone_number: action.payload.phone_number,
+                        hire_date: action.payload.hire_date,
+                        job_description: action.payload.job_description,
+                        status: action.payload.status,
+                        password_hash: action.payload.password_hash
+                    };
+                } 
+
+                return data;
+            })
+
         })
         .addCase(updateUser.pending, (state) => {state.status = "pending"})
         .addCase(updateUser.rejected, (state, action) => {

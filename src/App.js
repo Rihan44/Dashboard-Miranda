@@ -6,14 +6,12 @@ import { RoutesComponent } from "./Routes/Routes";
 import { Header } from "./components/HeaderAside/Header";
 import { Menu } from "./components/HeaderAside/Menu";
 import { AuthContainer } from "./components/Context/AuthContainer";
-import { ToggleAsideContext } from "./components/Context/ToggleAsideContext";
 import { createGlobalStyle } from 'styled-components';
 import { AsideContext } from './components/Context/ToggleAsideContext';
 
-
 export const App = () => {
 
-    const {asideState} = useContext(AsideContext);
+    const { asideState } = useContext(AsideContext);
 
     const [titleHeader, setTitleHeader] = useState('Dashboard');
     const [subtitle, setSubtitle] = useState('');
@@ -31,6 +29,11 @@ export const App = () => {
                 setTitleHeader('Bookings');
                 setSubtitle('');
                 setSubTitleSmall('');
+                break;
+            case '/bookings/update-bookings/:id':
+                setTitleHeader('Bookings');
+                setSubtitle('Bookings / ');
+                setSubTitleSmall('Update booking');
                 break;
             case '/rooms':
                 setTitleHeader('Rooms');
@@ -66,7 +69,7 @@ export const App = () => {
                 setSubTitleSmall('');
         }
     }, [location.pathname]);
-    
+
     const GlobalStyles = createGlobalStyle`
         body {
             transition: background 0.5s;
@@ -78,11 +81,11 @@ export const App = () => {
 
     return (
         <>
-            <GlobalStyles darkmode={asideState.darkMode}/>
+            <GlobalStyles darkmode={asideState.darkMode} />
             <AuthContainer>
-                    {location.pathname !== '/login' && <Menu setHeaderTitle={setTitleHeader} />}
-                    {location.pathname !== '/login' && <Header title={titleHeader} subtitle={subtitle} subtitleSmall={subTitleSmall} />}
-                    <RoutesComponent />
+                {location.pathname !== '/login' && <Menu setHeaderTitle={setTitleHeader} />}
+                {location.pathname !== '/login' && <Header title={titleHeader} subtitle={subtitle} subtitleSmall={subTitleSmall} />}
+                <RoutesComponent />
             </AuthContainer>
         </>
     )
