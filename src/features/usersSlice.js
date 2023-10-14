@@ -13,15 +13,19 @@ export const getAllUsers = createAsyncThunk("users/getAllUsers", async () => {
     return await delay(usersData);
  });
  
- export const getUser = createAsyncThunk("users/getRoom", async (id) => {
+ export const getUser = createAsyncThunk("users/getUser", async (id) => {
     return await delay(id);
 });
 
-export const deleteUser = createAsyncThunk("users/deleteRoom", async (id) => {
+export const deleteUser = createAsyncThunk("users/deleteUser", async (id) => {
     return await delay(id, 300);
 });
 
-export const updateUser = createAsyncThunk("users/updateRoom", async (data) => {
+export const updateUser = createAsyncThunk("users/updateUser", async (data) => {
+    return await delay(data);
+});
+
+export const createUser = createAsyncThunk("users/createUser", async (data) => {
     return await delay(data);
 });
 
@@ -104,6 +108,20 @@ export const usersSlice = createSlice({
         })
         .addCase(updateUser.pending, (state) => {state.status = "pending"})
         .addCase(updateUser.rejected, (state, action) => {
+            state.status = "rejected";
+            state.error = action.error.message;
+        })
+        .addCase(createUser.fulfilled, (state, action) => {
+            state.status = "fulfilled";
+
+            if(state.updatedUsers.length === 0) {
+                state.updatedUsers = [...state.data];
+            } 
+            
+            state.updatedUsers.push(action.payload)
+        })
+        .addCase(createUser.pending, (state) => {state.status = "pending"})
+        .addCase(createUser.rejected, (state, action) => {
             state.status = "rejected";
             state.error = action.error.message;
         })

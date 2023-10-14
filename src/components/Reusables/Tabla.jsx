@@ -105,7 +105,18 @@ const TableBody = styled.tbody`
 `;
 
 const TableBodyContainer = styled.div`
-  max-height: 59vh;
+  max-height: 57vh;
   overflow-y: scroll;
   overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  /* Scroll suave */
+  scroll-behavior: smooth;
 `;

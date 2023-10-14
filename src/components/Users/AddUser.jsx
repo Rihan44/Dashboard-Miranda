@@ -1,43 +1,144 @@
 import styled from "styled-components"
+import { useContext } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import { MainContainer } from "../Reusables/MainContainer"
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
 import { AsideContext } from "../Context/ToggleAsideContext";
-import { useContext } from "react";
 
+import { createUser } from "../../features/usersSlice";
 
 export const AddUser = () => {
 
+    const [userName, setUserName] = useState('');
+    const [userEmail, setUserEmail] = useState('');
+    const [userPosition, setUserPosition] = useState('');
+    const [userNumber, setUserNumber] = useState(0);
+    const [userHireDate, setUserHireDate] = useState(new Date());
+    const [userJobDescription, setUserJobDescription] = useState('');
+    const [userStatus, setUserStatus] = useState(true);
+    const [userPassword, setUserPassword] = useState('');
+
+    const [alert, setAlert] = useState('false');
+
     const navigate = useNavigate();
-    const {asideState} = useContext(AsideContext);
+    const dispatch = useDispatch();
+
+    const { asideState } = useContext(AsideContext);
+
+    const idAleatorio = () => {
+        const numeroAleatorio = Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000;
+        const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const letraAleatoria = letras.charAt(Math.floor(Math.random() * letras.length));
+
+        return numeroAleatorio + letraAleatoria;
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
+    }
+
+    const handleUpdate = () => {
+        const id = idAleatorio();
+        const hireDate = userHireDate;
+
+        const newDate = new Date(hireDate);
+        const year = newDate.getFullYear();
+        const month = String(newDate.getMonth() + 1).padStart(2, '0');
+        const day = String(newDate.getDate()).padStart(2, '0');
+        const formatedDate = `${year}-${month}-${day}`;
+
+        const updateData = {
+            id: id,
+            name: userName,
+            email: userEmail,
+            employee_position: userPosition,
+            phone_number: userNumber,
+            hire_date: formatedDate,
+            job_description: userJobDescription,
+            status: userStatus,
+            password_hash: userPassword
+        }
+
+        if(userName !== '' && userEmail !== '') {
+            dispatch(createUser(updateData));
+            navigate('/users');
+            setAlert('false');
+        } else {
+            setAlert('true');
+        }
+    }
+
+    const handleName = (e) => {
+        setUserName(e.target.value);
+    }
+
+    const handleEmail = (e) => {
+        setUserEmail(e.target.value);
+    }
+
+    const handlePosition = (e) => {
+        setUserPosition(e.target.value);
+    }
+
+    const handleNumber = (e) => {
+        setUserNumber(e.target.value);
+    }
+
+    const handleHireDate = (e) => {
+        setUserHireDate(e.target.value);
+    }
+
+    const handleJobDescription = (e) => {
+        setUserJobDescription(e.target.value);
+    }
+
+    const handleStatus = (e) => {
+        console.log(e.target.value)
+        if (e.target.value === "Active") {
+            setUserStatus(true);
+        } else {
+            setUserStatus(false);
+        }
+    }
+
+    const handlePassword = (e) => {
+        setUserPassword(e.target.value);
     }
 
     return (
         <>
             <MainContainer>
                 <AddUserContainer>
-                <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft/></ButtonBack>
+                    <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft /></ButtonBack>
                     <FormContainer>
                         <Title>Add User</Title>
                         <Form onSubmit={handleSubmit} darkmode={asideState.darkMode}>
                             <FormBox>
                                 <FormBoxInner>
+                                    <ErrorParagraph visible={alert}>
+                                        {userName === '' && userEmail === ''
+                                            ? 'Fill in at least the name and email'
+                                            : userName === '' && userEmail !== '' 
+                                                ? 'Fill the name too'
+                                                : userName !== '' && userEmail === '' 
+                                                    && 'Fill the email too'
+                                        }
+                                    </ErrorParagraph>
                                     <div>
                                         <Label>Add 1 photo</Label>
                                         <Input type="file" placeholder="Add photos..." />
                                     </div>
                                     <div>
                                         <Label>Full Name</Label>
-                                        <Input type="text" placeholder="Full name..." />
+                                        <Input type="text" placeholder="Olivia Johns..." onChange={handleName} />
                                     </div>
                                     <div>
                                         <Label>Position</Label>
-                                        <Select>
+                                        <Select onChange={handlePosition}>
                                             <Option>Manager</Option>
                                             <Option>Receptionist</Option>
                                             <Option>Room Service</Option>
@@ -45,40 +146,40 @@ export const AddUser = () => {
                                     </div>
                                     <div>
                                         <Label>Email</Label>
-                                        <Input type="text" placeholder="Email..." />
+                                        <Input type="text" placeholder="gmail@gmail.com..." onChange={handleEmail} />
                                     </div>
                                     <div>
                                         <Label>Phone Number</Label>
-                                        <Input type="text" placeholder="Phone number..." />
+                                        <Input type="text" placeholder="61087632..." onChange={handleNumber} />
                                     </div>
                                     <div>
                                         <Label>Start Date</Label>
-                                        <Input type="date" placeholder="Start date..." />
+                                        <Input type="date" onChange={handleHireDate} />
                                     </div>
                                     <div>
                                         <Label>Functions Descriptions</Label>
-                                        <TextArea type="text" placeholder="Job description..." ></TextArea>
+                                        <TextArea type="textarea" placeholder="Manage de hotel..." onChange={handleJobDescription}></TextArea>
                                     </div>
                                     <div>
                                         <Label>Password</Label>
-                                        <Input type="password" placeholder="Password..." />
+                                        <Input type="password" placeholder="Password..." onCanPlay={handlePassword} />
                                     </div>
                                     <StatusContainer>
                                         <Label>Status</Label>
                                         <CheckBoxContainer>
                                             <div>
-                                                <Label  style={{color: '#5AD07A'}}>Active</Label>
-                                                <Input type="checkbox" value="Active"/>
+                                                <Label style={{ color: '#5AD07A' }}>Active</Label>
+                                                <Input type="checkbox" value="Active" onChange={handleStatus} />
                                             </div>
                                             <div>
-                                                <Label style={{color: '#E23428'}}>Inactive</Label>
-                                                <Input type="checkbox" value="Inactive"/>
+                                                <Label style={{ color: '#E23428' }}>Inactive</Label>
+                                                <Input type="checkbox" value="Inactive" onChange={handleStatus} />
                                             </div>
                                         </CheckBoxContainer>
                                     </StatusContainer>
                                 </FormBoxInner>
                             </FormBox>
-                            <Button>Add User</Button>
+                            <Button onClick={handleUpdate}>Add User</Button>
                         </Form>
                     </FormContainer>
                 </AddUserContainer>
@@ -100,6 +201,7 @@ const FormContainer = styled.div`
     justify-content: center;
     align-items: center;
     min-width: 1400px;
+    position: relative;
 `;
 
 const Title = styled.h2`
@@ -275,4 +377,12 @@ const StatusContainer = styled.div`
     div {
         margin-right: 10px;
     }
+`;
+
+const ErrorParagraph = styled.p`
+    position: absolute;
+    top: 12px;
+    color: #E23428;
+    transition: 0.3s;
+    opacity: ${props => props.visible === 'true' ? 1 : 0};
 `;
