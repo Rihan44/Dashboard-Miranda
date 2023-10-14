@@ -24,6 +24,8 @@ export const UsersList = () => {
     const [searchData, setSearchData] = useState('');
 
     const usersData = useSelector((state) => state.users.data);
+    const usersUpdatedData = useSelector((state) => state.users.updatedUsers);
+
     const status = useSelector((state) => state.users.status);
     const statusDelete = useSelector((state) => state.users.statusDelete);
     
@@ -55,7 +57,7 @@ export const UsersList = () => {
 
     useEffect(() => {
 
-        let dataArray = [...usersData];
+        let dataArray = usersUpdatedData.length !== 0 ? [ ...usersUpdatedData] : [...usersData];
 
         if(status === 'fulfilled'){
             setDataUsers(dataArray);
@@ -89,7 +91,7 @@ export const UsersList = () => {
 
         setDataUsers(dataArray);
 
-    }, [isActiveButton, setDataUsers, searchData, status, usersData])
+    }, [isActiveButton, setDataUsers, searchData, status, usersData, usersUpdatedData])
 
     useEffect(() => {
         dispatch(getAllUsers());
@@ -137,7 +139,7 @@ export const UsersList = () => {
         {
             property: 'status', label: 'Status', display: ({ status, id }) => (
                 <StatusContainer is_active={status.toString()}>
-                    <p>{status ? 'Inactive' : 'Active'}</p>
+                    <p>{status ? 'Active' : 'Inactive'}</p>
                     <OptionsButton>
                         <BsTrash onClick={() => handleDelete(id)} />
                         <FiEdit onClick={() => handleEdit(id)} />
@@ -340,7 +342,7 @@ const Call = styled(NavLink)`
 
 const StatusContainer = styled.div`
     p {
-        color: ${props => props.is_active === 'true' ? '#E23428' : '#5AD07A'};
+        color: ${props => props.is_active !== 'true' ? '#E23428' : '#5AD07A'};
     }
 `;
 

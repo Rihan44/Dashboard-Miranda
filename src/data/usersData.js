@@ -1,6 +1,6 @@
 export const usersData = [
     {
-        "id": "#121dfeifnIF",
+        "id": "121dfeifnIF",
         "name": "John Smith",
         "email": "john.smith@example.com",
         "photo": "https://example.com/photo1.jpg",
@@ -12,7 +12,7 @@ export const usersData = [
         "password_hash": "a1b2c3d4e5f6g7h8i9j0"
     },
     {
-        "id": "#2abCdeFgH",
+        "id": "2abCdeFgH",
         "name": "Alice Johnson",
         "email": "alice.johnson@example.com",
         "photo": "https://example.com/photo2.jpg",
@@ -24,7 +24,7 @@ export const usersData = [
         "password_hash": "k9l8m7n6o5p4q3r2"
     },
     {
-        "id": "#3XyZwvuTS",
+        "id": "3XyZwvuTS",
         "name": "Eva Davis",
         "email": "eva.davis@example.com",
         "photo": "https://example.com/photo3.jpg",
@@ -36,7 +36,7 @@ export const usersData = [
         "password_hash": "s1t2u3v4w5x6y7z8"
     },
     {
-        "id": "#4defgH1234",
+        "id": "4defgH1234",
         "name": "Michael Brown",
         "email": "michael.brown@example.com",
         "photo": "https://example.com/photo4.jpg",
@@ -48,7 +48,7 @@ export const usersData = [
         "password_hash": "p9q8r7s6t5u4v3w2x1"
     },
     {
-        "id": "#5abcdeFGH",
+        "id": "5abcdeFGH",
         "name": "Olivia Lee",
         "email": "olivia.lee@example.com",
         "photo": "https://example.com/photo5.jpg",
@@ -60,7 +60,7 @@ export const usersData = [
         "password_hash": "h1i2j3k4l5m6n7o8"
     },
     {
-        "id": "#6PqRst9876",
+        "id": "6PqRst9876",
         "name": "David Clark",
         "email": "david.clark@example.com",
         "photo": "https://example.com/photo6.jpg",
@@ -72,7 +72,7 @@ export const usersData = [
         "password_hash": "t9u8v7w6x5y4z3"
     },
     {
-        "id": "#7KlmnOPQ12",
+        "id": "7KlmnOPQ12",
         "name": "Sophia Turner",
         "email": "sophia.turner@example.com",
         "photo": "https://example.com/photo7.jpg",
@@ -84,7 +84,7 @@ export const usersData = [
         "password_hash": "a9b8c7d6e5f4g3h2i1"
     },
     {
-        "id": "#8wXyZ45678",
+        "id": "8wXyZ45678",
         "name": "William White",
         "email": "william.white@example.com",
         "photo": "https://example.com/photo8.jpg",
@@ -96,7 +96,7 @@ export const usersData = [
         "password_hash": "b1c2d3e4f5g6h7i8j9"
     },
     {
-        "id": "#9mnopQR123",
+        "id": "9mnopQR123",
         "name": "Emma Johnson",
         "email": "liam.johnson@example.com",
         "photo": "https://example.com/photo9.jpg",
@@ -108,7 +108,7 @@ export const usersData = [
         "password_hash": "k1l2m3n4o5p6q7r8s9"
     },
     {
-        "id": "#10TuvWXYZ9",
+        "id": "10TuvWXYZ9",
         "name": "Emma Anderson",
         "email": "emma.anderson@example.com",
         "photo": "https://example.com/photo10.jpg",

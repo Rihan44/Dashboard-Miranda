@@ -54,8 +54,6 @@ export const RoomsList = () => {
         navigate(`/rooms/update-room/${id}`);
     }
 
-    console.log(dataRooms)
-
     useEffect(() => {
 
         let dataArray = roomsDataUpdated.length !== 0 ? [ ...roomsDataUpdated] : [...roomsData];

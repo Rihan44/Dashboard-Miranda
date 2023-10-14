@@ -127,7 +127,7 @@ export const UpdateRoom = () => {
                 <>
                     <ButtonBack onClick={() => navigate('/rooms')}><AiOutlineArrowLeft/></ButtonBack>
                     <FormContainer>
-                        <Title>Update Room</Title>
+                        <Title>Update Room: {id}</Title>
                         <Form onSubmit={handleSubmit} darkmode={asideState.darkMode}>
                         <FormBox>
                                 <FormBoxInner>

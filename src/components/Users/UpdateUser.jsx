@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
 
@@ -14,104 +14,167 @@ import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 
 export const UpdateUser = () => {
 
-    const [dataUsers, setDataUsers] = useState([]);
+    const [userName, setUserName] = useState('');
+    const [userEmail, setUserEmail] = useState('');
+    const [userPosition, setUserPosition] = useState('');
+    const [userNumber, setUserNumber] = useState(0);
+    const [userHireDate, setUserHireDate] = useState(new Date());
+    const [userJobDescription, setUserJobDescription] = useState('');
+    const [userStatus, setUserStatus] = useState(true);
+    const [userPassword, setUserPassword] = useState('');
 
     const navigate = useNavigate();
 
-    const userData = useSelector((state) => state.rooms.dataUser);
-
-    const status = useSelector((state) => state.rooms.status);
+    const userData = useSelector((state) => state.users.dataUser);
+    const status = useSelector((state) => state.users.status);
 
     const dispatch = useDispatch();
-    const {asideState} = useContext(AsideContext);
+
+    const { asideState } = useContext(AsideContext);
+    const { id } = useParams();
 
     const handleSubmit = (e) => {
         e.preventDefault();
     }
 
     const handleUpdate = () => {
-        dispatch(updateUser());
-        navigate('/rooms');
+        const updateData = {
+            id: id,
+            name: userName,
+            email: userEmail,
+            employee_position: userPosition,
+            phone_number: userNumber,
+            hire_date: userHireDate,
+            job_description: userJobDescription,
+            status: userStatus,
+            password_hash: userPassword
+        }
+        dispatch(updateUser(updateData));
+        navigate('/users');
     }
 
+    const handleName = (e) => {
+        setUserName(e.target.value);
+    }
+
+    const handleEmail = (e) => {
+        setUserEmail(e.target.value);
+    }
+
+    const handlePosition = (e) => {
+        setUserPosition(e.target.value);
+    }
+
+    const handleNumber = (e) => {
+        setUserNumber(e.target.value);
+    }
+
+    const handleHireDate = (e) => {
+        setUserHireDate(e.target.value);
+    }
+
+    const handleJobDescription = (e) => {
+        setUserJobDescription(e.target.value);
+    }
+
+    const handleStatus = (e) => {
+        console.log(e.target.value)
+        if (e.target.value === "Active") {
+            setUserStatus(true);
+        } else {
+            setUserStatus(false);
+        }
+    }
+
+    const handlePassword = (e) => {
+        setUserPassword(e.target.value);
+    }
 
     useEffect(() => {
         let data = [...userData];
-        data.forEach(info => {
-            setDataUsers(info);
-        });
 
-    }, [userData]);
+        if (status === 'fulfilled') {
+            try {
+                setUserName(data[0].name);
+                setUserEmail(data[0].email);
+                setUserPosition(data[0].employee_position);
+                setUserNumber(data[0].phone_number);
+                setUserHireDate(data[0].hire_date);
+                setUserJobDescription(data[0].job_description);
+                setUserStatus(data[0].status);
+                setUserPassword(data[0].password_hash);
+            } catch (error) {
+                <ToastAlert></ToastAlert>
+            }
+        }
+    }, [userData, status]);
 
     return (
         <>
             <MainContainer>
                 <UpdateUserContainer>
-                {status === 'fulfilled' ?
-                <>
-                    <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft /></ButtonBack>
-                    <FormContainer>
-                        <Title>Update User</Title>
-                        <Form onSubmit={handleSubmit} darkmode={asideState.darkMode}>
-                            <FormBox>
-                                <FormBoxInner>
-                                    <div>
-                                        <Label>Add 1 photo</Label>
-                                        <Input type="file" placeholder="Add photos..." />
-                                    </div>
-                                    <div>
-                                        <Label>Full Name</Label>
-                                        <Input type="text" placeholder={dataUsers ? dataUsers.name : 'Full name...'} />
-                                    </div>
-                                    <div>
-                                        <Label>Position</Label>
-                                        <Select>
-                                            <Option>Manager</Option>
-                                            <Option>Receptionist</Option>
-                                            <Option>Room Service</Option>
-                                        </Select>
-                                    </div>
-                                    <div>
-                                        <Label>Email</Label>
-                                        <Input type="text" placeholder={dataUsers ? dataUsers.email : "Email..."} />
-                                    </div>
-                                    <div>
-                                        <Label>Phone Number</Label>
-                                        <Input type="text" placeholder={dataUsers ? dataUsers.phone_number : "Phone number..."} />
-                                    </div>
-                                    <div>
-                                        <Label>Start Date</Label>
-                                        <Input type="date" placeholder={dataUsers ? dataUsers.hire_date : "Start date..."} />
-                                    </div>
-                                    <div>
-                                        <Label>Functions Descriptions</Label>
-                                        <TextArea type="text" placeholder={dataUsers ? dataUsers.job_description : "Job description..."} ></TextArea>
-                                    </div>
-                                    <div>
-                                        <Label>Password</Label>
-                                        <Input type="password" placeholder={dataUsers ? dataUsers.password_hash : "Password..."} />
-                                    </div>
-                                    <StatusContainer>
-                                        <Label>Status</Label>
-                                        <CheckBoxContainer>
+                    {status === 'fulfilled' ?
+                        <>
+                            <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft /></ButtonBack>
+                            <FormContainer onSubmit={handleSubmit}>
+                                <Title>Update User: {id}</Title>
+                                <Form onSubmit={handleSubmit} darkmode={asideState.darkMode}>
+                                    <FormBox>
+                                        <FormBoxInner>
                                             <div>
-                                                <Label style={{ color: '#5AD07A' }}>Active</Label>
-                                                <Input type="checkbox" value="Active" checked={dataUsers.status}/>
+                                                <Label>Add 1 photo</Label>
+                                                <Input type="file" placeholder="Add photos..." />
                                             </div>
                                             <div>
-                                                <Label style={{ color: '#E23428' }}>Inactive</Label>
-                                                <Input type="checkbox" value="Inactive" checked={dataUsers.status}/>
+                                                <Label>Full Name</Label>
+                                                <Input type="text" value={userName} onChange={handleName} />
                                             </div>
-                                        </CheckBoxContainer>
-                                    </StatusContainer>
-                                </FormBoxInner>
-                            </FormBox>
-                            <Button>Update User</Button>
-                        </Form>
-                    </FormContainer>
-                    </>
-                    : status === 'rejected' ? <ToastAlert></ToastAlert>
-                        : <SpinnerLoader></SpinnerLoader>}
+                                            <div>
+                                                <Label>Position</Label>
+                                                <Select onChange={handlePosition}>
+                                                    <Option>{userPosition}</Option>
+                                                    <Option>Manager</Option>
+                                                    <Option>Receptionist</Option>
+                                                    <Option>Room Service</Option>
+                                                </Select>
+                                            </div>
+                                            <div>
+                                                <Label>Email</Label>
+                                                <Input type="text" value={userEmail} onChange={handleEmail} />
+                                            </div>
+                                            <div>
+                                                <Label>Phone Number</Label>
+                                                <Input type="text" value={userNumber} onChange={handleNumber} />
+                                            </div>
+                                            <div>
+                                                <Label>Start Date</Label>
+                                                <Input type="date" value={userHireDate} onChange={handleHireDate} />
+                                            </div>
+                                            <div>
+                                                <Label>Functions Descriptions</Label>
+                                                <TextArea type="text" value={userJobDescription} onChange={handleJobDescription}></TextArea>
+                                            </div>
+                                            <div>
+                                                <Label>Password</Label>
+                                                <Input type="password" value={userPassword} onCanPlay={handlePassword} />
+                                            </div>
+                                            <StatusContainer>
+                                                <Label>Status: <small>{userData[0]?.status ? 'Active' : 'Inactive'}</small></Label>
+                                                <CheckBoxContainer>
+                                                    <div>
+                                                        <Label style={ userData[0]?.status ? { color: '#E23428' } : { color: '#5AD07A' }}>{userData[0]?.status ? 'Inactivate' : 'Activate'}</Label>
+                                                        <Input type="checkbox" value={userStatus ? 'Inactive' : 'Active'} onChange={handleStatus} />
+                                                    </div>
+                                                </CheckBoxContainer>
+                                            </StatusContainer>
+                                        </FormBoxInner>
+                                    </FormBox>
+                                    <Button onClick={handleUpdate}>Update User</Button>
+                                </Form>
+                            </FormContainer>
+                        </>
+                        : status === 'rejected' ? <ToastAlert></ToastAlert>
+                            : <SpinnerLoader></SpinnerLoader>}
                 </UpdateUserContainer>
             </MainContainer>
         </>
@@ -225,6 +288,11 @@ const Input = styled.input`
 const Label = styled.label`
     color: #135846;
     font-family: 'Poppins', sans-serif;
+
+    small {
+        color: #212121;
+        font-size: 16px;
+    }
 `;
 
 const Button = styled.button` 

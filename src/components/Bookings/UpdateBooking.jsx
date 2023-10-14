@@ -87,8 +87,6 @@ export const UpdateBooking = () => {
         setPriceState(e.target.value);
     } 
 
-    console.log(bookingsData);
-
     useEffect(() => {
         let data = [...bookingsData];
 

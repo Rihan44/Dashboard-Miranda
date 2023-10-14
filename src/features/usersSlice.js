@@ -21,8 +21,8 @@ export const deleteUser = createAsyncThunk("users/deleteRoom", async (id) => {
     return await delay(id, 300);
 });
 
-export const updateUser = createAsyncThunk("users/updateRoom", async (id, data) => {
-    return await delay(id);
+export const updateUser = createAsyncThunk("users/updateRoom", async (data) => {
+    return await delay(data);
 });
 
 export const usersSlice = createSlice({

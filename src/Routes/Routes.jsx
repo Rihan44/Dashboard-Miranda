@@ -38,7 +38,7 @@ export const RoutesComponent = () => {
                                 <Route path="/contact" element={<Contact />}/>
                                 <Route path="/users" element={ <UsersList /> }/>
                                 <Route path="/users/add-user" element={ <AddUser/>}/>
-                                <Route path="/users/update-user" element={ <UpdateUser/>}/>
+                                <Route path="/users/update-user/:id" element={ <UpdateUser/>}/>
                             </Routes>
                         </PrivateRoute>
                     }
