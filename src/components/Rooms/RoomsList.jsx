@@ -119,7 +119,7 @@ export const RoomsList = () => {
         {
             property: 'amenities', label: 'Amenities', display: ({ amenities }) => (
                 <AmenitiesContainer>
-                    <p>{amenities !== undefined ? amenities.join(', ') : ''}</p>
+                    <p>{amenities !== undefined ? amenities?.join(', ') : ''}</p>
                 </AmenitiesContainer>
             )
         },

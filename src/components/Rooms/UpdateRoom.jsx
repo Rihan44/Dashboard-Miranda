@@ -22,6 +22,7 @@ export const UpdateRoom = () => {
     const [priceState, setPriceState] = useState(0);
     const [discountState, setDiscountState] = useState(0);
     const [amenitiesState, setAmenitiesState] = useState([]);
+    const [roomDescription, setRoomDescription] = useState('');
 
     const {id} = useParams();
     const {asideState} = useContext(AsideContext);
@@ -60,7 +61,8 @@ export const UpdateRoom = () => {
             offer_price: offerState,
             price: priceState,
             discount: offerState ? discountState : 0,
-            amenities: amenitiesState
+            amenities: amenitiesState,
+            description: roomDescription
         }
         dispatch(updateRoom(dataUpdate));
         navigate('/rooms');
@@ -98,6 +100,10 @@ export const UpdateRoom = () => {
           }
     }
 
+    const handleDescription = (e) => {
+        setRoomDescription(e.target.value);
+    }
+
     useEffect(() => {
         let data =[...roomData];
 
@@ -109,6 +115,7 @@ export const UpdateRoom = () => {
                 setPriceState(data[0].price);
                 setDiscountState(data[0].discount);
                 setAmenitiesState(data[0].amenities);
+                setRoomDescription(data[0].description);
             } catch {
                 <ToastAlert></ToastAlert>
             }
@@ -151,7 +158,7 @@ export const UpdateRoom = () => {
                                     </div>
                                     <div>
                                         <Label>Description</Label>
-                                        <TextArea type="text" placeholder="Room description..." ></TextArea>
+                                        <TextArea type="text" value={roomDescription} onChange={handleDescription}></TextArea>
                                     </div>
                                     <div>
                                         <Label>Offer</Label>

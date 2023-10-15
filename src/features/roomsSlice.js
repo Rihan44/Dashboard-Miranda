@@ -25,6 +25,10 @@ export const updateRoom = createAsyncThunk("rooms/updateRoom", async (dataUpdate
     return await delay(dataUpdate);
 });
 
+export const createRoom = createAsyncThunk("users/createRoom", async (data) => {
+    return await delay(data);
+});
+
 export const roomsSlice = createSlice({
     name: 'rooms',
     initialState: {
@@ -90,7 +94,8 @@ export const roomsSlice = createSlice({
                         room_type: action.payload.room_type,
                         offer_price: action.payload.offer_price,
                         price: action.payload.price,
-                        amenities: action.payload.amenities
+                        amenities: action.payload.amenities,
+                        description: action.payload.description
                     };
                 } 
 
@@ -100,6 +105,20 @@ export const roomsSlice = createSlice({
         })
         .addCase(updateRoom.pending, (state) => {state.status = "pending"})
         .addCase(updateRoom.rejected, (state, action) => {
+            state.status = "rejected";
+            state.error = action.error.message;
+        })
+        .addCase(createRoom.fulfilled, (state, action) => {
+            state.status = "fulfilled";
+
+            if(state.updatedDataRoom.length === 0) {
+                state.updatedDataRoom = [...state.data];
+            } 
+            
+            state.updatedDataRoom.push(action.payload)
+        })
+        .addCase(createRoom.pending, (state) => {state.status = "pending"})
+        .addCase(createRoom.rejected, (state, action) => {
             state.status = "rejected";
             state.error = action.error.message;
         })

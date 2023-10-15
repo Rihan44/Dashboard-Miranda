@@ -13,6 +13,8 @@ import { createUser } from "../../features/usersSlice";
 
 export const AddUser = () => {
 
+    /* TODO MODAL QUE DIGA QUE SE4 HA AÑADIDO CORRECTAMENTE */
+
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
     const [userPosition, setUserPosition] = useState('');

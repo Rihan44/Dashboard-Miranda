@@ -18,7 +18,8 @@ export const roomsData = [
 		"price": 250,
 		"offer_price": true,
 		"discount": 10,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "2EFGH456",
@@ -36,7 +37,8 @@ export const roomsData = [
 		"price": 120,
 		"offer_price": false,
 		"discount": 5,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "3IJKL789",
@@ -59,7 +61,8 @@ export const roomsData = [
 		"price": 900,
 		"offer_price": true,
 		"discount": 15,
-		"state": "booked"
+		"state": "booked",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "4MNOPQ101",
@@ -77,7 +80,8 @@ export const roomsData = [
 		"price": 180,
 		"offer_price": true,
 		"discount": 8,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "5RSTU111",
@@ -98,7 +102,8 @@ export const roomsData = [
 		"price": 275,
 		"offer_price": true,
 		"discount": 12,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "6VWXYZ222",
@@ -116,7 +121,8 @@ export const roomsData = [
 		"price": 200,
 		"offer_price": true,
 		"discount": 10,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "7ABCDEF333",
@@ -139,7 +145,8 @@ export const roomsData = [
 		"price": 950,
 		"offer_price": false,
 		"discount": 0,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "8GHIJK444",
@@ -160,7 +167,8 @@ export const roomsData = [
 		"price": 300,
 		"offer_price": true,
 		"discount": 18,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "9LMNOP555",
@@ -178,7 +186,8 @@ export const roomsData = [
 		"price": 130,
 		"offer_price": false,
 		"discount": 0,
-		"state": "booked"
+		"state": "booked",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "10QRSTU666",
@@ -199,7 +208,8 @@ export const roomsData = [
 		"price": 280,
 		"offer_price": true,
 		"discount": 10,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 /* 	{
 		"id": "11VWXYZ777",
@@ -216,7 +226,8 @@ export const roomsData = [
 		"price": 190,
 		"offer_price": true,
 		"discount": 5,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "12XYZ123",
@@ -238,7 +249,8 @@ export const roomsData = [
 		"price": 970,
 		"offer_price": true,
 		"discount": 20,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "13ABC456",
@@ -258,7 +270,8 @@ export const roomsData = [
 		"price": 270,
 		"offer_price": true,
 		"discount": 12,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "14DEFGH789",
@@ -275,7 +288,8 @@ export const roomsData = [
 		"price": 125,
 		"offer_price": false,
 		"discount": 8,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "15IJKLM101",
@@ -295,7 +309,8 @@ export const roomsData = [
 		"price": 290,
 		"offer_price": true,
 		"discount": 15,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "16NOPQR111",
@@ -312,7 +327,8 @@ export const roomsData = [
 		"price": 175,
 		"offer_price": true,
 		"discount": 10,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "17STUV123",
@@ -334,7 +350,8 @@ export const roomsData = [
 		"price": 920,
 		"offer_price": true,
 		"discount": 8,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "18UVWX456",
@@ -354,7 +371,8 @@ export const roomsData = [
 		"price": 310,
 		"offer_price": true,
 		"discount": 18,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "19WXYZ789",
@@ -371,7 +389,8 @@ export const roomsData = [
 		"price": 135,
 		"offer_price": false,
 		"discount": 0,
-		"state": "booked"
+		"state": "booked",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "20XYZABC101",
@@ -391,7 +410,8 @@ export const roomsData = [
 		"price": 265,
 		"offer_price": true,
 		"discount": 10,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "21ABCDEF111",
@@ -408,7 +428,8 @@ export const roomsData = [
 		"price": 210,
 		"offer_price": true,
 		"discount": 5,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "22DEFGHI222",
@@ -430,7 +451,8 @@ export const roomsData = [
 		"price": 980,
 		"offer_price": true,
 		"discount": 15,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "23GHIJKL333",
@@ -450,7 +472,8 @@ export const roomsData = [
 		"price": 290,
 		"offer_price": true,
 		"discount": 12,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "24JKLMNO444",
@@ -467,7 +490,8 @@ export const roomsData = [
 		"price": 130,
 		"offer_price": false,
 		"discount": 0,
-		"state": "booked"
+		"state": "booked",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "25NOPQRS555",
@@ -487,7 +511,8 @@ export const roomsData = [
 		"price": 275,
 		"offer_price": true,
 		"discount": 10,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "26RSTUV666",
@@ -504,7 +529,8 @@ export const roomsData = [
 		"price": 180,
 		"offer_price": true,
 		"discount": 5,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "27UVWXY777",
@@ -526,7 +552,8 @@ export const roomsData = [
 		"price": 940,
 		"offer_price": true,
 		"discount": 18,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "28WXYZ88",
@@ -546,7 +573,8 @@ export const roomsData = [
 		"price": 320,
 		"offer_price": true,
 		"discount": 20,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "29XYZ1234",
@@ -563,7 +591,8 @@ export const roomsData = [
 		"price": 140,
 		"offer_price": false,
 		"discount": 0,
-		"state": "booked"
+		"state": "booked",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "30ABCDE555",
@@ -583,7 +612,8 @@ export const roomsData = [
 		"price": 260,
 		"offer_price": true,
 		"discount": 10,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "31ABCDEF666",
@@ -600,7 +630,8 @@ export const roomsData = [
 		"price": 195,
 		"offer_price": true,
 		"discount": 5,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "32DEFGHI777",
@@ -622,7 +653,8 @@ export const roomsData = [
 		"price": 970,
 		"offer_price": true,
 		"discount": 15,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "33GHIJKL888",
@@ -642,7 +674,8 @@ export const roomsData = [
 		"price": 280,
 		"offer_price": true,
 		"discount": 12,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "34JKLMNOP999",
@@ -659,7 +692,8 @@ export const roomsData = [
 		"price": 125,
 		"offer_price": false,
 		"discount": 8,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "35PQRSTU1010",
@@ -679,7 +713,8 @@ export const roomsData = [
 		"price": 270,
 		"offer_price": true,
 		"discount": 10,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "36RSTUVW1111",
@@ -696,7 +731,8 @@ export const roomsData = [
 		"price": 190,
 		"offer_price": true,
 		"discount": 5,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "37UVWXYZ1212",
@@ -718,7 +754,8 @@ export const roomsData = [
 		"price": 960,
 		"offer_price": true,
 		"discount": 18,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "38WXYZ12",
@@ -738,7 +775,8 @@ export const roomsData = [
 		"price": 330,
 		"offer_price": true,
 		"discount": 20,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "39XYZ12345",
@@ -755,7 +793,8 @@ export const roomsData = [
 		"price": 150,
 		"offer_price": false,
 		"discount": 0,
-		"state": "booked"
+		"state": "booked",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	},
 	{
 		"id": "40ABCDE6789",
@@ -775,6 +814,7 @@ export const roomsData = [
 		"price": 280,
 		"offer_price": true,
 		"discount": 10,
-		"state": "available"
+		"state": "available",
+		"description": "This is the description of the room, the room has 2 beds lorem, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 	} */
 ]
