@@ -24,6 +24,7 @@ export const AddRoom = () => {
     const [roomDescription, setRoomDescription] = useState('');
 
     const [alert, setAlert] = useState('false');
+    const [sameNumberAlert, setSameNumberAlert] = useState('false');
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -75,7 +76,7 @@ export const AddRoom = () => {
 
         if(roomNumberState === 0 && amenitiesState.length === 0) {
             setAlert('true');
-        } else {
+        } else if(roomNumberState !== 0 && amenitiesState.length !== 0){
             setAlert('false');
             dispatch(createRoom(dataUpdate));
             navigate('/rooms');
@@ -88,14 +89,14 @@ export const AddRoom = () => {
     }
 
     const handleRoomNumber = (e) => {
-        /* roomsData.forEach((data) => {
-            if(data.room_number == roomNumberState){ 
-                alert("This number is already in use");
+         roomsData.forEach((data) => {
+            if(data.room_number !== parseInt(e.target.value)){
+                setRoomNumberState(e.target.value);
+                setSameNumberAlert('false');
             } else {
-                
+                setSameNumberAlert('true');
             }
-        }) */
-        setRoomNumberState(e.target.value);
+        }) 
     }
 
     const handleSelectOffer = (e) => {
