@@ -5,7 +5,7 @@ import './index.css';
 import { App } from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { Store } from './app/store';
+import { Store } from './app/store.ts';
 import { ToggleAsideContext } from './components/Context/ToggleAsideContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

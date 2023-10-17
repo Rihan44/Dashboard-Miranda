@@ -67,7 +67,7 @@ export const AddRoom = () => {
             room_number: roomNumberState,
             offer_price: offerState,
             price: priceState,
-            state: "available",
+            status: "available",
             discount: offerState ? discountState : 0,
             amenities: amenitiesState,
             description: roomDescription

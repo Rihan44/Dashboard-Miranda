@@ -136,9 +136,9 @@ export const RoomsList = () => {
             )
         },
         {
-            property: 'status', label: 'Status', display: ({ status, id }) =>
+            property: 'status', label: 'Status', display: ({ state, id }) =>
                 <StatusContent>
-                    <StatusParagraph status={status}>{status}</StatusParagraph>
+                    <StatusParagraph status={state}>{state}</StatusParagraph>
                     <OptionsButton>
                         <BsTrash onClick={() => handleDelete(id)} />
                         <FiEdit onClick={() => handleEdit(id)} /> 
