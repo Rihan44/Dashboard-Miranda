@@ -15,10 +15,13 @@ import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { StatusParagraph } from "../Reusables/StatusParagraph";
 import { ToastAlert } from "../Reusables/ToastAlert";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 export const Bookings = () => {
 
-    const {asideState} = useContext(AsideContext);
+    const asideState = useContext(AsideContext);
+
+    /* console.log(asideState.asideState.darkMode) */
 
     const [dataBooking, setBookingData] = useState([]);
     const [selectData, setSelectData] = useState('');
@@ -27,13 +30,13 @@ export const Bookings = () => {
     const [isActiveButton, setIsActiveButton] = useState('allBookings');
     const [searchData, setSearchData] = useState('');
 
-    const bookingsSliceData = useSelector((state) => state.bookings.data);
-    const bookingsSliceDataUpdated = useSelector((state) => state.bookings.bookingUpdateData);
+    const bookingsSliceData = useAppSelector((state) => state.bookings.data);
+    const bookingsSliceDataUpdated = useAppSelector((state) => state.bookings.bookingUpdateData);
 
-    const status = useSelector((state) => state.bookings.status);
-    const statusDelete = useSelector((state) => state.bookings.statusDelete);
+    const status = useAppSelector((state) => state.bookings.status);
+    const statusDelete = useAppSelector((state) => state.bookings.statusDelete);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const allBookings = isActiveButton === 'allBookings';
     const checkIn = isActiveButton === 'checkIn';
@@ -132,7 +135,7 @@ export const Bookings = () => {
         {
             property: 'guest', label: 'Guest', display: ({ guest, phone_number, id }) => (
                 <TableContainerBodyContent>
-                    <CostumerName darkmode={asideState.darkMode}>{guest}</CostumerName>
+                    <CostumerName darkmode={asideState.asideState.darkMode}>{guest}</CostumerName>
                     <Paragraphs>{phone_number}</Paragraphs>
                     <ButtonID onClick={() => handleBookingId(id)}>#{id}</ButtonID>
                 </TableContainerBodyContent>
@@ -245,8 +248,14 @@ export const Bookings = () => {
     )
 }
 
+interface PropsStyled {
+    modalOpen: boolean,
+    actived: boolean,
+    darkmode: boolean,
+}
+
 const Modal = styled.div`
-    display: ${props => props.modalOpen === true ? 'block' : 'none'};
+    display: ${(props: PropsStyled) => props.modalOpen === true ? 'block' : 'none'};
     position: fixed; 
     z-index: 1; 
     left: 0;
@@ -333,8 +342,8 @@ const TabsContainer = styled.div`
 
 
 const ButtonTabs = styled(Buttons)`
-    color: ${props => props.actived ? "#135846" : "#6E6E6E"};
-    border-bottom: ${props => props.actived ? "2px solid #135846" : "none"};
+    color: ${(props: PropsStyled) => props.actived ? "#135846" : "#6E6E6E"};
+    border-bottom: ${(props: PropsStyled) => props.actived ? "2px solid #135846" : "none"};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     height: 30px;
@@ -416,7 +425,7 @@ const TableContainerBodyContent = styled.div`
 
 const CostumerName = styled.p`
     transition: 0.5s;
-    color: ${props => props.darkmode ? '#fff' : '#393939'};
+    color: ${(props: PropsStyled) => props.darkmode ? '#fff' : '#393939'};
 `;
 
 const ButtonID = styled.button`
@@ -436,7 +445,7 @@ const OrderDate = styled.p`
 
 const CheckInDate = styled.p`
     transition: 0.5s;
-    color: ${props => props.darkmode ? '#fff' : '#393939'};
+    color: ${(props: PropsStyled) => props.darkmode ? '#fff' : '#393939'};
 `;
 
 const CheckInTime = styled(Paragraphs)`
@@ -445,7 +454,7 @@ const CheckInTime = styled(Paragraphs)`
 
 const CheckOutDate = styled.p`
     transition: 0.5s;
-    color: ${props => props.darkmode ? '#fff' : '#393939'};
+    color: ${(props: PropsStyled) => props.darkmode ? '#fff' : '#393939'};
 `;
 
 const CheckOutTime = styled(Paragraphs)`
@@ -472,7 +481,7 @@ const ViewNotesButton = styled(Buttons)`
 
 const TypeRoom = styled.p`
     transition: 0.5s;
-    color: ${props => props.darkmode ? '#fff' : '#393939'};
+    color: ${(props: PropsStyled) => props.darkmode ? '#fff' : '#393939'};
 `;
 
 const OptionsButton = styled(Buttons)`
@@ -510,7 +519,7 @@ const StatusContent = styled(TableContainerBodyContent)`
     flex-direction: row;
 
     p {
-        color: ${props => props.darkmode ? '#ffffff' : '#212121'};
+        color: ${(props: PropsStyled) => props.darkmode ? '#ffffff' : '#212121'};
     }
 `;
 
