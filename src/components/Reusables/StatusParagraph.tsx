@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
+interface Props {
+    status: string
+}
 
-export const StatusParagraph = styled.p`
+export const StatusParagraph = styled.p<Props>`
     display: flex;
     align-items: center;
 
