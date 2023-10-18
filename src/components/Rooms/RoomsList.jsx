@@ -182,7 +182,6 @@ export const RoomsList = () => {
                 </RoomsContainer>
             </MainContainer>
         </>
-
     )
 }
 
