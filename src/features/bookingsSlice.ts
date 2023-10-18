@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { bookingData } from "../data/bookingData";
 import {BookingsInterface, BookingsInterfaceState} from '../interfaces/bookingsInterface.js';
 
-const delay = (data: BookingsInterface[] | string | BookingsInterface) => {
-    return new Promise((resolve, reject) => {
+const delay = (data: BookingsInterface[] | string | number | BookingsInterface) => {
+    return new Promise((resolve) => {
         setTimeout(() => {
             resolve(data);
         }, 600)
@@ -14,12 +14,12 @@ export const getAllBookings = createAsyncThunk<BookingsInterface[]>("bookings/ge
    return (await delay(bookingData) as BookingsInterface[]);
 });
 
-export const getBookingDetail = createAsyncThunk("bookings/getBookingDetail", async (id: string) => {
-    return (await delay(id)as string);
+export const getBookingDetail = createAsyncThunk("bookings/getBookingDetail", async (id: string | number) => {
+    return (await delay(id)as string | number);
 });
 
-export const deleteBooking = createAsyncThunk("bookings/deleteBooking", async (id: string) => {
-    return (await delay(id)as string);
+export const deleteBooking = createAsyncThunk("bookings/deleteBooking", async (id: string | number) => {
+    return (await delay(id)as string | number);
 });
 
 export const updateBooking = createAsyncThunk("bookings/updateBooking", async (dataUpdate: BookingsInterface) => {

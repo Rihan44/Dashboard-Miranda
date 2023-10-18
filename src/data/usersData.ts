@@ -1,4 +1,7 @@
-export const usersData = [
+import { UsersInterface } from "../interfaces/usersInterface";
+
+
+export const usersData: UsersInterface[] = [
     {
         "id": "121dfeifnIF",
         "name": "John Smith",

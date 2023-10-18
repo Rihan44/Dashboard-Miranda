@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { usersData } from "../data/usersData";
+import { UsersInterface, UsersInterfaceState } from "../interfaces/usersInterface";
 
-const delay = (data, timeWait = 600) => {
+const delay = (data: UsersInterface[] | string | number | UsersInterface, timeWait = 600) => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve(data);
@@ -9,36 +10,38 @@ const delay = (data, timeWait = 600) => {
     });
 }
 
-export const getAllUsers = createAsyncThunk("users/getAllUsers", async () => {
-    return await delay(usersData);
+export const getAllUsers = createAsyncThunk<UsersInterface[]>("users/getAllUsers", async () => {
+    return (await delay(usersData) as UsersInterface[]);
  });
  
- export const getUser = createAsyncThunk("users/getUser", async (id) => {
-    return await delay(id);
+ export const getUser = createAsyncThunk("users/getUser", async (id: string | number) => {
+    return (await delay(id) as string | number);
 });
 
-export const deleteUser = createAsyncThunk("users/deleteUser", async (id) => {
-    return await delay(id, 300);
+export const deleteUser = createAsyncThunk("users/deleteUser", async (id: string | number) => {
+    return (await delay(id, 300) as string | number);
 });
 
-export const updateUser = createAsyncThunk("users/updateUser", async (data) => {
-    return await delay(data);
+export const updateUser = createAsyncThunk("users/updateUser", async (data: UsersInterface) => {
+    return (await delay(data) as UsersInterface);
 });
 
-export const createUser = createAsyncThunk("users/createUser", async (data) => {
-    return await delay(data);
+export const createUser = createAsyncThunk("users/createUser", async (data: UsersInterface) => {
+    return (await delay(data) as UsersInterface);
 });
+
+const initialState: UsersInterfaceState = {
+    data: [],
+    updatedUsers:[],
+    dataUser: [],
+    status: 'idle',
+    statusDelete: 'idle',
+    error: null
+}
 
 export const usersSlice = createSlice({
     name: 'users',
-    initialState: {
-        data: [],
-        updatedUsers:[],
-        dataUser: [],
-        status: 'idle',
-        statusDelete: 'idle',
-        error: null
-    },
+    initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getAllUsers.fulfilled, (state, action) => {

@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { roomsData } from "../data/roomsData";
 import { RoomInterface, RoomsInterfaceState } from "../interfaces/roomInterface";
 
-const delay = (data: RoomInterface[] | string | RoomInterface, timeWait: number = 600) => {
+const delay = (data: RoomInterface[] | string | number | RoomInterface, timeWait: number = 600) => {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve(data);
@@ -14,12 +14,12 @@ export const getAllRooms = createAsyncThunk<RoomInterface[]>("rooms/getAllRooms"
    return (await delay(roomsData) as RoomInterface[]);
 });
 
-export const getRoom = createAsyncThunk("rooms/getRoom", async (id: string) => {
-    return (await delay(id)as string);
+export const getRoom = createAsyncThunk("rooms/getRoom", async (id: string | number) => {
+    return (await delay(id)as string | number);
 });
 
-export const deleteRoom = createAsyncThunk("rooms/deleteRoom", async (id: string) => {
-    return (await delay(id, 600) as string);
+export const deleteRoom = createAsyncThunk("rooms/deleteRoom", async (id: string | number) => {
+    return (await delay(id, 600) as string | number);
 });
 
 export const updateRoom = createAsyncThunk("rooms/updateRoom", async (dataUpdate: RoomInterface) => {

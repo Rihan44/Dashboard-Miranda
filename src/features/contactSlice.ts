@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { contactMessage } from "../data/contactMessage";
 import {ContactInterface, ContactInterfaceState} from '../interfaces/contactInterface.js';
 
-const delay = (data: ContactInterface[] | string | ContactInterface, timeWait: number = 600) => {
+const delay = (data: ContactInterface[] | string | number | ContactInterface, timeWait: number = 600) => {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve(data);
@@ -14,16 +14,16 @@ export const getAllMessages = createAsyncThunk<ContactInterface[]>("contact/getA
     return (await delay(contactMessage) as ContactInterface[]);
 });
 
-export const deleteMessage = createAsyncThunk("contact/deleteMessage", async (id: string) => {
-    return (await delay(id) as string);
+export const deleteMessage = createAsyncThunk("contact/deleteMessage", async (id: string | number) => {
+    return (await delay(id) as string | number);
 });
 
-export const archiveMessage = createAsyncThunk("contact/archiveMessage", async (id: string) => {
-    return (await delay(id, 300) as string);
+export const archiveMessage = createAsyncThunk("contact/archiveMessage", async (id: string | number) => {
+    return (await delay(id, 300) as string | number);
 });
 
-export const unArchiveMessage = createAsyncThunk("contact/unArchiveMessage", async (id: string) => {
-    return (await delay(id, 300) as string);
+export const unArchiveMessage = createAsyncThunk("contact/unArchiveMessage", async (id: string | number) => {
+    return (await delay(id, 300) as string | number);
 });
 
 const initialState: ContactInterfaceState = {
