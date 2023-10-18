@@ -12,3 +12,12 @@ export interface BookingsInterface {
     price: number | string
 }
 
+export interface BookingsInterfaceState {
+    data: BookingsInterface[],
+    dataBooking: BookingsInterface[],
+    bookingUpdateData: BookingsInterface[],
+    status: string,
+    statusDelete: string,
+    error: string | null | undefined
+}
+

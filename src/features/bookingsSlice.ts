@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { bookingData } from "../data/bookingData";
+import {BookingsInterface, BookingsInterfaceState} from '../interfaces/bookingsInterface.js';
 
-const delay = (data) => {
+const delay = (data: BookingsInterface[] | string | BookingsInterface) => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve(data);
@@ -9,32 +10,34 @@ const delay = (data) => {
     });
 }
 
-export const getAllBookings = createAsyncThunk("bookings/getAllBookings", async () => {
-   return await delay(bookingData);
+export const getAllBookings = createAsyncThunk<BookingsInterface[]>("bookings/getAllBookings", async () => {
+   return (await delay(bookingData) as BookingsInterface[]);
 });
 
-export const getBookingDetail = createAsyncThunk("bookings/getBookingDetail", async (id) => {
-    return await delay(id);
+export const getBookingDetail = createAsyncThunk("bookings/getBookingDetail", async (id: string) => {
+    return (await delay(id)as string);
 });
 
-export const deleteBooking = createAsyncThunk("bookings/deleteBooking", async (id) => {
-    return await delay(id);
+export const deleteBooking = createAsyncThunk("bookings/deleteBooking", async (id: string) => {
+    return (await delay(id)as string);
 });
 
-export const updateBooking = createAsyncThunk("bookings/updateBooking", async (id) => {
-    return await delay(id);
+export const updateBooking = createAsyncThunk("bookings/updateBooking", async (dataUpdate: BookingsInterface) => {
+    return (await delay(dataUpdate) as BookingsInterface);
 });
+
+const initialState: BookingsInterfaceState = {
+    data: [],
+    dataBooking: [],
+    bookingUpdateData: [],
+    status: 'idle',
+    statusDelete: 'idle',
+    error: null
+}
 
 export const bookingsSlice = createSlice({
     name: 'bookings',
-    initialState: {
-        data: [],
-        dataBooking: [],
-        bookingUpdateData: [],
-        status: 'idle',
-        statusDelete: 'idle',
-        error: null
-    },
+    initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getAllBookings.fulfilled, (state, action) => {
