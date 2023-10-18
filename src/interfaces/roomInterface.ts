@@ -10,3 +10,12 @@ export interface RoomInterface {
     status: string
     description: string,
 }
+
+export interface RoomsInterfaceState {
+    data: RoomInterface[],
+    updatedDataRoom: RoomInterface[],
+    dataRoom: RoomInterface[],
+    status: string,
+    statusDelete: string,
+    error: string | null | undefined
+}

@@ -1,45 +1,47 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { roomsData } from "../data/roomsData";
+import { RoomInterface, RoomsInterfaceState } from "../interfaces/roomInterface";
 
-const delay = (data, timeWait = 600) => {
-    return new Promise((resolve, reject) => {
+const delay = (data: RoomInterface[] | string | RoomInterface, timeWait: number = 600) => {
+    return new Promise((resolve) => {
         setTimeout(() => {
             resolve(data);
         }, timeWait)
     });
 }
 
-export const getAllRooms = createAsyncThunk("rooms/getAllRooms", async () => {
-   return await delay(roomsData);
+export const getAllRooms = createAsyncThunk<RoomInterface[]>("rooms/getAllRooms", async () => {
+   return (await delay(roomsData) as RoomInterface[]);
 });
 
-export const getRoom = createAsyncThunk("rooms/getRoom", async (id) => {
-    return await delay(id);
+export const getRoom = createAsyncThunk("rooms/getRoom", async (id: string) => {
+    return (await delay(id)as string);
 });
 
-export const deleteRoom = createAsyncThunk("rooms/deleteRoom", async (id) => {
-    return await delay(id, 600);
+export const deleteRoom = createAsyncThunk("rooms/deleteRoom", async (id: string) => {
+    return (await delay(id, 600) as string);
 });
 
-export const updateRoom = createAsyncThunk("rooms/updateRoom", async (dataUpdate) => {
-    return await delay(dataUpdate);
+export const updateRoom = createAsyncThunk("rooms/updateRoom", async (dataUpdate: RoomInterface) => {
+    return (await delay(dataUpdate) as RoomInterface);
 });
 
-export const createRoom = createAsyncThunk("users/createRoom", async (data) => {
-    return await delay(data);
+export const createRoom = createAsyncThunk("users/createRoom", async (data: RoomInterface) => {
+    return (await delay(data) as RoomInterface);
 });
+
+const initialState: RoomsInterfaceState = {
+    data: [],
+    updatedDataRoom: [],
+    dataRoom: [],
+    status: 'idle',
+    statusDelete: 'idle',
+    error: null
+}
 
 export const roomsSlice = createSlice({
     name: 'rooms',
-    initialState: {
-        data: [],
-        updatedDataRoom: [],
-        dataRoom: [],
-        singleData: null,
-        status: 'idle',
-        statusDelete: 'idle',
-        error: null
-    },
+    initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getAllRooms.fulfilled, (state, action) => {
