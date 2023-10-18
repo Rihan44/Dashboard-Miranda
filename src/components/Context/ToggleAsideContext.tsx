@@ -1,12 +1,25 @@
 
-import { createContext, useReducer } from "react"
+import { ReactNode, createContext, useReducer } from "react"
 
 export const AsideContext = createContext({});
 
-function asideReducer(state, action) {
+interface ActionInterface {
+    type: string,
+}
+
+type Props = {
+    children: ReactNode
+}
+
+interface AppState {
+    asideVisible: boolean;
+    darkMode?: boolean;
+}
+
+function asideReducer(state: AppState, action: ActionInterface): AppState {
     switch(action.type) {
         case 'Close_aside':
-            return {...state, asideVisible: !state.asideVisible};
+            return {asideVisible: !state.asideVisible};
         case 'Dark_mode': 
             return {...state, darkMode: !state.darkMode};
         default :
@@ -14,8 +27,13 @@ function asideReducer(state, action) {
     }
 }
 
-export const ToggleAsideContext = ({children}) => {
-    const [asideState, asideDispatch] = useReducer(asideReducer, {asideVisible: false, darkMode: false});
+export const ToggleAsideContext = ({children}: Props) => {
+    const initialState: AppState = {
+        asideVisible: false,
+        darkMode: false
+    };
+
+    const [asideState, asideDispatch] = useReducer(asideReducer, initialState);
 
     return(
         <AsideContext.Provider value={{asideState, asideDispatch}}>

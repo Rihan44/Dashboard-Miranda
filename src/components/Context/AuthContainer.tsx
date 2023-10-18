@@ -24,7 +24,7 @@ interface ActionInterface {
 
 type Props = {
     children: ReactNode
-  }
+}
 
 function authReducer(state: object, action: ActionInterface) {
     switch(action.type) {
