@@ -16,19 +16,18 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 import { StatusParagraph } from "../Reusables/StatusParagraph";
 import { ToastAlert } from "../Reusables/ToastAlert";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { BookingsInterface } from "../../interfaces/bookingsInterface";
 
 export const Bookings = () => {
 
-    const asideState = useContext(AsideContext);
+    const {asideState}: boolean = useContext(AsideContext);
 
-    /* console.log(asideState.asideState.darkMode) */
-
-    const [dataBooking, setBookingData] = useState([]);
+    const [dataBooking, setBookingData] = useState<BookingsInterface[]>([]);
     const [selectData, setSelectData] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [modalInfo, setModalInfo] = useState('');
     const [isActiveButton, setIsActiveButton] = useState('allBookings');
-    const [searchData, setSearchData] = useState('');
+    const [searchData, setSearchData] = useState<string>('');
 
     const bookingsSliceData = useAppSelector((state) => state.bookings.data);
     const bookingsSliceDataUpdated = useAppSelector((state) => state.bookings.bookingUpdateData);
@@ -45,51 +44,64 @@ export const Bookings = () => {
 
     const navigate = useNavigate();
 
-    let options = { year: 'numeric', month: 'long', day: 'numeric' };
+    let options: object = { year: 'numeric', month: 'long', day: 'numeric' };
 
-    const handleSelect = (e) => {
+    const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSelectData(e.target.value);
     }
 
-    const handleSearch = (e) => {
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchData(e.target.value.toLowerCase());
     }
 
-    const handleTab = (activeButton) => {
+    const handleTab = (activeButton: string) => {
         setIsActiveButton(activeButton);
     }
 
-    const handleBookingId = (id) => {
-        navigate(`/bookings/${id}`);
-        dispatch(getBookingDetail(id));
+    const handleBookingId = (id: string | number | undefined) => {
+        if (id !== undefined) {
+            navigate(`/bookings/${id}`);
+            dispatch(getBookingDetail(id));
+        }
     }
 
     const handleCloseModal = () => {
         setModalOpen(false);
     }
 
-    const handleOpenModal = (data) => {
+    const handleOpenModal = (data: string) => {
         setModalInfo(data);
         setModalOpen(true);
     }
 
-    const handleDelete = (id) => {
-        dispatch(deleteBooking(id));
+    const handleDelete = (id: string | number | undefined) => {
+        if (id !== undefined)
+            dispatch(deleteBooking(id));
     }
 
-    const handleUpdate = (id) => {
-        dispatch(getBookingDetail(id));
-        navigate(`/bookings/update-bookings/${id}`);
+    const handleUpdate = (id: string | number | undefined) => {
+        if (id !== undefined) {
+            dispatch(getBookingDetail(id));
+            navigate(`/bookings/update-bookings/${id}`);
+        }    
     }
+
+    const handleSelectDate = (date: Date | string) => {
+        if (typeof date === 'string') {
+          const [year, month, day] = date.split('-');
+          return new Date(Number(year), Number(month) - 1, Number(day)).toLocaleDateString('en-EN', options);
+        }
+        return date.toLocaleDateString('en-EN', options);
+      };
 
     useEffect(() => {
-        let dataArray = bookingsSliceDataUpdated.length !== 0 ? [ ...bookingsSliceDataUpdated] : [...bookingsSliceData];
+        let dataArray: BookingsInterface[] = bookingsSliceDataUpdated.length !== 0 ? [ ...bookingsSliceDataUpdated] : [...bookingsSliceData];
 
         if (status === 'fulfilled') {
             setBookingData(dataArray);
         }
 
-        if (searchData.length !== '') {
+        if (searchData !== '') {
             dataArray = dataArray.filter(data => data.guest.toLowerCase().includes(searchData));
         }
 
@@ -114,7 +126,7 @@ export const Bookings = () => {
                 dataArray.sort((a, b) => {
                     const dateA = new Date(a.order_date);
                     const dateB = new Date(b.order_date);
-                    return dateA - dateB;
+                    return dateA.getTime() - dateB.getTime();;
                 });
                 break;
             case 'Guest':
@@ -133,62 +145,53 @@ export const Bookings = () => {
 
     const cols = [
         {
-            property: 'guest', label: 'Guest', display: ({ guest, phone_number, id }) => (
+            property: 'guest', label: 'Guest', display: ({ guest, phone_number, id }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <CostumerName darkmode={asideState.asideState.darkMode}>{guest}</CostumerName>
+                    <CostumerName darkmode={asideState.darkMode}>{guest}</CostumerName>
                     <Paragraphs>{phone_number}</Paragraphs>
                     <ButtonID onClick={() => handleBookingId(id)}>#{id}</ButtonID>
                 </TableContainerBodyContent>
             )
         },
         {
-            property: 'order_date', label: 'Order Date', display: ({ order_date }) => (
+            property: 'order_date', label: 'Order Date', display: ({ order_date }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <OrderDate>{
-                        new Date(order_date.split("-")[0], order_date.split("-")[1] - 1,
-                            order_date.split("-")[2]).toLocaleDateString('en-EN', options)
-                    }</OrderDate>
+                    <OrderDate>{handleSelectDate(order_date)}</OrderDate>
                 </TableContainerBodyContent>
             )
         },
         {
-            property: 'check_in', label: 'Check In', display: ({ check_in }) => (
+            property: 'check_in', label: 'Check In', display: ({ check_in }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <CheckInDate darkmode={asideState.darkMode}>{
-                        new Date(check_in.split("-")[0], check_in.split("-")[1] - 1,
-                            check_in.split("-")[2]).toLocaleDateString('en-EN', options)
-                    }</CheckInDate>
+                    <CheckInDate darkmode={asideState.darkMode}>{handleSelectDate(check_in)}</CheckInDate>
                     <CheckInTime>9.46 PM</CheckInTime>
                 </TableContainerBodyContent>
             )
         },
         {
-            property: 'check_out', label: 'Check Out', display: ({ check_out }) => (
+            property: 'check_out', label: 'Check Out', display: ({ check_out }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <CheckOutDate darkmode={asideState.darkMode}>{
-                        new Date(check_out.split("-")[0], check_out.split("-")[1] - 1,
-                            check_out.split("-")[2]).toLocaleDateString('en-EN', options)
-                    }</CheckOutDate>
+                    <CheckOutDate darkmode={asideState.darkMode}>{handleSelectDate(check_out) }</CheckOutDate>
                     <CheckOutTime>6.12 PM</CheckOutTime>
                 </TableContainerBodyContent>
             )
         },
         {
-            property: 'special_request', label: 'Special Request', display: ({ special_request }) => (
+            property: 'special_request', label: 'Special Request', display: ({ special_request }: BookingsInterface) => (
                 <TableContainerBodyContent>
                     <ViewNotesButton onClick={() => handleOpenModal(special_request)}>View Notes</ViewNotesButton>
                 </TableContainerBodyContent>
             )
         },
         {
-            property: 'room_type', label: 'Room Type', display: ({ room_type, room_number }) => (
+            property: 'room_type', label: 'Room Type', display: ({ room_type, room_number }: BookingsInterface) => (
                 <TableContainerBodyContent>
                     <TypeRoom darkmode={asideState.darkMode}>{room_type}-{room_number}</TypeRoom>
                 </TableContainerBodyContent>
             )
         },
         {
-            property: 'status', label: 'Status', display: ({ status, id }) => (
+            property: 'status', label: 'Status', display: ({ status, id }: BookingsInterface) => (
                 <StatusContent>
                     <StatusParagraph status={status}>{status}</StatusParagraph>
                     <OptionsButton>
@@ -249,12 +252,13 @@ export const Bookings = () => {
 }
 
 interface PropsStyled {
-    modalOpen: boolean,
-    actived: boolean,
-    darkmode: boolean,
+    modalOpen?: boolean | string,
+    actived?: boolean | string,
+    darkmode?: boolean | string,
+    onChange?: any /* cambiar esto */
 }
 
-const Modal = styled.div`
+const Modal = styled.div<PropsStyled>`
     display: ${(props: PropsStyled) => props.modalOpen === true ? 'block' : 'none'};
     position: fixed; 
     z-index: 1; 
@@ -377,7 +381,7 @@ const Filters = styled.div`
     }
 `;
 
-const Select = styled.select`
+const Select = styled.select<PropsStyled>`
     width: 129px; 
     height: 50px;
     border: 1px solid #135846;
@@ -423,7 +427,7 @@ const TableContainerBodyContent = styled.div`
 
 `;
 
-const CostumerName = styled.p`
+const CostumerName = styled.p<PropsStyled>`
     transition: 0.5s;
     color: ${(props: PropsStyled) => props.darkmode ? '#fff' : '#393939'};
 `;

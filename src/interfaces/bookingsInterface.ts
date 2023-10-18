@@ -1,5 +1,5 @@
 export interface BookingsInterface {
-    id?: string | number,
+    id?: string | number | undefined,
     guest: string,
     phone_number: string | number,
     order_date: Date | string,

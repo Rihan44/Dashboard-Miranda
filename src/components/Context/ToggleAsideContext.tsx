@@ -12,7 +12,7 @@ type Props = {
 }
 
 interface AppState {
-    asideVisible: boolean;
+    asideVisible?: boolean;
     darkMode?: boolean;
 }
 
