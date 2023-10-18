@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -12,44 +11,55 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 import { MainContainer } from "../Reusables/MainContainer";
 import { getBookingDetail } from "../../features/bookingsSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { BookingsInterface } from "../../interfaces/bookingsInterface";
 
 
 export const BookingFile = () => {
 
     const navigate = useNavigate();
 
-    const [dataBooking, setDataBooking] = useState('');
-    const bookingDataDetail = useSelector((state) => state.bookings.dataBooking);
-    const status = useSelector((state) => state.bookings.status);
+    const [dataBooking, setDataBooking] = useState<BookingsInterface[] | any>([]);
+    const bookingDataDetail = useAppSelector((state) => state.bookings.dataBooking);
+    const status = useAppSelector((state) => state.bookings.status);
     
-    const {id} = useParams();
-    const dispatch = useDispatch();
+    const paramsID = useParams();
+    const id: string | undefined = paramsID.id;
+    const dispatch = useAppDispatch();
 
-    let options = { year: 'numeric', month: 'long', day: 'numeric' };
+    let options: object = { year: 'numeric', month: 'long', day: 'numeric' };
 
-    const checkOutDate = dataBooking ? new Date(dataBooking.check_out.split("-")[0], dataBooking.check_out.split("-")[1] - 1,
+    const handleSelectDate = (date: Date | string) => {
+        if (typeof date === 'string') {
+          const [year, month, day] = date.split('-');
+          return new Date(Number(year), Number(month) - 1, Number(day)).toLocaleDateString('en-EN', options);
+        }
+        return date.toLocaleDateString('en-EN', options);
+    };
+
+    const checkOutDate= dataBooking ? new Date(dataBooking.check_out.split("-")[0], dataBooking.check_out.split("-")[1] - 1,
         dataBooking.check_out.split("-")[2]).toLocaleDateString('en-EN', options) : '';
 
     const checkInDate = dataBooking ? new Date(dataBooking.check_in.split("-")[0], dataBooking.check_in.split("-")[1] - 1,
         dataBooking.check_in.split("-")[2]).toLocaleDateString('en-EN', options) : '';
 
     useEffect(() => {
-        let data = [...bookingDataDetail];
+        let data: BookingsInterface[] = [...bookingDataDetail];
         
-        data.forEach(e => {
+        data.forEach((e) => {
             setDataBooking(e);
         });
 
     }, [bookingDataDetail])
 
     useEffect(() => {
-        dispatch(getBookingDetail(id));
+        if(id !== undefined)
+            dispatch(getBookingDetail(id));
 
     }, [dispatch, id])
 
     return (
-        <>
-            <MainContainer>
+            <>
                 {status === 'fulfilled' ?
                     <FileBookingContainer>
                         <ButtonBack onClick={() => navigate('/bookings')}><AiOutlineArrowLeft /></ButtonBack>
@@ -109,7 +119,7 @@ export const BookingFile = () => {
                             </FacilitiesRooms>
                         </InfoContainer>
                         <ImageContainer>
-                            <StatusDecoration $status={dataBooking.status}>
+                            <StatusDecoration status={dataBooking.status}>
                                 {dataBooking.status}
                             </StatusDecoration>
                             <ImageDescription>
@@ -120,11 +130,9 @@ export const BookingFile = () => {
                     </FileBookingContainer>
                     : status === 'rejected' ? alert('Algo falló')
                         : <SpinnerLoader></SpinnerLoader>}
-            </MainContainer>
-        </>
+            </>
     )
 }
-
 
 const FileBookingContainer = styled.div`
     margin: 50px;
@@ -300,11 +308,15 @@ const ImageDescription = styled.div`
 
 `;
 
-const StatusDecoration = styled.div`
+interface Props {
+    status: string
+}
+
+const StatusDecoration = styled.div<Props>`
     width: 160px;
     height: 50px;
     ${(props) => {
-        switch (props.$status) {
+        switch (props.status) {
             case 'check_in':
                 return `
                 background: #5AD07A;

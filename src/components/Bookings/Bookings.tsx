@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 
 import { BsTrash } from "react-icons/bs";
 import { AiOutlineCloseCircle } from "react-icons/ai";
@@ -92,7 +91,7 @@ export const Bookings = () => {
           return new Date(Number(year), Number(month) - 1, Number(day)).toLocaleDateString('en-EN', options);
         }
         return date.toLocaleDateString('en-EN', options);
-      };
+    };
 
     useEffect(() => {
         let dataArray: BookingsInterface[] = bookingsSliceDataUpdated.length !== 0 ? [ ...bookingsSliceDataUpdated] : [...bookingsSliceData];
