@@ -1,38 +1,41 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { contactMessage } from "../data/contactMessage";
+import {ContactInterface, ContactInterfaceState} from '../interfaces/contactInterface.js';
 
-const delay = (data, timeWait = 600) => {
-    return new Promise((resolve, reject) => {
+const delay = (data: ContactInterface[] | string | ContactInterface, timeWait: number = 600) => {
+    return new Promise((resolve) => {
         setTimeout(() => {
             resolve(data);
         }, timeWait)
     });
 }
 
-export const getAllMessages = createAsyncThunk("contact/getAllRooms", async () => {
-    return await delay(contactMessage);
+export const getAllMessages = createAsyncThunk<ContactInterface[]>("contact/getAllRooms", async () => {
+    return (await delay(contactMessage) as ContactInterface[]);
 });
 
-export const deleteMessage = createAsyncThunk("contact/deleteMessage", async (id) => {
-    return await delay(id);
+export const deleteMessage = createAsyncThunk("contact/deleteMessage", async (id: string) => {
+    return (await delay(id) as string);
 });
 
-export const archiveMessage = createAsyncThunk("contact/archiveMessage", async (id) => {
-    return await delay(id, 300);
+export const archiveMessage = createAsyncThunk("contact/archiveMessage", async (id: string) => {
+    return (await delay(id, 300) as string);
 });
 
-export const unArchiveMessage = createAsyncThunk("contact/unArchiveMessage", async (id) => {
-    return await delay(id, 300);
+export const unArchiveMessage = createAsyncThunk("contact/unArchiveMessage", async (id: string) => {
+    return (await delay(id, 300) as string);
 });
+
+const initialState: ContactInterfaceState = {
+    data: [],
+    status: 'idle',
+    statusArchive: 'idle',
+    error: null
+}
 
 export const contactSlice = createSlice({
     name: "contact",
-    initialState: {
-        data: [],
-        status: 'idle',
-        statusArchive: 'idle',
-        error: null
-    },
+    initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getAllMessages.fulfilled, (state, action) => {

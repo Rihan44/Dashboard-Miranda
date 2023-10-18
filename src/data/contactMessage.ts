@@ -1,4 +1,6 @@
-export const contactMessage = [
+import {ContactInterface} from '../interfaces/contactInterface.js';
+
+export const contactMessage: ContactInterface[] = [
     {
       "id": "12345",
       "name": "John Doe",
