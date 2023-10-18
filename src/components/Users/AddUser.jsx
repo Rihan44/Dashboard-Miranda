@@ -114,7 +114,7 @@ export const AddUser = () => {
         <>
             <MainContainer>
                 <AddUserContainer>
-                    <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft /></ButtonBack>
+                <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft /></ButtonBack>
                     <FormContainer>
                         <Title>Add User</Title>
                         <Form onSubmit={handleSubmit} darkmode={asideState.darkMode}>
