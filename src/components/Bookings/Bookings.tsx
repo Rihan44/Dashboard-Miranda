@@ -20,7 +20,7 @@ import { BookingsInterface } from "../../interfaces/bookingsInterface";
 
 export const Bookings = () => {
 
-    const {asideState}: boolean = useContext(AsideContext);
+    const {asideState}: any = useContext(AsideContext);
 
     const [dataBooking, setBookingData] = useState<BookingsInterface[]>([]);
     const [selectData, setSelectData] = useState('');

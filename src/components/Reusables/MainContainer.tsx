@@ -1,7 +1,12 @@
+import { ReactNode } from "react";
 import styled from "styled-components"
 
 
-export const MainContainer = ({children}) => {
+type Props = {
+    children: ReactNode
+}
+
+export const MainContainer = ({children}: Props) => {
 
     return(
         <Main>
