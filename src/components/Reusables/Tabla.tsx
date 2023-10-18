@@ -2,16 +2,37 @@ import React, { useContext } from "react";
 import styled from "styled-components"
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { BookingsInterface } from "../../interfaces/bookingsInterface";
+import { RoomInterface } from "../../interfaces/roomInterface";
+import { UsersInterface } from "../../interfaces/usersInterface";
+import { ContactInterface } from "../../interfaces/contactInterface";
 
-export const Tabla = ({ cols, data, totalCols, totalHeaders}) => {
+interface TablaInterface {
+    cols?: object[] | any,
+    data?: BookingsInterface[] | RoomInterface[] | UsersInterface[] | ContactInterface[],
+    totalCols?: number,
+    totalHeaders?: number
+}
 
-    const {asideState} = useContext(AsideContext);
+interface DataTabla { 
+    display?: object
+    id: string,
+    property: string | number
+}
+
+interface TitleInterface {
+    label: string
+}
+
+export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) => {
+
+    const {asideState}: any = useContext(AsideContext);
     const [tableRef] = useAutoAnimate();
     
-    const displayRow = row => (
+    const displayRow = (row: BookingsInterface | RoomInterface | UsersInterface | ContactInterface) => (
         <TableContainerBodyContent darkmode={asideState.darkMode}  totalcols={totalCols} key={row.id}>
-            {cols.map((col, i) => (
-                <td key={i}>{typeof col.display === 'function' ? col.display(row) : row[col.property]}
+            {cols !== undefined && cols.map((col: DataTabla, i: number) => (
+                <td key={i}>{typeof col.display === 'function' ? col.display(row) : (row as Record<string, any>)[col.property as string]}
                 </td>
             ))}
         </TableContainerBodyContent>
@@ -22,7 +43,7 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}) => {
             <TableContainer>
                 <TableContainerTitle darkmode={asideState.darkMode}>
                     <TableContainerTitleTR>
-                        {cols?.map((col, i) =>
+                        {cols?.map((col: TitleInterface, i: number) =>
                             <TableTitles darkmode={asideState.darkMode} totalheaders={totalHeaders} key={i}>{col.label && col.label}</TableTitles>
                         )}
                     </TableContainerTitleTR>
@@ -37,13 +58,19 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}) => {
     )
 }
 
+interface Props {
+    darkmode?: boolean,
+    totalheaders?: number,
+    totalcols?: number
+}
+
 const TableContainer = styled.table`
     border-top: none;
     border-collapse: collapse;
     margin-top: 35px;
 `;
 
-const TableContainerTitle = styled.thead`
+const TableContainerTitle = styled.thead<Props>`
     border: ${props => props.darkmode ? '1px solid #0004' : '1px solid #00000015'};
     border-radius: 20px 20px 0px 0px;
     border-bottom: none;
@@ -60,7 +87,7 @@ const TableContainerTitleTR = styled.tr`
     width: 100%;
 `;
 
-const TableTitles = styled.th`
+const TableTitles = styled.th<Props>`
     color: ${props => props.darkmode ? '#fff' : '#393939'};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
@@ -71,7 +98,7 @@ const TableTitles = styled.th`
     transition: 0.5s;
 `;
 
-const TableContainerBodyContent = styled.tr`
+const TableContainerBodyContent = styled.tr<Props>`
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     width: 1400px;
@@ -96,7 +123,7 @@ const TableContainerBodyContent = styled.tr`
 
 `;
 
-const TableBody = styled.tbody`
+const TableBody = styled.tbody<Props>`
     height: auto;
     width: 1442px;
     color: ${props => props.darkmode ? '#fff' : '#393939'};
