@@ -64,10 +64,10 @@ export const RoomsList = () => {
 
         switch (isActiveButton) {
             case 'statusAvailable':
-                dataArray = dataArray.filter(data => data.state === 'available');
+                dataArray = dataArray.filter(data => data.status === 'available');
                 break;
             case 'statusBooked':
-                dataArray = dataArray.filter(data => data.state === 'booked');
+                dataArray = dataArray.filter(data => data.status === 'booked');
                 break;
             case 'allRooms':
                 dataArray.sort((a, b) => a.room_number - b.room_number);
@@ -136,9 +136,9 @@ export const RoomsList = () => {
             )
         },
         {
-            property: 'status', label: 'Status', display: ({ state, id }) =>
+            property: 'status', label: 'Status', display: ({ status, id }) =>
                 <StatusContent>
-                    <StatusParagraph status={state}>{state}</StatusParagraph>
+                    <StatusParagraph status={status}>{status}</StatusParagraph>
                     <OptionsButton>
                         <BsTrash onClick={() => handleDelete(id)} />
                         <FiEdit onClick={() => handleEdit(id)} /> 
