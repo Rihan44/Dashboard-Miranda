@@ -99,7 +99,6 @@ export const AddUser = () => {
     }
 
     const handleStatus = (e) => {
-        console.log(e.target.value)
         if (e.target.value === "Active") {
             setUserStatus(true);
         } else {

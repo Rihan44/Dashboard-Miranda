@@ -97,8 +97,6 @@ export const UsersList = () => {
         dispatch(getAllUsers());
     }, [dispatch]);
 
-    console.log(usersUpdatedData);
-
     const cols = [
         {
             property: 'photo', label: 'User Photo', display: ({photo, name}) => (
