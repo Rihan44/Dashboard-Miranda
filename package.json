@@ -30,7 +30,7 @@
     "eject": "vite eject",
     "cypress:open": "cypress open",
     "start": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "serve": "vite preview"
   },
   "eslintConfig": {
