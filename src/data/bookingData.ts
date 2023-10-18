@@ -1,4 +1,6 @@
-export const bookingData = [
+import {BookingsInterface} from '../interfaces/bookingsInterface.js';
+
+export const bookingData: BookingsInterface[]= [
     {
         "id": "1232CEFE",
         "guest": "John Smith",
