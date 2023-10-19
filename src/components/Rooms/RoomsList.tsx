@@ -42,7 +42,7 @@ export const RoomsList = () => {
         setIsActiveButton(activeButton);
     }
 
-    const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSelect = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setSelectData(e.target.value);
     }
 

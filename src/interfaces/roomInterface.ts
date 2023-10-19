@@ -1,6 +1,6 @@
 export interface RoomInterface {
     id?: string | number,
-    room_photo: string,
+    room_photo?: string,
     room_type: string,
     room_number: number | string,
     amenities: string[],
