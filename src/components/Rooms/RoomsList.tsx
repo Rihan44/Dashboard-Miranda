@@ -16,6 +16,7 @@ import { Tabla } from "../Reusables/Tabla";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { StatusParagraph } from "../Reusables/StatusParagraph";
 import { RoomInterface } from "../../interfaces/roomInterface";
+import { Props } from "../../interfaces/Props";
 
 export const RoomsList = () => {
 
@@ -190,13 +191,6 @@ export const RoomsList = () => {
     )
 }
 
-interface PropsStyled {
-    modalOpen?: boolean | string,
-    actived?: boolean | string,
-    darkmode?: boolean | string,
-    onChange?: any /* TODO CAMBIAR EL TIPO */
-}
-
 const RoomsContainer = styled.div`
     margin-top: 50px;
     margin-left: 70px;
@@ -227,7 +221,7 @@ const Buttons = styled.button`
     cursor: pointer;
 `;
 
-const ButtonTabs = styled(Buttons)<PropsStyled>`
+const ButtonTabs = styled(Buttons)<Props>`
     color: ${props => props.actived ? "#135846" : "#6E6E6E"};
     border-bottom: ${props => props.actived ? "2px solid #135846" : "none"};
     font-size: 16px;
@@ -281,7 +275,7 @@ const Filters = styled.div`
     }
 `;
 
-const Select = styled.select<PropsStyled>`
+const Select = styled.select<Props>`
     width: 129px; 
     height: 50px;
     border: 1px solid #135846;
@@ -399,7 +393,7 @@ const AmenitiesContainer = styled.div`
     padding: 10px;
 `;
 
-const PriceParagraph = styled.p<PropsStyled>`
+const PriceParagraph = styled.p<Props>`
     color: ${props => props.darkmode === 'true' ? '#fff' : '#212121'};
     font-weight: bold;
     font-size: 20px;
@@ -412,7 +406,7 @@ const PriceParagraph = styled.p<PropsStyled>`
     }
 `;
 
-const Discount = styled.div<PropsStyled>`
+const Discount = styled.div<Props>`
     font-weight: bold;
     font-size: 20px;
     color: ${props => props.darkmode === 'true' ? '#fff' : '#212121'};

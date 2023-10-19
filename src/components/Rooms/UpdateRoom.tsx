@@ -14,6 +14,7 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { ToastAlert } from "../Reusables/ToastAlert";
 import { RoomInterface } from "../../interfaces/roomInterface";
+import { Props } from "../../interfaces/Props";
 
 export const UpdateRoom = () => {
 
@@ -213,14 +214,6 @@ export const UpdateRoom = () => {
     )
 }
 
-interface PropsStyled {
-    modalOpen?: boolean | string,
-    visible?: boolean | string,
-    darkmode?: boolean | string,
-    onChange?: any /* TODO CAMBIAR EL TIPO */
-    type?: any
-}
-
 const UpdateRoomContainer = styled.div`
     margin: 20px;
     position: relative;
@@ -242,7 +235,7 @@ const Title = styled.h2`
     font-family: 'Poppins', sans-serif;
 `;
 
-const Form = styled.form<PropsStyled>`
+const Form = styled.form<Props>`
     width: 1050px;
     height: 660px;
     box-shadow: 0px 3px 10px #00000030;
@@ -282,7 +275,7 @@ const FormBoxInner = styled.div`
     }
 `;
 
-const Select = styled.select<PropsStyled>`
+const Select = styled.select<Props>`
     width: 140px; 
     height: 30px;
     border: 1px solid #135846;
@@ -299,7 +292,7 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const TextArea = styled.textarea<PropsStyled>`
+const TextArea = styled.textarea<Props>`
     width: 150px;
     resize: none;
     border: none;
@@ -311,7 +304,7 @@ const TextArea = styled.textarea<PropsStyled>`
     color: #262626;
 `;
 
-const Input = styled.input<PropsStyled>`
+const Input = styled.input<Props>`
     margin-left: 20px;
     margin-bottom: 10px;
     width: 150px;

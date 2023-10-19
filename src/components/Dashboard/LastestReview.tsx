@@ -13,6 +13,7 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ContactInterface } from "../../interfaces/contactInterface";
+import { Props } from "../../interfaces/Props";
 
 interface LastetReviewProps {
     darkMode: boolean | undefined,
@@ -95,12 +96,6 @@ export const LastestReview: React.FC<LastetReviewProps> = ({ darkMode, dataDashb
             </ContainerReview>
         </>
     );
-}
-
-interface Props {
-    modalopen?: boolean,
-    darkmode?: boolean,
-    view?: boolean
 }
 
 const Modal = styled.div<Props>`

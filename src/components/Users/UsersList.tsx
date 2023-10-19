@@ -16,6 +16,7 @@ import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { UsersInterface } from "../../interfaces/usersInterface";
+import { Props } from "../../interfaces/Props";
 
 export const UsersList = () => {
     const {asideState} = useContext(AsideContext);
@@ -191,13 +192,6 @@ export const UsersList = () => {
             </MainContainer>
         </>
     )
-}
-
-interface Props {
-    actived?: boolean,
-    darkmode?: boolean,
-    is_active?: boolean | string
-    children?: any /* TODO HACER ESTE TIPADO */
 }
 
 const UsersListContainer = styled.div<Props>`

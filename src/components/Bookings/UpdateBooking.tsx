@@ -14,6 +14,7 @@ import { ToastAlert } from "../Reusables/ToastAlert";
 import { getBookingDetail, updateBooking } from "../../features/bookingsSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { BookingsInterface } from "../../interfaces/bookingsInterface";
+import { Props } from "../../interfaces/Props";
 
 export const UpdateBooking = () => {
 
@@ -177,12 +178,6 @@ export const UpdateBooking = () => {
             </UpdateRoomContainer>
         </MainContainer>
     )
-}
-
-interface Props {
-    darkmode?: boolean
-    onChange?: any /* TODO CAMBIAR EL TIPO */
-    value?: any /* TODO CAMBIAR EL TIPO */
 }
 
 const UpdateRoomContainer = styled.div`

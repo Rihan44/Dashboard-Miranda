@@ -16,6 +16,7 @@ import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 import { ContactInterface } from "../../interfaces/contactInterface";
+import { Props } from "../../interfaces/Props";
 
 
 export const Contact = () => {
@@ -161,7 +162,7 @@ export const Contact = () => {
 
     return (
         <MainContainer>
-            <Modal modalOpen={modalOpen}>
+            <Modal modalopen={modalOpen}>
                 <ModalInfo>
                     <ButtonModalClose onClick={handleCloseModal}>
                         <AiOutlineCloseCircle />
@@ -200,14 +201,8 @@ export const Contact = () => {
     )
 }
 
-interface Props {
-    modalOpen?: boolean,
-    actived?: boolean,
-    isArchive?: boolean
-}
-
 const Modal = styled.div<Props>`
-    display: ${props => props.modalOpen === true ? 'block' : 'none'};
+    display: ${props => props.modalopen === true ? 'block' : 'none'};
     position: fixed; 
     z-index: 10; 
     left: 0;

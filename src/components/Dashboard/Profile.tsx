@@ -4,6 +4,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { FormEvent, useContext, useState } from "react";
 import { AuthContext } from "../Context/AuthContainer";
 import { AsideContext } from "../Context/ToggleAsideContext";
+import { Props } from "../../interfaces/Props";
 
 
 export const ProfileCompontent = () => {
@@ -73,12 +74,6 @@ export const ProfileCompontent = () => {
             <ProfileButton onClick={handleOpen}>Edit</ProfileButton>
         </ProfileContainer>
     )
-}
-
-interface Props {
-    modalopen?: boolean,
-    darkmode?: boolean,
-    placeholder?: string | undefined | any
 }
 
 const Modal = styled.div<Props>`

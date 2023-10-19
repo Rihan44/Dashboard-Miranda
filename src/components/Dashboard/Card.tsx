@@ -14,6 +14,7 @@ import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { ContactInterface } from "../../interfaces/contactInterface";
+import { Props } from "../../interfaces/Props";
 
 interface CardProps {
     data?: ContactInterface[],
@@ -60,11 +61,6 @@ export const Card: React.FC<CardProps> = ({ data, handleOpen }) => {
             </SwiperContainer>
         </>
     )
-}
-
-interface Props {
-    darkmode?: boolean,
-    view?: boolean
 }
 
 const CardContainer = styled.div<Props>`

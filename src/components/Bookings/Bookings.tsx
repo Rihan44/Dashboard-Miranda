@@ -16,6 +16,7 @@ import { StatusParagraph } from "../Reusables/StatusParagraph";
 import { ToastAlert } from "../Reusables/ToastAlert";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { BookingsInterface } from "../../interfaces/bookingsInterface";
+import { Props } from "../../interfaces/Props";
 
 export const Bookings = () => {
 
@@ -207,7 +208,7 @@ export const Bookings = () => {
             <MainContainer>
                 <BookingContainer>
                     {statusDelete === 'pending' && <DeleteSpinner/>}
-                    <Modal modalOpen={modalOpen}>
+                    <Modal modalopen={modalOpen}>
                         <ModalInfo>
                             <ButtonModalClose onClick={handleCloseModal}>
                                 <AiOutlineCloseCircle />
@@ -250,15 +251,8 @@ export const Bookings = () => {
     )
 }
 
-interface PropsStyled {
-    modalOpen?: boolean | string,
-    actived?: boolean | string,
-    darkmode?: boolean | string,
-    onChange?: any /* TODO CAMBIAR EL TIPO */
-}
-
-const Modal = styled.div<PropsStyled>`
-    display: ${(props: PropsStyled) => props.modalOpen === true ? 'block' : 'none'};
+const Modal = styled.div<Props>`
+    display: ${props => props.modalopen === true ? 'block' : 'none'};
     position: fixed; 
     z-index: 1; 
     left: 0;
@@ -344,9 +338,9 @@ const TabsContainer = styled.div`
 `;
 
 
-const ButtonTabs = styled(Buttons)`
-    color: ${(props: PropsStyled) => props.actived ? "#135846" : "#6E6E6E"};
-    border-bottom: ${(props: PropsStyled) => props.actived ? "2px solid #135846" : "none"};
+const ButtonTabs = styled(Buttons)<Props>`
+    color: ${props => props.actived ? "#135846" : "#6E6E6E"};
+    border-bottom: ${props => props.actived ? "2px solid #135846" : "none"};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     height: 30px;
@@ -380,7 +374,7 @@ const Filters = styled.div`
     }
 `;
 
-const Select = styled.select<PropsStyled>`
+const Select = styled.select<Props>`
     width: 129px; 
     height: 50px;
     border: 1px solid #135846;
@@ -426,9 +420,9 @@ const TableContainerBodyContent = styled.div`
 
 `;
 
-const CostumerName = styled.p<PropsStyled>`
+const CostumerName = styled.p<Props>`
     transition: 0.5s;
-    color: ${(props: PropsStyled) => props.darkmode === 'true' ? '#fff' : '#393939'};
+    color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
 `;
 
 const ButtonID = styled.button`
@@ -446,18 +440,18 @@ const OrderDate = styled.p`
     align-self: baseline;
 `;
 
-const CheckInDate = styled.p`
+const CheckInDate = styled.p<Props>`
     transition: 0.5s;
-    color: ${(props: PropsStyled) => props.darkmode === 'true' ? '#fff' : '#393939'};
+    color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
 `;
 
 const CheckInTime = styled(Paragraphs)`
     font-size: 14px;
 `;
 
-const CheckOutDate = styled.p`
+const CheckOutDate = styled.p<Props>`
     transition: 0.5s;
-    color: ${(props: PropsStyled) => props.darkmode === 'true' ? '#fff' : '#393939'};
+    color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
 `;
 
 const CheckOutTime = styled(Paragraphs)`
@@ -482,9 +476,9 @@ const ViewNotesButton = styled(Buttons)`
     }
 `;
 
-const TypeRoom = styled.p`
+const TypeRoom = styled.p<Props>`
     transition: 0.5s;
-    color: ${(props: PropsStyled) => props.darkmode === 'true' ? '#fff' : '#393939'};
+    color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
 `;
 
 const OptionsButton = styled(Buttons)`
@@ -517,12 +511,12 @@ const OptionsButton = styled(Buttons)`
     }
 `;
 
-const StatusContent = styled(TableContainerBodyContent)`
+const StatusContent = styled(TableContainerBodyContent)<Props>`
     display: flex;
     flex-direction: row;
 
     p {
-        color: ${(props: PropsStyled) => props.darkmode === 'true' ? '#ffffff' : '#212121'};
+        color: ${props => props.darkmode === 'true' ? '#ffffff' : '#212121'};
     }
 `;
 

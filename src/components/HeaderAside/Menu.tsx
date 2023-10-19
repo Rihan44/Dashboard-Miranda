@@ -12,6 +12,7 @@ import { NavLink } from "react-router-dom";
 import { ProfileCompontent } from "../Dashboard/Profile";
 import { useContext } from "react";
 import { AsideContext } from "../Context/ToggleAsideContext";
+import { Props } from "../../interfaces/Props";
 
 interface PropsMenu {
     setHeaderTitle: (title: string) => void
@@ -108,11 +109,6 @@ export const Menu: React.FC<PropsMenu> = ({ setHeaderTitle }) => {
             <CreatorParagraph>Made with ♥ by ASDev</CreatorParagraph>
         </AsideMenu>
     );
-}
-
-interface Props {
-    darkmode?: boolean
-    context?: string
 }
 
 const AsideMenu = styled.aside<Props>`

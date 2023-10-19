@@ -11,6 +11,7 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 import { createRoom } from "../../features/roomsSlice";
 import { roomsData } from "../../data/roomsData";
 import { RoomInterface } from "../../interfaces/roomInterface";
+import { Props } from "../../interfaces/Props";
 
 export const AddRoom = () => {
 
@@ -209,14 +210,6 @@ export const AddRoom = () => {
     )
 }
 
-interface PropsStyled {
-    modalOpen?: boolean | string,
-    visible?: boolean | string,
-    darkmode?: boolean | string,
-    onChange?: any /* TODO CAMBIAR EL TIPO */
-    type?: any
-}
-
 const AddRoomContainer = styled.div`
     margin: 20px;
     position: relative;
@@ -236,7 +229,7 @@ const Title = styled.h2`
     font-family: 'Poppins', sans-serif;
 `;
 
-const Form = styled.form<PropsStyled>`
+const Form = styled.form<Props>`
     width: 1050px;
     height: 660px;
     box-shadow: 0px 3px 10px #00000030;
@@ -276,7 +269,7 @@ const FormBoxInner = styled.div`
     }
 `;
 
-const Select = styled.select<PropsStyled>`
+const Select = styled.select<Props>`
     width: 129px; 
     height: 30px;
     border: 1px solid #135846;
@@ -293,7 +286,7 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const TextArea = styled.textarea<PropsStyled>`
+const TextArea = styled.textarea<Props>`
     width: 150px;
     resize: none;
     border: none;
@@ -400,7 +393,7 @@ const ButtonBack = styled(Button)`
      }
 `;
 
-const ErrorParagraph = styled.p<PropsStyled>`
+const ErrorParagraph = styled.p<Props>`
     position: absolute;
     top: 12px;
     right: 35px;

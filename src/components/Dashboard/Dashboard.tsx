@@ -14,6 +14,7 @@ import { getAllMessages } from "../../features/contactSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { ContactInterface } from "../../interfaces/contactInterface";
+import { Props } from "../../interfaces/Props";
 
 
 export const Dashboard = () => {
@@ -90,10 +91,6 @@ export const Dashboard = () => {
     )
 }
 
-interface PropsContainerCards {
-    darkmode?: boolean
-}
-
 const ContainerCards = styled.div`
     display: flex;
     margin-top: 50px;
@@ -101,7 +98,7 @@ const ContainerCards = styled.div`
     min-width: 1485px;
 `;
 
-const Card = styled.div<PropsContainerCards>`
+const Card = styled.div<Props>`
     width: 340px;
     height: 125px;
     background-color: ${props => props.darkmode ? '#202020' : '#ffff'};

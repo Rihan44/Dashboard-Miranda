@@ -8,6 +8,7 @@ import { TbArrowsLeftRight } from "react-icons/tb";
 import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContainer";
 import { AsideContext } from "../Context/ToggleAsideContext";
+import { Props } from "../../interfaces/Props";
 
 
 interface PropsHeader {
@@ -60,10 +61,6 @@ export const Header: React.FC<PropsHeader> = ({ title, subtitle, subtitleSmall }
             </NavIcons>
         </HeaderTag>
     );
-}
-
-interface Props {
-    darkmode?: boolean
 }
 
 const HeaderTag = styled.header<Props>`
