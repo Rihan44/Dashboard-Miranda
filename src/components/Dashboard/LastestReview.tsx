@@ -12,15 +12,25 @@ import 'swiper/css/scrollbar'
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { ContactInterface } from "../../interfaces/contactInterface";
 
-export const LastestReview = ({ darkMode, dataDashboard }) => {
+interface LastetReviewProps {
+    darkMode: boolean | undefined,
+    dataDashboard: ContactInterface[]
+}
 
-    const [modalInfo, setModalInfo] = useState({});
+export const LastestReview: React.FC<LastetReviewProps> = ({ darkMode, dataDashboard }) => {
+
+    const [modalInfo, setModalInfo] = useState({
+        emailSubject: '',
+        emailUser: '',
+        emailInfo: ''
+    });
     const [modalOpen, setModalOpen] = useState(false);
     const [checkMessage, setCheckMessage] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
 
-    const handleOpen = (data) => {
+    const handleOpen = (data: ContactInterface) => {
         setModalInfo({emailInfo: data.email_description, emailSubject: data.email_subject, emailUser: data.email});
         setModalOpen(true);
         setCheckMessage(true);
@@ -37,7 +47,7 @@ export const LastestReview = ({ darkMode, dataDashboard }) => {
 
     return (
         <>
-            <Modal modalOpen={modalOpen}>
+            <Modal modalopen={modalOpen}>
                 <ModalInfo>
                     <ButtonModalClose onClick={handleCloseModal}>
                         <AiOutlineCloseCircle />
@@ -87,8 +97,14 @@ export const LastestReview = ({ darkMode, dataDashboard }) => {
     );
 }
 
-const Modal = styled.div`
-    display: ${props => props.modalOpen === true ? 'block' : 'none'};
+interface Props {
+    modalopen?: boolean,
+    darkmode?: boolean,
+    view?: boolean
+}
+
+const Modal = styled.div<Props>`
+    display: ${props => props.modalopen === true ? 'block' : 'none'};
     position: fixed; 
     left: 0;
     top: 0;
@@ -199,7 +215,7 @@ const ButtonModalClose = styled.button`
     }
 `;
 
-const ContainerReview = styled.div`
+const ContainerReview = styled.div<Props>`
     box-shadow: 0px 4px 4px #00000010;
     border-radius: 20px;
     width: 1450px;
@@ -212,7 +228,7 @@ const ContainerReview = styled.div`
     transition: 0.5s;
 `;
 
-const Title = styled.h3`
+const Title = styled.h3<Props>`
     color: ${props => props.darkmode ? '#fff' : '#393939'};
     transition: 0.5s;
     font-size: 20px;
@@ -223,7 +239,7 @@ const CardContainer = styled.div`
     margin-top: 10px;
 `;
 
-const Card = styled.div`
+const Card = styled.div<Props>`
     width: 431px;
     height: 275px;
     border: ;
@@ -238,7 +254,7 @@ const Card = styled.div`
     }
 `;
 
-const EmailSubject = styled.h4`
+const EmailSubject = styled.h4<Props>`
     color: #393939;
     color: ${props => props.darkmode ? '#FFE' : '#393939'};
     font-size: 16px;
@@ -247,7 +263,7 @@ const EmailSubject = styled.h4`
     transition: 0.5s;
 `;
 
-const ReviewComent = styled.p`
+const ReviewComent = styled.p<Props>`
     transition: 0.5s;
     color: ${props => props.darkmode ? '#fff' : '#4E4E4E'};
     font-family: 'Poppins', sans-serif;
@@ -272,7 +288,7 @@ const InnerCard = styled.div`
     }
 `;
 
-const ProfileContainer = styled.div` 
+const ProfileContainer = styled.div<Props>` 
     width: 80%;
 
     h4 {
@@ -299,7 +315,7 @@ const ButtonContainer = styled.div`
     justify-content: space-between;
 `;
 
-const Button = styled.button`
+const Button = styled.button<Props>`
     border: none;
     background: none;
     font-size: 24px;
@@ -307,7 +323,7 @@ const Button = styled.button`
     color: ${props => props.view === false ? '#E23428' : '#5AD07A'};
 `;
 
-const ButtonOpen = styled.button`
+const ButtonOpen = styled.button<Props>`
     border: none;
     background: none;
     font-size: 24px;
