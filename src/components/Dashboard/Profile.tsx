@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { useContext, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { AuthContext } from "../Context/AuthContainer";
 import { AsideContext } from "../Context/ToggleAsideContext";
 
@@ -23,32 +23,37 @@ export const ProfileCompontent = () => {
         setModalOpen(false);
     }
 
-    const handleFile = (e) => {
-        const fileImage = URL.createObjectURL(e.target.files[0]);
-        setImgSrc(fileImage);
-        authDispatch({type: 'UPDATE', payload: {imageSrc: fileImage}})
+    const handleFile = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        if(e && e.target && e.target.files) {
+            const fileImage = URL.createObjectURL(e.target.files?.[0] || null);
+            setImgSrc(fileImage);
+            authDispatch({type: 'UPDATE', payload: {imageSrc: fileImage}})
+        } else {
+            /* TODO HACER ALGO AQUI */
+        }
+       
     }
 
-    const handleUser = (e) => {
+    const handleUser = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const newUser = e.target.value;
         setUserUpdate(newUser);
         authDispatch({type: 'UPDATE', payload: {username: newUser}}) 
     }
 
-    const handleEmail = (e) => {
+    const handleEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const newEmail = e.target.value;
         setEmailUpdate(newEmail);
         authDispatch({type: 'UPDATE', payload: {email: newEmail}})
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         setModalOpen(false);
     }
 
     return(
         <ProfileContainer darkmode={asideState.darkMode}>
-            <Modal modalOpen={modalOpen}>
+            <Modal modalopen={modalOpen}>
                 <ModalInfo>
                     <ButtonModalClose onClick={handleCloseModal}>
                         <AiOutlineCloseCircle />
@@ -70,9 +75,14 @@ export const ProfileCompontent = () => {
     )
 }
 
+interface Props {
+    modalopen?: boolean,
+    darkmode?: boolean,
+    placeholder?: string | undefined | any
+}
 
-const Modal = styled.div`
-    display: ${props => props.modalOpen === true ? 'block' : 'none'};
+const Modal = styled.div<Props>`
+    display: ${props => props.modalopen === true ? 'block' : 'none'};
     position: fixed; 
     z-index: 10; 
     left: 0;
@@ -127,7 +137,7 @@ const ButtonSave = styled.button`
     }
 `;
 
-const Input = styled.input`
+const Input = styled.input<Props>`
     width: 90%;
     height: 30px;
     border: none;
@@ -166,7 +176,7 @@ const ImageUpdate = styled.img`
 `;
 
 
-const ProfileContainer = styled.div`
+const ProfileContainer = styled.div<Props>`
     width: 233px;
     height: 170px;
     box-shadow: 0px 20px 30px #00000014;
@@ -188,7 +198,7 @@ const ImageProfile = styled.img`
     border-radius: 10px;
 `;
 
-const ProfileTitle = styled.h3`
+const ProfileTitle = styled.h3<Props>`
     color: ${props => props.darkmode ? '#ffff' : '#393939'};
     font-size: 16px;
     font-family: 

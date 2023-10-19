@@ -21,9 +21,9 @@ function initialAuthState(): InitialStateInterface{
 interface LogInInterface {
     type: "LOGIN",
     payload: {
-        authenticated: boolean,
-        username: string,
-        email: string
+        authenticated?: boolean,
+        username?: string,
+        email?: string
     }
 }
 
@@ -34,9 +34,9 @@ interface LogOutInterface {
 interface UpdateInterface {
     type: "UPDATE",
     payload: {
-        username: string,
-        email: string,
-        imageSrc: string
+        username?: string,
+        email?: string,
+        imageSrc?: string
     }
 }
 
