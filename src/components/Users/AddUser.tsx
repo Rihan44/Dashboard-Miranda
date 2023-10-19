@@ -1,8 +1,8 @@
 import styled from "styled-components"
 import { useContext } from "react";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../app/hooks";
 
 import { MainContainer } from "../Reusables/MainContainer"
 
@@ -10,6 +10,8 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 import { AsideContext } from "../Context/ToggleAsideContext";
 
 import { createUser } from "../../features/usersSlice";
+import { UsersInterface } from "../../interfaces/usersInterface";
+import { Props } from "../../interfaces/Props";
 
 export const AddUser = () => {
 
@@ -18,8 +20,8 @@ export const AddUser = () => {
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
     const [userPosition, setUserPosition] = useState('');
-    const [userNumber, setUserNumber] = useState(0);
-    const [userHireDate, setUserHireDate] = useState(new Date());
+    const [userNumber, setUserNumber] = useState<string | number>(0);
+    const [userHireDate, setUserHireDate] = useState<string | Date>(new Date());
     const [userJobDescription, setUserJobDescription] = useState('');
     const [userStatus, setUserStatus] = useState(true);
     const [userPassword, setUserPassword] = useState('');
@@ -27,7 +29,7 @@ export const AddUser = () => {
     const [alert, setAlert] = useState('false');
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const { asideState } = useContext(AsideContext);
 
@@ -39,7 +41,7 @@ export const AddUser = () => {
         return numeroAleatorio + letraAleatoria;
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
     }
 
@@ -53,7 +55,7 @@ export const AddUser = () => {
         const day = String(newDate.getDate()).padStart(2, '0');
         const formatedDate = `${year}-${month}-${day}`;
 
-        const updateData = {
+        const updateData: UsersInterface = {
             id: id,
             name: userName,
             email: userEmail,
@@ -74,31 +76,31 @@ export const AddUser = () => {
         }
     }
 
-    const handleName = (e) => {
+    const handleName = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setUserName(e.target.value);
     }
 
-    const handleEmail = (e) => {
+    const handleEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setUserEmail(e.target.value);
     }
 
-    const handlePosition = (e) => {
+    const handlePosition = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setUserPosition(e.target.value);
     }
 
-    const handleNumber = (e) => {
+    const handleNumber = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setUserNumber(e.target.value);
     }
 
-    const handleHireDate = (e) => {
+    const handleHireDate = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setUserHireDate(e.target.value);
     }
 
-    const handleJobDescription = (e) => {
+    const handleJobDescription = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setUserJobDescription(e.target.value);
     }
 
-    const handleStatus = (e) => {
+    const handleStatus = (e: React.ChangeEvent<HTMLInputElement>): void => {
         if (e.target.value === "Active") {
             setUserStatus(true);
         } else {
@@ -106,7 +108,7 @@ export const AddUser = () => {
         }
     }
 
-    const handlePassword = (e) => {
+    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setUserPassword(e.target.value);
     }
 
@@ -211,7 +213,7 @@ const Title = styled.h2`
     font-family: 'Poppins', sans-serif;
 `;
 
-const Form = styled.form`
+const Form = styled.form<Props>`
     width: 600px;
     height: 700px;
     box-shadow: 0px 3px 10px #00000030;
@@ -251,7 +253,7 @@ const FormBoxInner = styled.div`
     }
 `;
 
-const Select = styled.select`
+const Select = styled.select<Props>`
     width: 129px; 
     height: 30px;
     border: 1px solid #135846;
@@ -268,7 +270,7 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const TextArea = styled.textarea`
+const TextArea = styled.textarea<Props>`
     width: 150px;
     resize: none;
     border: none;
@@ -381,7 +383,7 @@ const StatusContainer = styled.div`
     }
 `;
 
-const ErrorParagraph = styled.p`
+const ErrorParagraph = styled.p<Props>`
     position: absolute;
     top: 12px;
     color: #E23428;

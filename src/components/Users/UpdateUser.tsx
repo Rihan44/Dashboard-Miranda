@@ -11,6 +11,7 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 import { ToastAlert } from "../Reusables/ToastAlert";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { UsersInterface } from "../../interfaces/usersInterface";
+import { Props } from "../../interfaces/Props";
 
 
 export const UpdateUser = () => {
@@ -180,14 +181,6 @@ export const UpdateUser = () => {
             </MainContainer>
         </>
     )
-}
-
-interface Props {
-    onChange?: any, /* TODO CAMBIAR TIPADO */
-    onSubmit?: any,
-    value?: any,
-    darkmode?: boolean,
-    type?: string
 }
 
 const UpdateUserContainer = styled.div`
