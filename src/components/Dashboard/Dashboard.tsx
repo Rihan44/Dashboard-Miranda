@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { useContext, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 import { LiaBedSolid } from "react-icons/lia";
 import { LuCalendarCheck2 } from "react-icons/lu";
@@ -13,20 +13,21 @@ import { LastestReview } from "./LastestReview";
 import { getAllMessages } from "../../features/contactSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { AsideContext } from "../Context/ToggleAsideContext";
+import { ContactInterface } from "../../interfaces/contactInterface";
 
 
 export const Dashboard = () => {
 
-    const [dataContact, setDataContact] = useState([]);
+    const [dataContact, setDataContact] = useState<ContactInterface[]>([]);
     const { asideState } = useContext(AsideContext);
 
-    const contactData = useSelector((state) => state.contact.data);
-    const status = useSelector((state) => state.contact.status);
+    const contactData = useAppSelector((state) => state.contact.data);
+    const status = useAppSelector((state) => state.contact.status);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        let dataArray = [...contactData];
+        let dataArray: ContactInterface[] = [...contactData];
 
         if (status === 'fulfilled') {
             setDataContact(dataArray);
@@ -89,6 +90,10 @@ export const Dashboard = () => {
     )
 }
 
+interface PropsContainerCards {
+    darkmode?: boolean
+}
+
 const ContainerCards = styled.div`
     display: flex;
     margin-top: 50px;
@@ -96,7 +101,7 @@ const ContainerCards = styled.div`
     min-width: 1485px;
 `;
 
-const Card = styled.div`
+const Card = styled.div<PropsContainerCards>`
     width: 340px;
     height: 125px;
     background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
