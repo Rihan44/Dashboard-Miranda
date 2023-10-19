@@ -13,5 +13,6 @@ export interface Props {
     context?: string,
     placeholder?: string | undefined | any,
     view?: boolean | string,
-    isArchive?: boolean | string
+    isArchive?: boolean | string,
+    status?: string | boolean
 }

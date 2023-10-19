@@ -49,7 +49,7 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) =>
                     </TableContainerTitleTR>
                 </TableContainerTitle>
                 <TableBodyContainer>
-                    <TableBody darkmode={asideState.darkMode} ref={tableRef}>
+                    <TableBody darkmode={asideState.darkMode.toString()} ref={tableRef}>
                         {data?.map(displayRow)}
                     </TableBody>
                 </TableBodyContainer>

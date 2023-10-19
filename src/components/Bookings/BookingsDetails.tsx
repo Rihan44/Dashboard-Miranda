@@ -15,6 +15,7 @@ import { getBookingDetail } from "../../features/bookingsSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { BookingsInterface } from "../../interfaces/bookingsInterface";
 import { AsideContext } from "../Context/ToggleAsideContext";
+import { Props } from "../../interfaces/Props";
 
 export const BookingFile = () => {
 
@@ -37,7 +38,7 @@ export const BookingFile = () => {
           const [year, month, day] = date?.split('-');
           return new Date(Number(year), Number(month) - 1, Number(day)).toLocaleDateString('en-EN', options);
         }
-        return date.toLocaleDateString('en-EN', options);
+        return date?.toLocaleDateString('en-EN', options);
     };
 
     useEffect(() => {
@@ -61,11 +62,11 @@ export const BookingFile = () => {
                     <FileBookingContainer>
                         <ButtonBack onClick={() => navigate('/bookings')}><AiOutlineArrowLeft /></ButtonBack>
                         <InfoContainer>
-                            <NameContainer>
+                            <NameContainer darkmode={asideState.darkMode}>
                                 <h3>{dataBooking.guest}</h3>
                                 <p>{dataBooking.id}</p>
                             </NameContainer>
-                            <CheckContainer>
+                            <CheckContainer darkmode={asideState.darkMode}>
                                 <div>
                                     <h3>Check In</h3>
                                     <p>{handleSelectDate(dataBooking.check_in)}</p>
@@ -75,7 +76,7 @@ export const BookingFile = () => {
                                     <p>{handleSelectDate(dataBooking.check_out)}</p>
                                 </div>
                             </CheckContainer>
-                            <RoomInfoContainer>
+                            <RoomInfoContainer darkmode={asideState.darkMode}>
                                 <InnerInfo>
                                     <div>
                                         <h3>Room Info</h3>
@@ -86,9 +87,9 @@ export const BookingFile = () => {
                                         <p>{dataBooking.price}<small>/night</small></p>
                                     </div>
                                 </InnerInfo>
-                                <RoomDescription>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</RoomDescription>
+                                <RoomDescription darkmode={asideState.darkMode}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</RoomDescription>
                             </RoomInfoContainer>
-                            <FacilitiesRooms>
+                            <FacilitiesRooms darkmode={asideState.darkMode}>
                                 <h3>Facilites</h3>
                                 <FacilitiesInner>
                                     <BigFacilitie>
@@ -146,12 +147,12 @@ const InfoContainer = styled.div`
     padding: 40px;
 `;
 
-const NameContainer = styled.div`
+const NameContainer = styled.div<Props>`
     h3 {
-        color: #212121;
         font-family: 'Poppins', sans-serif;
         font-size: 30px;
         margin-bottom: 13px;
+        color: ${props => props.darkmode ? '#ffff' : '#212121'}
     }
 
     p {
@@ -160,7 +161,7 @@ const NameContainer = styled.div`
     }
 `;
 
-const CheckContainer = styled.div`
+const CheckContainer = styled.div<Props>`
     display: flex;
     width: 80%;
     justify-content: space-between;
@@ -171,14 +172,14 @@ const CheckContainer = styled.div`
 
     div {
         h3 {
-            color: #6E6E6E;
             font-size: 14px;
             font-family: 'Poppins', sans-serif;
             font-weight: 400;
+            color: ${props => props.darkmode ? '#ffff' : '#6E6E6E'}
         }
     
         p {
-            color: #212121;
+            color: ${props => props.darkmode ? '#ffff' : '#212121'}
             font-family: 'Poppins', sans-serif;
             font-size: 16px;
             margin-right: 50px;
@@ -187,19 +188,19 @@ const CheckContainer = styled.div`
 
 `;
 
-const RoomInfoContainer = styled.div`
+const RoomInfoContainer = styled.div<Props>`
 
     div {
 
         h3 {
-            color: #6E6E6E;
+            color: ${props => props.darkmode ? '#ffff' : '#6E6E6E'}
             font-size: 14px;
             font-family: 'Poppins', sans-serif;
             font-weight: 400;
         }
 
         p {
-            color: #212121;
+            color: ${props => props.darkmode ? '#ffff' : '#212121'}
             font-family: 'Poppins', sans-serif;
             font-size: 24px;
             margin-right: 50px;
@@ -221,17 +222,17 @@ const InnerInfo = styled.div`
     }
 `;
 
-const RoomDescription = styled.p`
-    color: #363636;
+const RoomDescription = styled.p<Props>`
+    color: ${props => props.darkmode ? '#ffff' : '#363636'}
     font-size: 14px;
     width: 90%;
     font-family: 'Poppins', sans-serif;
     margin-bottom: 30px;
 `;
 
-const FacilitiesRooms = styled.div`
+const FacilitiesRooms = styled.div<Props>`
     h3 {
-        color: #6E6E6E;
+        color: ${props => props.darkmode ? '#ffff' : '#6E6E6E'}
         font-size: 14px;
         font-family: 'Poppins', sans-serif;
         font-weight: 400;
@@ -303,10 +304,6 @@ const ImageDescription = styled.div`
     }
 
 `;
-
-interface Props {
-    status: string
-}
 
 const StatusDecoration = styled.div<Props>`
     width: 160px;
