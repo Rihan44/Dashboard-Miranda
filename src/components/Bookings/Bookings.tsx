@@ -45,7 +45,7 @@ export const Bookings = () => {
 
     let options: object = { year: 'numeric', month: 'long', day: 'numeric' };
 
-    const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSelect = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setSelectData(e.target.value);
     }
 
@@ -57,7 +57,7 @@ export const Bookings = () => {
         setIsActiveButton(activeButton);
     }
 
-    const handleBookingId = (id: string | number | undefined) => {
+    const handleBookingId = (id: string | number | undefined)=> {
         if (id !== undefined) {
             navigate(`/bookings/${id}`);
             dispatch(getBookingDetail(id));
@@ -254,7 +254,7 @@ interface PropsStyled {
     modalOpen?: boolean | string,
     actived?: boolean | string,
     darkmode?: boolean | string,
-    onChange?: any /* cambiar esto */
+    onChange?: any /* TODO CAMBIAR EL TIPO */
 }
 
 const Modal = styled.div<PropsStyled>`

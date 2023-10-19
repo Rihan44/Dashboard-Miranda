@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { FormEvent, useEffect, useState } from "react";
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -13,34 +12,38 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { ToastAlert } from "../Reusables/ToastAlert";
 import { getBookingDetail, updateBooking } from "../../features/bookingsSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { BookingsInterface } from "../../interfaces/bookingsInterface";
 
 export const UpdateBooking = () => {
 
-    const [guestNumber, setGuestNumber] = useState(0);
-    const [guestName, setGuetsName] = useState('');
-    const [priceState, setPriceState] = useState('');
+    const [guestNumber, setGuestNumber] = useState('');
+    const [guestName, setGuestName] = useState('');
+    const [priceState, setPriceState] = useState<number | string>('');
     const [specialRequest, setSpecialRequest] = useState('');
-    const [checkIn, setCheckIn] = useState(new Date());
-    const [checkOut, setCheckOut] = useState(new Date());
+    const [checkIn, setCheckIn] = useState<Date | string>('');
+    const [checkOut, setCheckOut] = useState<Date | string>('');
     const [roomTypeState, setRoomTypeState] = useState('');
-    const [roomNumberState, setRoomNumberState] = useState(0);
+    const [roomNumberState, setRoomNumberState] = useState<number | string>('');
 
-    const {id} = useParams();
-    const {asideState} = useContext(AsideContext);
+    const paramsID = useParams();
+    const id: string | undefined = paramsID.id;
 
-    const bookingsData = useSelector((state) => state.bookings.dataBooking);
+    const {asideState}: any = useContext(AsideContext);
 
-    const status = useSelector((state) => state.bookings.status);
+    const bookingsData = useAppSelector((state) => state.bookings.dataBooking);
 
-    const dispatch = useDispatch();
+    const status = useAppSelector((state) => state.bookings.status);
+
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
     }
 
     const handleUpdate = () => {
-        const dataUpdate = {
+        const dataUpdate: BookingsInterface = {
             id: id,
             guest: guestName,
             phone_number: guestNumber,
@@ -49,50 +52,52 @@ export const UpdateBooking = () => {
             special_request: specialRequest,
             room_number: roomNumberState,
             room_type: roomTypeState,
+            order_date: '',
+            status: '',
             price: priceState
         }
         dispatch(updateBooking(dataUpdate));
         navigate('/bookings');
     }
 
-    const handleGuestName = (e) => {
-        setGuetsName(e.target.value);
+    const handleGuestName = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        setGuestName(e.target.value);
     }
 
-    const handleGuestNumber = (e) => {
+    const handleGuestNumber = (e: any): void => {
         setGuestNumber(e.target.value);
     }
 
-    const handleCheckIn = (e) => {
+    const handleCheckIn = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setCheckIn(e.target.value);
     }
 
-    const handleCheckOut = (e) => {
+    const handleCheckOut = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setCheckOut(e.target.value);
     }
 
-    const handleSpecialRequest = (e) => {
+    const handleSpecialRequest = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setSpecialRequest(e.target.value);
     }
 
-    const handleRoomNumber = (e) => {
+    const handleRoomNumber = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setRoomNumberState(e.target.value);
     }
     
-    const handleRoomType = (e) => {
+    const handleRoomType = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setRoomTypeState(e.target.value);
     }
 
-    const handlePrice = (e) => {
+    const handlePrice = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setPriceState(e.target.value);
     } 
 
     useEffect(() => {
-        let data = [...bookingsData];
+        let data: BookingsInterface[] = [...bookingsData];
 
         if(status === 'fulfilled') {
             try {
-                setGuetsName(data[0].guest);
+                setGuestName(data[0].guest);
                 setGuestNumber(data[0].phone_number);
                 setCheckIn(data[0].check_in);
                 setCheckOut(data[0].check_out);
@@ -108,7 +113,8 @@ export const UpdateBooking = () => {
     }, [bookingsData, status]);
 
     useEffect(() => {
-        dispatch(getBookingDetail(id));
+        if(id !== undefined)
+            dispatch(getBookingDetail(id));
     }, [dispatch, id]);
 
     return(
@@ -173,12 +179,17 @@ export const UpdateBooking = () => {
     )
 }
 
+interface Props {
+    darkmode?: boolean
+    onChange?: any /* TODO CAMBIAR EL TIPO */
+    value?: any /* TODO CAMBIAR EL TIPO */
+}
+
 const UpdateRoomContainer = styled.div`
     margin: 20px;
     position: relative;
     max-width: 1300px;
 `;
-
 
 const FormContainer = styled.div`
     width: 100%;
@@ -194,7 +205,7 @@ const Title = styled.h2`
     font-family: 'Poppins', sans-serif;
 `;
 
-const Form = styled.form`
+const Form = styled.form<Props>`
     width: 750px;
     height: 660px;
     box-shadow: 0px 3px 10px #00000030;
@@ -234,7 +245,7 @@ const FormBoxInner = styled.div`
     }
 `;
 
-const Select = styled.select`
+const Select = styled.select<Props>`
     width: 140px; 
     height: 30px;
     border: 1px solid #135846;
@@ -251,7 +262,7 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const Input = styled.input`
+const Input = styled.input<Props>`
     margin-left: 20px;
     margin-bottom: 10px;
     width: 150px;
