@@ -15,13 +15,13 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { ContactInterface } from "../../interfaces/contactInterface";
 
-interface CardInterface {
+interface CardProps {
     data?: ContactInterface[],
-    handleOpen: (data: any) => void 
+    handleOpen: (data: string, subject: string, email: string) => void 
 }
 
-export const Card = ({ data, handleOpen }: CardInterface) => {
-    const {asideState}: any = useContext(AsideContext);
+export const Card: React.FC<CardProps> = ({ data, handleOpen }) => {
+    const {asideState} = useContext(AsideContext);
 
     const location = useLocation();
 
@@ -51,7 +51,7 @@ export const Card = ({ data, handleOpen }: CardInterface) => {
                                 </ProfileContainer>
                                 <ButtonContainer>
                                     <Button view={dataCard.isArchived}><AiOutlineCheckCircle /></Button>
-                                    {location.pathname !== '/contact' && <ButtonOpen onClick={() => handleOpen(dataCard)}><AiOutlineFullscreen /></ButtonOpen>}
+                                    {location.pathname !== '/contact' && <ButtonOpen onClick={() => handleOpen(dataCard.email, dataCard.email_subject, dataCard.email)}><AiOutlineFullscreen /></ButtonOpen>}
                                 </ButtonContainer>
                             </InnerCard>
                         </CardContainer>

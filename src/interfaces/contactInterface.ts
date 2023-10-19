@@ -6,7 +6,7 @@ export interface ContactInterface {
     email_subject: string,
     email_description: string,
     date: Date | string, 
-    dateTime: Date | string,
+    dateTime: string,
     isArchived: boolean
 }
 

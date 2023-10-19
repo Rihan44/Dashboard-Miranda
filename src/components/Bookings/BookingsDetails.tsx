@@ -131,11 +131,7 @@ export const BookingFile = () => {
     )
 }
 
-interface Props {
-    children?: React.ReactNode
-}
-
-const FileBookingContainer = styled.div<Props>`
+const FileBookingContainer = styled.div`
     margin: 50px;
     width: 1475px;
     height: 792px;

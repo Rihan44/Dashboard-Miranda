@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 
 interface Props {
-    children: React.ReactNode,
+    children: any /* TODO CAMBIAR EL TIPO */,
 }
 
 export const MainContainer: React.FC<Props> = ({children}) => {

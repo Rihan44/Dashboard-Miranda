@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
@@ -278,12 +278,17 @@ const ButtonModalClose = styled.button`
     }
 `;
 
-const ContactContainer = styled.div`
+const ContactContainer = styled.div<CardsContainerProps>`
     margin: 50px;
     margin-left: 80px;
 `;
 
-const CardsContainer = styled.div`
+type CardsContainerProps = {
+    children: any,
+    ref?: any
+}
+
+const CardsContainer = styled.div<CardsContainerProps>`
     margin-bottom: 50px;
 `;
 
