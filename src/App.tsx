@@ -8,6 +8,7 @@ import { Menu } from "./components/HeaderAside/Menu";
 import { AuthContainer } from "./components/Context/AuthContainer";
 import { createGlobalStyle } from 'styled-components';
 import { AsideContext } from './components/Context/ToggleAsideContext';
+import { Props } from "./interfaces/Props";
 
 export const App = () => {
 
@@ -70,7 +71,7 @@ export const App = () => {
         }
     }, [location.pathname]);
 
-    const GlobalStyles = createGlobalStyle`
+    const GlobalStyles = createGlobalStyle<Props>`
         body {
             transition: background 0.5s;
             background-color: ${props => props.darkmode ? '#171717' : '#ffff'};
