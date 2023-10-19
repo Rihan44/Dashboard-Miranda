@@ -13,9 +13,15 @@ import 'swiper/css/scrollbar'
 import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { AsideContext } from "../Context/ToggleAsideContext";
+import { ContactInterface } from "../../interfaces/contactInterface";
 
-export const Card = ({ data, handleOpen }) => {
-    const {asideState} = useContext(AsideContext);
+interface CardInterface {
+    data?: ContactInterface[],
+    handleOpen: (data: ContactInterface) => void 
+}
+
+export const Card = ({ data, handleOpen }: CardInterface) => {
+    const {asideState}: any = useContext(AsideContext);
 
     const location = useLocation();
 
@@ -27,7 +33,7 @@ export const Card = ({ data, handleOpen }) => {
                 slidesPerView={3}
                 navigation
             >
-                {data.map((dataCard) => (
+                {data?.map((dataCard) => (
                     <SwiperSlide key={dataCard.id}>
                         <CardContainer darkmode={asideState.darkMode}>
                             <EmailSubject darkmode={asideState.darkMode}>
@@ -56,7 +62,11 @@ export const Card = ({ data, handleOpen }) => {
     )
 }
 
-const CardContainer = styled.div`
+interface Props {
+    darkmode?: boolean
+}
+
+const CardContainer = styled.div<Props>`
     width: 431px;
     height: 275px;
     border: ${props => props.darkmode ? '1px solid #3D3D3D' : '1px solid #EBEBEB'};
@@ -70,7 +80,7 @@ const CardContainer = styled.div`
     }
 `;
 
-const EmailSubject = styled.h4`
+const EmailSubject = styled.h4<Props>`
     color: ${props => props.darkmode ? '#FFE' : '#393939'};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
@@ -78,7 +88,7 @@ const EmailSubject = styled.h4`
     transition: 0.5s;
 `;
 
-const ReviewComent = styled.p`
+const ReviewComent = styled.p<Props>`
     color: ${props => props.darkmode ? '#fff' : '#4E4E4E'};
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
@@ -103,7 +113,7 @@ const InnerCard = styled.div`
     }
 `;
 
-const ProfileContainer = styled.div` 
+const ProfileContainer = styled.div<Props>` 
     width: 80%;
 
     h4 {
@@ -135,10 +145,9 @@ const Button = styled.button`
     background: none;
     font-size: 24px;
     cursor: pointer;
-    color: ${props => props.$view === false ? '#E23428' : '#5AD07A'};
 `;
 
-const ButtonOpen = styled.button`
+const ButtonOpen = styled.button<Props>`
     border: none;
     background: none;
     font-size: 24px;

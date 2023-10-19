@@ -29,14 +29,6 @@ export const BookingFile = () => {
 
     let options: object = { year: 'numeric', month: 'long', day: 'numeric' };
 
-    const handleSelectDate = (date: Date | string) => {
-        if (typeof date === 'string') {
-          const [year, month, day] = date.split('-');
-          return new Date(Number(year), Number(month) - 1, Number(day)).toLocaleDateString('en-EN', options);
-        }
-        return date.toLocaleDateString('en-EN', options);
-    };
-
     const checkOutDate= dataBooking ? new Date(dataBooking.check_out.split("-")[0], dataBooking.check_out.split("-")[1] - 1,
         dataBooking.check_out.split("-")[2]).toLocaleDateString('en-EN', options) : '';
 

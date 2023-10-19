@@ -1,6 +1,5 @@
 import styled from "styled-components"
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 import { archiveMessage, deleteMessage, getAllMessages, unArchiveMessage } from "../../features/contactSlice";
 
@@ -15,6 +14,7 @@ import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 
 export const Contact = () => {
@@ -26,16 +26,16 @@ export const Contact = () => {
 
     const [tableRef] = useAutoAnimate();
 
-    const dataContact = useSelector((state) => state.contact.data);
-    const status = useSelector((state) => state.contact.status);
-    const statusArchive = useSelector((state) => state.contact.statusArchive);
+    const dataContact = useAppSelector((state) => state.contact.data);
+    const status = useAppSelector((state) => state.contact.status);
+    const statusArchive = useAppSelector((state) => state.contact.statusArchive);
 
     let options = {year: 'numeric', month: 'long', day: 'numeric' };
 
     const allContacts = isActiveButton === 'allContacts';
     const archived = isActiveButton === 'archived';
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const handleOpenModal = (data, subject, email) => {
         setModalInfo({emailInfo: data, emailSubject: subject, emailUser: email});
