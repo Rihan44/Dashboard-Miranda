@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { FormEvent, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -13,25 +13,26 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { ToastAlert } from "../Reusables/ToastAlert";
+import { RoomInterface } from "../../interfaces/roomInterface";
 
 export const UpdateRoom = () => {
 
     const [roomTypeState, setRoomTypeState] = useState('');
-    const [roomNumberState, setRoomNumberState] = useState(0);
+    const [roomNumberState, setRoomNumberState] = useState<string | number>(0);
     const [offerState, setOfferState] = useState(false);
-    const [priceState, setPriceState] = useState(0);
+    const [priceState, setPriceState] = useState<string | number>(0);
     const [discountState, setDiscountState] = useState(0);
-    const [amenitiesState, setAmenitiesState] = useState([]);
+    const [amenitiesState, setAmenitiesState] = useState<string[]>([]);
     const [roomDescription, setRoomDescription] = useState('');
 
     const {id} = useParams();
     const {asideState} = useContext(AsideContext);
 
-    const roomData = useSelector((state) => state.rooms.dataRoom);
+    const roomData = useAppSelector((state) => state.rooms.dataRoom);
 
-    const status = useSelector((state) => state.rooms.status);
+    const status = useAppSelector((state) => state.rooms.status);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const amenitiesList = [
@@ -49,12 +50,12 @@ export const UpdateRoom = () => {
         "Jacuzzi",
     ]
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
     }
 
     const handleUpdate = () => {
-        const dataUpdate = {
+        const dataUpdate: RoomInterface = {
             id: id,
             room_type: roomTypeState,
             room_number: roomNumberState,
@@ -62,21 +63,22 @@ export const UpdateRoom = () => {
             price: priceState,
             discount: offerState ? discountState : 0,
             amenities: amenitiesState,
-            description: roomDescription
+            description: roomDescription,
+            status
         }
         dispatch(updateRoom(dataUpdate));
         navigate('/rooms');
     }
 
-    const handleSelectType = (e) => {
+    const handleSelectType = (e: React.ChangeEvent<HTMLInputElement>): void  => {
         setRoomTypeState(e.target.value);
     }
 
-    const handleRoomNumber = (e) => {
+    const handleRoomNumber = (e: React.ChangeEvent<HTMLInputElement>): void  => {
         setRoomNumberState(e.target.value);
     }
 
-    const handleSelectOffer = (e) => {
+    const handleSelectOffer = (e: React.ChangeEvent<HTMLInputElement>): void  => {
         if(e.target.value === "Yes") {
             setOfferState(true);    
         } else {
@@ -84,15 +86,15 @@ export const UpdateRoom = () => {
         }
     }
 
-    const handlePrice = (e) => {
+    const handlePrice = (e: React.ChangeEvent<HTMLInputElement>): void  => {
         setPriceState(e.target.value);
     }
 
-    const handleDiscount = (e) => {
-        setDiscountState(e.target.value);
+    const handleDiscount = (e: React.ChangeEvent<HTMLInputElement>): void  => {
+        setDiscountState(parseInt(e.target.value));
     }
 
-    const handleAmenities = (e, amenity) => {
+    const handleAmenities = (e: React.ChangeEvent<HTMLInputElement>, amenity: string): void  => {
         if (e.target.checked) {
             setAmenitiesState([...amenitiesState, amenity]);
           } else {
@@ -100,12 +102,12 @@ export const UpdateRoom = () => {
           }
     }
 
-    const handleDescription = (e) => {
+    const handleDescription = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setRoomDescription(e.target.value);
     }
 
     useEffect(() => {
-        let data =[...roomData];
+        let data: RoomInterface[] =[...roomData];
 
         if(status === 'fulfilled') { 
             try {
@@ -124,7 +126,8 @@ export const UpdateRoom = () => {
     }, [roomData, status]);
 
     useEffect(() => {
-        dispatch(getRoom(id));
+        if(id !== undefined)
+            dispatch(getRoom(id));
     }, [dispatch, id]);
 
     return(
@@ -191,7 +194,7 @@ export const UpdateRoom = () => {
                                         {amenitiesList.map((amenity, index) =>
                                             <div key={index}>
                                                 <Label>{amenity}</Label>
-                                                <Input type="checkbox" checked={amenitiesState.includes(amenity)} onChange={(e) => handleAmenities(e, amenity)}/>
+                                                <Input type="checkbox" checked={amenitiesState.includes(amenity)} onChange={(e:React.ChangeEvent<HTMLInputElement> ) => handleAmenities(e, amenity)}/>
                                             </div>
                                         )}
  
@@ -208,6 +211,14 @@ export const UpdateRoom = () => {
             </UpdateRoomContainer>
         </MainContainer>
     )
+}
+
+interface PropsStyled {
+    modalOpen?: boolean | string,
+    visible?: boolean | string,
+    darkmode?: boolean | string,
+    onChange?: any /* TODO CAMBIAR EL TIPO */
+    type?: any
 }
 
 const UpdateRoomContainer = styled.div`
@@ -231,7 +242,7 @@ const Title = styled.h2`
     font-family: 'Poppins', sans-serif;
 `;
 
-const Form = styled.form`
+const Form = styled.form<PropsStyled>`
     width: 1050px;
     height: 660px;
     box-shadow: 0px 3px 10px #00000030;
@@ -271,7 +282,7 @@ const FormBoxInner = styled.div`
     }
 `;
 
-const Select = styled.select`
+const Select = styled.select<PropsStyled>`
     width: 140px; 
     height: 30px;
     border: 1px solid #135846;
@@ -288,7 +299,7 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const TextArea = styled.textarea`
+const TextArea = styled.textarea<PropsStyled>`
     width: 150px;
     resize: none;
     border: none;
@@ -300,7 +311,7 @@ const TextArea = styled.textarea`
     color: #262626;
 `;
 
-const Input = styled.input`
+const Input = styled.input<PropsStyled>`
     margin-left: 20px;
     margin-bottom: 10px;
     width: 150px;

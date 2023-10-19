@@ -217,7 +217,6 @@ interface PropsStyled {
     type?: any
 }
 
-
 const AddRoomContainer = styled.div`
     margin: 20px;
     position: relative;
