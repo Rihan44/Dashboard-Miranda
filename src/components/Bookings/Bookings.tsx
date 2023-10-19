@@ -146,7 +146,7 @@ export const Bookings = () => {
         {
             property: 'guest', label: 'Guest', display: ({ guest, phone_number, id }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <CostumerName darkmode={asideState.darkMode}>{guest}</CostumerName>
+                    <CostumerName darkmode={asideState.darkMode?.toString()}>{guest}</CostumerName>
                     <Paragraphs>{phone_number}</Paragraphs>
                     <ButtonID onClick={() => handleBookingId(id)}>#{id}</ButtonID>
                 </TableContainerBodyContent>
@@ -162,7 +162,7 @@ export const Bookings = () => {
         {
             property: 'check_in', label: 'Check In', display: ({ check_in }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <CheckInDate darkmode={asideState.darkMode}>{handleSelectDate(check_in)}</CheckInDate>
+                    <CheckInDate darkmode={asideState.darkMode?.toString()}>{handleSelectDate(check_in)}</CheckInDate>
                     <CheckInTime>9.46 PM</CheckInTime>
                 </TableContainerBodyContent>
             )
@@ -170,7 +170,7 @@ export const Bookings = () => {
         {
             property: 'check_out', label: 'Check Out', display: ({ check_out }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <CheckOutDate darkmode={asideState.darkMode}>{handleSelectDate(check_out) }</CheckOutDate>
+                    <CheckOutDate darkmode={asideState.darkMode?.toString()}>{handleSelectDate(check_out) }</CheckOutDate>
                     <CheckOutTime>6.12 PM</CheckOutTime>
                 </TableContainerBodyContent>
             )
@@ -185,7 +185,7 @@ export const Bookings = () => {
         {
             property: 'room_type', label: 'Room Type', display: ({ room_type, room_number }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <TypeRoom darkmode={asideState.darkMode}>{room_type}-{room_number}</TypeRoom>
+                    <TypeRoom darkmode={asideState.darkMode?.toString()}>{room_type}-{room_number}</TypeRoom>
                 </TableContainerBodyContent>
             )
         },
@@ -428,7 +428,7 @@ const TableContainerBodyContent = styled.div`
 
 const CostumerName = styled.p<PropsStyled>`
     transition: 0.5s;
-    color: ${(props: PropsStyled) => props.darkmode ? '#fff' : '#393939'};
+    color: ${(props: PropsStyled) => props.darkmode === 'true' ? '#fff' : '#393939'};
 `;
 
 const ButtonID = styled.button`
@@ -448,7 +448,7 @@ const OrderDate = styled.p`
 
 const CheckInDate = styled.p`
     transition: 0.5s;
-    color: ${(props: PropsStyled) => props.darkmode ? '#fff' : '#393939'};
+    color: ${(props: PropsStyled) => props.darkmode === 'true' ? '#fff' : '#393939'};
 `;
 
 const CheckInTime = styled(Paragraphs)`
@@ -457,7 +457,7 @@ const CheckInTime = styled(Paragraphs)`
 
 const CheckOutDate = styled.p`
     transition: 0.5s;
-    color: ${(props: PropsStyled) => props.darkmode ? '#fff' : '#393939'};
+    color: ${(props: PropsStyled) => props.darkmode === 'true' ? '#fff' : '#393939'};
 `;
 
 const CheckOutTime = styled(Paragraphs)`
@@ -484,7 +484,7 @@ const ViewNotesButton = styled(Buttons)`
 
 const TypeRoom = styled.p`
     transition: 0.5s;
-    color: ${(props: PropsStyled) => props.darkmode ? '#fff' : '#393939'};
+    color: ${(props: PropsStyled) => props.darkmode === 'true' ? '#fff' : '#393939'};
 `;
 
 const OptionsButton = styled(Buttons)`
@@ -522,7 +522,7 @@ const StatusContent = styled(TableContainerBodyContent)`
     flex-direction: row;
 
     p {
-        color: ${(props: PropsStyled) => props.darkmode ? '#ffffff' : '#212121'};
+        color: ${(props: PropsStyled) => props.darkmode === 'true' ? '#ffffff' : '#212121'};
     }
 `;
 

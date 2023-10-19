@@ -30,7 +30,7 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) =>
     const [tableRef] = useAutoAnimate();
     
     const displayRow = (row: BookingsInterface | RoomInterface | UsersInterface | ContactInterface) => (
-        <TableContainerBodyContent darkmode={asideState.darkMode}  totalcols={totalCols} key={row.id}>
+        <TableContainerBodyContent darkmode={asideState.darkMode.toString()}  totalcols={totalCols} key={row.id}>
             {cols !== undefined && cols.map((col: DataTabla, i: number) => (
                 <td key={i}>{typeof col.display === 'function' ? col.display(row) : (row as Record<string, any>)[col.property as string]}
                 </td>
@@ -41,10 +41,10 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) =>
     return (
         <>
             <TableContainer>
-                <TableContainerTitle darkmode={asideState.darkMode}>
+                <TableContainerTitle darkmode={asideState.darkMode.toString()}>
                     <TableContainerTitleTR>
                         {cols?.map((col: TitleInterface, i: number) =>
-                            <TableTitles darkmode={asideState.darkMode} totalheaders={totalHeaders} key={i}>{col.label && col.label}</TableTitles>
+                            <TableTitles darkmode={asideState.darkMode.toString()} totalheaders={totalHeaders} key={i}>{col.label && col.label}</TableTitles>
                         )}
                     </TableContainerTitleTR>
                 </TableContainerTitle>
@@ -53,13 +53,16 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) =>
                         {data?.map(displayRow)}
                     </TableBody>
                 </TableBodyContainer>
+                    {/* <TableBody darkmode={asideState.darkMode.toString()} ref={tableRef}>
+                        {data?.map(displayRow)}
+                    </TableBody> */}
             </TableContainer>
         </>
     )
 }
 
 interface Props {
-    darkmode?: boolean,
+    darkmode?: boolean | string,
     totalheaders?: number,
     totalcols?: number
 }
@@ -71,14 +74,14 @@ const TableContainer = styled.table`
 `;
 
 const TableContainerTitle = styled.thead<Props>`
-    border: ${props => props.darkmode ? '1px solid #0004' : '1px solid #00000015'};
+    border: ${props => props.darkmode === 'true' ? '1px solid #0004' : '1px solid #00000015'};
     border-radius: 20px 20px 0px 0px;
     border-bottom: none;
     height: 65px;
     width: 1400px;
     display: flex;
     transition: 0.5s;
-    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
+    background-color: ${props => props.darkmode === 'true' ? '#202020' : '#ffff'};
 `;
 
 const TableContainerTitleTR = styled.tr`
@@ -88,10 +91,10 @@ const TableContainerTitleTR = styled.tr`
 `;
 
 const TableTitles = styled.th<Props>`
-    color: ${props => props.darkmode ? '#fff' : '#393939'};
+    color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
-    font-weight: ${props => props.darkmode ? 'normal' : 600};
+    font-weight: ${props => props.darkmode === 'true' ? 'normal' : 600};
     display: flex;
     justify-content: center;
     width: calc(1400px / ${props => props.totalheaders});
@@ -117,7 +120,7 @@ const TableContainerBodyContent = styled.tr<Props>`
         align-items: center;
         justify-content: center;
         border: 1px solid #00000015;
-        border: ${props => props.darkmode ? '1px solid #0004' : '1px solid #00000015'};
+        border: ${props => props.darkmode === 'true' ? '1px solid #0004' : '1px solid #00000015'};
         padding: 10px;
     }
 
@@ -126,9 +129,9 @@ const TableContainerBodyContent = styled.tr<Props>`
 const TableBody = styled.tbody<Props>`
     height: auto;
     width: 1442px;
-    color: ${props => props.darkmode ? '#fff' : '#393939'};
+    color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
     transition: 0.5s;
-    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
+    background-color: ${props => props.darkmode === 'true' ? '#202020' : '#ffff'};
 `;
 
 const TableBodyContainer = styled.div`

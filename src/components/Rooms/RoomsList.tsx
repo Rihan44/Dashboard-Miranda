@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 import { deleteRoom, getAllRooms, getRoom } from "../../features/roomsSlice";
 
@@ -15,6 +15,7 @@ import { MainContainer } from "../Reusables/MainContainer";
 import { Tabla } from "../Reusables/Tabla";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { StatusParagraph } from "../Reusables/StatusParagraph";
+import { RoomInterface } from "../../interfaces/roomInterface";
 
 export const RoomsList = () => {
 
@@ -22,41 +23,45 @@ export const RoomsList = () => {
 
     const [isActiveButton, setIsActiveButton] = useState('allRooms');
     const [selectData, setSelectData] = useState('');
-    const [dataRooms, setDataRooms] = useState([]);
+    const [dataRooms, setDataRooms] = useState<RoomInterface[]>([]);
 
     const allRooms = isActiveButton === 'allRooms';
     const statusAvailable = isActiveButton === 'statusAvailable';
     const statusBooked = isActiveButton === 'statusBooked';
 
-    const roomsData = useSelector((state) => state.rooms.data);
-    const roomsDataUpdated = useSelector((state) => state.rooms.updatedDataRoom);
+    const roomsData = useAppSelector((state) => state.rooms.data);
+    const roomsDataUpdated = useAppSelector((state) => state.rooms.updatedDataRoom);
 
-    const status = useSelector((state) => state.rooms.status);
-    const statusDelete = useSelector((state) => state.rooms.statusDelete);
+    const status = useAppSelector((state) => state.rooms.status);
+    const statusDelete = useAppSelector((state) => state.rooms.statusDelete);
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
-    const handleTab = (activeButton) => {
+    const handleTab = (activeButton: string) => {
         setIsActiveButton(activeButton);
     }
 
-    const handleSelect = (e) => {
+    const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSelectData(e.target.value);
     }
 
-    const handleDelete = (id) => {
-        dispatch(deleteRoom(id));
+    const handleDelete = (id: string | number | undefined) => {
+        if(id !== undefined)
+            dispatch(deleteRoom(id));
     }
 
-    const handleEdit = (id) => {
-        dispatch(getRoom(id));
-        navigate(`/rooms/update-room/${id}`);
+    const handleEdit = (id: string | number | undefined) => {
+        if(id !== undefined) {
+            dispatch(getRoom(id));
+            navigate(`/rooms/update-room/${id}`);
+        }
+    
     }
 
     useEffect(() => {
 
-        let dataArray = roomsDataUpdated.length !== 0 ? [ ...roomsDataUpdated] : [...roomsData];
+        let dataArray: RoomInterface[] = roomsDataUpdated.length !== 0 ? [ ...roomsDataUpdated] : [...roomsData];
 
         if (status === 'fulfilled') {
             setDataRooms(dataArray);
@@ -70,21 +75,21 @@ export const RoomsList = () => {
                 dataArray = dataArray.filter(data => data.status === 'booked');
                 break;
             case 'allRooms':
-                dataArray.sort((a, b) => a.room_number - b.room_number);
+                dataArray.sort((a, b) => Number(a.room_number) - Number(b.room_number));
                 break;
             default:
-                dataArray.sort((a, b) => a.room_number - b.room_number);
+                dataArray.sort((a, b) => Number(a.room_number) - Number(b.room_number));
         }
 
         switch (selectData) {
             case 'Price':
-                dataArray = dataArray.sort((a, b) => b.price - a.price);
+                dataArray = dataArray.sort((a, b) => Number(b.price) - Number(a.price));
                 break;
             case 'Room Type':
                 dataArray = dataArray.sort((a, b) => a.room_type.localeCompare(b.room_type));
                 break;
             default:
-                dataArray.sort((a, b) => a.room_number - b.room_number);
+                dataArray.sort((a, b) => Number(a.room_number) - Number(b.room_number));
         }
 
         setDataRooms(dataArray);
@@ -97,14 +102,14 @@ export const RoomsList = () => {
 
     const cols = [
         {
-            property: 'image', label: 'Room Photo', display: ({ image }) => (
+            property: 'image', label: 'Room Photo', display: ({ image }: RoomInterface) => (
                 <TableContainerBodyContent>
                     <img src={image || 'https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/65045f093c166fdddb4a94a5_x-65045f0266217.webp'} alt="imagen" />
                 </TableContainerBodyContent>
             )
         },
         {
-            property: 'room_number', label: 'Room Info', display: ({ id, room_number }) => (
+            property: 'room_number', label: 'Room Info', display: ({ id, room_number }: RoomInterface) => (
                 <TableContainerBodyContent>
                     <div>
                         <IDparagraph>{id}</IDparagraph>
@@ -117,26 +122,26 @@ export const RoomsList = () => {
             property: 'room_type', label: 'Room Type'
         },
         {
-            property: 'amenities', label: 'Amenities', display: ({ amenities }) => (
+            property: 'amenities', label: 'Amenities', display: ({ amenities }: RoomInterface) => (
                 <AmenitiesContainer>
                     <p>{amenities !== undefined ? amenities?.join(', ') : ''}</p>
                 </AmenitiesContainer>
             )
         },
         {
-            property: 'price', label: 'Price', display: ({ price, offer_price }) => (
-                <PriceParagraph darkmode={asideState.darkMode.toString()}>
+            property: 'price', label: 'Price', display: ({ price, offer_price }: RoomInterface) => (
+                <PriceParagraph darkmode={asideState.darkMode?.toString()}>
                     {offer_price ? <><del>{price}</del><small>/Night</small></> : <>{price}<small>/Night</small></>}
                 </PriceParagraph>
             )
         },
         {
-            property: 'offer_price', label: 'Offer Price', display: ({ offer_price, discount, price }) => (
-                <Discount darkmode={asideState.darkMode.toString()}>{offer_price === false ? <del>No Offer</del> : (price - (discount * price / 100))}</Discount>
+            property: 'offer_price', label: 'Offer Price', display: ({ offer_price, discount, price }: RoomInterface) => (
+                <Discount darkmode={asideState.darkMode?.toString()}>{offer_price === false ? <del>No Offer</del> : (Number(price) - (discount * Number(price) / 100))}</Discount>
             )
         },
         {
-            property: 'status', label: 'Status', display: ({ status, id }) =>
+            property: 'status', label: 'Status', display: ({ status, id }: RoomInterface) =>
                 <StatusContent>
                     <StatusParagraph status={status}>{status}</StatusParagraph>
                     <OptionsButton>
@@ -154,13 +159,13 @@ export const RoomsList = () => {
                     <FilterContainer>
                     {statusDelete === 'pending' && <DeleteSpinner/>}
                         <TabsContainer>
-                            <ButtonTabs darkmode={asideState.darkMode.toString()} actived={allRooms} onClick={() => handleTab('allRooms')}>
+                            <ButtonTabs darkmode={asideState.darkMode?.toString()} actived={allRooms} onClick={() => handleTab('allRooms')}>
                                 All Rooms
                             </ButtonTabs>
-                            <ButtonTabs darkmode={asideState.darkMode.toString()} actived={statusAvailable} onClick={() => handleTab('statusAvailable')}>
+                            <ButtonTabs darkmode={asideState.darkMode?.toString()} actived={statusAvailable} onClick={() => handleTab('statusAvailable')}>
                                 All Available
                             </ButtonTabs>
-                            <ButtonTabs darkmode={asideState.darkMode.toString()} actived={statusBooked} onClick={() => handleTab('statusBooked')}>
+                            <ButtonTabs darkmode={asideState.darkMode?.toString()} actived={statusBooked} onClick={() => handleTab('statusBooked')}>
                                 All Booked
                             </ButtonTabs>
                         </TabsContainer>
@@ -183,6 +188,13 @@ export const RoomsList = () => {
             </MainContainer>
         </>
     )
+}
+
+interface PropsStyled {
+    modalOpen?: boolean | string,
+    actived?: boolean | string,
+    darkmode?: boolean | string,
+    onChange?: any /* TODO CAMBIAR EL TIPO */
 }
 
 const RoomsContainer = styled.div`
@@ -215,7 +227,7 @@ const Buttons = styled.button`
     cursor: pointer;
 `;
 
-const ButtonTabs = styled(Buttons)`
+const ButtonTabs = styled(Buttons)<PropsStyled>`
     color: ${props => props.actived ? "#135846" : "#6E6E6E"};
     border-bottom: ${props => props.actived ? "2px solid #135846" : "none"};
     font-size: 16px;
@@ -269,7 +281,7 @@ const Filters = styled.div`
     }
 `;
 
-const Select = styled.select`
+const Select = styled.select<PropsStyled>`
     width: 129px; 
     height: 50px;
     border: 1px solid #135846;
@@ -387,7 +399,7 @@ const AmenitiesContainer = styled.div`
     padding: 10px;
 `;
 
-const PriceParagraph = styled.p`
+const PriceParagraph = styled.p<PropsStyled>`
     color: ${props => props.darkmode === 'true' ? '#fff' : '#212121'};
     font-weight: bold;
     font-size: 20px;
@@ -400,7 +412,7 @@ const PriceParagraph = styled.p`
     }
 `;
 
-const Discount = styled.div`
+const Discount = styled.div<PropsStyled>`
     font-weight: bold;
     font-size: 20px;
     color: ${props => props.darkmode === 'true' ? '#fff' : '#212121'};
