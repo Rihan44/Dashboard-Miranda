@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 import { deleteUser, getAllUsers, getUser } from "../../features/usersSlice";
 
@@ -15,49 +15,61 @@ import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 import { AsideContext } from "../Context/ToggleAsideContext";
+import { UsersInterface } from "../../interfaces/usersInterface";
 
 export const UsersList = () => {
     const {asideState} = useContext(AsideContext);
 
     const [isActiveButton, setIsActiveButton] = useState('allEmployee');
-    const [dataUsers, setDataUsers] = useState([]);
+    const [dataUsers, setDataUsers] = useState<UsersInterface[]>([]);
     const [searchData, setSearchData] = useState('');
 
-    const usersData = useSelector((state) => state.users.data);
-    const usersUpdatedData = useSelector((state) => state.users.updatedUsers);
+    const usersData = useAppSelector((state) => state.users.data);
+    const usersUpdatedData = useAppSelector((state) => state.users.updatedUsers);
 
-    const status = useSelector((state) => state.users.status);
-    const statusDelete = useSelector((state) => state.users.statusDelete);
+    const status = useAppSelector((state) => state.users.status);
+    const statusDelete = useAppSelector((state) => state.users.statusDelete);
     
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
-    let options = { year: 'numeric', month: 'long', day: 'numeric' };
+    let options: object = { year: 'numeric', month: 'long', day: 'numeric' };
 
     const allEmployee = isActiveButton === 'allEmployee';
     const activeEmployee = isActiveButton === 'activeEmployee';
     const inactiveEmployee = isActiveButton === 'inactiveEmployee';
 
-    const handleTab = (activeButton) => {
+    const handleTab = (activeButton: string) => {
         setIsActiveButton(activeButton);
     }
 
-    const handleSearch = (e) => {
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setSearchData(e.target.value.toLowerCase());
     }
 
-    const handleDelete = (id) => {
-        dispatch(deleteUser(id));
+    const handleDelete = (id: string | number | undefined) => {
+        if(id !== undefined)
+            dispatch(deleteUser(id));
     }
 
-    const handleEdit = (id) => {
-        dispatch(getUser(id));
-        navigate(`/users/update-user/${id}`);
+    const handleEdit = (id: string | number | undefined) => {
+        if(id !== undefined) {
+            dispatch(getUser(id));
+            navigate(`/users/update-user/${id}`);
+        }
     }
+
+    const handleSelectDate = (date: Date | string) => {
+        if (typeof date === 'string') {
+          const [year, month, day] = date?.split('-');
+          return new Date(Number(year), Number(month) - 1, Number(day)).toLocaleDateString('en-EN', options);
+        }
+        return date.toLocaleDateString('en-EN', options);
+    };
 
     useEffect(() => {
 
-        let dataArray = usersUpdatedData.length !== 0 ? [ ...usersUpdatedData] : [...usersData];
+        let dataArray: UsersInterface[] = usersUpdatedData.length !== 0 ? [ ...usersUpdatedData] : [...usersData];
 
         if(status === 'fulfilled'){
             setDataUsers(dataArray);
@@ -72,7 +84,7 @@ export const UsersList = () => {
                 dataArray.sort((a, b) => {
                     const dateA = new Date(a.hire_date);
                     const dateB = new Date(b.hire_date);
-                    return dateA - dateB;
+                    return dateA.getTime() - dateB.getTime();
                 });
                 break;
             case 'activeEmployee':
@@ -85,7 +97,7 @@ export const UsersList = () => {
                 dataArray.sort((a, b) => {
                     const dateA = new Date(a.hire_date);
                     const dateB = new Date(b.hire_date);
-                    return dateA - dateB;
+                    return dateA.getTime() - dateB.getTime();
                 });
         }
 
@@ -99,27 +111,24 @@ export const UsersList = () => {
 
     const cols = [
         {
-            property: 'photo', label: 'User Photo', display: ({photo, name}) => (
+            property: 'photo', label: 'User Photo', display: ({photo, name}: UsersInterface) => (
                 <NameContainer>
                     <img src={'https://robohash.org/'+ name} alt="img" />
                 </NameContainer>
             )
         },
         {
-            property: 'name', label: 'Name', display: ({ name, id, email, hire_date }) => (
+            property: 'name', label: 'Name', display: ({ name, id, email, hire_date }: UsersInterface) => (
                     <NameInner darkmode={asideState.darkMode}>
                         <h4>{name}</h4>
                         <p>{email}</p>
                         <p style={{color: '#799283', fontSize: '16px'}}>{id}</p>
-                        <p>Joined on {
-                            new Date(hire_date.split("-")[0], hire_date.split("-")[1] - 1,
-                                hire_date.split("-")[2]).toLocaleDateString('en-EN', options)
-                        }</p>
+                        <p>Joined on {handleSelectDate(hire_date)}</p>
                     </NameInner>
             )
         },
         {
-            property: 'employee_position', label: 'Employee position', display: ({ employee_position, job_description }) => (
+            property: 'employee_position', label: 'Employee position', display: ({ employee_position, job_description }: UsersInterface) => (
                 <EmployeeContainer darkmode={asideState.darkMode}>
                     <h4>{employee_position}</h4>
                     <p>{job_description}</p>
@@ -127,7 +136,7 @@ export const UsersList = () => {
             )
         },
         {
-            property: 'phone_number', label: 'Contact', display: ({ phone_number }) => (
+            property: 'phone_number', label: 'Contact', display: ({ phone_number }: UsersInterface) => (
                 <PhoneContainer>
                     <Call darkmode={asideState.darkMode} to={`tel:${phone_number}`}>
                         <BsFillTelephoneFill />
@@ -137,7 +146,7 @@ export const UsersList = () => {
             )
         },
         {
-            property: 'status', label: 'Status', display: ({ status, id }) => (
+            property: 'status', label: 'Status', display: ({ status, id }: UsersInterface) => (
                 <StatusContainer is_active={status.toString()}>
                     <p>{status ? 'Active' : 'Inactive'}</p>
                     <OptionsButton>
@@ -156,13 +165,13 @@ export const UsersList = () => {
                 {statusDelete === 'pending' && <DeleteSpinner/>}
                     <FilterContainer>
                         <TabsContainer>
-                            <ButtonTabs $actived={allEmployee} onClick={() => handleTab('allEmployee')}>
+                            <ButtonTabs actived={allEmployee} onClick={() => handleTab('allEmployee')}>
                                 All Employee
                             </ButtonTabs>
-                            <ButtonTabs $actived={activeEmployee} onClick={() => handleTab('activeEmployee')}>
+                            <ButtonTabs actived={activeEmployee} onClick={() => handleTab('activeEmployee')}>
                                 Active Employee
                             </ButtonTabs>
-                            <ButtonTabs $actived={inactiveEmployee} onClick={() => handleTab('inactiveEmployee')}>
+                            <ButtonTabs actived={inactiveEmployee} onClick={() => handleTab('inactiveEmployee')}>
                                 Inactive Employee
                             </ButtonTabs>
                         </TabsContainer>
@@ -184,7 +193,14 @@ export const UsersList = () => {
     )
 }
 
-const UsersListContainer = styled.div`
+interface Props {
+    actived?: boolean,
+    darkmode?: boolean,
+    is_active?: boolean | string
+    children?: any /* TODO HACER ESTE TIPADO */
+}
+
+const UsersListContainer = styled.div<Props>`
     margin: 50px;
     width: 100%;
 `;
@@ -212,9 +228,9 @@ const Buttons = styled.button`
     cursor: pointer;
 `;
 
-const ButtonTabs = styled(Buttons)`
-    color: ${props => props.$actived ? "#135846" : "#6E6E6E"};
-    border-bottom: ${props => props.$actived ? "2px solid #135846" : "none"};
+const ButtonTabs = styled(Buttons)<Props>`
+    color: ${props => props.actived ? "#135846" : "#6E6E6E"};
+    border-bottom: ${props => props.actived ? "2px solid #135846" : "none"};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     height: 30px;
@@ -278,7 +294,7 @@ const NameContainer = styled.div`
     }
 `;
 
-const NameInner = styled.div` 
+const NameInner = styled.div<Props>` 
     display: flex;
     flex-direction: column;
     font-family: 'Poppins', sans-serif;
@@ -297,7 +313,7 @@ const NameInner = styled.div`
     }
 `;
 
-const EmployeeContainer = styled.div`
+const EmployeeContainer = styled.div<Props>`
     display: flex; 
     flex-direction: column;
     font-family: 'Poppins', sans-serif;
@@ -324,7 +340,7 @@ const PhoneContainer = styled.div`
     }
 `;
 
-const Call = styled(NavLink)`
+const Call = styled(NavLink)<Props>`
     display: flex;
     text-decoration: none;
     width: 90%;
@@ -341,7 +357,7 @@ const Call = styled(NavLink)`
     }
 `;
 
-const StatusContainer = styled.div`
+const StatusContainer = styled.div<Props>`
     p {
         color: ${props => props.is_active !== 'true' ? '#E23428' : '#5AD07A'};
     }

@@ -87,7 +87,7 @@ export const Bookings = () => {
 
     const handleSelectDate = (date: Date | string) => {
         if (typeof date === 'string') {
-          const [year, month, day] = date.split('-');
+          const [year, month, day] = date?.split('-');
           return new Date(Number(year), Number(month) - 1, Number(day)).toLocaleDateString('en-EN', options);
         }
         return date.toLocaleDateString('en-EN', options);
@@ -125,7 +125,7 @@ export const Bookings = () => {
                 dataArray.sort((a, b) => {
                     const dateA = new Date(a.order_date);
                     const dateB = new Date(b.order_date);
-                    return dateA.getTime() - dateB.getTime();;
+                    return dateA.getTime() - dateB.getTime();
                 });
                 break;
             case 'Guest':
