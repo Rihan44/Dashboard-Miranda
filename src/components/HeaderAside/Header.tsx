@@ -10,7 +10,13 @@ import { AuthContext } from "../Context/AuthContainer";
 import { AsideContext } from "../Context/ToggleAsideContext";
 
 
-export const Header = ({ title, subtitle, subtitleSmall }) => {
+interface PropsHeader {
+    title: string,
+    subtitle: string,
+    subtitleSmall: string
+}
+
+export const Header: React.FC<PropsHeader> = ({ title, subtitle, subtitleSmall }) => {
 
     const navigate = useNavigate();
     const { authDispatch } = useContext(AuthContext);
@@ -56,14 +62,18 @@ export const Header = ({ title, subtitle, subtitleSmall }) => {
     );
 }
 
-const HeaderTag = styled.header`
+interface Props {
+    darkmode?: boolean
+}
+
+const HeaderTag = styled.header<Props>`
     display: flex;
     transition: background 0.5s;
     background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
     height: 120px;
 `;
 
-const NavIcons = styled.nav`
+const NavIcons = styled.nav<Props>`
     height: 120px;
     box-shadow: 0px 3px 10px #00000005;
     display: flex;
@@ -76,7 +86,7 @@ const NavIcons = styled.nav`
     background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
 `;
 
-const ContainerTitle = styled.div`
+const ContainerTitle = styled.div<Props>`
     display: flex; 
     width: 20%;
     justify-content: space-around;
@@ -116,7 +126,7 @@ const InnerContainerTitle = styled.div`
     margin-left: 30px;
 `;
 
-const Title = styled.h1`
+const Title = styled.h1<Props>`
     font-size: 28px;
     transition: color 0.5s;
     color: ${props => props.darkmode ? '#ffff' : '#262626'};
@@ -124,7 +134,7 @@ const Title = styled.h1`
     font-weight: semibold;
 `;
 
-const Subtitle = styled.h2`
+const Subtitle = styled.h2<Props>`
     font-size: 16px;
     color: #135846;
     font-family: 'Poppins', sans-serif;

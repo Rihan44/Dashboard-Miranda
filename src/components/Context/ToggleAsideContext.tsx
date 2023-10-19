@@ -3,14 +3,14 @@ import { ReactNode, createContext, useReducer } from "react"
 
 interface CloseAsideInterface {
     type: 'Close_aside',
-    payload: {
+    payload?: {
         asideVisible: boolean
     }
 }
 
 interface DarkModeInterface {
     type: 'Dark_mode',
-    payload: {
+    payload?: {
         darkMode: boolean
     }
 }
