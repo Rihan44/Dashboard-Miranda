@@ -2,10 +2,10 @@ import { ReactNode, createContext, useEffect, useReducer } from "react"
 
 
 interface InitialStateInterface {
-    authenticated: boolean,
-    username: string | null,
-    email: string | null,
-    imageSrc: string | null
+    authenticated?: boolean,
+    username?: string | null,
+    email?: string | null,
+    imageSrc?: string | null
 }
 
 function initialAuthState(): InitialStateInterface{
@@ -45,23 +45,14 @@ type Props = {
     children: ReactNode
 }
 
-const reducer = (state: InitialStateInterface, action: Actions) =>{
+const reducer = (state: InitialStateInterface, action: Actions): InitialStateInterface =>{
     switch(action.type) {
         case 'LOGIN':
-            return {
-                authenticated: true,
-                username: action.payload.username,
-                email: action.payload.email,
-            };
+            return {...action.payload};
         case 'LOGOUT':
             return {authenticated: false, username: null, email: null, imageSrc: null};
         case 'UPDATE':
-            return {
-                authenticated: true,
-                username: action.payload.username,
-                email: action.payload.email,
-                imageSrc: action.payload.imageSrc
-            };
+            return {...state, ...action.payload};
         default :
             return state;
     }
