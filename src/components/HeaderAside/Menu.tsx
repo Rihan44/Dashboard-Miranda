@@ -13,16 +13,20 @@ import { ProfileCompontent } from "../Dashboard/Profile";
 import { useContext } from "react";
 import { AsideContext } from "../Context/ToggleAsideContext";
 
-export const Menu = ({ setHeaderTitle }) => {
+interface PropsMenu {
+    setHeaderTitle: (title: string) => void
+}
+
+export const Menu: React.FC<PropsMenu> = ({ setHeaderTitle }) => {
 
     const {asideState} = useContext(AsideContext);
 
-    const handleHeaderTitle = (titleName) => {
+    const handleHeaderTitle = (titleName: string) => {
         setHeaderTitle(titleName);
     }
 
     return (
-        <AsideMenu darkmode={asideState.darkMode} context={asideState.asideVisible.toString()} id="aside_menu">
+        <AsideMenu darkmode={asideState.darkMode} context={asideState.asideVisible?.toString()} id="aside_menu">
             <NavLink to="/" style={{
                 textDecoration: "none",
                 display: "flex",
@@ -106,7 +110,12 @@ export const Menu = ({ setHeaderTitle }) => {
     );
 }
 
-const AsideMenu = styled.aside`
+interface Props {
+    darkmode?: boolean
+    context?: string
+}
+
+const AsideMenu = styled.aside<Props>`
     height: 100vh;
     width: 345px;
     display: flex;
@@ -127,7 +136,7 @@ const ContainerFooter = styled.div`
     align-items: baseline;
 `;
 
-const TitleFooter = styled.h4`
+const TitleFooter = styled.h4<Props>`
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     transition: 0.5s;
@@ -158,7 +167,7 @@ const List = styled.div`
 `;
 
 
-const LinkStyled = styled(NavLink)`
+const LinkStyled = styled(NavLink)<Props>`
     font-family: 'Poppins', sans serif;
     color: ;
     text-decoration: none;
@@ -214,7 +223,7 @@ const LinkStyled = styled(NavLink)`
     }
 `;
 
-const SubTitle = styled.h2`
+const SubTitle = styled.h2<Props>`
     display: flex;
     flex-direction: column;
     justify-content: center;

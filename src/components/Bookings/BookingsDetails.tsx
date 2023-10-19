@@ -187,7 +187,6 @@ const CheckContainer = styled.div`
 
 `;
 
-
 const RoomInfoContainer = styled.div`
 
     div {
