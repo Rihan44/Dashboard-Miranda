@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useContext, useEffect, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 import { MainContainer } from "../Reusables/MainContainer";
 
@@ -10,6 +10,7 @@ import { updateUser } from "../../features/usersSlice";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { ToastAlert } from "../Reusables/ToastAlert";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
+import { UsersInterface } from "../../interfaces/usersInterface";
 
 
 export const UpdateUser = () => {
@@ -17,28 +18,28 @@ export const UpdateUser = () => {
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
     const [userPosition, setUserPosition] = useState('');
-    const [userNumber, setUserNumber] = useState(0);
-    const [userHireDate, setUserHireDate] = useState(new Date());
+    const [userNumber, setUserNumber] = useState<string | number>(0);
+    const [userHireDate, setUserHireDate] = useState<Date | string>(new Date());
     const [userJobDescription, setUserJobDescription] = useState('');
     const [userStatus, setUserStatus] = useState(true);
     const [userPassword, setUserPassword] = useState('');
 
     const navigate = useNavigate();
 
-    const userData = useSelector((state) => state.users.dataUser);
-    const status = useSelector((state) => state.users.status);
+    const userData = useAppSelector((state) => state.users.dataUser);
+    const status = useAppSelector((state) => state.users.status);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const { asideState } = useContext(AsideContext);
     const { id } = useParams();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>): void  => {
         e.preventDefault();
     }
 
     const handleUpdate = () => {
-        const updateData = {
+        const updateData: UsersInterface = {
             id: id,
             name: userName,
             email: userEmail,
@@ -53,31 +54,31 @@ export const UpdateUser = () => {
         navigate('/users');
     }
 
-    const handleName = (e) => {
+    const handleName = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setUserName(e.target.value);
     }
 
-    const handleEmail = (e) => {
+    const handleEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setUserEmail(e.target.value);
     }
 
-    const handlePosition = (e) => {
+    const handlePosition = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setUserPosition(e.target.value);
     }
 
-    const handleNumber = (e) => {
+    const handleNumber = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setUserNumber(e.target.value);
     }
 
-    const handleHireDate = (e) => {
+    const handleHireDate = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setUserHireDate(e.target.value);
     }
 
-    const handleJobDescription = (e) => {
+    const handleJobDescription = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setUserJobDescription(e.target.value);
     }
 
-    const handleStatus = (e) => {
+    const handleStatus = (e: React.ChangeEvent<HTMLInputElement>): void => {
         console.log(e.target.value)
         if (e.target.value === "Active") {
             setUserStatus(true);
@@ -86,12 +87,12 @@ export const UpdateUser = () => {
         }
     }
 
-    const handlePassword = (e) => {
+    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setUserPassword(e.target.value);
     }
 
     useEffect(() => {
-        let data = [...userData];
+        let data: UsersInterface[] = [...userData];
 
         if (status === 'fulfilled') {
             try {
@@ -116,7 +117,7 @@ export const UpdateUser = () => {
                     {status === 'fulfilled' ?
                         <>
                             <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft /></ButtonBack>
-                            <FormContainer onSubmit={handleSubmit}>
+                            <FormContainer>
                                 <Title>Update User: {id}</Title>
                                 <Form onSubmit={handleSubmit} darkmode={asideState.darkMode}>
                                     <FormBox>
@@ -181,6 +182,14 @@ export const UpdateUser = () => {
     )
 }
 
+interface Props {
+    onChange?: any, /* TODO CAMBIAR TIPADO */
+    onSubmit?: any,
+    value?: any,
+    darkmode?: boolean,
+    type?: string
+}
+
 const UpdateUserContainer = styled.div`
     margin: 20px;
     min-width: 1400px;
@@ -202,7 +211,7 @@ const Title = styled.h2`
     font-family: 'Poppins', sans-serif;
 `;
 
-const Form = styled.form`
+const Form = styled.form<Props>`
     width: 600px;
     height: 700px;
     box-shadow: 0px 3px 10px #00000030;
@@ -242,7 +251,7 @@ const FormBoxInner = styled.div`
     }
 `;
 
-const Select = styled.select`
+const Select = styled.select<Props>`
     width: 129px; 
     height: 30px;
     border: 1px solid #135846;
@@ -259,7 +268,7 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const TextArea = styled.textarea`
+const TextArea = styled.textarea<Props>`
     width: 150px;
     resize: none;
     border: none;
@@ -271,7 +280,7 @@ const TextArea = styled.textarea`
     color: #262626;
 `;
 
-const Input = styled.input`
+const Input = styled.input<Props>`
     margin-left: 20px;
     margin-bottom: 10px;
     width: 150px;

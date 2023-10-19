@@ -2,7 +2,7 @@ export interface UsersInterface {
     id?: string | number,
     name: string,
     email: string,
-    photo: string,
+    photo?: string,
     employee_position: string,
     phone_number: string | number,
     hire_date: Date | string,
