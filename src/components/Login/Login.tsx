@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../Context/AuthContainer";
 
-export const Login = (/* {setAuthenticated} */) => {
+export const Login = () => {
 
     const navigate = useNavigate();
     

@@ -1,47 +1,91 @@
 import { ReactNode, createContext, useEffect, useReducer } from "react"
 
 
-export const AuthContext = createContext({});
+interface InitialStateInterface {
+    authenticated: boolean,
+    username: string | null,
+    email: string | null,
+    imageSrc: string | null
+}
 
-function initialAuthState() {
-    const authData = localStorage.getItem('auth');
+function initialAuthState(): InitialStateInterface{
+    const authData = localStorage.getItem('auth') || '';
 
     if (authData) {
-        try {
-            return JSON.parse(authData);
-        } catch (error) {
-            console.error('Error parsing auth data:', error);
-        }
+        return JSON.parse(authData);
     } else {
         return {authenticated: false, username: null, email: null, imageSrc: null};
     }
 }
 
-interface ActionInterface {
-    type: string,
-    payload: object
+interface LogInInterface {
+    type: "LOGIN",
+    payload: {
+        username: string,
+        email: string
+    }
 }
+
+interface LogOutInterface {
+    type: "LOGOUT",
+}
+
+interface UpdateInterface {
+    type: "UPDATE",
+    payload: {
+        username: string,
+        email: string,
+        imageSrc: string
+    }
+}
+
+type Actions = LogInInterface | LogOutInterface | UpdateInterface;
 
 type Props = {
     children: ReactNode
 }
 
-function authReducer(state: object, action: ActionInterface) {
+const reducer = (state: InitialStateInterface, action: Actions) =>{
     switch(action.type) {
         case 'LOGIN':
-            return {...action.payload};
+            return {
+                authenticated: true,
+                username: action.payload.username,
+                email: action.payload.email,
+            };
         case 'LOGOUT':
-            return {...state, authenticated: false, username: null, email: null};
+            return {authenticated: false, username: null, email: null, imageSrc: null};
         case 'UPDATE':
-            return {...state, ...action.payload};
+            return {
+                authenticated: true,
+                username: action.payload.username,
+                email: action.payload.email,
+                imageSrc: action.payload.imageSrc
+            };
         default :
             return state;
     }
 }
 
-export const AuthContainer = ({children}: Props) => {
+interface AuthInterface {
+    auth: InitialStateInterface,
+    authDispatch: React.Dispatch<Actions>
+}
 
-    const [auth, authDispatch] = useReducer(authReducer, initialAuthState());
+export const AuthContext = createContext<AuthInterface>({
+    auth: {
+        authenticated: false,
+        username: '',
+        email: '',
+        imageSrc: ''
+    },
+    authDispatch: () => {}
+});
+
+
+export const AuthContainer: React.FC<Props> = ({children}) => {
+
+    const [auth, authDispatch] = useReducer(reducer, initialAuthState());
 
     useEffect(() => {
         localStorage.setItem('auth', JSON.stringify(auth));

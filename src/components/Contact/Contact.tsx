@@ -1,5 +1,7 @@
 import styled from "styled-components"
 import { useEffect, useState } from "react";
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 import { archiveMessage, deleteMessage, getAllMessages, unArchiveMessage } from "../../features/contactSlice";
 
@@ -13,16 +15,19 @@ import { MainContainer } from "../Reusables/MainContainer"
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { ContactInterface } from "../../interfaces/contactInterface";
 
 
 export const Contact = () => {
-    const [modalInfo, setModalInfo] = useState({});
+    const [modalInfo, setModalInfo] = useState({
+        emailSubject: '',
+        emailUser: '',
+        emailInfo: ''
+    });
+
     const [modalOpen, setModalOpen] = useState(false);
-    const [modalInfoCard, setModalInfoCard] = useState('');
     const [isActiveButton, setIsActiveButton] = useState('allContacts');
-    const [contactData, setContactData] = useState([]);
+    const [contactData, setContactData] = useState<ContactInterface[]>([]);
 
     const [tableRef] = useAutoAnimate();
 
@@ -30,16 +35,15 @@ export const Contact = () => {
     const status = useAppSelector((state) => state.contact.status);
     const statusArchive = useAppSelector((state) => state.contact.statusArchive);
 
-    let options = {year: 'numeric', month: 'long', day: 'numeric' };
+    let options: object = {year: 'numeric', month: 'long', day: 'numeric' };
 
     const allContacts = isActiveButton === 'allContacts';
     const archived = isActiveButton === 'archived';
 
     const dispatch = useAppDispatch();
 
-    const handleOpenModal = (data, subject, email) => {
+    const handleOpenModal = (data: string, subject: string, email: string) => {
         setModalInfo({emailInfo: data, emailSubject: subject, emailUser: email});
-        setModalInfoCard(data);
         setModalOpen(true);
     }
 
@@ -47,25 +51,36 @@ export const Contact = () => {
         setModalOpen(false);
     }
 
-    const handleTab = (activeButton) => {
+    const handleTab = (activeButton: string) => {
         setIsActiveButton(activeButton);
     }
 
-    const handleDelete = (id) => {
-        dispatch(deleteMessage(id));
+    const handleDelete = (id: string | number | undefined) => {
+        if(id !== undefined) 
+            dispatch(deleteMessage(id));
     }
 
-    const handleArchive = (id) => {
-        dispatch(archiveMessage(id));
+    const handleArchive = (id: string | number | undefined) => {
+        if(id !== undefined) 
+            dispatch(archiveMessage(id));
     }
 
-    const handleUnArchive = (id) => {
-        dispatch(unArchiveMessage(id));
+    const handleUnArchive = (id: string | number | undefined) => {
+        if(id !== undefined) 
+            dispatch(unArchiveMessage(id));
     }
+
+    const handleSelectDate = (date: Date | string) => {
+        if (typeof date === 'string') {
+          const [year, month, day] = date.split('-');
+          return new Date(Number(year), Number(month) - 1, Number(day)).toLocaleDateString('en-EN', options);
+        }
+        return date.toLocaleDateString('en-EN', options);
+    };
 
     useEffect(() => {
 
-        let dataArray = [...dataContact];
+        let dataArray: ContactInterface[] = [...dataContact];
 
         if(status === 'fulfilled') {
             setContactData(dataArray);
@@ -76,7 +91,7 @@ export const Contact = () => {
                 dataArray.sort((a, b) => {
                     const dateA = new Date(a.date);
                     const dateB = new Date(b.date);
-                    return dateA - dateB;
+                    return dateA.getTime() - dateB.getTime();;
                 });
                 break;
             case 'archived':
@@ -86,12 +101,11 @@ export const Contact = () => {
                 dataArray.sort((a, b) => {
                     const dateA = new Date(a.date);
                     const dateB = new Date(b.date);
-                    return dateA - dateB;
+                    return dateA.getTime() - dateB.getTime();;
                 });
         }
 
         setContactData(dataArray);
-
 
     }, [isActiveButton, setContactData, dataContact, status]);
 
@@ -102,19 +116,16 @@ export const Contact = () => {
 
     const cols = [
         {
-            property: 'date', label: 'Date', display: ({ date, dateTime, id }) => (
+            property: 'date', label: 'Date', display: ({ date, dateTime, id }: ContactInterface) => (
                 <DateContactContainer>
-                    <p>{
-                        new Date(date.split("-")[0], date.split("-")[1]-1, 
-                        date.split("-")[2]).toLocaleDateString('en-EN', options)
-                    }</p>
+                    <p>{handleSelectDate(date)}</p>
                     <p>{dateTime}</p>
                     <p>#{id}</p>
                 </DateContactContainer>
             )
         },
         {
-            property: 'name', label: 'Customer', display: ({ name, email, phone }) => (
+            property: 'name', label: 'Customer', display: ({ name, email, phone }: ContactInterface) => (
                 <CustomerContactContainer>
                     <p>{name}</p>
                     <p>{email}</p>
@@ -123,14 +134,14 @@ export const Contact = () => {
             )
         },
         {
-            property: 'email_subject', label: 'Email Subject && Comment', display: ({ email_subject, email_description, email }) => (
+            property: 'email_subject', label: 'Email Subject && Comment', display: ({ email_subject, email_description, email }: ContactInterface) => (
                 <EmaiLContactContainer>
                     <ViewNotesButton onClick={() => handleOpenModal(email_description, email_subject, email)}>View Notes</ViewNotesButton>
                 </EmaiLContactContainer>
             )
         },
         {
-            property: 'isArchived', label: 'Status', display: ({ isArchived, id }) => (
+            property: 'isArchived', label: 'Status', display: ({ isArchived, id }: ContactInterface) => (
                 <div>
                     <IsAcrhivedParagraph isArchive={isArchived}>{isArchived ? 'Archived' : 'Publish'}</IsAcrhivedParagraph>
                     {isArchived 
@@ -150,7 +161,7 @@ export const Contact = () => {
 
     return (
         <MainContainer>
-            <Modal $modalOpen={modalOpen}>
+            <Modal modalOpen={modalOpen}>
                 <ModalInfo>
                     <ButtonModalClose onClick={handleCloseModal}>
                         <AiOutlineCloseCircle />
@@ -189,8 +200,14 @@ export const Contact = () => {
     )
 }
 
-const Modal = styled.div`
-    display: ${props => props.$modalOpen === true ? 'block' : 'none'};
+interface Props {
+    modalOpen?: boolean,
+    actived?: boolean,
+    isArchive?: boolean
+}
+
+const Modal = styled.div<Props>`
+    display: ${props => props.modalOpen === true ? 'block' : 'none'};
     position: fixed; 
     z-index: 10; 
     left: 0;
@@ -292,7 +309,7 @@ const Buttons = styled.button`
     cursor: pointer;
 `;
 
-const ButtonTabs = styled(Buttons)`
+const ButtonTabs = styled(Buttons)<Props>`
     color: ${props => props.actived ? "#135846" : "#6E6E6E"};
     border-bottom: ${props => props.actived ? "2px solid #135846" : "none"};
     font-size: 16px;
@@ -307,7 +324,7 @@ const ButtonTabs = styled(Buttons)`
 
 `;
 
-const IsAcrhivedParagraph = styled.div`
+const IsAcrhivedParagraph = styled.div<Props>`
     margin-right: 20px;
     color: ${props => props.isArchive ? '#E23428' : '#5AD07A'}
 `;

@@ -17,7 +17,7 @@ import { ContactInterface } from "../../interfaces/contactInterface";
 
 interface CardInterface {
     data?: ContactInterface[],
-    handleOpen: (data: ContactInterface) => void 
+    handleOpen: (data: any) => void 
 }
 
 export const Card = ({ data, handleOpen }: CardInterface) => {
@@ -50,7 +50,7 @@ export const Card = ({ data, handleOpen }: CardInterface) => {
                                     <p>{dataCard.phone}</p>
                                 </ProfileContainer>
                                 <ButtonContainer>
-                                    <Button><AiOutlineCheckCircle /></Button>
+                                    <Button view={dataCard.isArchived}><AiOutlineCheckCircle /></Button>
                                     {location.pathname !== '/contact' && <ButtonOpen onClick={() => handleOpen(dataCard)}><AiOutlineFullscreen /></ButtonOpen>}
                                 </ButtonContainer>
                             </InnerCard>
@@ -63,7 +63,8 @@ export const Card = ({ data, handleOpen }: CardInterface) => {
 }
 
 interface Props {
-    darkmode?: boolean
+    darkmode?: boolean,
+    view?: boolean
 }
 
 const CardContainer = styled.div<Props>`
@@ -140,11 +141,12 @@ const ButtonContainer = styled.div`
     justify-content: space-between;
 `;
 
-const Button = styled.button`
+const Button = styled.button<Props>`
     border: none;
     background: none;
     font-size: 24px;
     cursor: pointer;
+    color: ${props => props.view === true ? '#E23428' : '#5AD07A'};
 `;
 
 const ButtonOpen = styled.button<Props>`

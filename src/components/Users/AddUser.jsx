@@ -315,6 +315,7 @@ const Button = styled.button`
     border: none;
     box-shadow: 0px 3px 10px #00000030;
     position: absolute;
+    z-index: 10;
     bottom: 0px;
 
     &:hover {

@@ -25,21 +25,10 @@ export const LastestReview = ({ darkMode, dataDashboard }) => {
         setModalOpen(true);
         setCheckMessage(true);
 
-        const updateChecked = ((prevChecked) => {
-            return {
-                ...prevChecked,
-                [data.id]: !prevChecked[data.id]
-            };
-        });
+        if(!data.isArchived){
+            setIsChecked(data.isArchived);
+        }
 
-        setIsChecked(updateChecked);
-
-        /* TODO ESTO */
-        /*  let dataID = data.id;
-         setArrayId(arrayId.concat(dataID));
- 
-         localStorage.setItem('idMessage', data.id); */
-        /* GUARDAR QUE EL CHECK SE QUEDE VERDE EN EL LOCAL Y QUE SOLO SE PONGA VERDE EL BOTON DEL MODAL QUE HACES CLICK */
     }
 
     const handleCloseModal = () => {
@@ -84,7 +73,7 @@ export const LastestReview = ({ darkMode, dataDashboard }) => {
                                             <p>{data.phone}</p>
                                         </ProfileContainer>
                                         <ButtonContainer>
-                                            <Button view={isChecked[data.id] ? checkMessage : false}><AiOutlineCheckCircle /></Button>
+                                            <Button view={isChecked}><AiOutlineCheckCircle /></Button>
                                             <ButtonOpen onClick={() => handleOpen(data)}><AiOutlineFullscreen /></ButtonOpen>
                                         </ButtonContainer>
                                     </InnerCard>

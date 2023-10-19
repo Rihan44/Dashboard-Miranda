@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import { useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+
 import styled from "styled-components";
 
 import { LiaBedSolid } from "react-icons/lia";
@@ -11,11 +13,12 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 import { MainContainer } from "../Reusables/MainContainer";
 import { getBookingDetail } from "../../features/bookingsSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { BookingsInterface } from "../../interfaces/bookingsInterface";
-
+import { AsideContext } from "../Context/ToggleAsideContext";
 
 export const BookingFile = () => {
+
+    const {asideState} = useContext(AsideContext);
 
     const navigate = useNavigate();
 
@@ -29,11 +32,13 @@ export const BookingFile = () => {
 
     let options: object = { year: 'numeric', month: 'long', day: 'numeric' };
 
-    const checkOutDate= dataBooking ? new Date(dataBooking.check_out.split("-")[0], dataBooking.check_out.split("-")[1] - 1,
-        dataBooking.check_out.split("-")[2]).toLocaleDateString('en-EN', options) : '';
-
-    const checkInDate = dataBooking ? new Date(dataBooking.check_in.split("-")[0], dataBooking.check_in.split("-")[1] - 1,
-        dataBooking.check_in.split("-")[2]).toLocaleDateString('en-EN', options) : '';
+    const handleSelectDate = (date: Date | string) => {
+        if (typeof date === 'string') {
+          const [year, month, day] = date.split('-');
+          return new Date(Number(year), Number(month) - 1, Number(day)).toLocaleDateString('en-EN', options);
+        }
+        return date.toLocaleDateString('en-EN', options);
+    };
 
     useEffect(() => {
         let data: BookingsInterface[] = [...bookingDataDetail];
@@ -51,7 +56,7 @@ export const BookingFile = () => {
     }, [dispatch, id])
 
     return (
-            <>
+            <MainContainer>
                 {status === 'fulfilled' ?
                     <FileBookingContainer>
                         <ButtonBack onClick={() => navigate('/bookings')}><AiOutlineArrowLeft /></ButtonBack>
@@ -63,11 +68,11 @@ export const BookingFile = () => {
                             <CheckContainer>
                                 <div>
                                     <h3>Check In</h3>
-                                    <p>{checkInDate}</p>
+                                    <p>{handleSelectDate(dataBooking.check_in)}</p>
                                 </div>
                                 <div>
                                     <h3>Check Out</h3>
-                                    <p>{checkOutDate}</p>
+                                    <p>{handleSelectDate(dataBooking.check_out)}</p>
                                 </div>
                             </CheckContainer>
                             <RoomInfoContainer>
@@ -122,11 +127,15 @@ export const BookingFile = () => {
                     </FileBookingContainer>
                     : status === 'rejected' ? alert('Algo falló')
                         : <SpinnerLoader></SpinnerLoader>}
-            </>
+            </MainContainer>
     )
 }
 
-const FileBookingContainer = styled.div`
+interface Props {
+    children?: React.ReactNode
+}
+
+const FileBookingContainer = styled.div<Props>`
     margin: 50px;
     width: 1475px;
     height: 792px;

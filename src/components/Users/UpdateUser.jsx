@@ -312,6 +312,7 @@ const Button = styled.button`
     box-shadow: 0px 3px 10px #00000030;
     position: absolute;
     bottom: 0px;
+    z-index: 10;
 
     &:hover {
         background: #799283;
