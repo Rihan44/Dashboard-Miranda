@@ -21,6 +21,7 @@ function initialAuthState(): InitialStateInterface{
 interface LogInInterface {
     type: "LOGIN",
     payload: {
+        authenticated: boolean,
         username: string,
         email: string
     }

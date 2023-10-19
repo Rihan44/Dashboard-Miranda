@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-import { useContext, useEffect, useState } from "react"
+import { FormEvent, useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../Context/AuthContainer";
@@ -10,7 +10,7 @@ export const Login = () => {
     const navigate = useNavigate();
     
     const [inputTextEmail, setInputTextEmail] = useState('');
-    const [inputTextPass, setInputTextPass] = useState('');
+    const [inputTextPass, setInputTextPass] = useState(0);
     const [isCorrect, setIsCorrect] = useState(false);
     const {auth, authDispatch} = useContext(AuthContext);
 
@@ -26,15 +26,15 @@ export const Login = () => {
         password: 123456
     }
 
-    function handleChangeEmail(e) {
+    function handleChangeEmail(e: React.ChangeEvent<HTMLInputElement>): void {
         setInputTextEmail(e.target.value);   
     }
 
-    function handleChangePass(e) {
+    function handleChangePass(e: React.ChangeEvent<HTMLInputElement>): void {
         setInputTextPass(parseInt(e.target.value));   
     }
 
-    function handleSubmit(e){
+    function handleSubmit(e: FormEvent<HTMLFormElement>): void{
         e.preventDefault();
         if(inputTextEmail === userAdmin.email && inputTextPass === userAdmin.password){
             setIsCorrect(false);
