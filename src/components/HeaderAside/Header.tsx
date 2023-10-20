@@ -23,6 +23,7 @@ export const Header: React.FC<PropsHeader> = ({ title, subtitle, subtitleSmall }
     const { authDispatch } = useContext(AuthContext);
     const { asideDispatch } = useContext(AsideContext);
     const {asideState} = useContext(AsideContext);
+    let darkMode: boolean = asideState?.darkMode || false;
 
     const handleLogOut = () => {
         authDispatch({ type: 'LOGOUT' });
@@ -38,13 +39,13 @@ export const Header: React.FC<PropsHeader> = ({ title, subtitle, subtitleSmall }
     }
 
     return (
-        <HeaderTag darkmode={asideState.darkMode}>
-            <NavIcons darkmode={asideState.darkMode}>
-                <ContainerTitle darkmode={asideState.darkMode}>
+        <HeaderTag darkmode={darkMode ? 0 : 1}>
+            <NavIcons darkmode={darkMode ? 0 : 1}>
+                <ContainerTitle darkmode={darkMode ? 0 : 1}>
                     <TbArrowsLeftRight onClick={handleToggle} id="" />
                     <InnerContainerTitle>
-                        <Title darkmode={asideState.darkMode}>{title}</Title>
-                        <Subtitle darkmode={asideState.darkMode}>{subtitle} <small>{subtitleSmall}</small></Subtitle>
+                        <Title darkmode={darkMode ? 0 : 1}>{title}</Title>
+                        <Subtitle darkmode={darkMode ? 0 : 1}>{subtitle} <small>{subtitleSmall}</small></Subtitle>
                     </InnerContainerTitle>
                 </ContainerTitle>
                 <ContainerIcons>
@@ -63,14 +64,14 @@ export const Header: React.FC<PropsHeader> = ({ title, subtitle, subtitleSmall }
     );
 }
 
-const HeaderTag = styled.header<Props>`
+const HeaderTag = styled.header<{darkmode: number}>`
     display: flex;
     transition: background 0.5s;
-    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
+    background-color: ${props => props.darkmode === 0 ? '#202020' : '#ffff'};
     height: 120px;
 `;
 
-const NavIcons = styled.nav<Props>`
+const NavIcons = styled.nav<{darkmode: number}>`
     height: 120px;
     box-shadow: 0px 3px 10px #00000005;
     display: flex;
@@ -80,10 +81,10 @@ const NavIcons = styled.nav<Props>`
     width: 100%;
     min-width: 1400px;
     max-width: 1400px;
-    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
+    background-color: ${props => props.darkmode === 0 ? '#202020' : '#ffff'};
 `;
 
-const ContainerTitle = styled.div<Props>`
+const ContainerTitle = styled.div<{darkmode: number}>`
     display: flex; 
     width: 20%;
     justify-content: space-around;
@@ -94,7 +95,7 @@ const ContainerTitle = styled.div<Props>`
         font-size: 22px;
         cursor: pointer;
         transition: color 0.5s;
-        color: ${props => props.darkmode ? '#ffff' : '#262626'};
+        color: ${props => props.darkmode === 0 ? '#ffff' : '#262626'};
     }
 `;
 
@@ -123,15 +124,15 @@ const InnerContainerTitle = styled.div`
     margin-left: 30px;
 `;
 
-const Title = styled.h1<Props>`
+const Title = styled.h1<{darkmode: number}>`
     font-size: 28px;
     transition: color 0.5s;
-    color: ${props => props.darkmode ? '#ffff' : '#262626'};
+    color: ${props => props.darkmode === 0 ? '#ffff' : '#262626'};
     font-family: 'Poppins', sans-serif;
     font-weight: semibold;
 `;
 
-const Subtitle = styled.h2<Props>`
+const Subtitle = styled.h2<{darkmode: number}>`
     font-size: 16px;
     color: #135846;
     font-family: 'Poppins', sans-serif;
@@ -140,7 +141,7 @@ const Subtitle = styled.h2<Props>`
 
     small {
         color: #6E6E6E;
-        color: ${props => props.darkmode ? '#ffff' : '#262626'};
+        color: ${props => props.darkmode === 0 ? '#ffff' : '#262626'};
         font-size: 1em;
     }
 `

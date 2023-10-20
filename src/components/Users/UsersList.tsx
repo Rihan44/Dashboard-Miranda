@@ -120,7 +120,7 @@ export const UsersList = () => {
         },
         {
             property: 'name', label: 'Name', display: ({ name, id, email, hire_date }: UsersInterface) => (
-                    <NameInner darkmode={asideState.darkMode}>
+                    <NameInner darkmode={asideState.darkMode?.toString()}>
                         <h4>{name}</h4>
                         <p>{email}</p>
                         <p style={{color: '#799283', fontSize: '16px'}}>{id}</p>
@@ -130,7 +130,7 @@ export const UsersList = () => {
         },
         {
             property: 'employee_position', label: 'Employee position', display: ({ employee_position, job_description }: UsersInterface) => (
-                <EmployeeContainer darkmode={asideState.darkMode}>
+                <EmployeeContainer darkmode={asideState.darkMode?.toString()}>
                     <h4>{employee_position}</h4>
                     <p>{job_description}</p>
                 </EmployeeContainer>
@@ -139,7 +139,7 @@ export const UsersList = () => {
         {
             property: 'phone_number', label: 'Contact', display: ({ phone_number }: UsersInterface) => (
                 <PhoneContainer>
-                    <Call darkmode={asideState.darkMode} to={`tel:${phone_number}`}>
+                    <Call darkmode={asideState.darkMode?.toString()} to={`tel:${phone_number}`}>
                         <BsFillTelephoneFill />
                         <p>{phone_number}</p>
                     </Call>
@@ -295,12 +295,12 @@ const NameInner = styled.div<Props>`
 
     h4 {
         font-size: 16px; 
-        color: ${props => props.darkmode ? '#fff' : '#212121'};
+        color: ${props => props.darkmode === 'true' ? '#fff' : '#212121'};
         transition: 0.5s;
     }
 
     p {
-        color: ${props => props.darkmode ? '#fff' : '#393939'};
+        color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
         font-size: 13px;
         margin: 2px;
         transition: 0.5s;
@@ -314,14 +314,14 @@ const EmployeeContainer = styled.div<Props>`
 
     h4 {
         color: #212121;
-        color: ${props => props.darkmode ? '#fff' : '#212121'};
+        color: ${props => props.darkmode === 'true' ? '#fff' : '#212121'};
         font-size: 16px; 
         margin-bottom: 20px;
         transition: 0.5s;
     }
 
     p {
-        color: ${props => props.darkmode ? '#fff' : '#393939'};
+        color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
         font-size: 16px;
         transition: 0.5s;
     }
@@ -340,7 +340,7 @@ const Call = styled(NavLink)<Props>`
     width: 90%;
     justify-content: space-around;
     font-size: 20px;
-    color: ${props => props.darkmode ? '#fff' : '#212121'};
+    color: ${props => props.darkmode === 'true' ? '#fff' : '#212121'};
     letter-spacing: 2px;
     align-items: center;
     transition: 0.5s;

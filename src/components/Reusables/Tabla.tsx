@@ -34,10 +34,11 @@ interface TitleInterface {
 export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) => {
 
     const {asideState} = useContext(AsideContext);
+    let darkMode: boolean = asideState?.darkMode || false;
     const [tableRef] = useAutoAnimate();
     
     const displayRow = (row: BookingsInterface | RoomInterface | UsersInterface | ContactInterface) => (
-        <TableContainerBodyContent darkmode={asideState.darkMode?.toString()}  totalcols={totalCols} key={row.id}>
+        <TableContainerBodyContent darkmode={darkMode ? 0 : 1}  totalcols={totalCols} key={row.id}>
             {cols !== undefined && cols.map((col: ColsInterface, i: number) => (
                 <td key={i}>{typeof col.display === 'function' ? col.display(row) : (row as Record<string, any>)[col.property as string]}
                 </td>
@@ -47,20 +48,35 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) =>
 
     return (
         <>
-            <TableContainer>
-                <TableContainerTitle darkmode={asideState.darkMode?.toString()}>
+            {/* <TableContainer>
+                <TableContainerTitle darkmode={darkMode ? 0 : 1}>
                     <TableContainerTitleTR>
                         {cols?.map((col: TitleInterface, i: number) =>
-                            <TableTitles darkmode={asideState.darkMode?.toString()} totalheaders={totalHeaders} key={i}>{col.label && col.label}</TableTitles>
+                            <TableTitles darkmode={darkMode ? 0 : 1} totalheaders={totalHeaders} key={i}>{col.label && col.label}</TableTitles>
                         )}
                     </TableContainerTitleTR>
                 </TableContainerTitle>
                 <TableBodyContainer>
-                    <TableBody darkmode={asideState.darkMode?.toString()} ref={tableRef}>
+                    <TableBody darkmode={darkMode ? 0 : 1} ref={tableRef}>
                         {data?.map(displayRow)}
                     </TableBody>
                 </TableBodyContainer>
-            </TableContainer>
+            </TableContainer> */}
+            <TableBodyContainer>
+                <TableContainer>
+                    <TableContainerTitle darkmode={darkMode ? 0 : 1}>
+                        <TableContainerTitleTR>
+                            {cols?.map((col: TitleInterface, i: number) =>
+                                <TableTitles darkmode={darkMode ? 0 : 1} totalheaders={totalHeaders} key={i}>{col.label && col.label}</TableTitles>
+                            )}
+                        </TableContainerTitleTR>
+                    </TableContainerTitle>
+                        <TableBody darkmode={darkMode ? 0 : 1} ref={tableRef}>
+                            {data?.map(displayRow)}
+                        </TableBody>
+                </TableContainer>
+            </TableBodyContainer>
+
         </>
     )
 }
@@ -68,18 +84,18 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) =>
 const TableContainer = styled.table`
     border-top: none;
     border-collapse: collapse;
-    margin-top: 35px;
+    min-width: 1450px;
 `;
 
-const TableContainerTitle = styled.thead<{darkmode?: boolean | string}>`
-    border: ${props => props.darkmode === 'true' ? '1px solid #0004' : '1px solid #00000015'};
+const TableContainerTitle = styled.thead<{darkmode?: number}>`
+    border: ${props => props.darkmode === 0 ? '1px solid #0004' : '1px solid #00000015'};
     border-radius: 20px 20px 0px 0px;
     border-bottom: none;
     height: 65px;
     width: 1400px;
     display: flex;
     transition: 0.5s;
-    background-color: ${props => props.darkmode === 'true' ? '#202020' : '#ffff'};
+    background-color: ${props => props.darkmode === 0 ? '#202020' : '#ffff'};
 `;
 
 const TableContainerTitleTR = styled.tr`
@@ -88,18 +104,18 @@ const TableContainerTitleTR = styled.tr`
     width: 100%;
 `;
 
-const TableTitles = styled.th<{darkmode?: boolean | string, totalheaders?:number}>`
-    color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
+const TableTitles = styled.th<{darkmode?: number, totalheaders?:number}>`
+    color: ${props => props.darkmode === 0 ? '#fff' : '#393939'};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
-    font-weight: ${props => props.darkmode === 'true' ? 'normal' : 600};
+    font-weight: ${props => props.darkmode === 0 ? 'normal' : 600};
     display: flex;
     justify-content: center;
     width: calc(1400px / ${props => props.totalheaders});
     transition: 0.5s;
 `;
 
-const TableContainerBodyContent = styled.tr<{totalcols?: number, darkmode?: string}>`
+const TableContainerBodyContent = styled.tr<{totalcols?: number, darkmode?: number}>`
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     width: 1400px;
@@ -118,24 +134,26 @@ const TableContainerBodyContent = styled.tr<{totalcols?: number, darkmode?: stri
         align-items: center;
         justify-content: center;
         border: 1px solid #00000015;
-        border: ${props => props.darkmode === 'true' ? '1px solid #0004' : '1px solid #00000015'};
+        border: ${props => props.darkmode === 0 ? '1px solid #0004' : '1px solid #00000015'};
         padding: 10px;
     }
 
 `;
 
-const TableBody = styled.tbody<{darkmode?: string}>`
+const TableBody = styled.tbody<{darkmode?: number}>`
     height: auto;
     width: 1442px;
-    color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
+    color: ${props => props.darkmode === 0 ? '#fff' : '#393939'};
     transition: 0.5s;
-    background-color: ${props => props.darkmode === 'true' ? '#202020' : '#ffff'};
+    background-color: ${props => props.darkmode === 0 ? '#202020' : '#ffff'};
 `;
 
 const TableBodyContainer = styled.div`
-  max-height: 57vh;
+  max-height: 64vh;
   overflow-y: scroll;
   overflow-x: hidden;
+  margin-top: 30px;
+  min-width: 1400px;
 
   &::-webkit-scrollbar {
     width: 12px;

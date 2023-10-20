@@ -29,7 +29,7 @@ type Actions = CloseAsideInterface | DarkModeInterface;
 const asideReducer = (state: AppState, action: Actions) => {
     switch(action.type) {
         case 'Close_aside':
-            return {asideVisible: !state.asideVisible};
+            return {...state, asideVisible: !state.asideVisible};
         case 'Dark_mode': 
             return {...state, darkMode: !state.darkMode};
         default :

@@ -32,7 +32,6 @@ export const UpdateUser = () => {
 
     const dispatch = useAppDispatch();
 
-    const { asideState } = useContext(AsideContext);
     const { id } = useParams();
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>): void  => {
@@ -120,7 +119,7 @@ export const UpdateUser = () => {
                             <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft /></ButtonBack>
                             <FormContainer>
                                 <Title>Update User: {id}</Title>
-                                <Form onSubmit={handleSubmit} darkmode={asideState.darkMode}>
+                                <Form onSubmit={handleSubmit}>
                                     <FormBox>
                                         <FormBoxInner>
                                             <div>
@@ -215,7 +214,6 @@ const Form = styled.form<Props>`
     justify-content: center;
     align-items: center;
     position: relative;
-    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
     transition: 0.5s;
 
     div {

@@ -25,6 +25,8 @@ export const Bookings = () => {
 
     const {asideState} = useContext(AsideContext);
 
+    let darkMode: boolean = asideState?.darkMode || false;
+
     const [selectData, setSelectData] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [modalInfo, setModalInfo] = useState('');
@@ -173,7 +175,7 @@ export const Bookings = () => {
         {
             property: 'guest', label: 'Guest', display: ({ guest, phone_number, id }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <CostumerName darkmode={asideState.darkMode?.toString()}>{guest}</CostumerName>
+                    <CostumerName $darkmode={darkMode ? 0 : 1}>{guest}</CostumerName>
                     <Paragraphs>{phone_number}</Paragraphs>
                     <ButtonID onClick={() => handleBookingId(id)}>#{id}</ButtonID>
                 </TableContainerBodyContent>
@@ -189,7 +191,7 @@ export const Bookings = () => {
         {
             property: 'check_in', label: 'Check In', display: ({ check_in }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <CheckInDate darkmode={asideState.darkMode?.toString()}>{handleSelectDate(check_in)}</CheckInDate>
+                    <CheckInDate $darkmode={darkMode ? 0 : 1}>{handleSelectDate(check_in)}</CheckInDate>
                     <CheckInTime>9.46 PM</CheckInTime>
                 </TableContainerBodyContent>
             )
@@ -197,7 +199,7 @@ export const Bookings = () => {
         {
             property: 'check_out', label: 'Check Out', display: ({ check_out }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <CheckOutDate darkmode={asideState.darkMode?.toString()}>{handleSelectDate(check_out) }</CheckOutDate>
+                    <CheckOutDate $darkmode={darkMode ? 0 : 1}>{handleSelectDate(check_out) }</CheckOutDate>
                     <CheckOutTime>6.12 PM</CheckOutTime>
                 </TableContainerBodyContent>
             )
@@ -212,7 +214,7 @@ export const Bookings = () => {
         {
             property: 'room_type', label: 'Room Type', display: ({ room_type, room_number }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <TypeRoom darkmode={asideState.darkMode?.toString()}>{room_type}-{room_number}</TypeRoom>
+                    <TypeRoom $darkmode={darkMode ? 0 : 1}>{room_type}-{room_number}</TypeRoom>
                 </TableContainerBodyContent>
             )
         },
@@ -244,16 +246,16 @@ export const Bookings = () => {
                     </Modal>
                     <FilterContainer>
                         <TabsContainer>
-                            <ButtonTabs actived={allBookings} onClick={() => handleTab('allBookings')}>
+                            <ButtonTabs actived={allBookings.toString()} onClick={() => handleTab('allBookings')}>
                                 All Bookings
                             </ButtonTabs>
-                            <ButtonTabs actived={checkIn} onClick={() => handleTab('checkIn')}>
+                            <ButtonTabs actived={checkIn.toString()} onClick={() => handleTab('checkIn')}>
                                 Check In
                             </ButtonTabs>
-                            <ButtonTabs actived={checkOut} onClick={() => handleTab('checkOut')}>
+                            <ButtonTabs actived={checkOut.toString()} onClick={() => handleTab('checkOut')}>
                                 Check Out
                             </ButtonTabs>
-                            <ButtonTabs actived={inProgress} onClick={() => handleTab('inProgress')}>
+                            <ButtonTabs actived={inProgress.toString()} onClick={() => handleTab('inProgress')}>
                                 In Progress
                             </ButtonTabs>
                         </TabsContainer>
@@ -364,9 +366,9 @@ const TabsContainer = styled.div`
 `;
 
 
-const ButtonTabs = styled(Buttons)<Props>`
-    color: ${props => props.actived ? "#135846" : "#6E6E6E"};
-    border-bottom: ${props => props.actived ? "2px solid #135846" : "none"};
+const ButtonTabs = styled(Buttons)<{actived: string}>`
+    color: ${props => props.actived === 'true' ? "#135846" : "#6E6E6E"};
+    border-bottom: ${props => props.actived === 'true' ? "2px solid #135846" : "none"};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     height: 30px;
@@ -400,7 +402,7 @@ const Filters = styled.div`
     }
 `;
 
-const Select = styled.select<Props>`
+const Select = styled.select<{onChange: any}>`
     width: 129px; 
     height: 50px;
     border: 1px solid #135846;
@@ -446,9 +448,9 @@ const TableContainerBodyContent = styled.div`
 
 `;
 
-const CostumerName = styled.p<Props>`
+const CostumerName = styled.p<{$darkmode: number}>`
     transition: 0.5s;
-    color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
+    color: ${props => props.$darkmode === 0 ? '#fff' : '#393939'};
 `;
 
 const ButtonID = styled.button`
@@ -466,18 +468,18 @@ const OrderDate = styled.p`
     align-self: baseline;
 `;
 
-const CheckInDate = styled.p<Props>`
+const CheckInDate = styled.p<{$darkmode: number}>`
     transition: 0.5s;
-    color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
+    color: ${props => props.$darkmode === 0 ? '#fff' : '#393939'};
 `;
 
 const CheckInTime = styled(Paragraphs)`
     font-size: 14px;
 `;
 
-const CheckOutDate = styled.p<Props>`
+const CheckOutDate = styled.p<{$darkmode: number}>`
     transition: 0.5s;
-    color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
+    color: ${props => props.$darkmode === 0 ? '#fff' : '#393939'};
 `;
 
 const CheckOutTime = styled(Paragraphs)`
@@ -502,9 +504,9 @@ const ViewNotesButton = styled(Buttons)`
     }
 `;
 
-const TypeRoom = styled.p<Props>`
+const TypeRoom = styled.p<{$darkmode: number}>`
     transition: 0.5s;
-    color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
+    color: ${props => props.$darkmode === 0 ? '#fff' : '#393939'};
 `;
 
 const OptionsButton = styled(Buttons)`
@@ -537,12 +539,10 @@ const OptionsButton = styled(Buttons)`
     }
 `;
 
-const StatusContent = styled(TableContainerBodyContent)<Props>`
+const StatusContent = styled(TableContainerBodyContent)`
     display: flex;
     flex-direction: row;
 
-    p {
-        color: ${props => props.darkmode === 'true' ? '#ffffff' : '#212121'};
-    }
+  
 `;
 
