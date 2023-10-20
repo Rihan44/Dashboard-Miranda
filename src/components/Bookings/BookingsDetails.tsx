@@ -15,18 +15,18 @@ import { getBookingDetail } from "../../features/bookingsSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { BookingsInterface } from "../../interfaces/bookingsInterface";
 import { AsideContext } from "../Context/ToggleAsideContext";
-import { Props } from "../../interfaces/Props";
 
 export const BookingFile = () => {
 
-    const {asideState} = useContext(AsideContext);
+    const { asideState } = useContext(AsideContext);
+    let darkMode: boolean = asideState?.darkMode || false;
 
     const navigate = useNavigate();
 
     const [dataBooking, setDataBooking] = useState<BookingsInterface[] | any>([]);
     const bookingDataDetail = useAppSelector((state) => state.bookings.dataBooking);
     const status = useAppSelector((state) => state.bookings.status);
-    
+
     const paramsID = useParams();
     const id: string | undefined = paramsID.id;
     const dispatch = useAppDispatch();
@@ -35,15 +35,15 @@ export const BookingFile = () => {
 
     const handleSelectDate = (date: Date | string) => {
         if (typeof date === 'string') {
-          const [year, month, day] = date?.split('-');
-          return new Date(Number(year), Number(month) - 1, Number(day)).toLocaleDateString('en-EN', options);
+            const [year, month, day] = date?.split('-');
+            return new Date(Number(year), Number(month) - 1, Number(day)).toLocaleDateString('en-EN', options);
         }
         return date?.toLocaleDateString('en-EN', options);
     };
 
     useEffect(() => {
         let data: BookingsInterface[] = [...bookingDataDetail];
-        
+
         data.forEach((e) => {
             setDataBooking(e);
         });
@@ -51,84 +51,84 @@ export const BookingFile = () => {
     }, [bookingDataDetail])
 
     useEffect(() => {
-        if(id !== undefined)
+        if (id !== undefined)
             dispatch(getBookingDetail(id));
 
     }, [dispatch, id])
 
     return (
-            <MainContainer>
-                {status === 'fulfilled' ?
-                    <FileBookingContainer>
-                        <ButtonBack onClick={() => navigate('/bookings')}><AiOutlineArrowLeft /></ButtonBack>
-                        <InfoContainer>
-                            <NameContainer darkmode={asideState.darkMode}>
-                                <h3>{dataBooking.guest}</h3>
-                                <p>{dataBooking.id}</p>
-                            </NameContainer>
-                            <CheckContainer darkmode={asideState.darkMode}>
-                                <div>
-                                    <h3>Check In</h3>
-                                    <p>{handleSelectDate(dataBooking.check_in)}</p>
-                                </div>
-                                <div>
-                                    <h3>Check Out</h3>
-                                    <p>{handleSelectDate(dataBooking.check_out)}</p>
-                                </div>
-                            </CheckContainer>
-                            <RoomInfoContainer darkmode={asideState.darkMode}>
-                                <InnerInfo>
-                                    <div>
-                                        <h3>Room Info</h3>
-                                        <p>{dataBooking.room_type}</p>
-                                    </div>
-                                    <div>
-                                        <h3>Price</h3>
-                                        <p>{dataBooking.price}<small>/night</small></p>
-                                    </div>
-                                </InnerInfo>
-                                <RoomDescription darkmode={asideState.darkMode}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</RoomDescription>
-                            </RoomInfoContainer>
-                            <FacilitiesRooms darkmode={asideState.darkMode}>
-                                <h3>Facilites</h3>
-                                <FacilitiesInner>
-                                    <BigFacilitie>
-                                        <LiaBedSolid />
-                                        3 Bed Space
-                                    </BigFacilitie>
-                                    <BigFacilitie>
-                                        <BsShieldCheck />
-                                        24 Hours Guard
-                                    </BigFacilitie>
-                                    <BigFacilitie>
-                                        <AiOutlineWifi />
-                                        Free Wifi
-                                    </BigFacilitie>
-                                    <SmallFacilitie>
-                                        2 Bathroom
-                                    </SmallFacilitie>
-                                    <SmallFacilitie>
-                                        Air Conditioner
-                                    </SmallFacilitie>
-                                    <SmallFacilitie>
-                                        Television
-                                    </SmallFacilitie>
-                                </FacilitiesInner>
-                            </FacilitiesRooms>
-                        </InfoContainer>
-                        <ImageContainer>
-                            <StatusDecoration status={dataBooking.status}>
-                                {dataBooking.status}
-                            </StatusDecoration>
-                            <ImageDescription>
-                                <h3>Bed Room</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                            </ImageDescription>
-                        </ImageContainer>
-                    </FileBookingContainer>
-                    : status === 'rejected' ? alert('Algo falló')
-                        : <SpinnerLoader></SpinnerLoader>}
-            </MainContainer>
+        <MainContainer>
+            {status === 'fulfilled' ?
+                <FileBookingContainer>
+                    <ButtonBack onClick={() => navigate('/bookings')}><AiOutlineArrowLeft /></ButtonBack>
+                    <InfoContainer>
+                        <NameContainer >
+                            <NameTitle darkmode={darkMode ? 0 : 1}>{dataBooking.guest}</NameTitle>
+                            <NameParagraph>{dataBooking.id}</NameParagraph>
+                        </NameContainer>
+                        <CheckContainer darkmode={darkMode ? 0 : 1}>
+                            <CheckInfo>
+                                <CheckTitle darkmode={darkMode ? 0 : 1}>Check In</CheckTitle>
+                                <CheckParagraph darkmode={darkMode ? 0 : 1}>{handleSelectDate(dataBooking.check_in)}</CheckParagraph>
+                            </CheckInfo>
+                            <CheckInfo>
+                                <CheckTitle darkmode={darkMode ? 0 : 1}>Check Out</CheckTitle>
+                                <CheckParagraph darkmode={darkMode ? 0 : 1}>{handleSelectDate(dataBooking.check_out)}</CheckParagraph>
+                            </CheckInfo>
+                        </CheckContainer>
+                        <RoomInfoContainer>
+                            <InnerInfo>
+                                <InnerInfoContainer>
+                                    <InnerInfoTitle darkmode={darkMode ? 0 : 1}>Room Info</InnerInfoTitle>
+                                    <InnerInfoParagraph darkmode={darkMode ? 0 : 1}>{dataBooking.room_type}</InnerInfoParagraph>
+                                </InnerInfoContainer>
+                                <InnerInfoContainer>
+                                    <InnerInfoTitle darkmode={darkMode ? 0 : 1}>Price</InnerInfoTitle>
+                                    <InnerInfoParagraph darkmode={darkMode ? 0 : 1}>{dataBooking.price}<small>/night</small></InnerInfoParagraph>
+                                </InnerInfoContainer>
+                            </InnerInfo>
+                            <RoomDescription darkmode={darkMode ? 0 : 1}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</RoomDescription>
+                        </RoomInfoContainer>
+                        <FacilitiesRooms darkmode={darkMode ? 0 : 1}>
+                            <h3>Facilites</h3>
+                            <FacilitiesInner>
+                                <BigFacilitie>
+                                    <LiaBedSolid />
+                                    3 Bed Space
+                                </BigFacilitie>
+                                <BigFacilitie>
+                                    <BsShieldCheck />
+                                    24 Hours Guard
+                                </BigFacilitie>
+                                <BigFacilitie>
+                                    <AiOutlineWifi />
+                                    Free Wifi
+                                </BigFacilitie>
+                                <SmallFacilitie>
+                                    2 Bathroom
+                                </SmallFacilitie>
+                                <SmallFacilitie>
+                                    Air Conditioner
+                                </SmallFacilitie>
+                                <SmallFacilitie>
+                                    Television
+                                </SmallFacilitie>
+                            </FacilitiesInner>
+                        </FacilitiesRooms>
+                    </InfoContainer>
+                    <ImageContainer>
+                        <StatusDecoration status={dataBooking.status}>
+                            {dataBooking.status}
+                        </StatusDecoration>
+                        <ImageDescription>
+                            <h3>Bed Room</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        </ImageDescription>
+                    </ImageContainer>
+                </FileBookingContainer>
+                : status === 'rejected' ? alert('Algo falló')
+                    : <SpinnerLoader></SpinnerLoader>}
+        </MainContainer>
     )
 }
 
@@ -147,74 +147,75 @@ const InfoContainer = styled.div`
     padding: 40px;
 `;
 
-const NameContainer = styled.div<Props>`
-    h3 {
-        font-family: 'Poppins', sans-serif;
-        font-size: 30px;
-        margin-bottom: 13px;
-        color: ${props => props.darkmode ? '#ffff' : '#212121'}
-    }
+const NameContainer = styled.div``;
 
-    p {
-        color: #799283;
-        font-family: 'Poppins', sans-serif;
-    }
+const NameTitle = styled.h3<{ darkmode: number }>`
+    font-family: 'Poppins', sans-serif;
+    font-size: 30px;
+    margin-bottom: 13px;
+    color: ${props => props.darkmode === 0 ? '#ffff' : '#212121'};
+    transition: 0.5s;
 `;
 
-const CheckContainer = styled.div<Props>`
+const NameParagraph = styled.p`
+    color: #799283;
+    font-family: 'Poppins', sans-serif;
+`;
+
+const CheckContainer = styled.div<{darkmode: number}>`
     display: flex;
     width: 80%;
     justify-content: space-between;
     margin-top: 50px;
     margin-bottom: 30px;
-    border-bottom: 1px solid #00000010;
+    border-bottom: ${props => props.darkmode === 0 ? '1px solid #ffff' : ' 1px solid #00000010'};
     padding-bottom: 50px;   
-
-    div {
-        h3 {
-            font-size: 14px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 400;
-            color: ${props => props.darkmode ? '#ffff' : '#6E6E6E'}
-        }
-    
-        p {
-            color: ${props => props.darkmode ? '#ffff' : '#212121'}
-            font-family: 'Poppins', sans-serif;
-            font-size: 16px;
-            margin-right: 50px;
-        }
-    }
-
+    transition: 0.5s;
 `;
 
-const RoomInfoContainer = styled.div<Props>`
+const CheckInfo = styled.div``
 
-    div {
-
-        h3 {
-            color: ${props => props.darkmode ? '#ffff' : '#6E6E6E'}
-            font-size: 14px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 400;
-        }
-
-        p {
-            color: ${props => props.darkmode ? '#ffff' : '#212121'}
-            font-family: 'Poppins', sans-serif;
-            font-size: 24px;
-            margin-right: 50px;
-        }
-    }
-
+const CheckTitle = styled.h3<{ darkmode: number }>`
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    color: ${props => props.darkmode === 0 ? '#ffff' : '#6E6E6E'};
+    transition: 0.5s;
 `;
+
+const CheckParagraph = styled.p<{ darkmode: number }>`
+    color: ${props => props.darkmode === 0 ? '#ffff' : '#212121'};
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    margin-right: 50px;
+    transition: 0.5s;
+`
+
+const RoomInfoContainer = styled.div``;
 
 const InnerInfo = styled.div`
     display: flex;
     width: 80%;
     justify-content: space-between;
     margin-bottom: 35px;
+`;
 
+const InnerInfoContainer = styled.div``;
+const InnerInfoTitle = styled.h3<{ darkmode: number }>`
+    color: ${props => props.darkmode === 0 ? '#ffff' : '#6E6E6E'};
+    transition: 0.5s;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+`;
+
+const InnerInfoParagraph = styled.p<{ darkmode: number }>`
+    color: ${props => props.darkmode === 0 ? '#ffff' : '#212121'};
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    margin-right: 50px;
+    transition: 0.5s;
+    
     small {
         color: #799283;
         font-size: 14px;
@@ -222,20 +223,22 @@ const InnerInfo = styled.div`
     }
 `;
 
-const RoomDescription = styled.p<Props>`
-    color: ${props => props.darkmode ? '#ffff' : '#363636'}
+const RoomDescription = styled.p<{ darkmode: number }>`
+    color: ${props => props.darkmode === 0 ? '#ffff' : '#363636'};
+    transition: 0.5s;
     font-size: 14px;
     width: 90%;
     font-family: 'Poppins', sans-serif;
     margin-bottom: 30px;
 `;
 
-const FacilitiesRooms = styled.div<Props>`
+const FacilitiesRooms = styled.div<{ darkmode: number }>`
     h3 {
-        color: ${props => props.darkmode ? '#ffff' : '#6E6E6E'}
+        color: ${props => props.darkmode === 0 ? '#ffff' : '#6E6E6E'};
         font-size: 14px;
         font-family: 'Poppins', sans-serif;
         font-weight: 400;
+        transition: 0.5s;
     }
 `;
 
@@ -305,7 +308,7 @@ const ImageDescription = styled.div`
 
 `;
 
-const StatusDecoration = styled.div<Props>`
+const StatusDecoration = styled.div<{ status: string }>`
     width: 160px;
     height: 50px;
     ${(props) => {
