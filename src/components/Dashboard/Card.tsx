@@ -23,6 +23,7 @@ interface CardProps {
 
 export const Card: React.FC<CardProps> = ({ data, handleOpen }) => {
     const {asideState} = useContext(AsideContext);
+    let darkMode: boolean = asideState?.darkMode || false;
 
     const location = useLocation();
 
@@ -36,16 +37,16 @@ export const Card: React.FC<CardProps> = ({ data, handleOpen }) => {
             >
                 {data?.map((dataCard) => (
                     <SwiperSlide key={dataCard.id}>
-                        <CardContainer darkmode={asideState.darkMode}>
-                            <EmailSubject darkmode={asideState.darkMode}>
+                        <CardContainer darkmode={darkMode ? 0 : 1}>
+                            <EmailSubject darkmode={darkMode ? 0 : 1}>
                                 {dataCard.email_subject}
                             </EmailSubject>
-                            <ReviewComent darkmode={asideState.darkMode}>
+                            <ReviewComent darkmode={darkMode ? 0 : 1}>
                                 {dataCard.email_description}
                             </ReviewComent>
                             <InnerCard>
                                 <ImgProfile src={'https://robohash.org/'+dataCard.name}/>
-                                <ProfileContainer darkmode={asideState.darkMode}>
+                                <ProfileContainer darkmode={darkMode ? 0 : 1}>
                                     <h4>{dataCard.name}</h4>
                                     <p>{dataCard.email}</p>
                                     <p>{dataCard.phone}</p>
@@ -63,10 +64,10 @@ export const Card: React.FC<CardProps> = ({ data, handleOpen }) => {
     )
 }
 
-const CardContainer = styled.div<Props>`
+const CardContainer = styled.div<{darkmode: number}>`
     width: 431px;
     height: 275px;
-    border: ${props => props.darkmode ? '1px solid #3D3D3D' : '1px solid #EBEBEB'};
+    border: ${props => props.darkmode === 0 ? '1px solid #3D3D3D' : '1px solid #EBEBEB'};
     border-radius: 20px;
     padding: 30px;
     transition: 0.5s;
@@ -77,16 +78,16 @@ const CardContainer = styled.div<Props>`
     }
 `;
 
-const EmailSubject = styled.h4<Props>`
-    color: ${props => props.darkmode ? '#FFE' : '#393939'};
+const EmailSubject = styled.h4<{darkmode: number}>`
+    color: ${props => props.darkmode === 0 ? '#FFE' : '#393939'};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     margin-bottom: 10px;
     transition: 0.5s;
 `;
 
-const ReviewComent = styled.p<Props>`
-    color: ${props => props.darkmode ? '#fff' : '#4E4E4E'};
+const ReviewComent = styled.p<{darkmode: number}>`
+    color: ${props => props.darkmode === 0 ? '#fff' : '#4E4E4E'};
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
     margin-bottom: 30px;
@@ -110,11 +111,11 @@ const InnerCard = styled.div`
     }
 `;
 
-const ProfileContainer = styled.div<Props>` 
+const ProfileContainer = styled.div<{darkmode: number}>` 
     width: 80%;
 
     h4 {
-        color: ${props => props.darkmode ? '#FFE' : '#262626'};
+        color: ${props => props.darkmode === 0 ? '#FFE' : '#262626'};
         transition: 0.5s;
         font-family: 'Poppins', sans-serif;
         font-size: 16px;
@@ -137,7 +138,7 @@ const ButtonContainer = styled.div`
     justify-content: space-between;
 `;
 
-const Button = styled.button<Props>`
+const Button = styled.button<{view: boolean}>`
     border: none;
     background: none;
     font-size: 24px;
@@ -145,12 +146,11 @@ const Button = styled.button<Props>`
     color: ${props => props.view === true ? '#E23428' : '#5AD07A'};
 `;
 
-const ButtonOpen = styled.button<Props>`
+const ButtonOpen = styled.button`
     border: none;
     background: none;
     font-size: 24px;
     cursor: pointer;
-    color: ${props => props.darkmode ? '#FFE' : '#575757'};
     transition: 0.5s;
 `;
 
