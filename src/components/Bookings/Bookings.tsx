@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { BsTrash } from "react-icons/bs";
@@ -22,7 +22,7 @@ export const Bookings = () => {
 
     const {asideState} = useContext(AsideContext);
 
-    const [dataBooking, setBookingData] = useState<BookingsInterface[]>([]);
+    /* const [dataBooking, setBookingData] = useState<BookingsInterface[]>([]); */
     const [selectData, setSelectData] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [modalInfo, setModalInfo] = useState('');
@@ -94,21 +94,16 @@ export const Bookings = () => {
         return date.toLocaleDateString('en-EN', options);
     };
 
-    useEffect(() => {
+    const dataBooking  = useMemo(() => {
         let dataArray: BookingsInterface[] = bookingsSliceDataUpdated.length !== 0 ? [ ...bookingsSliceDataUpdated] : [...bookingsSliceData];
 
-        if (status === 'fulfilled') {
-            setBookingData(dataArray);
-        }
-
         if (searchData !== '') {
-            dataArray = dataArray.filter(data => data.guest.toLowerCase().includes(searchData));
+            dataArray = dataArray.filter(data => data.guest.toLowerCase().includes(searchData.toLowerCase()));
         }
 
         switch (isActiveButton) {
             case 'allBookings':
-                setBookingData(dataArray);
-                break;
+                return dataArray;
             case 'checkIn':
                 dataArray = dataArray.filter(data => data.status === 'check_in');
                 break;
@@ -135,7 +130,7 @@ export const Bookings = () => {
             default:
         }
 
-        setBookingData(dataArray);
+        return dataArray;
 
     }, [isActiveButton, selectData, searchData, bookingsSliceData, status, bookingsSliceDataUpdated]);
 

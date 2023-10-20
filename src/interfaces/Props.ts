@@ -1,7 +1,7 @@
 
 export interface Props {
-    onChange?: any, /* TODO CAMBIAR TIPADO */
-    children?: any, /* TODO HACER ESTE TIPADO */
+    onChange?: any, 
+    children?: any,
     type?: any,
     value?: any,
     onSubmit?: any,

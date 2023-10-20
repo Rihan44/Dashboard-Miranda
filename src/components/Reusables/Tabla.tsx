@@ -7,6 +7,8 @@ import { RoomInterface } from "../../interfaces/roomInterface";
 import { UsersInterface } from "../../interfaces/usersInterface";
 import { ContactInterface } from "../../interfaces/contactInterface";
 
+/* INTERFAZ PARA COLUMNAS */
+
 interface TablaInterface {
     cols?: object[] | any,
     data?: BookingsInterface[] | RoomInterface[] | UsersInterface[] | ContactInterface[],
@@ -26,11 +28,11 @@ interface TitleInterface {
 
 export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) => {
 
-    const {asideState}: any = useContext(AsideContext);
+    const {asideState} = useContext(AsideContext);
     const [tableRef] = useAutoAnimate();
     
     const displayRow = (row: BookingsInterface | RoomInterface | UsersInterface | ContactInterface) => (
-        <TableContainerBodyContent darkmode={asideState.darkMode.toString()}  totalcols={totalCols} key={row.id}>
+        <TableContainerBodyContent darkmode={asideState.darkMode?.toString()}  totalcols={totalCols} key={row.id}>
             {cols !== undefined && cols.map((col: DataTabla, i: number) => (
                 <td key={i}>{typeof col.display === 'function' ? col.display(row) : (row as Record<string, any>)[col.property as string]}
                 </td>
@@ -40,23 +42,35 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) =>
 
     return (
         <>
-            <TableContainer>
-                <TableContainerTitle darkmode={asideState.darkMode.toString()}>
+        {/* TODO HACER LO QUE ME PASÓ JOHN */}
+            {/* <TableContainer>
+                <TableContainerTitle darkmode={asideState.darkMode?.toString()}>
                     <TableContainerTitleTR>
                         {cols?.map((col: TitleInterface, i: number) =>
-                            <TableTitles darkmode={asideState.darkMode.toString()} totalheaders={totalHeaders} key={i}>{col.label && col.label}</TableTitles>
+                            <TableTitles darkmode={asideState.darkMode?.toString()} totalheaders={totalHeaders} key={i}>{col.label && col.label}</TableTitles>
                         )}
                     </TableContainerTitleTR>
                 </TableContainerTitle>
                 <TableBodyContainer>
-                    <TableBody darkmode={asideState.darkMode.toString()} ref={tableRef}>
+                    <TableBody darkmode={asideState.darkMode?.toString()} ref={tableRef}>
                         {data?.map(displayRow)}
                     </TableBody>
                 </TableBodyContainer>
-                    {/* <TableBody darkmode={asideState.darkMode.toString()} ref={tableRef}>
-                        {data?.map(displayRow)}
-                    </TableBody> */}
-            </TableContainer>
+            </TableContainer> */}
+            <TableBodyContainer>
+                <TableContainer>
+                    <TableContainerTitle darkmode={asideState.darkMode?.toString()}>
+                        <TableContainerTitleTR>
+                            {cols?.map((col: TitleInterface, i: number) =>
+                                <TableTitles darkmode={asideState.darkMode?.toString()} totalheaders={totalHeaders} key={i}>{col.label && col.label}</TableTitles>
+                            )}
+                        </TableContainerTitleTR>
+                    </TableContainerTitle>
+                        <TableBody darkmode={asideState.darkMode?.toString()} ref={tableRef}>
+                            {data?.map(displayRow)}
+                        </TableBody>
+                </TableContainer>
+            </TableBodyContainer>
         </>
     )
 }

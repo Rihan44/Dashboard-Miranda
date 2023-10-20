@@ -9,38 +9,24 @@ interface InitialStateInterface {
 }
 
 function initialAuthState(): InitialStateInterface{
+   const base = {authenticated: false, username: null, email: null, imageSrc: null}; 
     const authData = localStorage.getItem('auth') || '';
 
-    if (authData) {
-        return JSON.parse(authData);
-    } else {
-        return {authenticated: false, username: null, email: null, imageSrc: null};
-    }
+    if (authData) 
+        return {...base,...JSON.parse(authData)};
+    return base;
 }
 
 interface LogInInterface {
-    type: "LOGIN",
-    payload: {
+    type: "LOGIN" | "LOGOUT" | "UPDATE",
+    payload?: {
         authenticated?: boolean,
         username?: string,
         email?: string
     }
 }
 
-interface LogOutInterface {
-    type: "LOGOUT",
-}
-
-interface UpdateInterface {
-    type: "UPDATE",
-    payload: {
-        username?: string,
-        email?: string,
-        imageSrc?: string
-    }
-}
-
-type Actions = LogInInterface | LogOutInterface | UpdateInterface;
+type Actions = LogInInterface;
 
 type Props = {
     children: ReactNode
