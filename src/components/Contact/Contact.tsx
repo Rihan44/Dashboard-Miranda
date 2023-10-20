@@ -1,5 +1,7 @@
-import styled from "styled-components"
-import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import Swal from 'sweetalert2';
+
+import { useMemo, useEffect, useState } from "react";
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
@@ -16,8 +18,6 @@ import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 import { ContactInterface } from "../../interfaces/contactInterface";
-import { Props } from "../../interfaces/Props";
-
 
 export const Contact = () => {
     const [modalInfo, setModalInfo] = useState({
@@ -25,23 +25,21 @@ export const Contact = () => {
         emailUser: '',
         emailInfo: ''
     });
-
     const [modalOpen, setModalOpen] = useState(false);
     const [isActiveButton, setIsActiveButton] = useState('allContacts');
-    const [contactData, setContactData] = useState<ContactInterface[]>([]);
-
-    const [tableRef] = useAutoAnimate();
 
     const dataContact = useAppSelector((state) => state.contact.data);
     const status = useAppSelector((state) => state.contact.status);
     const statusArchive = useAppSelector((state) => state.contact.statusArchive);
+    
+    const [tableRef] = useAutoAnimate();
+    const dispatch = useAppDispatch();
 
     let options: object = {year: 'numeric', month: 'long', day: 'numeric' };
 
     const allContacts = isActiveButton === 'allContacts';
     const archived = isActiveButton === 'archived';
 
-    const dispatch = useAppDispatch();
 
     const handleOpenModal = (data: string, subject: string, email: string) => {
         setModalInfo({emailInfo: data, emailSubject: subject, emailUser: email});
@@ -56,19 +54,79 @@ export const Contact = () => {
         setIsActiveButton(activeButton);
     }
 
-    const handleDelete = (id: string | number | undefined) => {
-        if(id !== undefined) 
+    const handleDelete = async(id: string | number | undefined) => {
+        const ToastDelete = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 2000,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        const { value: accept } = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#135846',
+            cancelButtonColor: '#E23428',
+            confirmButtonText: 'Yes, delete it!'
+        })
+
+        if(id !== undefined && accept) {
             dispatch(deleteMessage(id));
+            setTimeout(() => {
+                ToastDelete.fire({
+                    icon: 'success',
+                    title: 'Deleted message successfully!'
+                  })
+            }, 850)
+        }
     }
 
     const handleArchive = (id: string | number | undefined) => {
-        if(id !== undefined) 
+        const ToastArchive = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 1000,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        if(id !== undefined) {
             dispatch(archiveMessage(id));
+            ToastArchive.fire({
+                icon: 'success',
+                title: 'Archived successfully!'
+            })
+        }
     }
 
     const handleUnArchive = (id: string | number | undefined) => {
-        if(id !== undefined) 
+        const ToastUnArchive = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 1000,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        if(id !== undefined) {
             dispatch(unArchiveMessage(id));
+            ToastUnArchive.fire({
+                icon: 'success',
+                title: 'Unarchive successfully!'
+            })
+        }
     }
 
     const handleSelectDate = (date: Date | string) => {
@@ -79,13 +137,9 @@ export const Contact = () => {
         return date.toLocaleDateString('en-EN', options);
     };
 
-    useEffect(() => {
+    const contactData: ContactInterface[] = useMemo(() => {
 
         let dataArray: ContactInterface[] = [...dataContact];
-
-        if(status === 'fulfilled') {
-            setContactData(dataArray);
-        }
 
         switch (isActiveButton) {
             case 'allContacts':
@@ -106,9 +160,9 @@ export const Contact = () => {
                 });
         }
 
-        setContactData(dataArray);
+        return dataArray;
 
-    }, [isActiveButton, setContactData, dataContact, status]);
+    }, [isActiveButton, dataContact, status]);
 
     useEffect(()=> {
         dispatch(getAllMessages());
@@ -201,7 +255,7 @@ export const Contact = () => {
     )
 }
 
-const Modal = styled.div<Props>`
+const Modal = styled.div<{modalopen: boolean}>`
     display: ${props => props.modalopen === true ? 'block' : 'none'};
     position: fixed; 
     z-index: 10; 
@@ -273,17 +327,12 @@ const ButtonModalClose = styled.button`
     }
 `;
 
-const ContactContainer = styled.div<CardsContainerProps>`
+const ContactContainer = styled.div<{children: any}>`
     margin: 50px;
     margin-left: 80px;
 `;
 
-type CardsContainerProps = {
-    children: any,
-    ref?: any
-}
-
-const CardsContainer = styled.div<CardsContainerProps>`
+const CardsContainer = styled.div<{ref: any, children: any}>`
     margin-bottom: 50px;
 `;
 
@@ -309,7 +358,7 @@ const Buttons = styled.button`
     cursor: pointer;
 `;
 
-const ButtonTabs = styled(Buttons)<Props>`
+const ButtonTabs = styled(Buttons)<{actived: boolean}>`
     color: ${props => props.actived ? "#135846" : "#6E6E6E"};
     border-bottom: ${props => props.actived ? "2px solid #135846" : "none"};
     font-size: 16px;
@@ -324,7 +373,7 @@ const ButtonTabs = styled(Buttons)<Props>`
 
 `;
 
-const IsAcrhivedParagraph = styled.div<Props>`
+const IsAcrhivedParagraph = styled.div<{isArchive: boolean}>`
     margin-right: 20px;
     color: ${props => props.isArchive ? '#E23428' : '#5AD07A'}
 `;
