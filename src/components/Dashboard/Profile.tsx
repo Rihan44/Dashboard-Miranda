@@ -1,11 +1,10 @@
 import styled from "styled-components";
+import Swal from 'sweetalert2';
 
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { FormEvent, useContext, useState } from "react";
 import { AuthContext } from "../Context/AuthContainer";
 import { AsideContext } from "../Context/ToggleAsideContext";
-import { Props } from "../../interfaces/Props";
-
 
 export const ProfileCompontent = () => {
 
@@ -14,7 +13,9 @@ export const ProfileCompontent = () => {
     const [email, setUserUpdate] = useState('');
     const [user, setEmailUpdate] = useState('');
     const {auth, authDispatch} = useContext(AuthContext);
+
     const {asideState} = useContext(AsideContext);
+    let darkMode: boolean = asideState?.darkMode || false;
 
     const handleOpen = () => {
         setModalOpen(true);
@@ -48,12 +49,29 @@ export const ProfileCompontent = () => {
     }
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+        const ToastUpdated = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 2000,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
         e.preventDefault();
         setModalOpen(false);
+
+        if(user !== '' || email !== '' || imgSrc !== ''){
+            ToastUpdated.fire({
+                icon: 'success',
+                title: 'Profile updated successfully!'
+            })
+        }
     }
 
     return(
-        <ProfileContainer darkmode={asideState.darkMode}>
+        <ProfileContainer darkmode={darkMode ? 0 : 1}>
             <Modal modalopen={modalOpen}>
                 <ModalInfo>
                     <ButtonModalClose onClick={handleCloseModal}>
@@ -69,14 +87,14 @@ export const ProfileCompontent = () => {
                 </ModalInfo>
             </Modal>
             <ImageProfile src={'https://robohash.org/'+auth.username}/>
-            <ProfileTitle darkmode={asideState.darkMode}>{auth.username}</ProfileTitle>
+            <ProfileTitle darkmode={darkMode ? 0 : 1}>{auth.username}</ProfileTitle>
             <ProfileParagraph>{auth.email}</ProfileParagraph>
             <ProfileButton onClick={handleOpen}>Edit</ProfileButton>
         </ProfileContainer>
     )
 }
 
-const Modal = styled.div<Props>`
+const Modal = styled.div<{modalopen: boolean}>`
     display: ${props => props.modalopen === true ? 'block' : 'none'};
     position: fixed; 
     z-index: 10; 
@@ -132,7 +150,7 @@ const ButtonSave = styled.button`
     }
 `;
 
-const Input = styled.input<Props>`
+const Input = styled.input<{placeholder?: any, type: string}>`
     width: 90%;
     height: 30px;
     border: none;
@@ -171,7 +189,7 @@ const ImageUpdate = styled.img`
 `;
 
 
-const ProfileContainer = styled.div<Props>`
+const ProfileContainer = styled.div<{darkmode: number}>`
     width: 233px;
     height: 170px;
     box-shadow: 0px 20px 30px #00000014;
@@ -179,7 +197,7 @@ const ProfileContainer = styled.div<Props>`
     position: relative;
     margin-top: 40px;
     margin-bottom: 40px;
-    background-color: ${props => props.darkmode ? '#292828' : '#ffff'};
+    background-color: ${props => props.darkmode === 0 ? '#292828' : '#ffff'};
     border-radius: 18px;
     transition: 0.5s;
 `;
@@ -193,8 +211,8 @@ const ImageProfile = styled.img`
     border-radius: 10px;
 `;
 
-const ProfileTitle = styled.h3<Props>`
-    color: ${props => props.darkmode ? '#ffff' : '#393939'};
+const ProfileTitle = styled.h3<{darkmode: number}>`
+    color: ${props => props.darkmode === 0 ? '#ffff' : '#393939'};
     font-size: 16px;
     font-family: 
     font-family: 'Poppins', sans-serif;

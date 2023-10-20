@@ -5,7 +5,7 @@ interface InitialStateInterface {
     authenticated?: boolean,
     username?: string | null,
     email?: string | null,
-    imageSrc?: string | null
+    imageSrc?: string | null | undefined
 }
 
 function initialAuthState(): InitialStateInterface{
@@ -22,7 +22,8 @@ interface LogInInterface {
     payload?: {
         authenticated?: boolean,
         username?: string,
-        email?: string
+        email?: string,
+        imageSrc?: string
     }
 }
 
