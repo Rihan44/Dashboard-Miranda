@@ -246,7 +246,7 @@ export const Bookings = () => {
     )
 }
 
-const Modal = styled.div<Props>`
+const Modal = styled.div<{modalopen: boolean}>`
     display: ${props => props.modalopen === true ? 'block' : 'none'};
     position: fixed; 
     z-index: 1; 

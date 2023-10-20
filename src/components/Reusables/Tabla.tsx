@@ -7,8 +7,6 @@ import { RoomInterface } from "../../interfaces/roomInterface";
 import { UsersInterface } from "../../interfaces/usersInterface";
 import { ContactInterface } from "../../interfaces/contactInterface";
 
-/* INTERFAZ PARA COLUMNAS */
-
 interface ColsInterface {
     property: string,
     label: string,
@@ -49,7 +47,6 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) =>
 
     return (
         <>
-        {/* TODO HACER LO QUE ME PASÓ JOHN */}
             <TableContainer>
                 <TableContainerTitle darkmode={asideState.darkMode?.toString()}>
                     <TableContainerTitleTR>
@@ -68,19 +65,13 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) =>
     )
 }
 
-interface Props {
-    darkmode?: boolean | string,
-    totalheaders?: number,
-    totalcols?: number
-}
-
 const TableContainer = styled.table`
     border-top: none;
     border-collapse: collapse;
     margin-top: 35px;
 `;
 
-const TableContainerTitle = styled.thead<Props>`
+const TableContainerTitle = styled.thead<{darkmode?: boolean | string}>`
     border: ${props => props.darkmode === 'true' ? '1px solid #0004' : '1px solid #00000015'};
     border-radius: 20px 20px 0px 0px;
     border-bottom: none;
@@ -97,7 +88,7 @@ const TableContainerTitleTR = styled.tr`
     width: 100%;
 `;
 
-const TableTitles = styled.th<Props>`
+const TableTitles = styled.th<{darkmode?: boolean | string, totalheaders?:number}>`
     color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
@@ -108,7 +99,7 @@ const TableTitles = styled.th<Props>`
     transition: 0.5s;
 `;
 
-const TableContainerBodyContent = styled.tr<Props>`
+const TableContainerBodyContent = styled.tr<{totalcols?: number, darkmode?: string}>`
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     width: 1400px;
@@ -133,7 +124,7 @@ const TableContainerBodyContent = styled.tr<Props>`
 
 `;
 
-const TableBody = styled.tbody<Props>`
+const TableBody = styled.tbody<{darkmode?: string}>`
     height: auto;
     width: 1442px;
     color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
