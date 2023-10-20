@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +25,6 @@ export const Bookings = () => {
 
     const {asideState} = useContext(AsideContext);
 
-    /* const [dataBooking, setBookingData] = useState<BookingsInterface[]>([]); */
     const [selectData, setSelectData] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [modalInfo, setModalInfo] = useState('');
@@ -74,9 +76,38 @@ export const Bookings = () => {
         setModalOpen(true);
     }
 
-    const handleDelete = (id: string | number | undefined) => {
-        if (id !== undefined)
+    const handleDelete = async (id: string | number | undefined) => {
+        const ToastDelete = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 2000,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+    
+        const { value: accept } = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#135846',
+            cancelButtonColor: '#E23428',
+            confirmButtonText: 'Yes, delete it!'
+        })
+
+        if (id !== undefined && accept){
             dispatch(deleteBooking(id));
+            setTimeout(() => {
+                ToastDelete.fire({
+                    icon: 'success',
+                    title: 'Deleted booking successfully!'
+                  })
+            }, 850)
+           
+        } 
     }
 
     const handleUpdate = (id: string | number | undefined) => {
