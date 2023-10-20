@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +18,6 @@ import { StatusParagraph } from "../Reusables/StatusParagraph";
 import { ToastAlert } from "../Reusables/ToastAlert";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { BookingsInterface } from "../../interfaces/bookingsInterface";
-import { Props } from "../../interfaces/Props";
 
 export const Bookings = () => {
 
@@ -175,7 +173,7 @@ export const Bookings = () => {
         {
             property: 'guest', label: 'Guest', display: ({ guest, phone_number, id }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <CostumerName $darkmode={darkMode ? 0 : 1}>{guest}</CostumerName>
+                    <CostumerName darkmode={darkMode ? 0 : 1}>{guest}</CostumerName>
                     <Paragraphs>{phone_number}</Paragraphs>
                     <ButtonID onClick={() => handleBookingId(id)}>#{id}</ButtonID>
                 </TableContainerBodyContent>
@@ -191,7 +189,7 @@ export const Bookings = () => {
         {
             property: 'check_in', label: 'Check In', display: ({ check_in }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <CheckInDate $darkmode={darkMode ? 0 : 1}>{handleSelectDate(check_in)}</CheckInDate>
+                    <CheckInDate darkmode={darkMode ? 0 : 1}>{handleSelectDate(check_in)}</CheckInDate>
                     <CheckInTime>9.46 PM</CheckInTime>
                 </TableContainerBodyContent>
             )
@@ -199,7 +197,7 @@ export const Bookings = () => {
         {
             property: 'check_out', label: 'Check Out', display: ({ check_out }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <CheckOutDate $darkmode={darkMode ? 0 : 1}>{handleSelectDate(check_out) }</CheckOutDate>
+                    <CheckOutDate darkmode={darkMode ? 0 : 1}>{handleSelectDate(check_out) }</CheckOutDate>
                     <CheckOutTime>6.12 PM</CheckOutTime>
                 </TableContainerBodyContent>
             )
@@ -214,7 +212,7 @@ export const Bookings = () => {
         {
             property: 'room_type', label: 'Room Type', display: ({ room_type, room_number }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <TypeRoom $darkmode={darkMode ? 0 : 1}>{room_type}-{room_number}</TypeRoom>
+                    <TypeRoom darkmode={darkMode ? 0 : 1}>{room_type}-{room_number}</TypeRoom>
                 </TableContainerBodyContent>
             )
         },
@@ -236,7 +234,7 @@ export const Bookings = () => {
             <MainContainer>
                 <BookingContainer>
                     {statusDelete === 'pending' && <DeleteSpinner/>}
-                    <Modal modalopen={modalOpen}>
+                    <Modal modalopen={modalOpen ? 0 : 1}>
                         <ModalInfo>
                             <ButtonModalClose onClick={handleCloseModal}>
                                 <AiOutlineCloseCircle />
@@ -279,8 +277,8 @@ export const Bookings = () => {
     )
 }
 
-const Modal = styled.div<{modalopen: boolean}>`
-    display: ${props => props.modalopen === true ? 'block' : 'none'};
+const Modal = styled.div<{modalopen: number}>`
+    display: ${props => props.modalopen === 0 ? 'block' : 'none'};
     position: fixed; 
     z-index: 1; 
     left: 0;
@@ -448,9 +446,9 @@ const TableContainerBodyContent = styled.div`
 
 `;
 
-const CostumerName = styled.p<{$darkmode: number}>`
+const CostumerName = styled.p<{darkmode: number}>`
     transition: 0.5s;
-    color: ${props => props.$darkmode === 0 ? '#fff' : '#393939'};
+    color: ${props => props.darkmode === 0 ? '#fff' : '#393939'};
 `;
 
 const ButtonID = styled.button`
@@ -468,18 +466,18 @@ const OrderDate = styled.p`
     align-self: baseline;
 `;
 
-const CheckInDate = styled.p<{$darkmode: number}>`
+const CheckInDate = styled.p<{darkmode: number}>`
     transition: 0.5s;
-    color: ${props => props.$darkmode === 0 ? '#fff' : '#393939'};
+    color: ${props => props.darkmode === 0 ? '#fff' : '#393939'};
 `;
 
 const CheckInTime = styled(Paragraphs)`
     font-size: 14px;
 `;
 
-const CheckOutDate = styled.p<{$darkmode: number}>`
+const CheckOutDate = styled.p<{darkmode: number}>`
     transition: 0.5s;
-    color: ${props => props.$darkmode === 0 ? '#fff' : '#393939'};
+    color: ${props => props.darkmode === 0 ? '#fff' : '#393939'};
 `;
 
 const CheckOutTime = styled(Paragraphs)`
@@ -504,9 +502,9 @@ const ViewNotesButton = styled(Buttons)`
     }
 `;
 
-const TypeRoom = styled.p<{$darkmode: number}>`
+const TypeRoom = styled.p<{darkmode: number}>`
     transition: 0.5s;
-    color: ${props => props.$darkmode === 0 ? '#fff' : '#393939'};
+    color: ${props => props.darkmode === 0 ? '#fff' : '#393939'};
 `;
 
 const OptionsButton = styled(Buttons)`
