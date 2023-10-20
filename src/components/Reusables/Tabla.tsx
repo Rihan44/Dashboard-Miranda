@@ -9,8 +9,15 @@ import { ContactInterface } from "../../interfaces/contactInterface";
 
 /* INTERFAZ PARA COLUMNAS */
 
+interface ColsInterface {
+    property: string,
+    label: string,
+    i?: number,
+    display?: (data: any) => void
+}
+
 interface TablaInterface {
-    cols?: object[] | any,
+    cols?: ColsInterface[],
     data?: BookingsInterface[] | RoomInterface[] | UsersInterface[] | ContactInterface[],
     totalCols?: number,
     totalHeaders?: number
@@ -33,7 +40,7 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) =>
     
     const displayRow = (row: BookingsInterface | RoomInterface | UsersInterface | ContactInterface) => (
         <TableContainerBodyContent darkmode={asideState.darkMode?.toString()}  totalcols={totalCols} key={row.id}>
-            {cols !== undefined && cols.map((col: DataTabla, i: number) => (
+            {cols !== undefined && cols.map((col: ColsInterface, i: number) => (
                 <td key={i}>{typeof col.display === 'function' ? col.display(row) : (row as Record<string, any>)[col.property as string]}
                 </td>
             ))}
@@ -43,7 +50,7 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) =>
     return (
         <>
         {/* TODO HACER LO QUE ME PASÓ JOHN */}
-            {/* <TableContainer>
+            <TableContainer>
                 <TableContainerTitle darkmode={asideState.darkMode?.toString()}>
                     <TableContainerTitleTR>
                         {cols?.map((col: TitleInterface, i: number) =>
@@ -56,21 +63,7 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) =>
                         {data?.map(displayRow)}
                     </TableBody>
                 </TableBodyContainer>
-            </TableContainer> */}
-            <TableBodyContainer>
-                <TableContainer>
-                    <TableContainerTitle darkmode={asideState.darkMode?.toString()}>
-                        <TableContainerTitleTR>
-                            {cols?.map((col: TitleInterface, i: number) =>
-                                <TableTitles darkmode={asideState.darkMode?.toString()} totalheaders={totalHeaders} key={i}>{col.label && col.label}</TableTitles>
-                            )}
-                        </TableContainerTitleTR>
-                    </TableContainerTitle>
-                        <TableBody darkmode={asideState.darkMode?.toString()} ref={tableRef}>
-                            {data?.map(displayRow)}
-                        </TableBody>
-                </TableContainer>
-            </TableBodyContainer>
+            </TableContainer>
         </>
     )
 }
