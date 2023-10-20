@@ -20,7 +20,7 @@ export const BookingFile = () => {
 
     const { asideState } = useContext(AsideContext);
     let darkMode: boolean = asideState?.darkMode || false;
-
+    
     const navigate = useNavigate();
 
     const [dataBooking, setDataBooking] = useState<BookingsInterface[] | any>([]);

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { FormEvent, useEffect, useState } from "react";
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 import { MainContainer } from "../Reusables/MainContainer";
 
@@ -14,7 +15,6 @@ import { ToastAlert } from "../Reusables/ToastAlert";
 import { getBookingDetail, updateBooking } from "../../features/bookingsSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { BookingsInterface } from "../../interfaces/bookingsInterface";
-import { Props } from "../../interfaces/Props";
 
 export const UpdateBooking = () => {
 
@@ -30,7 +30,8 @@ export const UpdateBooking = () => {
     const paramsID = useParams();
     const id: string | undefined = paramsID.id;
 
-    const {asideState}: any = useContext(AsideContext);
+    const {asideState} = useContext(AsideContext);
+    let darkMode = asideState?.darkMode;
 
     const bookingsData = useAppSelector((state) => state.bookings.dataBooking);
 
@@ -44,6 +45,17 @@ export const UpdateBooking = () => {
     }
 
     const handleUpdate = () => {
+        const ToastUpdated = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
         const dataUpdate: BookingsInterface = {
             id: id,
             guest: guestName,
@@ -59,6 +71,11 @@ export const UpdateBooking = () => {
         }
         dispatch(updateBooking(dataUpdate));
         navigate('/bookings');
+
+        ToastUpdated.fire({
+            icon: 'success',
+            title: `Updated booking with id: ${id} successfully!`
+        })
     }
 
     const handleGuestName = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -126,7 +143,7 @@ export const UpdateBooking = () => {
                     <ButtonBack onClick={() => navigate('/bookings')}><AiOutlineArrowLeft/></ButtonBack>
                     <FormContainer>
                         <Title>Update Booking: {id}</Title>
-                        <Form onSubmit={handleSubmit} darkmode={asideState.darkMode}>
+                        <Form onSubmit={handleSubmit} darkmode={darkMode ? 0 : 1}>
                         <FormBox>
                                 <FormBoxInner>
                                     <div>
@@ -200,7 +217,7 @@ const Title = styled.h2`
     font-family: 'Poppins', sans-serif;
 `;
 
-const Form = styled.form<Props>`
+const Form = styled.form<{darkmode: number}>`
     width: 750px;
     height: 660px;
     box-shadow: 0px 3px 10px #00000030;
@@ -211,7 +228,7 @@ const Form = styled.form<Props>`
     justify-content: center;
     align-items: center;
     position: relative;
-    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
+    background-color: ${props => props.darkmode === 0 ? '#202020' : '#ffff'};
     transition: 0.5s;
 
     div {
@@ -240,7 +257,7 @@ const FormBoxInner = styled.div`
     }
 `;
 
-const Select = styled.select<Props>`
+const Select = styled.select<{onChange: any}>`
     width: 140px; 
     height: 30px;
     border: 1px solid #135846;
@@ -257,7 +274,7 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const Input = styled.input<Props>`
+const Input = styled.input<{value: any}>`
     margin-left: 20px;
     margin-bottom: 10px;
     width: 150px;
