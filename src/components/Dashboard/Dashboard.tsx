@@ -20,7 +20,9 @@ import { Props } from "../../interfaces/Props";
 export const Dashboard = () => {
 
     const [dataContact, setDataContact] = useState<ContactInterface[]>([]);
+
     const { asideState } = useContext(AsideContext);
+    let darkMode: boolean = asideState?.darkMode || false;
 
     const contactData = useAppSelector((state) => state.contact.data);
     const status = useAppSelector((state) => state.contact.status);
@@ -44,7 +46,7 @@ export const Dashboard = () => {
         <>
             <MainContainer>
                 <ContainerCards>
-                    <Card darkmode={asideState.darkMode}>
+                    <Card darkmode={darkMode ? 0 : 1}>
                         <div>
                             <LiaBedSolid />
                         </div>
@@ -53,7 +55,7 @@ export const Dashboard = () => {
                             <p>New Booking</p>
                         </div>
                     </Card>
-                    <Card darkmode={asideState.darkMode}>
+                    <Card darkmode={darkMode ? 0 : 1}>
                         <div>
                             <LuCalendarCheck2 />
                         </div>
@@ -62,7 +64,7 @@ export const Dashboard = () => {
                             <p>Scheduled Room</p>
                         </div>
                     </Card>
-                    <Card darkmode={asideState.darkMode}>
+                    <Card darkmode={darkMode ? 0 : 1}>
                         <div>
                             <GoSignOut />
                         </div>
@@ -71,7 +73,7 @@ export const Dashboard = () => {
                             <p>Check In</p>
                         </div>
                     </Card>
-                    <Card darkmode={asideState.darkMode}>
+                    <Card darkmode={darkMode ? 0 : 1}>
                         <div>
                             <GoSignIn />
                         </div>
@@ -82,7 +84,7 @@ export const Dashboard = () => {
                     </Card>
                 </ContainerCards>
                 {status === 'fulfilled'
-                    ? <LastestReview darkMode={asideState.darkMode} dataDashboard={dataContact} />
+                    ? <LastestReview darkmode={darkMode ? 0 : 1} dataDashboard={dataContact} />
                     : status === 'rejected' ? alert('Algo falló')
                         : <SpinnerLoader></SpinnerLoader>
                 }
@@ -98,10 +100,10 @@ const ContainerCards = styled.div`
     min-width: 1485px;
 `;
 
-const Card = styled.div<Props>`
+const Card = styled.div<{darkmode: number}>`
     width: 340px;
     height: 125px;
-    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
+    background-color: ${props => props.darkmode === 0 ? '#202020' : '#ffff'};
     box-shadow: 0px 4px 4px #00000010;
     border-radius: 12px;
     margin-right: 38px;
