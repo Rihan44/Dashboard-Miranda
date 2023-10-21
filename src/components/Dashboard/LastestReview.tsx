@@ -1,19 +1,22 @@
 import styled from "styled-components";
-import { useState } from "react";
-
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, A11y } from 'swiper/modules';
+import Swal from 'sweetalert2';
 
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 
+import { useState } from "react";
+import { useAppDispatch } from "../../app/hooks";
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, A11y } from 'swiper/modules';
+
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ContactInterface } from "../../interfaces/contactInterface";
-import { Props } from "../../interfaces/Props";
+import { archiveMessage } from "../../features/contactSlice";
 
 interface LastetReviewProps {
     darkMode: boolean | undefined,
@@ -28,16 +31,31 @@ export const LastestReview: React.FC<LastetReviewProps> = ({ darkMode, dataDashb
         emailInfo: ''
     });
     const [modalOpen, setModalOpen] = useState(false);
-    const [checkMessage, setCheckMessage] = useState(false);
-    const [isChecked, setIsChecked] = useState(false);
 
-    const handleOpen = (data: ContactInterface) => {
+    const dispatch = useAppDispatch();
+
+    const handleOpen = (data: ContactInterface, id: string | undefined | number) => {
+        const MessageChecked = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 2000,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
         setModalInfo({emailInfo: data.email_description, emailSubject: data.email_subject, emailUser: data.email});
         setModalOpen(true);
-        setCheckMessage(true);
-
-        if(!data.isArchived){
-            setIsChecked(data.isArchived);
+        if(id !== undefined){
+            dispatch(archiveMessage(id));
+            if(!data.isArchived) {
+                MessageChecked.fire({
+                    icon: 'success',
+                    title: 'Message Checked!'
+                })
+            }
         }
 
     }
@@ -58,8 +76,8 @@ export const LastestReview: React.FC<LastetReviewProps> = ({ darkMode, dataDashb
                     <p>{modalInfo.emailInfo}</p>
                 </ModalInfo>
             </Modal>
-            <ContainerReview darkmode={darkMode}>
-                <Title darkmode={darkMode}>Latest Review by Customers</Title>
+            <ContainerReview darkmode={darkMode ? 0 : 1}>
+                <Title darkmode={darkMode ? 0 : 1}>Latest Review by Customers</Title>
                 <CardContainer> 
                     <SwiperContainer
                         modules={[Navigation, A11y]}
@@ -69,23 +87,23 @@ export const LastestReview: React.FC<LastetReviewProps> = ({ darkMode, dataDashb
                     >
                         {dataDashboard.map((data, index) => (
                             <SwiperSlide key={index}>
-                                <Card darkmode={darkMode}>
-                                    <EmailSubject darkmode={darkMode}>
+                                <Card darkmode={darkMode ? 0 : 1}>
+                                    <EmailSubject darkmode={darkMode ? 0 : 1}>
                                         {data.email_subject}
                                     </EmailSubject>
-                                    <ReviewComent darkmode={darkMode}>
+                                    <ReviewComent darkmode={darkMode ? 0 : 1}>
                                         {data.email_description}
                                     </ReviewComent>
                                     <InnerCard>
                                         <ImgProfile src={'https://robohash.org/'+data.name}/>
-                                        <ProfileContainer darkmode={darkMode}>
+                                        <ProfileContainer darkmode={darkMode ? 0 : 1}>
                                             <h4>{data.name}</h4>
                                             <p>{data.email}</p>
                                             <p>{data.phone}</p>
                                         </ProfileContainer>
                                         <ButtonContainer>
-                                            <Button view={isChecked}><AiOutlineCheckCircle /></Button>
-                                            <ButtonOpen onClick={() => handleOpen(data)}><AiOutlineFullscreen /></ButtonOpen>
+                                            <Button view={data.isArchived ? 0 : 1}><AiOutlineCheckCircle /></Button>
+                                            <ButtonOpen onClick={() => handleOpen(data, data.id)}><AiOutlineFullscreen /></ButtonOpen>
                                         </ButtonContainer>
                                     </InnerCard>
                                 </Card>
@@ -98,7 +116,7 @@ export const LastestReview: React.FC<LastetReviewProps> = ({ darkMode, dataDashb
     );
 }
 
-const Modal = styled.div<Props>`
+const Modal = styled.div<{modalopen: boolean}>`
     display: ${props => props.modalopen === true ? 'block' : 'none'};
     position: fixed; 
     left: 0;
@@ -210,7 +228,7 @@ const ButtonModalClose = styled.button`
     }
 `;
 
-const ContainerReview = styled.div<Props>`
+const ContainerReview = styled.div<{darkmode: number}>`
     box-shadow: 0px 4px 4px #00000010;
     border-radius: 20px;
     width: 1450px;
@@ -219,12 +237,12 @@ const ContainerReview = styled.div<Props>`
     margin-top: 40px;
     max-width: 1450px;
     padding: 30px;
-    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
+    background-color: ${props => props.darkmode === 0 ? '#202020' : '#ffff'};
     transition: 0.5s;
 `;
 
-const Title = styled.h3<Props>`
-    color: ${props => props.darkmode ? '#fff' : '#393939'};
+const Title = styled.h3<{darkmode: number}>`
+    color: ${props => props.darkmode === 0 ? '#fff' : '#393939'};
     transition: 0.5s;
     font-size: 20px;
     font-family: 'Poppins', sans-serif;
@@ -234,11 +252,11 @@ const CardContainer = styled.div`
     margin-top: 10px;
 `;
 
-const Card = styled.div<Props>`
+const Card = styled.div<{darkmode: number}>`
     width: 431px;
     height: 275px;
     border: ;
-    border: ${props => props.darkmode ? '1px solid #3D3D3D' : '1px solid #EBEBEB'};
+    border: ${props => props.darkmode === 0 ? '1px solid #3D3D3D' : '1px solid #EBEBEB'};
     border-radius: 20px;
     padding: 30px;
     box-shadow: 0px 3px 10px #00000030;
@@ -249,18 +267,18 @@ const Card = styled.div<Props>`
     }
 `;
 
-const EmailSubject = styled.h4<Props>`
+const EmailSubject = styled.h4<{darkmode: number}>`
     color: #393939;
-    color: ${props => props.darkmode ? '#FFE' : '#393939'};
+    color: ${props => props.darkmode === 0 ? '#FFE' : '#393939'};
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     margin-bottom: 10px;
     transition: 0.5s;
 `;
 
-const ReviewComent = styled.p<Props>`
+const ReviewComent = styled.p<{darkmode: number}>`
     transition: 0.5s;
-    color: ${props => props.darkmode ? '#fff' : '#4E4E4E'};
+    color: ${props => props.darkmode === 0 ? '#fff' : '#4E4E4E'};
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
     margin-bottom: 30px;
@@ -283,11 +301,11 @@ const InnerCard = styled.div`
     }
 `;
 
-const ProfileContainer = styled.div<Props>` 
+const ProfileContainer = styled.div<{darkmode: number}>` 
     width: 80%;
 
     h4 {
-        color: ${props => props.darkmode ? '#FFE' : '#262626'};
+        color: ${props => props.darkmode === 0 ? '#FFE' : '#262626'};
         font-family: 'Poppins', sans-serif;
         font-size: 16px;
         margin-bottom: 10px;
@@ -310,22 +328,21 @@ const ButtonContainer = styled.div`
     justify-content: space-between;
 `;
 
-const Button = styled.button<Props>`
+const Button = styled.button<{view: number}>`
     border: none;
     background: none;
     font-size: 24px;
     cursor: pointer;
-    color: ${props => props.view === false ? '#E23428' : '#5AD07A'};
+    color: ${props => props.view === 0 ? '#5AD07A' : '#E23428'};
 `;
 
-const ButtonOpen = styled.button<Props>`
+const ButtonOpen = styled.button<{darkmode?: number, children?: any}>`
     border: none;
     background: none;
     font-size: 24px;
     cursor: pointer;
-    color: ${props => props.darkmode ? '#FFE' : '#575757'};
+    color: ${props => props.darkmode === 0 ? '#FFE' : '#575757'};
     transition: 0.5s;
-
 `;
 
 const ImgProfile = styled.img`

@@ -10,7 +10,7 @@ export const contactMessage: ContactInterface[] = [
       "email_description": "This is a sample email description.This is a sample email description.This is a sample email description.This is a sample email description.This is a sample email description.This is a sample email description.This is a sample email description.This is a sample email description.",
       "date": "2023-05-24",
       "dateTime":"12:03pm",
-      "isArchived": true
+      "isArchived": false
     },
     {
       "id": "67890",

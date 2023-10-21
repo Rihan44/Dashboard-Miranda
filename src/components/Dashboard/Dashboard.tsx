@@ -84,7 +84,7 @@ export const Dashboard = () => {
                     </Card>
                 </ContainerCards>
                 {status === 'fulfilled'
-                    ? <LastestReview darkmode={darkMode ? 0 : 1} dataDashboard={dataContact} />
+                    ? <LastestReview darkMode={darkMode} dataDashboard={dataContact} />
                     : status === 'rejected' ? alert('Algo falló')
                         : <SpinnerLoader></SpinnerLoader>
                 }
@@ -112,10 +112,12 @@ const Card = styled.div<{darkmode: number}>`
     transition: 0.5s;
 
     &:hover {
-
         transform: scale(1.1);
+
         div:nth-child(1) {
+            transition: 0.5s;
             background: #E23428;
+
             svg {
                color: #FFFFFF; 
             }
@@ -123,7 +125,7 @@ const Card = styled.div<{darkmode: number}>`
     }
 
     div:nth-child(1) {
-        background-color: ${props => props.darkmode ? '#E234281C' : '#FFEDEC'};
+        background-color: ${props => props.darkmode === 0 ? '#E234281C' : '#FFEDEC'};
         width: 65px;
         height: 65px;
         border-radius: 8px;
@@ -132,6 +134,7 @@ const Card = styled.div<{darkmode: number}>`
         justify-content: center;
         margin-left: 30px;
         transition: 0.5s;
+
         svg {
             width: 28px;
             height: 20px;
@@ -141,11 +144,13 @@ const Card = styled.div<{darkmode: number}>`
 
     div:nth-child(2){
         margin-left: 22px;
+        transition: 0.5s;
+
         h4 {
             font-family: 'Poppins', sans-serif;
             font-size: 30px;
             transition: color 0.5s;
-            color: ${props => props.darkmode ? '#FFEDEC' : '#393939'};
+            color: ${props => props.darkmode === 0 ? '#FFEDEC' : '#393939'};
         }
 
         p {
