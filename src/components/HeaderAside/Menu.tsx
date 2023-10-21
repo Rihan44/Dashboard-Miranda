@@ -12,7 +12,6 @@ import { NavLink } from "react-router-dom";
 import { ProfileCompontent } from "../Dashboard/Profile";
 import { useContext } from "react";
 import { AsideContext } from "../Context/ToggleAsideContext";
-import { Props } from "../../interfaces/Props";
 
 interface PropsMenu {
     setHeaderTitle: (title: string) => void

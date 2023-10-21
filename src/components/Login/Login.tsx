@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import Swal from 'sweetalert2';
 
 import { FormEvent, useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
@@ -35,25 +36,43 @@ export const Login = () => {
     }
 
     function handleSubmit(e: FormEvent<HTMLFormElement>): void{
+        const ToastLogin = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 2000,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
         e.preventDefault();
         if(inputTextEmail === userAdmin.email && inputTextPass === userAdmin.password){
             setIsCorrect(false);
             authDispatch({type: 'LOGIN', payload: {authenticated: true, username: userAdmin.user, email: userAdmin.email}})
             navigate('/');
+            ToastLogin.fire({
+                icon: 'success',
+                title: 'Login successfully!'
+            })
         } else {
             setIsCorrect(true);
+            ToastLogin.fire({
+                icon: 'error',
+                title: 'Error with the login'
+            })
         }
     }
 
     return(
-        
         <LoginContainer>
-            <Title>Login</Title>
+            <Title>Login Miranda Dashboard</Title>
             <FormContainer onSubmit={handleSubmit}>
                 <Label>Email</Label>
-                <Input type="text" onChange={handleChangeEmail} data-cy='inputUserEmail'/>
+                <Input type="text" placeholder="email@gmail.com..." onChange={handleChangeEmail} data-cy='inputUserEmail'/>
                 <Label>Password</Label>
-                <Input type="text" onChange={handleChangePass} data-cy='inputPasswordUser'/>
+                <Input type="password" placeholder="password..." onChange={handleChangePass} data-cy='inputPasswordUser'/>
                 <Button data-cy="loginButton">Login</Button>
                 <FormParagraph>Email Test: <small>asmuela.dev@gmail.com</small></FormParagraph>
                 <FormParagraph>Pass Test: <small>123456</small></FormParagraph>
