@@ -1,15 +1,15 @@
 import styled from "styled-components";
+import Swal from 'sweetalert2';
+
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
 
 import { HiOutlineMail } from "react-icons/hi";
 import { LuBell } from "react-icons/lu";
 import { GoSignOut } from "react-icons/go";
 import { TbArrowsLeftRight } from "react-icons/tb";
-import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContainer";
 import { AsideContext } from "../Context/ToggleAsideContext";
-import { Props } from "../../interfaces/Props";
-
 
 interface PropsHeader {
     title: string,
@@ -22,12 +22,42 @@ export const Header: React.FC<PropsHeader> = ({ title, subtitle, subtitleSmall }
     const navigate = useNavigate();
     const { authDispatch } = useContext(AuthContext);
     const { asideDispatch } = useContext(AsideContext);
+
     const {asideState} = useContext(AsideContext);
     let darkMode: boolean = asideState?.darkMode || false;
 
-    const handleLogOut = () => {
-        authDispatch({ type: 'LOGOUT' });
-        navigate('/login');
+    const handleLogOut = async() => {
+        const ToastLogOut = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 2000,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        const { value: accept } = await Swal.fire({
+            title: 'Are you sure that you want to LogOut?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#135846',
+            cancelButtonColor: '#E23428',
+            confirmButtonText: 'Yes, logout'
+        })
+
+        if(accept){
+            ToastLogOut.fire({
+                icon: 'success',
+                title: 'Logout successfully!'
+            })
+            setTimeout(() => {
+                authDispatch({ type: 'LOGOUT' });
+                navigate('/login');
+            }, 500);
+        }
+ 
     }
 
     const handleToggle = () => {
