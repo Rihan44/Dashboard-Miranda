@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
+import Swal from 'sweetalert2';
+
+import { useMemo, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
@@ -16,15 +18,14 @@ import { Tabla } from "../Reusables/Tabla";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { StatusParagraph } from "../Reusables/StatusParagraph";
 import { RoomInterface } from "../../interfaces/roomInterface";
-import { Props } from "../../interfaces/Props";
 
 export const RoomsList = () => {
 
     const {asideState} = useContext(AsideContext);
+    let darkMode: boolean = asideState?.darkMode || false;
 
     const [isActiveButton, setIsActiveButton] = useState('allRooms');
     const [selectData, setSelectData] = useState('');
-    const [dataRooms, setDataRooms] = useState<RoomInterface[]>([]);
 
     const allRooms = isActiveButton === 'allRooms';
     const statusAvailable = isActiveButton === 'statusAvailable';
@@ -47,26 +48,49 @@ export const RoomsList = () => {
         setSelectData(e.target.value);
     }
 
-    const handleDelete = (id: string | number | undefined) => {
-        if(id !== undefined)
+    const handleDelete = async(id: string | number | undefined) => {
+        const ToastDelete = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 2000,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+    
+        const { value: accept } = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#135846',
+            cancelButtonColor: '#E23428',
+            confirmButtonText: 'Yes, delete it!'
+        })
+
+        if(id !== undefined && accept){
             dispatch(deleteRoom(id));
+            setTimeout(() => {
+                ToastDelete.fire({
+                    icon: 'success',
+                    title: 'Deleted room successfully!'
+                  })
+            }, 850)
+        }
     }
 
     const handleEdit = (id: string | number | undefined) => {
         if(id !== undefined) {
             dispatch(getRoom(id));
             navigate(`/rooms/update-room/${id}`);
-        }
-    
+        } 
     }
 
-    useEffect(() => {
+    const dataRooms = useMemo(() => {
 
         let dataArray: RoomInterface[] = roomsDataUpdated.length !== 0 ? [ ...roomsDataUpdated] : [...roomsData];
-
-        if (status === 'fulfilled') {
-            setDataRooms(dataArray);
-        }
 
         switch (isActiveButton) {
             case 'statusAvailable':
@@ -93,9 +117,9 @@ export const RoomsList = () => {
                 dataArray.sort((a, b) => Number(a.room_number) - Number(b.room_number));
         }
 
-        setDataRooms(dataArray);
+        return dataArray;
 
-    }, [isActiveButton, setDataRooms, selectData, roomsData, status, roomsDataUpdated])
+    }, [isActiveButton, selectData, roomsData, status, roomsDataUpdated])
 
     useEffect(() => {
         dispatch(getAllRooms());
@@ -131,14 +155,14 @@ export const RoomsList = () => {
         },
         {
             property: 'price', label: 'Price', display: ({ price, offer_price }: RoomInterface) => (
-                <PriceParagraph darkmode={asideState.darkMode?.toString()}>
+                <PriceParagraph darkmode={darkMode ? 0 : 1}>
                     {offer_price ? <><del>{price}</del><small>/Night</small></> : <>{price}<small>/Night</small></>}
                 </PriceParagraph>
             )
         },
         {
             property: 'offer_price', label: 'Offer Price', display: ({ offer_price, discount, price }: RoomInterface) => (
-                <Discount darkmode={asideState.darkMode?.toString()}>{offer_price === false ? <del>No Offer</del> : (Number(price) - (discount * Number(price) / 100))}</Discount>
+                <Discount darkmode={darkMode ? 0 : 1}>{offer_price === false ? <del>No Offer</del> : (Number(price) - (discount * Number(price) / 100))}</Discount>
             )
         },
         {
@@ -160,13 +184,13 @@ export const RoomsList = () => {
                     <FilterContainer>
                     {statusDelete === 'pending' && <DeleteSpinner/>}
                         <TabsContainer>
-                            <ButtonTabs darkmode={asideState.darkMode?.toString()} actived={allRooms} onClick={() => handleTab('allRooms')}>
+                            <ButtonTabs actived={allRooms} onClick={() => handleTab('allRooms')}>
                                 All Rooms
                             </ButtonTabs>
-                            <ButtonTabs darkmode={asideState.darkMode?.toString()} actived={statusAvailable} onClick={() => handleTab('statusAvailable')}>
+                            <ButtonTabs actived={statusAvailable} onClick={() => handleTab('statusAvailable')}>
                                 All Available
                             </ButtonTabs>
-                            <ButtonTabs darkmode={asideState.darkMode?.toString()} actived={statusBooked} onClick={() => handleTab('statusBooked')}>
+                            <ButtonTabs actived={statusBooked} onClick={() => handleTab('statusBooked')}>
                                 All Booked
                             </ButtonTabs>
                         </TabsContainer>
@@ -221,7 +245,7 @@ const Buttons = styled.button`
     cursor: pointer;
 `;
 
-const ButtonTabs = styled(Buttons)<Props>`
+const ButtonTabs = styled(Buttons)<{actived: boolean}>`
     color: ${props => props.actived ? "#135846" : "#6E6E6E"};
     border-bottom: ${props => props.actived ? "2px solid #135846" : "none"};
     font-size: 16px;
@@ -275,7 +299,7 @@ const Filters = styled.div`
     }
 `;
 
-const Select = styled.select<Props>`
+const Select = styled.select<{onChange: any}>`
     width: 129px; 
     height: 50px;
     border: 1px solid #135846;
@@ -393,8 +417,8 @@ const AmenitiesContainer = styled.div`
     padding: 10px;
 `;
 
-const PriceParagraph = styled.p<Props>`
-    color: ${props => props.darkmode === 'true' ? '#fff' : '#212121'};
+const PriceParagraph = styled.p<{darkmode: number}>`
+    color: ${props => props.darkmode === 0 ? '#fff' : '#212121'};
     font-weight: bold;
     font-size: 20px;
     transition: 0.5s;
@@ -406,10 +430,10 @@ const PriceParagraph = styled.p<Props>`
     }
 `;
 
-const Discount = styled.div<Props>`
+const Discount = styled.div<{darkmode: number}>`
     font-weight: bold;
     font-size: 20px;
-    color: ${props => props.darkmode === 'true' ? '#fff' : '#212121'};
+    color: ${props => props.darkmode ===  0 ? '#fff' : '#212121'};
     transition: 0.5s;
 `;
 

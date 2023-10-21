@@ -21,12 +21,6 @@ interface TablaInterface {
     totalHeaders?: number
 }
 
-interface DataTabla { 
-    display?: object
-    id: string,
-    property: string | number
-}
-
 interface TitleInterface {
     label: string
 }
@@ -48,20 +42,6 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) =>
 
     return (
         <>
-            {/* <TableContainer>
-                <TableContainerTitle darkmode={darkMode ? 0 : 1}>
-                    <TableContainerTitleTR>
-                        {cols?.map((col: TitleInterface, i: number) =>
-                            <TableTitles darkmode={darkMode ? 0 : 1} totalheaders={totalHeaders} key={i}>{col.label && col.label}</TableTitles>
-                        )}
-                    </TableContainerTitleTR>
-                </TableContainerTitle>
-                <TableBodyContainer>
-                    <TableBody darkmode={darkMode ? 0 : 1} ref={tableRef}>
-                        {data?.map(displayRow)}
-                    </TableBody>
-                </TableBodyContainer>
-            </TableContainer> */}
             <TableBodyContainer>
                 <TableContainer>
                     <TableContainerTitle darkmode={darkMode ? 0 : 1}>
