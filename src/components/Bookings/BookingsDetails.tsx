@@ -18,6 +18,8 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 
 export const BookingFile = () => {
 
+    /* AÑADIR FOTO */
+
     const { asideState } = useContext(AsideContext);
     let darkMode: boolean = asideState?.darkMode || false;
     

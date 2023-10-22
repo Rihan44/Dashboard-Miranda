@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import Swal from 'sweetalert2';
+
 import { FormEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useContext } from "react";
@@ -14,7 +16,6 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { ToastAlert } from "../Reusables/ToastAlert";
 import { RoomInterface } from "../../interfaces/roomInterface";
-import { Props } from "../../interfaces/Props";
 
 export const UpdateRoom = () => {
 
@@ -56,6 +57,17 @@ export const UpdateRoom = () => {
     }
 
     const handleUpdate = () => {
+        const ToastUpdated = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 2000,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
         const dataUpdate: RoomInterface = {
             id: id,
             room_type: roomTypeState,
@@ -69,6 +81,10 @@ export const UpdateRoom = () => {
         }
         dispatch(updateRoom(dataUpdate));
         navigate('/rooms');
+        ToastUpdated.fire({
+            icon: 'success',
+            title: `Room with id: ${id} updated successfully!`
+        })
     }
 
     const handleSelectType = (e: React.ChangeEvent<HTMLInputElement>): void  => {
@@ -139,7 +155,7 @@ export const UpdateRoom = () => {
                     <ButtonBack onClick={() => navigate('/rooms')}><AiOutlineArrowLeft/></ButtonBack>
                     <FormContainer>
                         <Title>Update Room: {id}</Title>
-                        <Form onSubmit={handleSubmit} darkmode={asideState.darkMode}>
+                        <Form onSubmit={handleSubmit} darkmode={asideState.darkMode ? 0 : 1}>
                         <FormBox>
                                 <FormBoxInner>
                                     <div>
@@ -235,7 +251,7 @@ const Title = styled.h2`
     font-family: 'Poppins', sans-serif;
 `;
 
-const Form = styled.form<Props>`
+const Form = styled.form<{darkmode: number}>`
     width: 1050px;
     height: 660px;
     box-shadow: 0px 3px 10px #00000030;
@@ -246,7 +262,7 @@ const Form = styled.form<Props>`
     justify-content: center;
     align-items: center;
     position: relative;
-    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
+    background-color: ${props => props.darkmode === 0 ? '#202020' : '#ffff'};
     transition: 0.5s;
 
     div {
@@ -275,7 +291,7 @@ const FormBoxInner = styled.div`
     }
 `;
 
-const Select = styled.select<Props>`
+const Select = styled.select<{onChange: any}>`
     width: 140px; 
     height: 30px;
     border: 1px solid #135846;
@@ -292,7 +308,7 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const TextArea = styled.textarea<Props>`
+const TextArea = styled.textarea<{type?: string, onChange?: any, placeholder?: string}>`
     width: 150px;
     resize: none;
     border: none;
@@ -304,7 +320,7 @@ const TextArea = styled.textarea<Props>`
     color: #262626;
 `;
 
-const Input = styled.input<Props>`
+const Input = styled.input<{type?: string, value?: number | string}>`
     margin-left: 20px;
     margin-bottom: 10px;
     width: 150px;
