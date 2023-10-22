@@ -89,7 +89,7 @@ export const Bookings = () => {
         })
     
         const { value: accept } = await Swal.fire({
-            title: 'Are you sure?',
+            title: 'Are you sure you want to delete this booking?',
             text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,

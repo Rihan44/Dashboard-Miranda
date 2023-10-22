@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
+import Swal from 'sweetalert2';
+
+import { useMemo, useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
@@ -16,13 +18,12 @@ import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { UsersInterface } from "../../interfaces/usersInterface";
-import { Props } from "../../interfaces/Props";
 
 export const UsersList = () => {
     const {asideState} = useContext(AsideContext);
+    let darkMode: boolean = asideState?.darkMode || false;
 
     const [isActiveButton, setIsActiveButton] = useState('allEmployee');
-    const [dataUsers, setDataUsers] = useState<UsersInterface[]>([]);
     const [searchData, setSearchData] = useState('');
 
     const usersData = useAppSelector((state) => state.users.data);
@@ -48,9 +49,37 @@ export const UsersList = () => {
         setSearchData(e.target.value.toLowerCase());
     }
 
-    const handleDelete = (id: string | number | undefined) => {
-        if(id !== undefined)
+    const handleDelete = async(id: string | number | undefined) => {
+        const ToastDelete = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 2000,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+    
+        const { value: accept } = await Swal.fire({
+            title: 'Are you sure you want to delete this user??',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#135846',
+            cancelButtonColor: '#E23428',
+            confirmButtonText: 'Yes, delete it!'
+        })
+
+        if(id !== undefined && accept) {
             dispatch(deleteUser(id));
+            setTimeout(() => {
+                ToastDelete.fire({
+                    icon: 'success',
+                    title: 'Deleted User successfully!'
+                  })
+            }, 850)
+        }
     }
 
     const handleEdit = (id: string | number | undefined) => {
@@ -68,13 +97,9 @@ export const UsersList = () => {
         return date.toLocaleDateString('en-EN', options);
     };
 
-    useEffect(() => {
+    const dataUsers = useMemo(() => {
 
         let dataArray: UsersInterface[] = usersUpdatedData.length !== 0 ? [ ...usersUpdatedData] : [...usersData];
-
-        if(status === 'fulfilled'){
-            setDataUsers(dataArray);
-        }
 
         if (searchData !== '') {
             dataArray = dataArray.filter(data => data.name.toLowerCase().includes(searchData));
@@ -102,9 +127,9 @@ export const UsersList = () => {
                 });
         }
 
-        setDataUsers(dataArray);
+        return dataArray;
 
-    }, [isActiveButton, setDataUsers, searchData, status, usersData, usersUpdatedData])
+    }, [isActiveButton, searchData, status, usersData, usersUpdatedData])
 
     useEffect(() => {
         dispatch(getAllUsers());
@@ -120,7 +145,7 @@ export const UsersList = () => {
         },
         {
             property: 'name', label: 'Name', display: ({ name, id, email, hire_date }: UsersInterface) => (
-                    <NameInner darkmode={asideState.darkMode?.toString()}>
+                    <NameInner darkmode={darkMode ? 0 : 1}>
                         <h4>{name}</h4>
                         <p>{email}</p>
                         <p style={{color: '#799283', fontSize: '16px'}}>{id}</p>
@@ -130,7 +155,7 @@ export const UsersList = () => {
         },
         {
             property: 'employee_position', label: 'Employee position', display: ({ employee_position, job_description }: UsersInterface) => (
-                <EmployeeContainer darkmode={asideState.darkMode?.toString()}>
+                <EmployeeContainer darkmode={darkMode ? 0 : 1}>
                     <h4>{employee_position}</h4>
                     <p>{job_description}</p>
                 </EmployeeContainer>
@@ -139,7 +164,7 @@ export const UsersList = () => {
         {
             property: 'phone_number', label: 'Contact', display: ({ phone_number }: UsersInterface) => (
                 <PhoneContainer>
-                    <Call darkmode={asideState.darkMode?.toString()} to={`tel:${phone_number}`}>
+                    <Call darkmode={darkMode ? 0 : 1} to={`tel:${phone_number}`}>
                         <BsFillTelephoneFill />
                         <p>{phone_number}</p>
                     </Call>
@@ -148,7 +173,7 @@ export const UsersList = () => {
         },
         {
             property: 'status', label: 'Status', display: ({ status, id }: UsersInterface) => (
-                <StatusContainer is_active={status.toString()}>
+                <StatusContainer is_active={status ? 0 : 1}>
                     <p>{status ? 'Active' : 'Inactive'}</p>
                     <OptionsButton>
                         <BsTrash onClick={() => handleDelete(id)} />
@@ -194,7 +219,7 @@ export const UsersList = () => {
     )
 }
 
-const UsersListContainer = styled.div<Props>`
+const UsersListContainer = styled.div<{children: any}>`
     margin: 50px;
     width: 100%;
 `;
@@ -222,7 +247,7 @@ const Buttons = styled.button`
     cursor: pointer;
 `;
 
-const ButtonTabs = styled(Buttons)<Props>`
+const ButtonTabs = styled(Buttons)<{actived: boolean}>`
     color: ${props => props.actived ? "#135846" : "#6E6E6E"};
     border-bottom: ${props => props.actived ? "2px solid #135846" : "none"};
     font-size: 16px;
@@ -288,40 +313,40 @@ const NameContainer = styled.div`
     }
 `;
 
-const NameInner = styled.div<Props>` 
+const NameInner = styled.div<{darkmode: number}>` 
     display: flex;
     flex-direction: column;
     font-family: 'Poppins', sans-serif;
 
     h4 {
         font-size: 16px; 
-        color: ${props => props.darkmode === 'true' ? '#fff' : '#212121'};
+        color: ${props => props.darkmode === 0 ? '#fff' : '#212121'};
         transition: 0.5s;
     }
 
     p {
-        color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
+        color: ${props => props.darkmode === 0 ? '#fff' : '#393939'};
         font-size: 13px;
         margin: 2px;
         transition: 0.5s;
     }
 `;
 
-const EmployeeContainer = styled.div<Props>`
+const EmployeeContainer = styled.div<{darkmode: number}>`
     display: flex; 
     flex-direction: column;
     font-family: 'Poppins', sans-serif;
 
     h4 {
         color: #212121;
-        color: ${props => props.darkmode === 'true' ? '#fff' : '#212121'};
+        color: ${props => props.darkmode === 0 ? '#fff' : '#212121'};
         font-size: 16px; 
         margin-bottom: 20px;
         transition: 0.5s;
     }
 
     p {
-        color: ${props => props.darkmode === 'true' ? '#fff' : '#393939'};
+        color: ${props => props.darkmode === 0 ? '#fff' : '#393939'};
         font-size: 16px;
         transition: 0.5s;
     }
@@ -334,13 +359,13 @@ const PhoneContainer = styled.div`
     }
 `;
 
-const Call = styled(NavLink)<Props>`
+const Call = styled(NavLink)<{darkmode: number}>`
     display: flex;
     text-decoration: none;
     width: 90%;
     justify-content: space-around;
     font-size: 20px;
-    color: ${props => props.darkmode === 'true' ? '#fff' : '#212121'};
+    color: ${props => props.darkmode === 0 ? '#fff' : '#212121'};
     letter-spacing: 2px;
     align-items: center;
     transition: 0.5s;
@@ -351,9 +376,9 @@ const Call = styled(NavLink)<Props>`
     }
 `;
 
-const StatusContainer = styled.div<Props>`
+const StatusContainer = styled.div<{is_active: number}>`
     p {
-        color: ${props => props.is_active !== 'true' ? '#E23428' : '#5AD07A'};
+        color: ${props => props.is_active !== 0 ? '#E23428' : '#5AD07A'};
     }
 `;
 
