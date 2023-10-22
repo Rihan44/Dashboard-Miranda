@@ -1,6 +1,8 @@
 import styled from "styled-components";
+import Swal from 'sweetalert2';
+
 import { useNavigate, useParams } from "react-router-dom";
-import { FormEvent, useContext, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 import { MainContainer } from "../Reusables/MainContainer";
@@ -11,8 +13,6 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 import { ToastAlert } from "../Reusables/ToastAlert";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { UsersInterface } from "../../interfaces/usersInterface";
-import { Props } from "../../interfaces/Props";
-
 
 export const UpdateUser = () => {
 
@@ -39,6 +39,17 @@ export const UpdateUser = () => {
     }
 
     const handleUpdate = () => {
+        const ToastUpdated = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 2000,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
         const updateData: UsersInterface = {
             id: id,
             name: userName,
@@ -52,6 +63,10 @@ export const UpdateUser = () => {
         }
         dispatch(updateUser(updateData));
         navigate('/users');
+        ToastUpdated.fire({
+            icon: 'success',
+            title: `User with id: ${id} updated successfully!`
+        })
     }
 
     const handleName = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -203,7 +218,7 @@ const Title = styled.h2`
     font-family: 'Poppins', sans-serif;
 `;
 
-const Form = styled.form<Props>`
+const Form = styled.form<{onSubmit: any}>`
     width: 600px;
     height: 700px;
     box-shadow: 0px 3px 10px #00000030;
@@ -242,7 +257,7 @@ const FormBoxInner = styled.div`
     }
 `;
 
-const Select = styled.select<Props>`
+const Select = styled.select<{onChange: any}>`
     width: 129px; 
     height: 30px;
     border: 1px solid #135846;
@@ -259,7 +274,7 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const TextArea = styled.textarea<Props>`
+const TextArea = styled.textarea<{type: string, onChange: any}>`
     width: 150px;
     resize: none;
     border: none;
@@ -271,7 +286,7 @@ const TextArea = styled.textarea<Props>`
     color: #262626;
 `;
 
-const Input = styled.input<Props>`
+const Input = styled.input<{type: string, value?: any, placeholder?: string}>`
     margin-left: 20px;
     margin-bottom: 10px;
     width: 150px;
