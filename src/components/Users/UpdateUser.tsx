@@ -139,7 +139,7 @@ export const UpdateUser = () => {
                                         <FormBoxInner>
                                             <div>
                                                 <Label>Add 1 photo</Label>
-                                                <Input type="file" placeholder="Add photos..." />
+                                                <Input type="file" placeholder="Add photos..."/>
                                             </div>
                                             <div>
                                                 <Label>Full Name</Label>
@@ -172,7 +172,7 @@ export const UpdateUser = () => {
                                             </div>
                                             <div>
                                                 <Label>Password</Label>
-                                                <Input type="password" value={userPassword} onCanPlay={handlePassword} />
+                                                <Input type="password" value={userPassword} onChange={handlePassword} />
                                             </div>
                                             <StatusContainer>
                                                 <Label>Status: <small>{userData[0]?.status ? 'Active' : 'Inactive'}</small></Label>
@@ -274,7 +274,7 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const TextArea = styled.textarea<{type: string, onChange: any}>`
+const TextArea = styled.textarea<{type: string, onChange?: any}>`
     width: 150px;
     resize: none;
     border: none;
@@ -286,7 +286,7 @@ const TextArea = styled.textarea<{type: string, onChange: any}>`
     color: #262626;
 `;
 
-const Input = styled.input<{type: string, value?: any, placeholder?: string}>`
+const Input = styled.input<{type: string, value?: any, placeholder?: string, onChange?: any}>`
     margin-left: 20px;
     margin-bottom: 10px;
     width: 150px;

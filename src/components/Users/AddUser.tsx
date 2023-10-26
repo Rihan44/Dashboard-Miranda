@@ -11,7 +11,6 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 
 import { createUser } from "../../features/usersSlice";
 import { UsersInterface } from "../../interfaces/usersInterface";
-import { Props } from "../../interfaces/Props";
 
 export const AddUser = () => {
 
@@ -119,10 +118,10 @@ export const AddUser = () => {
                 <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft /></ButtonBack>
                     <FormContainer>
                         <Title>Add User</Title>
-                        <Form onSubmit={handleSubmit} darkmode={asideState.darkMode}>
+                        <Form onSubmit={handleSubmit}>
                             <FormBox>
                                 <FormBoxInner>
-                                    <ErrorParagraph visible={alert}>
+                                    {/* <ErrorParagraph>
                                         {userName === '' && userEmail === ''
                                             ? 'Fill in at least the name and email'
                                             : userName === '' && userEmail !== '' 
@@ -130,7 +129,7 @@ export const AddUser = () => {
                                                 : userName !== '' && userEmail === '' 
                                                     && 'Fill the email too'
                                         }
-                                    </ErrorParagraph>
+                                    </ErrorParagraph> */}
                                     <div>
                                         <Label>Add 1 photo</Label>
                                         <Input type="file" placeholder="Add photos..." />
@@ -213,7 +212,7 @@ const Title = styled.h2`
     font-family: 'Poppins', sans-serif;
 `;
 
-const Form = styled.form<Props>`
+const Form = styled.form<{onSubmit: any}>`
     width: 600px;
     height: 700px;
     box-shadow: 0px 3px 10px #00000030;
@@ -224,7 +223,6 @@ const Form = styled.form<Props>`
     justify-content: center;
     align-items: center;
     position: relative;
-    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
     transition: 0.5s;
 
     div {
@@ -253,7 +251,7 @@ const FormBoxInner = styled.div`
     }
 `;
 
-const Select = styled.select<Props>`
+const Select = styled.select<{onChange: any}>`
     width: 129px; 
     height: 30px;
     border: 1px solid #135846;
@@ -270,7 +268,7 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const TextArea = styled.textarea<Props>`
+const TextArea = styled.textarea<{type: string, placeholder: string, onChange?: any}>`
     width: 150px;
     resize: none;
     border: none;
@@ -383,10 +381,9 @@ const StatusContainer = styled.div`
     }
 `;
 
-const ErrorParagraph = styled.p<Props>`
+const ErrorParagraph = styled.p`
     position: absolute;
     top: 12px;
     color: #E23428;
     transition: 0.3s;
-    opacity: ${props => props.visible === 'true' ? 1 : 0};
 `;

@@ -1,17 +1,14 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
 import { FormEvent, useState } from "react";
 import { useAppDispatch } from "../../app/hooks"; 
 
 import { MainContainer } from "../Reusables/MainContainer"
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { AsideContext } from "../Context/ToggleAsideContext";
 import { createRoom } from "../../features/roomsSlice";
 import { roomsData } from "../../data/roomsData";
 import { RoomInterface } from "../../interfaces/roomInterface";
-import { Props } from "../../interfaces/Props";
 
 export const AddRoom = () => {
 
@@ -30,8 +27,6 @@ export const AddRoom = () => {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-
-    const {asideState} = useContext(AsideContext);
 
     const amenitiesList = [
         "1/3 Bed Space",
@@ -55,7 +50,6 @@ export const AddRoom = () => {
 
         return numeroAleatorio + letraAleatoria;
     }
-
 
     const handleSubmit =  (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
@@ -133,10 +127,10 @@ export const AddRoom = () => {
                 <ButtonBack onClick={() => navigate('/rooms')}><AiOutlineArrowLeft/></ButtonBack>
                     <FormContainer >
                         <Title>Room Form</Title>
-                        <Form onSubmit={handleSubmit} darkmode={asideState.darkMode}>
+                        <Form onSubmit={handleSubmit}>
                             <FormBox>
                                 <FormBoxInner>
-                                    <ErrorParagraph visible={alert}>
+                                    {/* <ErrorParagraph>
                                         {parseInt(roomNumberState) === 0 && amenitiesState.length === 0
                                             ? 'Fill in at least the room number and at least 1 amenities'
                                             : parseInt(roomNumberState) === 0 && amenitiesState.length !== 0
@@ -144,7 +138,7 @@ export const AddRoom = () => {
                                                 : parseInt(roomNumberState) !== 0 && amenitiesState.length === 0
                                                     && 'Fill at least 1 amenities too'
                                         }
-                                    </ErrorParagraph>
+                                    </ErrorParagraph> */}
                                     <div>
                                         <Label>Add 3 / 5 photos</Label>
                                         <Input type="text" placeholder="Add photos..." />
@@ -229,7 +223,7 @@ const Title = styled.h2`
     font-family: 'Poppins', sans-serif;
 `;
 
-const Form = styled.form<Props>`
+const Form = styled.form<{onSubmit: any}>`
     width: 1050px;
     height: 660px;
     box-shadow: 0px 3px 10px #00000030;
@@ -240,7 +234,6 @@ const Form = styled.form<Props>`
     justify-content: center;
     align-items: center;
     position: relative;
-    background-color: ${props => props.darkmode ? '#202020' : '#ffff'};
     transition: 0.5s;
 
     div {
@@ -269,7 +262,7 @@ const FormBoxInner = styled.div`
     }
 `;
 
-const Select = styled.select<Props>`
+const Select = styled.select<{onChange: any}>`
     width: 129px; 
     height: 30px;
     border: 1px solid #135846;
@@ -286,7 +279,7 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const TextArea = styled.textarea<Props>`
+const TextArea = styled.textarea<{type: string, placeholder?: string, onChange?: any}>`
     width: 150px;
     resize: none;
     border: none;
@@ -393,11 +386,10 @@ const ButtonBack = styled(Button)`
      }
 `;
 
-const ErrorParagraph = styled.p<Props>`
+const ErrorParagraph = styled.p<{visible: number}>`
     position: absolute;
     top: 12px;
     right: 35px;
     color: #E23428;
     transition: 0.3s;
-    opacity: ${props => props.visible === 'true' ? 1 : 0};
 `;
