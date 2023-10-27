@@ -14,8 +14,6 @@ import { getAllMessages } from "../../features/contactSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { ContactInterface } from "../../interfaces/contactInterface";
-import { Props } from "../../interfaces/Props";
-
 
 export const Dashboard = () => {
 

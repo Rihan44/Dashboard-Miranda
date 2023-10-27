@@ -120,7 +120,7 @@ const AsideMenu = styled.aside<{darkmode: number, context: number}>`
     align-items: center;
     
     box-shadow: ${props => props.darkmode === 0 ? '0px 8px 24px #0000006E' : '0px 8px 24px rgba(149, 157, 165, 0.2)'};
-    transition: 0.5s;
+    transition: 1s;
     background-color: ${props => props.darkmode === 0 ? '#202020' : '#ffff'};
     float: left;
     margin-left: ${props => props.context === 0 ? '-345px' : '0'};
