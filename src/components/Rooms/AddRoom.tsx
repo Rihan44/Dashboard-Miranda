@@ -1,7 +1,9 @@
-import styled from "styled-components"
+import styled from "styled-components";
+import Swal from 'sweetalert2';
+
 import { useNavigate } from "react-router-dom";
 import { FormEvent, useState } from "react";
-import { useAppDispatch } from "../../app/hooks"; 
+import { useAppDispatch } from "../../app/hooks";
 
 import { MainContainer } from "../Reusables/MainContainer"
 
@@ -12,8 +14,6 @@ import { RoomInterface } from "../../interfaces/roomInterface";
 
 export const AddRoom = () => {
 
-    /* TODO HACER COMPROBACION DE QUE SI EXISTE EL NUMERO DE HABITACIÓN NO PUEDAS GUARDARLO */
-
     const [roomTypeState, setRoomTypeState] = useState('Single Bed');
     const [roomNumberState, setRoomNumberState] = useState('');
     const [offerState, setOfferState] = useState(false);
@@ -22,8 +22,7 @@ export const AddRoom = () => {
     const [amenitiesState, setAmenitiesState] = useState<string[]>([]);
     const [roomDescription, setRoomDescription] = useState('');
 
-    const [alert, setAlert] = useState('false');
-    const [sameNumberAlert, setSameNumberAlert] = useState('false');
+    const [sameNumberAlert, setSameNumberAlert] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -51,63 +50,108 @@ export const AddRoom = () => {
         return numeroAleatorio + letraAleatoria;
     }
 
-    const handleSubmit =  (e: FormEvent<HTMLFormElement>): void => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
     }
 
-    const handleUpdate = () => {
+    const handleUpdate = async () => {
         const id = idAleatorio();
+
+        const roomType = roomTypeState === '' ? 'Single Bed' : roomTypeState;
+        const roomNumber = roomNumberState === '' ? '0' : roomNumberState;
+        const price = priceState === '' ? '30' : priceState;
+        const descriptionDefault = roomDescription === '' ? 'This is a default description for the room' : roomDescription;
+        const amenitiesDefault = amenitiesState.length === 0 ? ['Free Wifi', 'Air Conditioner', 'Towels', 'Television'] : amenitiesState;
+
         const dataUpdate: RoomInterface = {
             id: id,
-            room_type: roomTypeState,
-            room_number: roomNumberState,
+            room_type: roomType,
+            room_number: roomNumber,
             offer_price: offerState,
-            price: priceState,
+            price: price,
             status: "available",
             discount: offerState ? discountState : 0,
-            amenities: amenitiesState,
-            description: roomDescription
+            amenities: amenitiesDefault,
+            description: descriptionDefault
         }
         
+        const ToastAdd = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 2000,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
 
-        if(parseInt(roomNumberState) === 0 && amenitiesState.length === 0) {
-            setAlert('true');
-        } else if(parseInt(roomNumberState) !== 0 && amenitiesState.length !== 0){
-            setAlert('false');
+        if (roomTypeState === 'Single Bed' && roomNumberState === '' &&
+            priceState === '' && roomDescription === '' && amenitiesState.length === 0) {
+
+            const { value: accept } = await Swal.fire({
+                title: 'Are you sure yo want to add a room with the default values?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#135846',
+                cancelButtonColor: '#E23428',
+                confirmButtonText: 'Yes!'
+            })
+
+            if (accept) {
+                ToastAdd.fire({
+                    icon: 'success',
+                    title: 'Added room successfully!'
+                })
+                dispatch(createRoom(dataUpdate));
+                navigate('/rooms');
+            }
+        } else if(sameNumberAlert){
+            Swal.fire({
+                title: 'You cant add a room if the room number already exists',
+                icon: 'warning',
+                confirmButtonColor: '#135846',
+                confirmButtonText: 'Ok'
+            })
+        } else if(!sameNumberAlert) {
+            ToastAdd.fire({
+                icon: 'success',
+                title: 'Added room successfully!'
+            })
             dispatch(createRoom(dataUpdate));
             navigate('/rooms');
         }
-        
     }
 
-    const handleSelectType = (e: React.ChangeEvent<HTMLInputElement>): void  => {
+    const handleSelectType = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setRoomTypeState(e.target.value);
     }
 
     const handleRoomNumber = (e: React.ChangeEvent<HTMLInputElement>): void => {
-         roomsData.forEach((data) => {
-            if(data.room_number !== parseInt(e.target.value)){
-                setRoomNumberState(e.target.value);
-                setSameNumberAlert('false');
-            } else {
-                setSameNumberAlert('true');
-            }
-        }) 
+        const roomExist = roomsData.find((data) => data.room_number === parseInt(e.target.value)) || '';
+        setRoomNumberState(e.target.value);
+        
+        if(roomExist === ''){
+            setSameNumberAlert(false);
+        } else {
+            setSameNumberAlert(true);
+        }
+        
     }
 
-    const handleSelectOffer = (e: React.ChangeEvent<HTMLInputElement>): void  => {
-        if(e.target.value === "Yes") {
-            setOfferState(true);    
+    const handleSelectOffer = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        if (e.target.value === "Yes") {
+            setOfferState(true);
         } else {
-            setOfferState(false);    
+            setOfferState(false);
         }
     }
 
-    const handlePrice = (e: React.ChangeEvent<HTMLInputElement>): void  => {
+    const handlePrice = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setPriceState(e.target.value);
     }
 
-    const handleDiscount = (e: React.ChangeEvent<HTMLInputElement>): void  => {
+    const handleDiscount = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setDiscountState(parseInt(e.target.value));
     }
 
@@ -117,28 +161,19 @@ export const AddRoom = () => {
 
     const handleAmenities = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const value = e.target.value;
-        setAmenitiesState((prevAmenities) => {return [...prevAmenities, value]});
+        setAmenitiesState((prevAmenities) => { return [...prevAmenities, value] });
     }
 
     return (
         <>
             <MainContainer>
                 <AddRoomContainer>
-                <ButtonBack onClick={() => navigate('/rooms')}><AiOutlineArrowLeft/></ButtonBack>
+                    <ButtonBack onClick={() => navigate('/rooms')}><AiOutlineArrowLeft /></ButtonBack>
                     <FormContainer >
                         <Title>Room Form</Title>
                         <Form onSubmit={handleSubmit}>
                             <FormBox>
                                 <FormBoxInner>
-                                    {/* <ErrorParagraph>
-                                        {parseInt(roomNumberState) === 0 && amenitiesState.length === 0
-                                            ? 'Fill in at least the room number and at least 1 amenities'
-                                            : parseInt(roomNumberState) === 0 && amenitiesState.length !== 0
-                                                ? 'Fill the room number too'
-                                                : parseInt(roomNumberState) !== 0 && amenitiesState.length === 0
-                                                    && 'Fill at least 1 amenities too'
-                                        }
-                                    </ErrorParagraph> */}
                                     <div>
                                         <Label>Add 3 / 5 photos</Label>
                                         <Input type="text" placeholder="Add photos..." />
@@ -152,9 +187,10 @@ export const AddRoom = () => {
                                             <Option>Deluxe</Option>
                                         </Select>
                                     </div>
-                                    <div>
+                                    <div style={{position: 'relative'}}>
                                         <Label>Room Number</Label>
-                                        <Input type="text" placeholder="049..." onChange={handleRoomNumber}/>
+                                        <Input type="text" placeholder="049..." onChange={handleRoomNumber} />
+                                        <ErrorNumber visible={sameNumberAlert ? 0 : 1}>The room number already exists</ErrorNumber>
                                     </div>
                                     <div>
                                         <Label>Description</Label>
@@ -163,37 +199,45 @@ export const AddRoom = () => {
                                     <div>
                                         <Label>Offer</Label>
                                         <Select onChange={handleSelectOffer}>
-                                            <Option>Yes</Option>
                                             <Option>No</Option>
+                                            <Option>Yes</Option>
                                         </Select>
                                     </div>
                                     <div>
                                         <Label>Price /Night</Label>
-                                        <Input type="text" placeholder="145..." onChange={handlePrice}/>
+                                        <Input type="text" placeholder="145..." onChange={handlePrice} />
                                     </div>
                                     <div>
-                                        <Label>Discount</Label>
-                                        {!offerState 
-                                            ? <Input type="number" min="0" max="100" value={0} onChange={handleDiscount} disabled/>
-                                            : <Input type="number" min="0" max="100" placeholder="20%..." onChange={handleDiscount}/>
-                                        }  
-                                    </div>                              
+                                        {!offerState
+                                            ? <Label style={{ color: 'grey' }}><del>Discount</del></Label>
+                                            : <Label>Discount</Label>
+                                        }
+                                        {!offerState
+                                            ? <Input type="number" min="0" max="100" placeholder="0..." onChange={handleDiscount} disabled />
+                                            : <Input type="number" min="0" max="100" placeholder="20%..." onChange={handleDiscount} />
+                                        }
+                                    </div>
                                     <div>
-                                    <Label>Cancellation</Label>
+                                        <Label>Cancellation</Label>
                                         <TextArea type="text" placeholder="Cancellation..." ></TextArea>
                                     </div>
                                 </FormBoxInner>
-                                <AmenetiesBox>
+                                <AmenitiesBox>
                                     <Label>Amenities</Label>
                                     <CheckBoxContainer>
                                         {amenitiesList.map((e, index) =>
                                             <div key={index}>
                                                 <Label>{e}</Label>
-                                                <Input type="checkbox" value={e} onChange={handleAmenities}/>
+                                                {
+                                                    e === 'Free Wifi' || e === 'Towels' || e === 'Air Conditioner' || e === 'Television'
+                                                        ? <Input type="checkbox" checked value={e} onChange={handleAmenities} />
+                                                        : <Input type="checkbox" value={e} onChange={handleAmenities} />
+                                                }
+
                                             </div>
                                         )}
                                     </CheckBoxContainer>
-                                </AmenetiesBox>
+                                </AmenitiesBox>
                             </FormBox>
                             <Button onClick={handleUpdate}>Add Room</Button>
                         </Form>
@@ -223,7 +267,7 @@ const Title = styled.h2`
     font-family: 'Poppins', sans-serif;
 `;
 
-const Form = styled.form<{onSubmit: any}>`
+const Form = styled.form<{ onSubmit: any }>`
     width: 1050px;
     height: 660px;
     box-shadow: 0px 3px 10px #00000030;
@@ -235,6 +279,7 @@ const Form = styled.form<{onSubmit: any}>`
     align-items: center;
     position: relative;
     transition: 0.5s;
+    background: #ffff;
 
     div {
         display: flex;
@@ -262,7 +307,7 @@ const FormBoxInner = styled.div`
     }
 `;
 
-const Select = styled.select<{onChange: any}>`
+const Select = styled.select<{ onChange: any }>`
     width: 129px; 
     height: 30px;
     border: 1px solid #135846;
@@ -279,7 +324,7 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const TextArea = styled.textarea<{type: string, placeholder?: string, onChange?: any}>`
+const TextArea = styled.textarea<{ type: string, placeholder?: string, onChange?: any }>`
     width: 150px;
     resize: none;
     border: none;
@@ -339,7 +384,7 @@ const Button = styled.button`
     }
 `;
 
-const AmenetiesBox = styled.div`
+const AmenitiesBox = styled.div`
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -384,12 +429,13 @@ const ButtonBack = styled(Button)`
         transform: scale(1.1);
         background: #135846;
      }
-`;
+`; 
 
-const ErrorParagraph = styled.p<{visible: number}>`
+const ErrorNumber = styled.p<{visible: number}>`
     position: absolute;
-    top: 12px;
-    right: 35px;
+    bottom: -15px;
+    font-size: 14px;
     color: #E23428;
-    transition: 0.3s;
+    transition: 0.5;
+    opacity: ${props => props.visible === 0 ? '1' : '0'};
 `;
