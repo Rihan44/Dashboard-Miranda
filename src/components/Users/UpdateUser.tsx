@@ -177,10 +177,16 @@ export const UpdateUser = () => {
                                             <StatusContainer>
                                                 <Label>Status: <small>{userData[0]?.status ? 'Active' : 'Inactive'}</small></Label>
                                                 <CheckBoxContainer>
-                                                    <div>
-                                                        <Label style={ userData[0]?.status ? { color: '#E23428' } : { color: '#5AD07A' }}>{userData[0]?.status ? 'Inactivate' : 'Activate'}</Label>
-                                                        <Input type="checkbox" value={userStatus ? 'Inactive' : 'Active'} onChange={handleStatus} />
-                                                    </div>
+                                                <div style={{width: '36%', position: 'relative'}}>
+                                                    <LabelSwitch>
+                                                        <input type="checkbox" onChange={handleStatus} defaultChecked={userStatus}/>
+                                                        <span></span>
+                                                    </LabelSwitch>
+                                                    {userStatus 
+                                                        ? <StatusCheck is_active={0}>Active</StatusCheck>
+                                                        : <StatusCheck is_active={1}>InActive</StatusCheck>
+                                                    }
+                                                </div>
                                                 </CheckBoxContainer>
                                             </StatusContainer>
                                         </FormBoxInner>
@@ -308,6 +314,66 @@ const Label = styled.label`
         color: #212121;
         font-size: 16px;
     }
+`;
+
+const LabelSwitch = styled.label`
+    margin: 0;
+    margin-right: 0;
+    margin-left: 0;
+    font-size: 1rem;
+    position: relative;
+    display: inline-block;
+    width: 200px;
+    height: 2em;
+
+    input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        &:checked+span:before {
+            transform: translateX(2em);
+            background: #5AD07A;
+        }
+    }
+
+    span {
+        position: absolute;
+        cursor: pointer;
+        inset: 0;
+        background-color: #eee;
+        transition: 0.4s;
+        border-radius: 0.5em;
+        box-shadow: 0 0.2em #dfd9d9;
+
+        &:before {
+            position: absolute;
+            content: "";
+            height: 1.5em;
+            width: 1.4em;
+            border-radius: 0.3em;
+            left: 0.3em;
+            bottom: 0.7em;
+            background-color: #E23428;
+            transition: 0.4s;
+            box-shadow: 0 0.4em #bcb4b4;
+        }
+
+        &:hover::before {
+            box-shadow: 0 0.2em #bcb4b4;
+            bottom: 0.5em;
+        }
+    }
+`
+
+const StatusCheck = styled.p<{is_active: number}>`
+    transition: 0.5s;
+    position: absolute;
+    right: ${props => props.is_active === 0 ? '-90px' :'-115px'};
+    bottom: 10px;
+    text-transform: uppercase;
+    color: ${props => props.is_active === 0 ? '#5AD07A' : '#E23428'};
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3em;
 `;
 
 const Button = styled.button` 

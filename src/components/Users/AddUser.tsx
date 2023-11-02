@@ -1,5 +1,6 @@
-import styled from "styled-components"
-import { useContext } from "react";
+import styled from "styled-components";
+import Swal from 'sweetalert2';
+
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
@@ -7,14 +8,12 @@ import { useAppDispatch } from "../../app/hooks";
 import { MainContainer } from "../Reusables/MainContainer"
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { AsideContext } from "../Context/ToggleAsideContext";
 
 import { createUser } from "../../features/usersSlice";
 import { UsersInterface } from "../../interfaces/usersInterface";
+import { usersData } from "../../data/usersData";
 
 export const AddUser = () => {
-
-    /* TODO MODAL QUE DIGA QUE SE4 HA AÑADIDO CORRECTAMENTE */
 
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
@@ -22,15 +21,12 @@ export const AddUser = () => {
     const [userNumber, setUserNumber] = useState<string | number>(0);
     const [userHireDate, setUserHireDate] = useState<string | Date>(new Date());
     const [userJobDescription, setUserJobDescription] = useState('');
-    const [userStatus, setUserStatus] = useState(true);
+    const [userStatus, setUserStatus] = useState(false);
     const [userPassword, setUserPassword] = useState('');
-
-    const [alert, setAlert] = useState('false');
+    const [sameEmail, setSameEmail] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-
-    const { asideState } = useContext(AsideContext);
 
     const idAleatorio = () => {
         const numeroAleatorio = Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000;
@@ -44,7 +40,7 @@ export const AddUser = () => {
         e.preventDefault();
     }
 
-    const handleUpdate = () => {
+    const handleUpdate = async() => {
         const id = idAleatorio();
         const hireDate = userHireDate;
 
@@ -54,24 +50,94 @@ export const AddUser = () => {
         const day = String(newDate.getDate()).padStart(2, '0');
         const formatedDate = `${year}-${month}-${day}`;
 
+        const name = userName === '' ? 'Joe Doe': userName;
+        const email = userEmail === '' ? 'joedoe@gmail.com' : userEmail;
+        const position = userPosition === '' ? 'Room service' : userPosition;
+        const number = userNumber === 0 ? '658741236' : userNumber;
+        const jobDescription = userJobDescription === '' ? 'lorem ipsum dolar eir' : userJobDescription;
+        const password = userPassword === '' ? 'newUser12345' : userPassword;
+        const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
         const updateData: UsersInterface = {
             id: id,
-            name: userName,
-            email: userEmail,
-            employee_position: userPosition,
-            phone_number: userNumber,
+            name: name,
+            email: email,
+            employee_position: position,
+            phone_number: number,
             hire_date: formatedDate,
-            job_description: userJobDescription,
+            job_description: jobDescription,
             status: userStatus,
-            password_hash: userPassword
+            password_hash: password
         }
 
-        if(userName !== '' && userEmail !== '') {
+        const ToastAdd = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 2000,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+        console.log(userName, userEmail, userNumber, userPassword, userJobDescription)
+
+        if(userName === ''  && userEmail === '' && userNumber === 0 
+        && userPassword === '' && userJobDescription === '') {
+            const { value: accept } = await Swal.fire({
+                title: 'Are you sure yo want to add a user with the default values?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#135846',
+                cancelButtonColor: '#E23428',
+                confirmButtonText: 'Yes!'
+            })
+
+            if(accept){
+                dispatch(createUser(updateData));
+                navigate('/users');
+            }
+
+        } else if(sameEmail) {
+            Swal.fire({
+                title: 'You cant add a user if the email already exists',
+                icon: 'warning',
+                confirmButtonColor: '#135846',
+                confirmButtonText: 'Ok'
+            })
+        } else if(!emailRegex.test(userEmail)) {
+            Swal.fire({
+                title: 'The email has to be a real email',
+                icon: 'warning',
+                confirmButtonColor: '#135846',
+                confirmButtonText: 'Ok'
+            })
+        } else if(!sameEmail) {
+            // if(!emailRegex.test(userEmail)) {
+            //     Swal.fire({
+            //         title: 'You need to add a real email',
+            //         icon: 'warning',
+            //         confirmButtonColor: '#135846',
+            //         confirmButtonText: 'Ok'
+            //     })
+            // }
+
+            // if(userName.length <= 2 || !isNaN(parseInt(userName))){
+            //     Swal.fire({
+            //         title: 'The name has to be more than 2 letters and cant be numbers',
+            //         icon: 'warning',
+            //         confirmButtonColor: '#135846',
+            //         confirmButtonText: 'Ok'
+            //     })
+            // }
+
+            ToastAdd.fire({
+                icon: 'success',
+                title: 'Added user successfully!'
+            })
+
             dispatch(createUser(updateData));
             navigate('/users');
-            setAlert('false');
-        } else {
-            setAlert('true');
         }
     }
 
@@ -80,7 +146,14 @@ export const AddUser = () => {
     }
 
     const handleEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        const userExist = usersData.find((data) => data.email === e.target.value) || '';
         setUserEmail(e.target.value);
+
+        if(userExist === ''){
+            setSameEmail(false);
+        } else {
+            setSameEmail(true);
+        }
     }
 
     const handlePosition = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -100,7 +173,7 @@ export const AddUser = () => {
     }
 
     const handleStatus = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        if (e.target.value === "Active") {
+        if (e.target.checked) {
             setUserStatus(true);
         } else {
             setUserStatus(false);
@@ -121,15 +194,6 @@ export const AddUser = () => {
                         <Form onSubmit={handleSubmit}>
                             <FormBox>
                                 <FormBoxInner>
-                                    {/* <ErrorParagraph>
-                                        {userName === '' && userEmail === ''
-                                            ? 'Fill in at least the name and email'
-                                            : userName === '' && userEmail !== '' 
-                                                ? 'Fill the name too'
-                                                : userName !== '' && userEmail === '' 
-                                                    && 'Fill the email too'
-                                        }
-                                    </ErrorParagraph> */}
                                     <div>
                                         <Label>Add 1 photo</Label>
                                         <Input type="file" placeholder="Add photos..." />
@@ -169,13 +233,15 @@ export const AddUser = () => {
                                     <StatusContainer>
                                         <Label>Status</Label>
                                         <CheckBoxContainer>
-                                            <div>
-                                                <Label style={{ color: '#5AD07A' }}>Active</Label>
-                                                <Input type="checkbox" value="Active" onChange={handleStatus} />
-                                            </div>
-                                            <div>
-                                                <Label style={{ color: '#E23428' }}>Inactive</Label>
-                                                <Input type="checkbox" value="Inactive" onChange={handleStatus} />
+                                            <div style={{width: '36%', position: 'relative'}}>
+                                                <LabelSwitch>
+                                                    <input type="checkbox" onChange={handleStatus} defaultChecked={userStatus}/>
+                                                    <span></span>
+                                                </LabelSwitch>
+                                                {userStatus 
+                                                    ? <StatusCheck is_active={0}>Active</StatusCheck>
+                                                    : <StatusCheck is_active={1}>InActive</StatusCheck>
+                                                }
                                             </div>
                                         </CheckBoxContainer>
                                     </StatusContainer>
@@ -224,6 +290,7 @@ const Form = styled.form<{onSubmit: any}>`
     align-items: center;
     position: relative;
     transition: 0.5s;
+    background: #ffff;
 
     div {
         display: flex;
@@ -299,6 +366,66 @@ const Label = styled.label`
     font-family: 'Poppins', sans-serif;
 `;
 
+const LabelSwitch = styled.label`
+    margin: 0;
+    margin-right: 0;
+    margin-left: 0;
+    font-size: 1rem;
+    position: relative;
+    display: inline-block;
+    width: 200px;
+    height: 2em;
+
+    input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        &:checked+span:before {
+            transform: translateX(2em);
+            background: #5AD07A;
+        }
+    }
+
+    span {
+        position: absolute;
+        cursor: pointer;
+        inset: 0;
+        background-color: #eee;
+        transition: 0.4s;
+        border-radius: 0.5em;
+        box-shadow: 0 0.2em #dfd9d9;
+
+        &:before {
+            position: absolute;
+            content: "";
+            height: 1.5em;
+            width: 1.4em;
+            border-radius: 0.3em;
+            left: 0.3em;
+            bottom: 0.7em;
+            background-color: #E23428;
+            transition: 0.4s;
+            box-shadow: 0 0.4em #bcb4b4;
+        }
+
+        &:hover::before {
+            box-shadow: 0 0.2em #bcb4b4;
+            bottom: 0.5em;
+        }
+    }
+`
+
+const StatusCheck = styled.p<{is_active: number}>`
+    transition: 0.5s;
+    position: absolute;
+    right: ${props => props.is_active === 0 ? '-90px' :'-115px'};
+    bottom: 10px;
+    text-transform: uppercase;
+    color: ${props => props.is_active === 0 ? '#5AD07A' : '#E23428'};
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3em;
+`;
+
 const Button = styled.button` 
     background: #EBF1EF 0% 0% no-repeat padding-box;
     background: #135846;
@@ -371,10 +498,6 @@ const ButtonBack = styled(Button)`
 const StatusContainer = styled.div`
     display: flex;
     flex-direction: column;
-
-    label {
-        margin-right: 15px;
-    }
 
     div {
         margin-right: 10px;
