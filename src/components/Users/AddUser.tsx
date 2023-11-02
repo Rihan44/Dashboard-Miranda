@@ -113,24 +113,6 @@ export const AddUser = () => {
                 confirmButtonText: 'Ok'
             })
         } else if(!sameEmail) {
-            // if(!emailRegex.test(userEmail)) {
-            //     Swal.fire({
-            //         title: 'You need to add a real email',
-            //         icon: 'warning',
-            //         confirmButtonColor: '#135846',
-            //         confirmButtonText: 'Ok'
-            //     })
-            // }
-
-            // if(userName.length <= 2 || !isNaN(parseInt(userName))){
-            //     Swal.fire({
-            //         title: 'The name has to be more than 2 letters and cant be numbers',
-            //         icon: 'warning',
-            //         confirmButtonColor: '#135846',
-            //         confirmButtonText: 'Ok'
-            //     })
-            // }
-
             ToastAdd.fire({
                 icon: 'success',
                 title: 'Added user successfully!'
