@@ -94,8 +94,7 @@ export const UpdateUser = () => {
     }
 
     const handleStatus = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        console.log(e.target.value)
-        if (e.target.value === "Active") {
+        if (e.target.checked) {
             setUserStatus(true);
         } else {
             setUserStatus(false);
@@ -124,7 +123,7 @@ export const UpdateUser = () => {
             }
         }
     }, [userData, status]);
-
+    
     return (
         <>
             <MainContainer>
@@ -175,18 +174,17 @@ export const UpdateUser = () => {
                                                 <Input type="password" value={userPassword} onChange={handlePassword} />
                                             </div>
                                             <StatusContainer>
-                                                <Label>Status: <small>{userData[0]?.status ? 'Active' : 'Inactive'}</small></Label>
                                                 <CheckBoxContainer>
-                                                <div style={{width: '36%', position: 'relative'}}>
-                                                    <LabelSwitch>
-                                                        <input type="checkbox" onChange={handleStatus} defaultChecked={userStatus}/>
-                                                        <span></span>
-                                                    </LabelSwitch>
-                                                    {userStatus 
-                                                        ? <StatusCheck is_active={0}>Active</StatusCheck>
-                                                        : <StatusCheck is_active={1}>InActive</StatusCheck>
-                                                    }
-                                                </div>
+                                                    <div style={{width: '42%', position: 'relative'}}>
+                                                        <LabelSwitch>
+                                                            <input type="checkbox" onChange={handleStatus} defaultChecked={userData[0]?.status}/> 
+                                                            <span></span>
+                                                        </LabelSwitch>
+                                                        {userStatus 
+                                                            ? <StatusCheck is_active={0}>Active</StatusCheck>
+                                                            : <StatusCheck is_active={1}>InActive</StatusCheck>
+                                                        }
+                                                    </div>
                                                 </CheckBoxContainer>
                                             </StatusContainer>
                                         </FormBoxInner>
