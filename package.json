@@ -34,7 +34,7 @@
     "start": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "plus-build": "vite build && aws s3 sync build/ s3://dashboard-miranda1 --delete --profile ASDev"
+    "deploy": "vite build && aws s3 sync build/ s3://dashboard-miranda1 --delete --profile ASDev"
   },
   "eslintConfig": {
     "extends": [
