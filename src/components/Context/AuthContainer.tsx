@@ -1,6 +1,5 @@
 import { ReactNode, createContext, useEffect, useReducer } from "react"
 
-
 interface InitialStateInterface {
     authenticated?: boolean,
     username?: string | null,
@@ -9,7 +8,7 @@ interface InitialStateInterface {
 }
 
 function initialAuthState(): InitialStateInterface{
-   const base = {authenticated: false, username: null, email: null, imageSrc: null}; 
+   const base = {authenticated: false, username: null, email: null, imageSrc: null, token: null}; 
     const authData = localStorage.getItem('auth') || '';
 
     if (authData) 
@@ -23,7 +22,8 @@ interface LogInInterface {
         authenticated?: boolean,
         username?: string,
         email?: string,
-        imageSrc?: string
+        imageSrc?: string,
+        token?:string
     }
 }
 

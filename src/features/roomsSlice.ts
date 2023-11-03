@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import fetch from 'cross-fetch';
 import { roomsData } from "../data/roomsData";
 import { RoomInterface, RoomsInterfaceState } from "../interfaces/roomInterface";
 
@@ -11,6 +12,7 @@ const delay = (data: RoomInterface[] | string | number | RoomInterface, timeWait
 }
 
 export const getAllRooms = createAsyncThunk<RoomInterface[]>("rooms/getAllRooms", async () => {
+
    return (await delay(roomsData) as RoomInterface[]);
 });
 

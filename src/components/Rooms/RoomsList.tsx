@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Swal from 'sweetalert2';
 
+import fetch from 'cross-fetch';
+
 import { useMemo, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -123,6 +125,8 @@ export const RoomsList = () => {
 
     useEffect(() => {
         dispatch(getAllRooms());
+        /* fetch() */
+
     }, [dispatch]);
 
     const cols = [

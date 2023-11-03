@@ -1,6 +1,8 @@
 import styled from "styled-components"
 import Swal from 'sweetalert2';
 
+import fetch from 'cross-fetch';
+
 import { FormEvent, useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 
@@ -9,22 +11,24 @@ import { AuthContext } from "../Context/AuthContainer";
 export const Login = () => {
 
     const navigate = useNavigate();
+    const apiUrl = 'http://localhost:3000/';
     
     const [inputTextEmail, setInputTextEmail] = useState('');
-    const [inputTextPass, setInputTextPass] = useState(0);
+    const [inputTextPass, setInputTextPass] = useState('');
     const [isCorrect, setIsCorrect] = useState(false);
     const {auth, authDispatch} = useContext(AuthContext);
 
-    useEffect(() => {
-        if (auth.authenticated) {
-          navigate('/');
-        }
-      }, [auth.authenticated, navigate]);
+    // useEffect(() => {
+    //     if (auth.authenticated) {
+    //       navigate('/');
+    //     }
+
+    //   }, [auth.authenticated, navigate]);
 
     const userAdmin = {
-        user: "ASDev",
+        user: "ASdev",
         email: "asmuela.dev@gmail.com",
-        password: 123456
+        password: 'ASdev12345'
     }
 
     function handleChangeEmail(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -32,7 +36,7 @@ export const Login = () => {
     }
 
     function handleChangePass(e: React.ChangeEvent<HTMLInputElement>): void {
-        setInputTextPass(parseInt(e.target.value));   
+        setInputTextPass(e.target.value);   
     }
 
     function handleSubmit(e: FormEvent<HTMLFormElement>): void{
@@ -48,10 +52,53 @@ export const Login = () => {
         })
 
         e.preventDefault();
+
         if(inputTextEmail === userAdmin.email && inputTextPass === userAdmin.password){
             setIsCorrect(false);
-            authDispatch({type: 'LOGIN', payload: {authenticated: true, username: userAdmin.user, email: userAdmin.email}})
-            navigate('/');
+            // fetch('http://localhost:3000/login', {
+            //     method: 'POST',
+            //     headers: {
+            //       'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({
+            //       user: userAdmin.user,
+            //       email: inputTextEmail,
+            //       password: inputTextPass
+            //     }),
+            //   })
+            //     .then(rep => rep.json())
+            //     .then(data => console.log(data))
+
+            fetch(`${apiUrl}login`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  user: userAdmin.user,
+                  email: inputTextEmail,
+                  password: inputTextPass
+                }),
+              })
+                .then((response) => {
+                  if (response.ok) {
+                    return response.json();
+                  } else {
+                    ToastLogin.fire({
+                        icon: 'error',
+                        title: 'Authentication failed'
+                    });
+                  }
+                })
+                .then((data) => {
+                  const tokenLogin = data.token;
+                  authDispatch({type: 'LOGIN', payload: {authenticated: true, username: userAdmin.user, email: userAdmin.email, token:tokenLogin}})
+                    navigate('/');
+                })
+                .catch((error) => {
+                  setIsCorrect(true);
+                });
+                
             ToastLogin.fire({
                 icon: 'success',
                 title: 'Login successfully!'
@@ -60,9 +107,10 @@ export const Login = () => {
             setIsCorrect(true);
             ToastLogin.fire({
                 icon: 'error',
-                title: 'Error with the login'
+                title: 'Error with the user or the pass'
             })
         }
+        
     }
 
     return(
@@ -75,7 +123,7 @@ export const Login = () => {
                 <Input type="password" placeholder="password..." onChange={handleChangePass} data-cy='inputPasswordUser'/>
                 <Button data-cy="loginButton">Login</Button>
                 <FormParagraph>Email Test: <small>asmuela.dev@gmail.com</small></FormParagraph>
-                <FormParagraph>Pass Test: <small>123456</small></FormParagraph>
+                <FormParagraph>Pass Test: <small>ASdev12345</small></FormParagraph>
                 {isCorrect ? <WrongParagraph data-cy="loginError">El user o la pass son incorrectos</WrongParagraph>: ''}
             </FormContainer>
         </LoginContainer>
