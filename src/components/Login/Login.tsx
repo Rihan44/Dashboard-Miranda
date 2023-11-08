@@ -11,7 +11,8 @@ import { AuthContext } from "../Context/AuthContainer";
 export const Login = () => {
 
     const navigate = useNavigate();
-    const apiUrl = 'http://localhost:3000/';
+    // const apiUrl = 'http://localhost:3000/';
+    const apiUrl = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com/';
     
     const [inputTextEmail, setInputTextEmail] = useState('');
     const [inputTextPass, setInputTextPass] = useState('');
