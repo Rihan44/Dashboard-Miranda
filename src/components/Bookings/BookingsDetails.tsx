@@ -118,7 +118,7 @@ export const BookingFile = () => {
                             </FacilitiesInner>
                         </FacilitiesRooms>
                     </InfoContainer>
-                    <ImageContainer>
+                    <ImageContainer url={'https://www.gannett-cdn.com/-mm-/05b227ad5b8ad4e9dcb53af4f31d7fbdb7fa901b/c=0-64-2119-1259/local/-/media/USATODAY/USATODAY/2014/08/13/1407953244000-177513283.jpg?width=2560'}>
                         <StatusDecoration status={dataBooking.status}>
                             {dataBooking.status}
                         </StatusDecoration>
@@ -135,9 +135,10 @@ export const BookingFile = () => {
 }
 
 const FileBookingContainer = styled.div`
-    margin: 50px;
+    margin-top: 35px;
+    margin-left: 50px;
     width: 1475px;
-    height: 792px;
+    height: 750px;
     box-shadow: 0px 4px 4px #00000010;
     border-radius: 10px;
     display: flex;
@@ -280,9 +281,12 @@ const SmallFacilitie = styled(FacilitiesTab)`
     justify-content: center;
 `;
 
-const ImageContainer = styled.div` 
+const ImageContainer = styled.div<{url: string}>` 
     width: 50%;
-    background: #C5C5C5;
+    overflow: hidden;
+    position: relative;
+    background-color: #C5C5C5;
+    background: url(${props => props.url !== '' ? props.url : ''}) no-repeat fixed center;
     border-radius: 0px 10px 10px 0px;
     display: flex;
     height: 100%;
@@ -311,8 +315,6 @@ const ImageDescription = styled.div`
 `;
 
 const StatusDecoration = styled.div<{ status: string }>`
-    width: 160px;
-    height: 50px;
     ${(props) => {
         switch (props.status) {
             case 'check_in':
@@ -338,16 +340,22 @@ const StatusDecoration = styled.div<{ status: string }>`
         }
     }}
 
+    width: 200px;
+    height: 50px;
+    color: rgb(255, 255, 255);
     border-radius: 10px;
-    display: flex; 
+    display: flex;
+    -moz-box-align: center;
     align-items: center;
+    -moz-box-pack: center;
     justify-content: center;
     font-size: 16px;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     position: absolute;
-    right: 0px;
-    top: 5%;
-    transform: rotate(30deg);
+    right: -45px;
+    top: 3%;
+    transform: rotate(44deg);
+    border: 3px solid #fff;
 `;
 
 const Button = styled.button` 
@@ -380,7 +388,7 @@ const Button = styled.button`
 
 const ButtonBack = styled(Button)`
     position: absolute;
-    top: -4%;
+    top: 0%;
     left: -1%;
     width: 50px;
     height: 50px;
