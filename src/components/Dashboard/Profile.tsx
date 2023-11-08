@@ -9,10 +9,10 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 export const ProfileCompontent = () => {
 
     const [modalOpen, setModalOpen] = useState(false);
-    const [imgSrc, setImgSrc] = useState('');
+    const {auth, authDispatch} = useContext(AuthContext);
+    const [imgSrc, setImgSrc] = useState(`https://robohash.org/${auth.username}`);
     const [email, setUserUpdate] = useState('');
     const [user, setEmailUpdate] = useState('');
-    const {auth, authDispatch} = useContext(AuthContext);
 
     const {asideState} = useContext(AsideContext);
     let darkMode: boolean = asideState?.darkMode || false;
@@ -33,7 +33,6 @@ export const ProfileCompontent = () => {
         } else {
             /* TODO HACER ALGO AQUI */
         }
-       
     }
 
     const handleUser = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -77,7 +76,7 @@ export const ProfileCompontent = () => {
                     <ButtonModalClose onClick={handleCloseModal}>
                         <AiOutlineCloseCircle />
                     </ButtonModalClose>
-                    <ImageUpdate src={'https://robohash.org/'+auth.username} alt="imgProfile"/>
+                    <ImageUpdate src={imgSrc} alt="imgProfile"/>
                     <form onSubmit={handleSubmit} method="post" encType="multipart/form-data" target="_blank">
                         <Input type="file" name="img" multiple onChange={handleFile}/>
                         <Input type="text" placeholder={auth.username} onChange={handleUser}/>
@@ -86,7 +85,7 @@ export const ProfileCompontent = () => {
                     </form>
                 </ModalInfo>
             </Modal>
-            <ImageProfile src={'https://robohash.org/'+auth.username}/>
+            <ImageProfile src={imgSrc}/>
             <ProfileTitle darkmode={darkMode ? 0 : 1}>{auth.username}</ProfileTitle>
             <ProfileParagraph>{auth.email}</ProfileParagraph>
             <ProfileButton onClick={handleOpen}>Edit</ProfileButton>
