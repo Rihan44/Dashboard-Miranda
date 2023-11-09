@@ -10,7 +10,7 @@ export const ProfileCompontent = () => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const {auth, authDispatch} = useContext(AuthContext);
-    const [imgSrc, setImgSrc] = useState(`https://robohash.org/${auth.username}`);
+    const [imgSrc, setImgSrc] = useState('');
     const [email, setUserUpdate] = useState('');
     const [user, setEmailUpdate] = useState('');
 
@@ -76,7 +76,7 @@ export const ProfileCompontent = () => {
                     <ButtonModalClose onClick={handleCloseModal}>
                         <AiOutlineCloseCircle />
                     </ButtonModalClose>
-                    <ImageUpdate src={imgSrc} alt="imgProfile"/>
+                    <ImageUpdate src={imgSrc === '' ? `https://robohash.org/${auth.username}` : imgSrc} alt="imgProfile"/>
                     <form onSubmit={handleSubmit} method="post" encType="multipart/form-data" target="_blank">
                         <Input type="file" name="img" multiple onChange={handleFile}/>
                         <Input type="text" placeholder={auth.username} onChange={handleUser}/>
@@ -85,7 +85,7 @@ export const ProfileCompontent = () => {
                     </form>
                 </ModalInfo>
             </Modal>
-            <ImageProfile src={imgSrc}/>
+            <ImageProfile src={imgSrc === '' ? `https://robohash.org/${auth.username}` : imgSrc}/>
             <ProfileTitle darkmode={darkMode ? 0 : 1}>{auth.username}</ProfileTitle>
             <ProfileParagraph>{auth.email}</ProfileParagraph>
             <ProfileButton onClick={handleOpen}>Edit</ProfileButton>

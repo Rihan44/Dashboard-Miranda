@@ -19,13 +19,6 @@ export const Login = () => {
     const [isCorrect, setIsCorrect] = useState(false);
     const {auth, authDispatch} = useContext(AuthContext);
 
-    // useEffect(() => {
-    //     if (auth.authenticated) {
-    //       navigate('/');
-    //     }
-
-    //   }, [auth.authenticated, navigate]);
-
     const userAdmin = {
         user: "ASdev",
         email: "asmuela.dev@gmail.com",
@@ -56,20 +49,7 @@ export const Login = () => {
 
         if(inputTextEmail === userAdmin.email && inputTextPass === userAdmin.password){
             setIsCorrect(false);
-            // fetch('http://localhost:3000/login', {
-            //     method: 'POST',
-            //     headers: {
-            //       'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({
-            //       user: userAdmin.user,
-            //       email: inputTextEmail,
-            //       password: inputTextPass
-            //     }),
-            //   })
-            //     .then(rep => rep.json())
-            //     .then(data => console.log(data))
-
+            
             fetch(`${apiUrl}login`, {
                 method: 'POST',
                 headers: {
