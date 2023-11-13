@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 
 import fetch from 'cross-fetch';
 
-import { FormEvent, useContext, useEffect, useState } from "react"
+import { FormEvent, useContext, useState } from "react"
 import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../Context/AuthContainer";
@@ -11,8 +11,8 @@ import { AuthContext } from "../Context/AuthContainer";
 export const Login = () => {
 
     const navigate = useNavigate();
-    // const apiUrl = 'http://localhost:3000/';
-    const apiUrl = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com/';
+    const apiUrlLocal = 'http://localhost:3000/';
+    const apiUrlAtlas = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com/';
     
     const [inputTextEmail, setInputTextEmail] = useState('');
     const [inputTextPass, setInputTextPass] = useState('');
@@ -50,11 +50,12 @@ export const Login = () => {
         if(inputTextEmail === userAdmin.email && inputTextPass === userAdmin.password){
             setIsCorrect(false);
             
-            fetch(`${apiUrl}login`, {
+            fetch(`${apiUrlLocal}login`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
                 },
+
                 body: JSON.stringify({
                   user: userAdmin.user,
                   email: inputTextEmail,
@@ -62,28 +63,34 @@ export const Login = () => {
                 }),
               })
                 .then((response) => {
-                  if (response.ok) {
+                  if (response.ok) {                    
+                    ToastLogin.fire({
+                        icon: 'success',
+                        title: 'Login successfully!'
+                    })
                     return response.json();
                   } else {
                     ToastLogin.fire({
                         icon: 'error',
                         title: 'Authentication failed'
                     });
+                    setIsCorrect(true);
+                    throw new Error('Authentication failed');
                   }
                 })
                 .then((data) => {
                   const tokenLogin = data.token;
                   authDispatch({type: 'LOGIN', payload: {authenticated: true, username: userAdmin.user, email: userAdmin.email, token: tokenLogin}})
-                    navigate('/');
+                  navigate('/');
                 })
                 .catch((error) => {
-                  setIsCorrect(true);
+                    ToastLogin.fire({
+                        icon: 'error',
+                        title: 'Error with the connection'
+                    });
+                    console.log(error)
+                    throw new Error('Authentication failed');
                 });
-                
-            ToastLogin.fire({
-                icon: 'success',
-                title: 'Login successfully!'
-            })
         } else {
             setIsCorrect(true);
             ToastLogin.fire({
@@ -91,7 +98,6 @@ export const Login = () => {
                 title: 'Error with the user or the pass'
             })
         }
-        
     }
 
     return(

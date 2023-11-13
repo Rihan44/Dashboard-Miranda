@@ -14,12 +14,12 @@ export const getAllUsers = createAsyncThunk<UsersInterface[]>("users/getAllUsers
     return (await delay(usersData) as UsersInterface[]);
  });
  
- export const getUser = createAsyncThunk("users/getUser", async (id: string | number) => {
-    return (await delay(id) as string | number);
+ export const getUser = createAsyncThunk("users/getUser", async (_id: string | number) => {
+    return (await delay(_id) as string | number);
 });
 
-export const deleteUser = createAsyncThunk("users/deleteUser", async (id: string | number) => {
-    return (await delay(id, 300) as string | number);
+export const deleteUser = createAsyncThunk("users/deleteUser", async (_id: string | number) => {
+    return (await delay(_id, 300) as string | number);
 });
 
 export const updateUser = createAsyncThunk("users/updateUser", async (data: UsersInterface) => {
@@ -57,9 +57,9 @@ export const usersSlice = createSlice({
             state.status = "fulfilled";
             
             if(state.updatedUsers.length !== 0){
-                state.dataUser = state.updatedUsers.filter(data => {return data.id === action.payload});
+                state.dataUser = state.updatedUsers.filter(data => {return data._id === action.payload});
             } else {
-                state.dataUser = state.data.filter(data => {return data.id === action.payload});
+                state.dataUser = state.data.filter(data => {return data._id === action.payload});
             }
         })
         .addCase(getUser.pending, (state) => {state.status = "pending"})
@@ -72,9 +72,9 @@ export const usersSlice = createSlice({
             state.statusDelete = "fulfilled";
 
             if(state.updatedUsers.length !== 0){
-                state.updatedUsers = state.updatedUsers.filter(data => {return data.id !== action.payload});
+                state.updatedUsers = state.updatedUsers.filter(data => {return data._id !== action.payload});
             } else {
-                state.data = state.data.filter(data => {return data.id !== action.payload})
+                state.data = state.data.filter(data => {return data._id !== action.payload})
             }
             
         })
@@ -91,7 +91,7 @@ export const usersSlice = createSlice({
             }
 
             state.updatedUsers = state.updatedUsers.map(data => {
-                if (data.id === action.payload.id) {
+                if (data._id === action.payload._id) {
                     return {
                         ...data, 
                         name: action.payload.name,

@@ -1,36 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import fetch from 'cross-fetch';
-import { roomsData } from "../data/roomsData";
-import { RoomInterface, RoomsInterfaceState } from "../interfaces/roomInterface";
-
-const delay = (data: RoomInterface[] | string | number | RoomInterface, timeWait: number = 600) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(data);
-        }, timeWait)
-    });
-}
-
-export const getAllRooms = createAsyncThunk<RoomInterface[]>("rooms/getAllRooms", async () => {
-
-   return (await delay(roomsData) as RoomInterface[]);
-});
-
-export const getRoom = createAsyncThunk("rooms/getRoom", async (id: string | number) => {
-    return (await delay(id)as string | number);
-});
-
-export const deleteRoom = createAsyncThunk("rooms/deleteRoom", async (id: string | number) => {
-    return (await delay(id, 600) as string | number);
-});
-
-export const updateRoom = createAsyncThunk("rooms/updateRoom", async (dataUpdate: RoomInterface) => {
-    return (await delay(dataUpdate) as RoomInterface);
-});
-
-export const createRoom = createAsyncThunk("users/createRoom", async (data: RoomInterface) => {
-    return (await delay(data) as RoomInterface);
-});
+import { createSlice } from "@reduxjs/toolkit";
+import { RoomsInterfaceState } from "../interfaces/roomInterface";
+import { getAllRooms, getRoom, createRoom, deleteTheRoom, updateRoom } from "./thunks/roomThunk";
 
 const initialState: RoomsInterfaceState = {
     data: [],
@@ -58,9 +28,9 @@ export const roomsSlice = createSlice({
         .addCase(getRoom.fulfilled, (state, action) => {
             state.status = "fulfilled";
             if(state.updatedDataRoom.length !== 0){
-                state.dataRoom = state.updatedDataRoom.filter(data => {return data.id === action.payload});
+                state.dataRoom = state.updatedDataRoom.filter(data => {return data._id === action.payload});
             } else {
-                state.dataRoom = state.data.filter(data => {return data.id === action.payload});
+                state.dataRoom = state.data.filter(data => {return data._id === action.payload});
             }
         })
         .addCase(getRoom.pending, (state) => {state.status = "pending"})
@@ -68,18 +38,18 @@ export const roomsSlice = createSlice({
             state.status = "rejected";
             state.error = action.error.message;
         })
-        .addCase(deleteRoom.fulfilled, (state, action) => {
+        .addCase(deleteTheRoom.fulfilled, (state, action) => {
             state.status = "fulfilled";
             state.statusDelete= "fulfilled";
 
             if(state.updatedDataRoom.length !== 0){
-                state.updatedDataRoom = state.updatedDataRoom.filter(data => {return data.id !== action.payload});
+                state.updatedDataRoom = state.updatedDataRoom.filter(data => {return data._id !== action.payload});
             } else {
-                state.data = state.data.filter(data => {return data.id !== action.payload});
+                state.data = state.data.filter(data => {return data._id !== action.payload});
             }
         })
-        .addCase(deleteRoom.pending, (state) => {state.statusDelete = "pending"}) 
-        .addCase(deleteRoom.rejected, (state, action) => {
+        .addCase(deleteTheRoom.pending, (state) => {state.statusDelete = "pending"}) 
+        .addCase(deleteTheRoom.rejected, (state, action) => {
             state.status = "rejected";
             state.error = action.error.message;
         })
@@ -90,7 +60,7 @@ export const roomsSlice = createSlice({
             }
 
             state.updatedDataRoom = state.updatedDataRoom.map(data => {
-                if (data.id === action.payload.id) {
+                if (data._id === action.payload._id) {
                     return {
                         ...data, 
                         room_number: action.payload.room_number,

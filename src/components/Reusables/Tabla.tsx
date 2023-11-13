@@ -32,7 +32,7 @@ export const Tabla = ({ cols, data, totalCols, totalHeaders}: TablaInterface) =>
     const [tableRef] = useAutoAnimate();
     
     const displayRow = (row: BookingsInterface | RoomInterface | UsersInterface | ContactInterface) => (
-        <TableContainerBodyContent darkmode={darkMode ? 0 : 1}  totalcols={totalCols} key={row.id}>
+        <TableContainerBodyContent darkmode={darkMode ? 0 : 1}  totalcols={totalCols} key={row._id}>
             {cols !== undefined && cols.map((col: ColsInterface, i: number) => (
                 <td key={i}>{typeof col.display === 'function' ? col.display(row) : (row as Record<string, any>)[col.property as string]}
                 </td>

@@ -14,12 +14,12 @@ export const getAllBookings = createAsyncThunk<BookingsInterface[]>("bookings/ge
    return (await delay(bookingData) as BookingsInterface[]);
 });
 
-export const getBookingDetail = createAsyncThunk("bookings/getBookingDetail", async (id: string | number) => {
-    return (await delay(id)as string | number);
+export const getBookingDetail = createAsyncThunk("bookings/getBookingDetail", async (_id: string | number) => {
+    return (await delay(_id)as string | number);
 });
 
-export const deleteBooking = createAsyncThunk("bookings/deleteBooking", async (id: string | number) => {
-    return (await delay(id)as string | number);
+export const deleteBooking = createAsyncThunk("bookings/deleteBooking", async (_id: string | number) => {
+    return (await delay(_id)as string | number);
 });
 
 export const updateBooking = createAsyncThunk("bookings/updateBooking", async (dataUpdate: BookingsInterface) => {
@@ -52,9 +52,9 @@ export const bookingsSlice = createSlice({
         .addCase(getBookingDetail.fulfilled, (state, action) => {
             state.status = "fulfilled";
             if(state.bookingUpdateData.length !== 0){
-                state.dataBooking = state.bookingUpdateData.filter(data => {return data.id === action.payload});
+                state.dataBooking = state.bookingUpdateData.filter(data => {return data._id === action.payload});
             } else {
-                state.dataBooking = state.data.filter(data => {return data.id === action.payload});
+                state.dataBooking = state.data.filter(data => {return data._id === action.payload});
             }
         })
         .addCase(getBookingDetail.pending, (state) => {state.status = "pending"})
@@ -67,9 +67,9 @@ export const bookingsSlice = createSlice({
             state.statusDelete= "fulfilled";
 
             if(state.bookingUpdateData.length !== 0){
-                state.bookingUpdateData = state.bookingUpdateData.filter(data => {return data.id !== action.payload});
+                state.bookingUpdateData = state.bookingUpdateData.filter(data => {return data._id !== action.payload});
             } else {
-                state.data = state.data.filter(data => {return data.id !== action.payload})
+                state.data = state.data.filter(data => {return data._id !== action.payload})
             }
         })
         .addCase(deleteBooking.pending, (state) => {state.statusDelete = "pending"})
@@ -84,7 +84,7 @@ export const bookingsSlice = createSlice({
             }
 
             state.bookingUpdateData = state.bookingUpdateData.map(data => {
-                if (data.id === action.payload.id) {
+                if (data._id === action.payload._id) {
                     return {
                         ...data, 
                         guest: action.payload.guest,

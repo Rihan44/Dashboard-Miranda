@@ -59,7 +59,7 @@ export const AddUser = () => {
         const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
         const updateData: UsersInterface = {
-            id: id,
+            _id: id,
             name: name,
             email: email,
             employee_position: position,

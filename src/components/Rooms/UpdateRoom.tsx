@@ -10,7 +10,7 @@ import { MainContainer } from "../Reusables/MainContainer";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
-import { getRoom, updateRoom } from "../../features/roomsSlice";
+import { getRoom, updateRoom } from "../../features/thunks/roomThunk";
 import { AsideContext } from "../Context/ToggleAsideContext";
 
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
@@ -69,7 +69,7 @@ export const UpdateRoom = () => {
         })
 
         const dataUpdate: RoomInterface = {
-            id: id,
+            _id: id,
             room_type: roomTypeState,
             room_number: roomNumberState,
             offer_price: offerState,

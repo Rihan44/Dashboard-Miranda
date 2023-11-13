@@ -171,11 +171,11 @@ export const Bookings = () => {
 
     const cols = [
         {
-            property: 'guest', label: 'Guest', display: ({ guest, phone_number, id }: BookingsInterface) => (
+            property: 'guest', label: 'Guest', display: ({ guest, phone_number, _id }: BookingsInterface) => (
                 <TableContainerBodyContent>
                     <CostumerName darkmode={darkMode ? 0 : 1}>{guest}</CostumerName>
                     <Paragraphs>{phone_number}</Paragraphs>
-                    <ButtonID onClick={() => handleBookingId(id)}>#{id}</ButtonID>
+                    <ButtonID onClick={() => handleBookingId(_id)}>#{_id}</ButtonID>
                 </TableContainerBodyContent>
             )
         },
@@ -217,12 +217,12 @@ export const Bookings = () => {
             )
         },
         {
-            property: 'status', label: 'Status', display: ({ status, id }: BookingsInterface) => (
+            property: 'status', label: 'Status', display: ({ status, _id }: BookingsInterface) => (
                 <StatusContent>
                     <StatusParagraph status={status}>{status}</StatusParagraph>
                     <OptionsButton>
-                        <BsTrash onClick={() => handleDelete(id)} />
-                        <FiEdit onClick={() => handleUpdate(id)} />
+                        <BsTrash onClick={() => handleDelete(_id)} />
+                        <FiEdit onClick={() => handleUpdate(_id)} />
                     </OptionsButton>
                 </StatusContent>
             )

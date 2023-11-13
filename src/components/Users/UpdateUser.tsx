@@ -51,7 +51,7 @@ export const UpdateUser = () => {
         })
 
         const updateData: UsersInterface = {
-            id: id,
+            _id: id,
             name: userName,
             email: userEmail,
             employee_position: userPosition,

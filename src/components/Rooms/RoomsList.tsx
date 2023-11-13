@@ -7,7 +7,7 @@ import { useMemo, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-import { deleteRoom, getAllRooms, getRoom } from "../../features/roomsSlice";
+import { deleteTheRoom, getAllRooms, getRoom } from "../../features/thunks/roomThunk";
 
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
@@ -38,6 +38,8 @@ export const RoomsList = () => {
 
     const status = useAppSelector((state) => state.rooms.status);
     const statusDelete = useAppSelector((state) => state.rooms.statusDelete);
+
+    const error = useAppSelector((state) => state.rooms.error);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -73,7 +75,7 @@ export const RoomsList = () => {
         })
 
         if(id !== undefined && accept){
-            dispatch(deleteRoom(id));
+            dispatch(deleteTheRoom(id));
             setTimeout(() => {
                 ToastDelete.fire({
                     icon: 'success',
@@ -138,10 +140,10 @@ export const RoomsList = () => {
             )
         },
         {
-            property: 'room_number', label: 'Room Info', display: ({ id, room_number }: RoomInterface) => (
+            property: 'room_number', label: 'Room Info', display: ({ _id, room_number }: RoomInterface) => (
                 <TableContainerBodyContent>
                     <div>
-                        <IDparagraph>{id}</IDparagraph>
+                        <IDparagraph>{_id}</IDparagraph>
                         <p>N. {room_number}</p>
                     </div>
                 </TableContainerBodyContent>
@@ -170,12 +172,12 @@ export const RoomsList = () => {
             )
         },
         {
-            property: 'status', label: 'Status', display: ({ status, id }: RoomInterface) =>
+            property: 'status', label: 'Status', display: ({ status, _id }: RoomInterface) =>
                 <StatusContent>
                     <StatusParagraph status={status}>{status}</StatusParagraph>
                     <OptionsButton>
-                        <BsTrash onClick={() => handleDelete(id)} />
-                        <FiEdit onClick={() => handleEdit(id)} /> 
+                        <BsTrash onClick={() => handleDelete(_id)} />
+                        <FiEdit onClick={() => handleEdit(_id)} /> 
                     </OptionsButton>
                 </StatusContent>
         }
@@ -210,7 +212,7 @@ export const RoomsList = () => {
                     </FilterContainer>
                     {status === 'fulfilled' || status === 'loading'
                         ? <Tabla cols={cols} data={dataRooms} totalCols={7} totalHeaders={7} />
-                        : status === 'rejected' ? <p>Ha habido un error (pendiente de meter el Toast)</p> 
+                        : status === 'rejected' ? <p>Error con la petición: {error}</p> // TODO CAMBIAR ESTO POR UN ERROR BIEN HECHO
                             : <SpinnerLoader></SpinnerLoader>
                     }
                 </RoomsContainer>

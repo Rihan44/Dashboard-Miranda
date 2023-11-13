@@ -8,7 +8,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { MainContainer } from "../Reusables/MainContainer"
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { createRoom } from "../../features/roomsSlice";
+import { createRoom } from "../../features/thunks/roomThunk";
 import { roomsData } from "../../data/roomsData";
 import { RoomInterface } from "../../interfaces/roomInterface";
 
@@ -64,7 +64,7 @@ export const AddRoom = () => {
         const amenitiesDefault = amenitiesState.length === 0 ? ['Free Wifi', 'Air Conditioner', 'Towels', 'Television'] : amenitiesState;
 
         const dataUpdate: RoomInterface = {
-            id: id,
+            _id: id,
             room_type: roomType,
             room_number: roomNumber,
             offer_price: offerState,

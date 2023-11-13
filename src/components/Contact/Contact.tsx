@@ -171,11 +171,11 @@ export const Contact = () => {
 
     const cols = [
         {
-            property: 'date', label: 'Date', display: ({ date, dateTime, id }: ContactInterface) => (
+            property: 'date', label: 'Date', display: ({ date, dateTime, _id }: ContactInterface) => (
                 <DateContactContainer>
                     <p>{handleSelectDate(date)}</p>
                     <p>{dateTime}</p>
-                    <p>#{id}</p>
+                    <p>#{_id}</p>
                 </DateContactContainer>
             )
         },
@@ -196,18 +196,18 @@ export const Contact = () => {
             )
         },
         {
-            property: 'isArchived', label: 'Status', display: ({ isArchived, id }: ContactInterface) => (
+            property: 'isArchived', label: 'Status', display: ({ isArchived, _id }: ContactInterface) => (
                 <div>
                     <IsAcrhivedParagraph isArchive={isArchived}>{isArchived ? 'Archived' : 'Publish'}</IsAcrhivedParagraph>
                     {isArchived 
                     ? 
                         <OptionsButton style={{color: '#5AD07A'}}>
-                            <BiArchiveIn onClick={() => handleUnArchive(id)}/>
-                            <BsTrash style={{color: '#E23428'}} onClick={() => handleDelete(id)} />
+                            <BiArchiveIn onClick={() => handleUnArchive(_id)}/>
+                            <BsTrash style={{color: '#E23428'}} onClick={() => handleDelete(_id)} />
                         </OptionsButton> 
                     :   <OptionsButton style={{color: '#E23428'}}>
-                            <BiArchiveOut onClick={() => handleArchive(id)}/>
-                            <BsTrash style={{color: '#E23428'}} onClick={() => handleDelete(id)} />
+                            <BiArchiveOut onClick={() => handleArchive(_id)}/>
+                            <BsTrash style={{color: '#E23428'}} onClick={() => handleDelete(_id)} />
                         </OptionsButton>}
                 </div>
             )

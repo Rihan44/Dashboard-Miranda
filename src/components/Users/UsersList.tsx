@@ -144,11 +144,11 @@ export const UsersList = () => {
             )
         },
         {
-            property: 'name', label: 'Name', display: ({ name, id, email, hire_date }: UsersInterface) => (
+            property: 'name', label: 'Name', display: ({ name, _id, email, hire_date }: UsersInterface) => (
                     <NameInner darkmode={darkMode ? 0 : 1}>
                         <h4>{name}</h4>
                         <p>{email}</p>
-                        <p style={{color: '#799283', fontSize: '16px'}}>{id}</p>
+                        <p style={{color: '#799283', fontSize: '16px'}}>{_id}</p>
                         <p>Joined on {handleSelectDate(hire_date)}</p>
                     </NameInner>
             )
@@ -172,12 +172,12 @@ export const UsersList = () => {
             )
         },
         {
-            property: 'status', label: 'Status', display: ({ status, id }: UsersInterface) => (
+            property: 'status', label: 'Status', display: ({ status, _id }: UsersInterface) => (
                 <StatusContainer is_active={status ? 0 : 1}>
                     <p>{status ? 'Active' : 'Inactive'}</p>
                     <OptionsButton>
-                        <BsTrash onClick={() => handleDelete(id)} />
-                        <FiEdit onClick={() => handleEdit(id)} />
+                        <BsTrash onClick={() => handleDelete(_id)} />
+                        <FiEdit onClick={() => handleEdit(_id)} />
                     </OptionsButton>
                 </StatusContainer>
             )

@@ -57,7 +57,7 @@ export const UpdateBooking = () => {
         })
 
         const dataUpdate: BookingsInterface = {
-            id: id,
+            _id: id,
             guest: guestName,
             phone_number: guestNumber,
             check_in: checkIn,

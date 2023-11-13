@@ -14,16 +14,16 @@ export const getAllMessages = createAsyncThunk<ContactInterface[]>("contact/getA
     return (await delay(contactMessage) as ContactInterface[]);
 });
 
-export const deleteMessage = createAsyncThunk("contact/deleteMessage", async (id: string | number) => {
-    return (await delay(id) as string | number);
+export const deleteMessage = createAsyncThunk("contact/deleteMessage", async (_id: string | number) => {
+    return (await delay(_id) as string | number);
 });
 
-export const archiveMessage = createAsyncThunk("contact/archiveMessage", async (id: string | number) => {
-    return (await delay(id, 300) as string | number);
+export const archiveMessage = createAsyncThunk("contact/archiveMessage", async (_id: string | number) => {
+    return (await delay(_id, 300) as string | number);
 });
 
-export const unArchiveMessage = createAsyncThunk("contact/unArchiveMessage", async (id: string | number) => {
-    return (await delay(id, 300) as string | number);
+export const unArchiveMessage = createAsyncThunk("contact/unArchiveMessage", async (_id: string | number) => {
+    return (await delay(_id, 300) as string | number);
 });
 
 const initialState: ContactInterfaceState = {
@@ -51,7 +51,7 @@ export const contactSlice = createSlice({
             state.status = "fulfilled";
             state.statusArchive = "fulfilled";
             state.data = state.data.map(data => {
-                if (data.id === action.payload) {
+                if (data._id === action.payload) {
                   return { ...data, isArchived: true };
                 }
                 return data;
@@ -67,7 +67,7 @@ export const contactSlice = createSlice({
             state.statusArchive = "fulfilled";
 
             state.data = state.data.map(data => {
-                if (data.id === action.payload) {
+                if (data._id === action.payload) {
                   return { ...data, isArchived: false };
                 }
                 return data;
@@ -81,7 +81,7 @@ export const contactSlice = createSlice({
         .addCase(deleteMessage.fulfilled, (state, action) => {
             state.status = "fulfilled";
             state.statusArchive = "fulfilled";
-            state.data = state.data.filter(data => data.id !== action.payload);
+            state.data = state.data.filter(data => data._id !== action.payload);
         })
         .addCase(deleteMessage.pending, (state) => {state.statusArchive = "pending"})
         .addCase(deleteMessage.rejected, (state, action) => {
