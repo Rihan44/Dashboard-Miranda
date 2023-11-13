@@ -8,11 +8,11 @@ import { Menu } from "./components/HeaderAside/Menu";
 import { AuthContainer } from "./components/Context/AuthContainer";
 import { createGlobalStyle } from 'styled-components';
 import { AsideContext } from './components/Context/ToggleAsideContext';
-import { Props } from "./interfaces/Props";
 
 export const App = () => {
 
     const { asideState } = useContext(AsideContext);
+    let darkMode: boolean = asideState?.darkMode || false;
 
     const [titleHeader, setTitleHeader] = useState('Dashboard');
     const [subtitle, setSubtitle] = useState('');
@@ -71,10 +71,10 @@ export const App = () => {
         }
     }, [location.pathname]);
 
-    const GlobalStyles = createGlobalStyle<Props>`
+    const GlobalStyles = createGlobalStyle<{darkMode: boolean}>`
         body {
             transition: background 0.5s;
-            background-color: ${props => props.darkmode ? '#171717' : '#ffff'};
+            background-color: ${props => props.darkMode ? '#171717' : '#ffff'};
             font-family: Arial, sans-serif;
             font-size: 16px;
         }
@@ -82,7 +82,7 @@ export const App = () => {
 
     return (
         <>
-            <GlobalStyles darkmode={asideState.darkMode} />
+            <GlobalStyles darkMode={darkMode} />
             <AuthContainer>
                 {location.pathname !== '/login' && <Menu setHeaderTitle={setTitleHeader} />}
                 {location.pathname !== '/login' && <Header title={titleHeader} subtitle={subtitle} subtitleSmall={subTitleSmall} />}

@@ -73,7 +73,7 @@ export const Login = () => {
                 })
                 .then((data) => {
                   const tokenLogin = data.token;
-                  authDispatch({type: 'LOGIN', payload: {authenticated: true, username: userAdmin.user, email: userAdmin.email, token:tokenLogin}})
+                  authDispatch({type: 'LOGIN', payload: {authenticated: true, username: userAdmin.user, email: userAdmin.email, token: tokenLogin}})
                     navigate('/');
                 })
                 .catch((error) => {

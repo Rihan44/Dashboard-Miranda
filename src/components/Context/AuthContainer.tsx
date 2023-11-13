@@ -4,7 +4,8 @@ interface InitialStateInterface {
     authenticated?: boolean,
     username?: string | null,
     email?: string | null,
-    imageSrc?: string | null | undefined
+    imageSrc?: string | null | undefined,
+    token?: string | null
 }
 
 function initialAuthState(): InitialStateInterface{
@@ -38,7 +39,7 @@ const reducer = (state: InitialStateInterface, action: Actions): InitialStateInt
         case 'LOGIN':
             return {...action.payload};
         case 'LOGOUT':
-            return {authenticated: false, username: null, email: null, imageSrc: null};
+            return {authenticated: false, username: null, email: null, imageSrc: null, token: null};
         case 'UPDATE':
             return {...state, ...action.payload};
         default :
