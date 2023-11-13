@@ -39,7 +39,7 @@ const reducer = (state: InitialStateInterface, action: Actions): InitialStateInt
         case 'LOGIN':
             return {...action.payload};
         case 'LOGOUT':
-            return {authenticated: false, username: null, email: null, imageSrc: null, token: null};
+            return {authenticated: false, username: null, email: null, imageSrc: null, token: null}; // hacer un localstorage clean
         case 'UPDATE':
             return {...state, ...action.payload};
         default :

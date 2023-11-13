@@ -21,9 +21,9 @@ export const UpdateRoom = () => {
 
     const [roomTypeState, setRoomTypeState] = useState('');
     const [roomNumberState, setRoomNumberState] = useState<string | number>(0);
-    const [offerState, setOfferState] = useState(false);
     const [priceState, setPriceState] = useState<string | number>(0);
     const [discountState, setDiscountState] = useState(0);
+    const [offerState, setOfferState] = useState(true);
     const [amenitiesState, setAmenitiesState] = useState<string[]>([]);
     const [roomDescription, setRoomDescription] = useState('');
 
@@ -72,13 +72,13 @@ export const UpdateRoom = () => {
             _id: id,
             room_type: roomTypeState,
             room_number: roomNumberState,
-            offer_price: offerState,
             price: priceState,
             discount: offerState ? discountState : 0,
             amenities: amenitiesState,
             description: roomDescription,
             status
         }
+
         dispatch(updateRoom(dataUpdate));
         navigate('/rooms');
         ToastUpdated.fire({
@@ -97,12 +97,14 @@ export const UpdateRoom = () => {
 
     const handleSelectOffer = (e: React.ChangeEvent<HTMLInputElement>): void  => {
         if(e.target.value === "Yes") {
-            setOfferState(true);    
-        } else {
             setOfferState(false);    
+        } else {
+            setOfferState(true);    
         }
-    }
+        console.log(offerState)
 
+    }
+    
     const handlePrice = (e: React.ChangeEvent<HTMLInputElement>): void  => {
         setPriceState(e.target.value);
     }
@@ -124,18 +126,17 @@ export const UpdateRoom = () => {
     }
 
     useEffect(() => {
-        let data: RoomInterface[] =[...roomData];
-
+        let data: RoomInterface = roomData;
         if(status === 'fulfilled') { 
             try {
-                setRoomTypeState(data[0].room_type);
-                setRoomNumberState(data[0].room_number);
-                setOfferState(data[0].offer_price);
-                setPriceState(data[0].price);
-                setDiscountState(data[0].discount);
-                setAmenitiesState(data[0].amenities);
-                setRoomDescription(data[0].description);
+                setRoomTypeState(data.room_type);
+                setRoomNumberState(data.room_number);
+                setPriceState(data.price);
+                setDiscountState(data.discount);
+                setAmenitiesState(data.amenities);
+                setRoomDescription(data.description);
             } catch {
+                /* TODO CAMBIAR ESTO */
                 <ToastAlert></ToastAlert>
             }
         }
@@ -182,11 +183,9 @@ export const UpdateRoom = () => {
                                     </div>
                                     <div>
                                         <Label>Offer</Label>
-                                        <Select onChange={handleSelectOffer}>
-                                            <Option>{offerState ? 'Yes' : 'No'}</Option>
-                                            <Option>Yes</Option>
-                                            <Option>No</Option>
-                                        </Select>
+                                        <input type="checkbox" style={{ transform: 'scale(1.5)'}} defaultChecked={!offerState}/>
+                                        <p>No</p>
+                                        {/* <input type="checkbox" onChange={handleStatus} /> */}
                                     </div>
                                     <div>
                                         <Label>Price /Night</Label>
@@ -194,7 +193,7 @@ export const UpdateRoom = () => {
                                     </div>
                                     <div>
                                         <Label>Discount</Label>
-                                        {!offerState 
+                                        {discountState === 0
                                             ? <Input type="number" min="0" max="100" value={0} onChange={handleDiscount} disabled/>
                                             : <Input type="number" min="0" max="100" value={discountState} onChange={handleDiscount}/>
                                         }  

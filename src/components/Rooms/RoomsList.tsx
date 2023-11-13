@@ -81,7 +81,7 @@ export const RoomsList = () => {
                     icon: 'success',
                     title: 'Deleted room successfully!'
                   })
-            }, 850)
+            }, 300)
         }
     }
 
@@ -93,42 +93,43 @@ export const RoomsList = () => {
     }
 
     const dataRooms = useMemo(() => {
-
-        let dataArray: RoomInterface[] = roomsDataUpdated.length !== 0 ? [ ...roomsDataUpdated] : [...roomsData];
-
-        switch (isActiveButton) {
-            case 'statusAvailable':
-                dataArray = dataArray.filter(data => data.status === 'available');
-                break;
-            case 'statusBooked':
-                dataArray = dataArray.filter(data => data.status === 'booked');
-                break;
-            case 'allRooms':
-                dataArray.sort((a, b) => Number(a.room_number) - Number(b.room_number));
-                break;
-            default:
-                dataArray.sort((a, b) => Number(a.room_number) - Number(b.room_number));
+        let dataArray: RoomInterface[] = [];
+        
+        if(status === 'fulfilled') {
+            dataArray = [...roomsData];
+            
+            switch (isActiveButton) {
+                case 'statusAvailable':
+                    dataArray = dataArray.filter(data => data.status === 'available');
+                    break;
+                case 'statusBooked':
+                    dataArray = dataArray.filter(data => data.status === 'booked');
+                    break;
+                case 'allRooms':
+                    dataArray.sort((a, b) => Number(a.room_number) - Number(b.room_number));
+                    break;
+                default:
+                    dataArray.sort((a, b) => Number(a.room_number) - Number(b.room_number));
+            }
+    
+            switch (selectData) {
+                case 'Price':
+                    dataArray = dataArray.sort((a, b) => Number(b.price) - Number(a.price));
+                    break;
+                case 'Room Type':
+                    dataArray = dataArray.sort((a, b) => a.room_type.localeCompare(b.room_type));
+                    break;
+                default:
+                    dataArray.sort((a, b) => Number(a.room_number) - Number(b.room_number));
+            }
+    
+            return dataArray;
         }
-
-        switch (selectData) {
-            case 'Price':
-                dataArray = dataArray.sort((a, b) => Number(b.price) - Number(a.price));
-                break;
-            case 'Room Type':
-                dataArray = dataArray.sort((a, b) => a.room_type.localeCompare(b.room_type));
-                break;
-            default:
-                dataArray.sort((a, b) => Number(a.room_number) - Number(b.room_number));
-        }
-
-        return dataArray;
 
     }, [isActiveButton, selectData, roomsData, status, roomsDataUpdated])
 
     useEffect(() => {
         dispatch(getAllRooms());
-        /* fetch() */
-
     }, [dispatch]);
 
     const cols = [
