@@ -4,6 +4,8 @@ import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 
+import moon from '../../assets/moon.png';
+
 import { HiOutlineMail } from "react-icons/hi";
 import { LuBell } from "react-icons/lu";
 import { GoSignOut } from "react-icons/go";
@@ -85,6 +87,7 @@ export const Header: React.FC<PropsHeader> = ({ title, subtitle, subtitleSmall }
                         <GoSignOut />
                     </Button>
                     <Label>
+                        <ImgIcon src={moon}/>
                         <input type="checkbox" />
                         <span onClick={handleDark}></span>
                     </Label>
@@ -93,6 +96,12 @@ export const Header: React.FC<PropsHeader> = ({ title, subtitle, subtitleSmall }
         </HeaderTag>
     );
 }
+
+const ImgIcon = styled.img`
+    width: 40px;
+    height: 40px;
+    margin-right: 15px;
+`;
 
 const HeaderTag = styled.header<{darkmode: number}>`
     display: flex;
@@ -214,6 +223,7 @@ const Label = styled.label`
         position: relative;
         transition: 0.3s all ease-in-out;
         cursor: pointer;
+        margin-bottom: 5px;
     }
 
     span::after {
