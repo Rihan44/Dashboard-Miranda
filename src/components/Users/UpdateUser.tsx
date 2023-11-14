@@ -163,7 +163,7 @@ export const UpdateUser = () => {
                                             </div>
                                             <div>
                                                 <Label>Start Date</Label>
-                                                <Input type="date" value={userHireDate} onChange={handleHireDate} />
+                                                <Input type="datetime-local" value={userHireDate} onChange={handleHireDate} />
                                             </div>
                                             <div>
                                                 <Label>Functions Descriptions</Label>

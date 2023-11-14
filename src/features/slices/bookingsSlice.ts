@@ -1,35 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { bookingData } from "../../data/bookingData";
-import {BookingsInterface, BookingsInterfaceState} from '../../interfaces/bookingsInterface.js';
-
-const delay = (data: BookingsInterface[] | string | number | BookingsInterface) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(data);
-        }, 600)
-    });
-}
-
-export const getAllBookings = createAsyncThunk<BookingsInterface[]>("bookings/getAllBookings", async () => {
-   return (await delay(bookingData) as BookingsInterface[]);
-});
-
-export const getBookingDetail = createAsyncThunk("bookings/getBookingDetail", async (_id: string | number) => {
-    return (await delay(_id)as string | number);
-});
-
-export const deleteBooking = createAsyncThunk("bookings/deleteBooking", async (_id: string | number) => {
-    return (await delay(_id)as string | number);
-});
-
-export const updateBooking = createAsyncThunk("bookings/updateBooking", async (dataUpdate: BookingsInterface) => {
-    return (await delay(dataUpdate) as BookingsInterface);
-});
+import { createSlice } from "@reduxjs/toolkit";
+import {BookingDetailInterface, BookingsInterface, BookingsInterfaceState} from '../../interfaces/bookingsInterface.js';
+import { getAllBookings, getBookingDetail, deleteBooking, updateBooking } from "../thunks/bookingsThunk";
 
 const initialState: BookingsInterfaceState = {
     data: [],
-    dataBooking: [],
-    bookingUpdateData: [],
+    dataBooking: {} as BookingDetailInterface,
     status: 'idle',
     statusDelete: 'idle',
     error: null
@@ -51,11 +26,7 @@ export const bookingsSlice = createSlice({
         })
         .addCase(getBookingDetail.fulfilled, (state, action) => {
             state.status = "fulfilled";
-            if(state.bookingUpdateData.length !== 0){
-                state.dataBooking = state.bookingUpdateData.filter(data => {return data._id === action.payload});
-            } else {
-                state.dataBooking = state.data.filter(data => {return data._id === action.payload});
-            }
+            state.dataBooking = action.payload;
         })
         .addCase(getBookingDetail.pending, (state) => {state.status = "pending"})
         .addCase(getBookingDetail.rejected, (state, action) => {
@@ -65,12 +36,7 @@ export const bookingsSlice = createSlice({
         .addCase(deleteBooking.fulfilled, (state, action) => {
             state.status = "fulfilled";
             state.statusDelete= "fulfilled";
-
-            if(state.bookingUpdateData.length !== 0){
-                state.bookingUpdateData = state.bookingUpdateData.filter(data => {return data._id !== action.payload});
-            } else {
-                state.data = state.data.filter(data => {return data._id !== action.payload})
-            }
+            state.data = state.data.filter(data => {return data._id !== action.payload})
         })
         .addCase(deleteBooking.pending, (state) => {state.statusDelete = "pending"})
         .addCase(deleteBooking.rejected, (state, action) => {
@@ -79,27 +45,6 @@ export const bookingsSlice = createSlice({
         })
         .addCase(updateBooking.fulfilled, (state, action) => {
             state.status = "fulfilled";
-            if(state.bookingUpdateData.length === 0) {
-                state.bookingUpdateData = [...state.data];
-            }
-
-            state.bookingUpdateData = state.bookingUpdateData.map(data => {
-                if (data._id === action.payload._id) {
-                    return {
-                        ...data, 
-                        guest: action.payload.guest,
-                        phone_number: action.payload.phone_number,
-                        check_in: action.payload.check_in,
-                        check_out: action.payload.check_out,
-                        special_request: action.payload.special_request,
-                        room_number: action.payload.room_number,
-                        room_type: action.payload.room_type,
-                        price: action.payload.price
-                    };
-                } 
-                return data;
-            })
-            
         })
         .addCase(updateBooking.pending, (state) => {state.status = "pending"})
         .addCase(updateBooking.rejected, (state, action) => {

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Swal from 'sweetalert2';
+import { format } from "date-fns";
 
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,8 +9,9 @@ import { BsTrash } from "react-icons/bs";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 
+import { deleteBooking, getAllBookings, getBookingDetail} from "../../features/thunks/bookingsThunk";
+
 import { MainContainer } from "../Reusables/MainContainer";
-import { deleteBooking, getAllBookings, getBookingDetail} from "../../features/slices/bookingsSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
@@ -32,7 +34,6 @@ export const Bookings = () => {
     const [searchData, setSearchData] = useState<string>('');
 
     const bookingsSliceData = useAppSelector((state) => state.bookings.data);
-    const bookingsSliceDataUpdated = useAppSelector((state) => state.bookings.bookingUpdateData);
 
     const status = useAppSelector((state) => state.bookings.status);
     const statusDelete = useAppSelector((state) => state.bookings.statusDelete);
@@ -126,44 +127,48 @@ export const Bookings = () => {
     };
 
     const dataBooking  = useMemo(() => {
-        let dataArray: BookingsInterface[] = bookingsSliceDataUpdated.length !== 0 ? [ ...bookingsSliceDataUpdated] : [...bookingsSliceData];
+        let dataArray: BookingsInterface[] = [];
 
-        if (searchData !== '') {
-            dataArray = dataArray.filter(data => data.guest.toLowerCase().includes(searchData.toLowerCase()));
+        if(status === 'fulfilled') {
+            dataArray = [...bookingsSliceData];
+
+            if (searchData !== '') {
+                dataArray = dataArray.filter(data => data.guest.toLowerCase().includes(searchData.toLowerCase()));
+            }
+    
+            switch (isActiveButton) {
+                case 'allBookings':
+                    return dataArray;
+                case 'checkIn':
+                    dataArray = dataArray.filter(data => data.status === 'check_in');
+                    break;
+                case 'checkOut':
+                    dataArray = dataArray.filter(data => data.status === 'check_out');
+                    break;
+                case 'inProgress':
+                    dataArray = dataArray.filter(data => data.status === 'in_progress');
+                    break;
+                default:
+            }
+    
+            switch (selectData) {
+                case 'Order Date':
+                    dataArray.sort((a, b) => {
+                        const dateA = new Date(a.order_date);
+                        const dateB = new Date(b.order_date);
+                        return dateA.getTime() - dateB.getTime();
+                    });
+                    break;
+                case 'Guest':
+                    dataArray.sort((a, b) => a.guest.localeCompare(b.guest));
+                    break;
+                default:
+            }
+    
+            return dataArray;
         }
 
-        switch (isActiveButton) {
-            case 'allBookings':
-                return dataArray;
-            case 'checkIn':
-                dataArray = dataArray.filter(data => data.status === 'check_in');
-                break;
-            case 'checkOut':
-                dataArray = dataArray.filter(data => data.status === 'check_out');
-                break;
-            case 'inProgress':
-                dataArray = dataArray.filter(data => data.status === 'in_progress');
-                break;
-            default:
-        }
-
-        switch (selectData) {
-            case 'Order Date':
-                dataArray.sort((a, b) => {
-                    const dateA = new Date(a.order_date);
-                    const dateB = new Date(b.order_date);
-                    return dateA.getTime() - dateB.getTime();
-                });
-                break;
-            case 'Guest':
-                dataArray.sort((a, b) => a.guest.localeCompare(b.guest));
-                break;
-            default:
-        }
-
-        return dataArray;
-
-    }, [isActiveButton, selectData, searchData, bookingsSliceData, status, bookingsSliceDataUpdated]);
+    }, [isActiveButton, selectData, searchData, bookingsSliceData, status]);
 
     useEffect(() => {
         dispatch(getAllBookings());
@@ -182,23 +187,23 @@ export const Bookings = () => {
         {
             property: 'order_date', label: 'Order Date', display: ({ order_date }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <OrderDate>{handleSelectDate(order_date)}</OrderDate>
+                    <OrderDate>{order_date ? format(new Date(order_date), "dd/MM/yyyy HH:mm") : "Invalid Date"}</OrderDate>
                 </TableContainerBodyContent>
             )
         },
         {
             property: 'check_in', label: 'Check In', display: ({ check_in }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <CheckInDate darkmode={darkMode ? 0 : 1}>{handleSelectDate(check_in)}</CheckInDate>
-                    <CheckInTime>9.46 PM</CheckInTime>
+                    <CheckInDate darkmode={darkMode ? 0 : 1}>{check_in ? format(new Date(check_in), "dd/MM/yyyy") : "Invalid Date"}</CheckInDate>
+                    <CheckInTime>At {format(new Date(check_in),"HH:mm")}</CheckInTime>
                 </TableContainerBodyContent>
             )
         },
         {
             property: 'check_out', label: 'Check Out', display: ({ check_out }: BookingsInterface) => (
                 <TableContainerBodyContent>
-                    <CheckOutDate darkmode={darkMode ? 0 : 1}>{handleSelectDate(check_out) }</CheckOutDate>
-                    <CheckOutTime>6.12 PM</CheckOutTime>
+                    <CheckOutDate darkmode={darkMode ? 0 : 1}>{check_out ? format(new Date(check_out), "dd/MM/yyyy") : "Invalid Date"}</CheckOutDate>
+                    <CheckOutTime>At {format(new Date(check_out),"HH:mm")}</CheckOutTime>
                 </TableContainerBodyContent>
             )
         },
@@ -285,7 +290,6 @@ const Modal = styled.div<{modalopen: number}>`
     top: 0;
     width: 100%; 
     height: 100%; 
-    overflow: auto; 
     background-color: rgb(0,0,0); 
     background-color: rgba(0,0,0,0.4); 
     transition: 0.5s;
@@ -297,18 +301,19 @@ const ModalInfo = styled.div`
     top: 25%;
     left: 40%;
     width: 450px;
-    height: 250px;
+    height: 300px;
     border: 1px solid #EBEBEB;
     border-radius: 20px;
     padding: 30px;
     box-shadow: 0px 4px 4px #00000010;
     word-wrap: break-word;
     text-align: center;
+    overflow-y: scroll; 
 
     p {
         width: 90%;
         margin: auto;
-        margin-top: 30px;
+        margin-top: 20px;
         color: #4E4E4E;
         font-family: 'Poppins', sans-serif;
         font-size: 18px;

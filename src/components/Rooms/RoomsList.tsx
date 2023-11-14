@@ -155,6 +155,7 @@ export const RoomsList = () => {
         {
             property: 'amenities', label: 'Amenities', display: ({ amenities }: RoomInterface) => (
                 <AmenitiesContainer>
+                    {/* TODO MEJORAR LAS AMENITIES */}
                     <p>{amenities !== undefined ? amenities?.join(', ') : ''}</p>
                 </AmenitiesContainer>
             )

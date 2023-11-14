@@ -8,24 +8,26 @@ import { MainContainer } from "../Reusables/MainContainer";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
+import { getBookingDetail, updateBooking } from "../../features/thunks/bookingsThunk";
+
 import { AsideContext } from "../Context/ToggleAsideContext";
 
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { ToastAlert } from "../Reusables/ToastAlert";
-import { getBookingDetail, updateBooking } from "../../features/slices/bookingsSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { BookingsInterface } from "../../interfaces/bookingsInterface";
+import { BookingDetailInterface, BookingsInterface } from "../../interfaces/bookingsInterface";
 
 export const UpdateBooking = () => {
 
     const [guestNumber, setGuestNumber] = useState('');
     const [guestName, setGuestName] = useState('');
-    const [priceState, setPriceState] = useState<number | string>('');
+    const [priceState, setPriceState] = useState(0);
     const [specialRequest, setSpecialRequest] = useState('');
-    const [checkIn, setCheckIn] = useState<Date | string>('');
-    const [checkOut, setCheckOut] = useState<Date | string>('');
+    const [checkIn, setCheckIn] = useState('');
+    const [checkOut, setCheckOut] = useState('');
     const [roomTypeState, setRoomTypeState] = useState('');
-    const [roomNumberState, setRoomNumberState] = useState<number | string>('');
+    const [statusBooking, setStatusBooking] = useState('');
+    const [roomNumberState, setRoomNumberState] = useState<string | number>(0);
 
     const paramsID = useParams();
     const id: string | undefined = paramsID.id;
@@ -65,10 +67,10 @@ export const UpdateBooking = () => {
             special_request: specialRequest,
             room_number: roomNumberState,
             room_type: roomTypeState,
-            order_date: '',
-            status: '',
+            status: statusBooking,
             price: priceState
         }
+
         dispatch(updateBooking(dataUpdate));
         navigate('/bookings');
 
@@ -106,23 +108,30 @@ export const UpdateBooking = () => {
         setRoomTypeState(e.target.value);
     }
 
+    const handleStatus = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        setStatusBooking(e.target.value);
+        console.log(e.target.value);
+        
+    }
+
     const handlePrice = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        setPriceState(e.target.value);
+        setPriceState(parseInt(e.target.value));
     } 
 
     useEffect(() => {
-        let data: BookingsInterface[] = [...bookingsData];
-
+        let data: BookingDetailInterface = bookingsData;
+        
         if(status === 'fulfilled') {
             try {
-                setGuestName(data[0].guest);
-                setGuestNumber(data[0].phone_number);
-                setCheckIn(data[0].check_in);
-                setCheckOut(data[0].check_out);
-                setSpecialRequest(data[0].special_request);
-                setRoomTypeState(data[0].room_type);
-                setPriceState(data[0].price);
-                setRoomNumberState(data[0].room_number);
+                setGuestName(data.guest);
+                setGuestNumber(data.phone_number || '');
+                setCheckIn(data.check_in);
+                setCheckOut(data.check_out);
+                setSpecialRequest(data.special_request || '');
+                setRoomTypeState(data.room_type);
+                setStatusBooking(data.status);
+                setPriceState(data.price || 0);
+                setRoomNumberState(data.room_number || 0);
             } catch {
                 <ToastAlert></ToastAlert>
             }
@@ -156,15 +165,25 @@ export const UpdateBooking = () => {
                                     </div>
                                     <div>
                                         <Label>Check In</Label>
-                                        <Input type="date" value={checkIn} onChange={handleCheckIn}/>
+                                        <Input type="datetime-local" value={checkIn} onChange={handleCheckIn}/>
                                     </div>
                                     <div>
                                         <Label>Check Out</Label>
-                                        <Input type="date" value={checkOut} onChange={handleCheckOut}/>
+                                        <Input type="datetime-local" value={checkOut} onChange={handleCheckOut}/>
                                     </div>
                                     <div>
                                         <Label>Price</Label>
-                                        <Input type="text" value={priceState} onChange={handlePrice}/>
+                                        <Input type="number" value={priceState} onChange={handlePrice}/>
+                                    </div>
+                                    <div>
+                                        <Label>Status</Label>
+                                        <Select onChange={handleStatus}>
+                                            <Option>{statusBooking}</Option>
+                                            <Option>check_in</Option>
+                                            <Option>check_out</Option>
+                                            <Option>in_progress</Option>
+                                            <Option>booked</Option>
+                                        </Select>
                                     </div>
                                     <div>
                                         <Label>Room Type</Label>
@@ -237,7 +256,7 @@ const Form = styled.form<{darkmode: number}>`
         justify-content: center;
         align-items: center;
         margin-bottom: 20px;
-        margin-top: 10px;
+        margin-top: 3px;
     }
 `;
 

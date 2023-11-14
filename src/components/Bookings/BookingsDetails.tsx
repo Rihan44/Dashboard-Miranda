@@ -3,29 +3,50 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 import styled from "styled-components";
+import { format } from "date-fns";
 
 import { LiaBedSolid } from "react-icons/lia";
+import { AiOutlineArrowLeft } from "react-icons/ai";
+import { MdAir } from "react-icons/md";
 import { AiOutlineWifi } from "react-icons/ai";
 import { BsShieldCheck } from "react-icons/bs";
+import { PiTelevisionSimpleBold } from "react-icons/pi";
+import { GiTowel } from "react-icons/gi";
+import { MdOutlineLocalBar } from "react-icons/md";
+import { FaCoffee } from "react-icons/fa";
+import { FaBath } from "react-icons/fa";
+import { BiBath } from "react-icons/bi";
+import { BsEmojiHeartEyes } from "react-icons/bs";
 
-import { AiOutlineArrowLeft } from "react-icons/ai";
+import { getBookingDetail } from "../../features/thunks/bookingsThunk";
 
 import { MainContainer } from "../Reusables/MainContainer";
-import { getBookingDetail } from "../../features/slices/bookingsSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
-import { BookingsInterface } from "../../interfaces/bookingsInterface";
+import { BookingDetailInterface} from "../../interfaces/bookingsInterface";
 import { AsideContext } from "../Context/ToggleAsideContext";
 
 export const BookingFile = () => {
-
-    /* AÑADIR FOTO */
 
     const { asideState } = useContext(AsideContext);
     let darkMode: boolean = asideState?.darkMode || false;
     
     const navigate = useNavigate();
 
-    const [dataBooking, setDataBooking] = useState<BookingsInterface[] | any>([]);
+    const [dataBooking, setDataBooking] = useState<BookingDetailInterface>({
+        id: '',
+        guest: '',
+        check_in: '',
+        check_out: '',
+        room_type: '',
+        price: 0,
+        description: '', 
+        facilities: [],
+        room_photo: '',
+        status: ''
+    });
+
+    const [facilities, setFacilities] = useState([]);
+
     const bookingDataDetail = useAppSelector((state) => state.bookings.dataBooking);
     const status = useAppSelector((state) => state.bookings.status);
 
@@ -33,22 +54,11 @@ export const BookingFile = () => {
     const id: string | undefined = paramsID.id;
     const dispatch = useAppDispatch();
 
-    let options: object = { year: 'numeric', month: 'long', day: 'numeric' };
-
-    const handleSelectDate = (date: Date | string) => {
-        if (typeof date === 'string') {
-            const [year, month, day] = date?.split('-');
-            return new Date(Number(year), Number(month) - 1, Number(day)).toLocaleDateString('en-EN', options);
-        }
-        return date?.toLocaleDateString('en-EN', options);
-    };
-
     useEffect(() => {
-        let data: BookingsInterface[] = [...bookingDataDetail];
-
-        data.forEach((e) => {
-            setDataBooking(e);
-        });
+        let data: BookingDetailInterface = bookingDataDetail;
+        
+        if(status === 'fulfilled') 
+            setDataBooking(data);
 
     }, [bookingDataDetail])
 
@@ -71,56 +81,54 @@ export const BookingFile = () => {
                         <CheckContainer darkmode={darkMode ? 0 : 1}>
                             <CheckInfo>
                                 <CheckTitle darkmode={darkMode ? 0 : 1}>Check In</CheckTitle>
-                                <CheckParagraph darkmode={darkMode ? 0 : 1}>{handleSelectDate(dataBooking.check_in)}</CheckParagraph>
+                                <CheckParagraph darkmode={darkMode ? 0 : 1}>{dataBooking.check_in ? format(new Date(dataBooking.check_in), "dd/MM/yyyy HH:mm") : "Invalid Date"}</CheckParagraph>
                             </CheckInfo>
                             <CheckInfo>
                                 <CheckTitle darkmode={darkMode ? 0 : 1}>Check Out</CheckTitle>
-                                <CheckParagraph darkmode={darkMode ? 0 : 1}>{handleSelectDate(dataBooking.check_out)}</CheckParagraph>
+                                <CheckParagraph darkmode={darkMode ? 0 : 1}>{dataBooking.check_out ? format(new Date(dataBooking.check_out), "dd/MM/yyyy HH:mm") : "Invalid Date"}</CheckParagraph>
                             </CheckInfo>
                         </CheckContainer>
                         <RoomInfoContainer>
                             <InnerInfo>
                                 <InnerInfoContainer>
                                     <InnerInfoTitle darkmode={darkMode ? 0 : 1}>Room Info</InnerInfoTitle>
-                                    <InnerInfoParagraph darkmode={darkMode ? 0 : 1}>{dataBooking.room_type}</InnerInfoParagraph>
+                                    <InnerInfoParagraph darkmode={darkMode ? 0 : 1}>{dataBooking.room_type} Nº {dataBooking.room_number}</InnerInfoParagraph>
                                 </InnerInfoContainer>
                                 <InnerInfoContainer>
                                     <InnerInfoTitle darkmode={darkMode ? 0 : 1}>Price</InnerInfoTitle>
                                     <InnerInfoParagraph darkmode={darkMode ? 0 : 1}>{dataBooking.price}<small>/night</small></InnerInfoParagraph>
                                 </InnerInfoContainer>
                             </InnerInfo>
-                            <RoomDescription darkmode={darkMode ? 0 : 1}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</RoomDescription>
+                            <RoomDescription darkmode={darkMode ? 0 : 1}>{dataBooking.description}</RoomDescription>
                         </RoomInfoContainer>
                         <FacilitiesRooms darkmode={darkMode ? 0 : 1}>
-                            <h3>Facilites</h3>
+                            <h3>Facilities</h3>
                             <FacilitiesInner>
-                                <BigFacilitie>
-                                    <LiaBedSolid />
-                                    3 Bed Space
-                                </BigFacilitie>
-                                <BigFacilitie>
-                                    <BsShieldCheck />
-                                    24 Hours Guard
-                                </BigFacilitie>
-                                <BigFacilitie>
-                                    <AiOutlineWifi />
-                                    Free Wifi
-                                </BigFacilitie>
-                                <SmallFacilitie>
-                                    2 Bathroom
-                                </SmallFacilitie>
-                                <SmallFacilitie>
-                                    Air Conditioner
-                                </SmallFacilitie>
-                                <SmallFacilitie>
-                                    Television
-                                </SmallFacilitie>
+                                {dataBooking.facilities.map((e) => {
+                                    return (
+                                        <BigFacilitie key={e}>
+                                            {e === '1/3 Bed Space' && <LiaBedSolid />}
+                                            {e === '24-Hour Guard' && <BsShieldCheck />}
+                                            {e === 'Free Wifi' && <AiOutlineWifi />}
+                                            {e === 'Air Conditioner' && <MdAir />}
+                                            {e === 'Television' && <PiTelevisionSimpleBold />}
+                                            {e === 'Towels' && <GiTowel />}
+                                            {e === 'Mini Bar' && <MdOutlineLocalBar />}
+                                            {e === 'Coffee Set' && <FaCoffee />}
+                                            {e === 'Bathtub' && <FaBath />}
+                                            {e === 'Jacuzzi' && <BiBath />}
+                                            {e === 'Nice Views' && <BsEmojiHeartEyes/>}
+                                            {e}
+                                        </BigFacilitie>
+                                    );
+                                })}
                             </FacilitiesInner>
                         </FacilitiesRooms>
                     </InfoContainer>
                     <ImageContainer url={'https://www.gannett-cdn.com/-mm-/05b227ad5b8ad4e9dcb53af4f31d7fbdb7fa901b/c=0-64-2119-1259/local/-/media/USATODAY/USATODAY/2014/08/13/1407953244000-177513283.jpg?width=2560'}>
+                    {/* <ImageContainer url={dataBooking.room_photo}> */}
                         <StatusDecoration status={dataBooking.status}>
-                            {dataBooking.status}
+                            {dataBooking.status.toUpperCase()}
                         </StatusDecoration>
                         <ImageDescription>
                             <h3>Bed Room</h3>
@@ -128,7 +136,7 @@ export const BookingFile = () => {
                         </ImageDescription>
                     </ImageContainer>
                 </FileBookingContainer>
-                : status === 'rejected' ? alert('Algo falló')
+                : status === 'rejected' ? <>Mensaje fallo</>
                     : <SpinnerLoader></SpinnerLoader>}
         </MainContainer>
     )
@@ -233,6 +241,7 @@ const RoomDescription = styled.p<{ darkmode: number }>`
     width: 90%;
     font-family: 'Poppins', sans-serif;
     margin-bottom: 30px;
+    overflow-x: scroll;
 `;
 
 const FacilitiesRooms = styled.div<{ darkmode: number }>`
@@ -254,7 +263,7 @@ const FacilitiesInner = styled.div`
 const FacilitiesTab = styled.div` 
     background: #E8F2EF;
     color: #135846;
-    width: 187px;
+    width: 150px;
     height: 65px;
     border-radius: 8px;
     margin: 10px;
