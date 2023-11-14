@@ -1,30 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { contactMessage } from "../../data/contactMessage";
-import {ContactInterface, ContactInterfaceState} from '../../interfaces/contactInterface.js';
-
-const delay = (data: ContactInterface[] | string | number | ContactInterface, timeWait: number = 600) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(data);
-        }, timeWait)
-    });
-}
-
-export const getAllMessages = createAsyncThunk<ContactInterface[]>("contact/getAllRooms", async () => {
-    return (await delay(contactMessage) as ContactInterface[]);
-});
-
-export const deleteMessage = createAsyncThunk("contact/deleteMessage", async (_id: string | number) => {
-    return (await delay(_id) as string | number);
-});
-
-export const archiveMessage = createAsyncThunk("contact/archiveMessage", async (_id: string | number) => {
-    return (await delay(_id, 300) as string | number);
-});
-
-export const unArchiveMessage = createAsyncThunk("contact/unArchiveMessage", async (_id: string | number) => {
-    return (await delay(_id, 300) as string | number);
-});
+import { createSlice } from "@reduxjs/toolkit";
+import {ContactInterfaceState} from '../../interfaces/contactInterface.js';
+import { getAllMessages, archiveMessage, unArchiveMessage, deleteMessage } from "../thunks/contactThunk.js";
 
 const initialState: ContactInterfaceState = {
     data: [],
@@ -50,12 +26,7 @@ export const contactSlice = createSlice({
         .addCase(archiveMessage.fulfilled, (state, action) => {
             state.status = "fulfilled";
             state.statusArchive = "fulfilled";
-            state.data = state.data.map(data => {
-                if (data._id === action.payload) {
-                  return { ...data, isArchived: true };
-                }
-                return data;
-            });
+            state.data = action.payload;
         })
         .addCase(archiveMessage.pending, (state) => {state.statusArchive = "pending"})
         .addCase(archiveMessage.rejected, (state, action) => {
@@ -65,13 +36,7 @@ export const contactSlice = createSlice({
         .addCase(unArchiveMessage.fulfilled, (state, action) => {
             state.status = "fulfilled";
             state.statusArchive = "fulfilled";
-
-            state.data = state.data.map(data => {
-                if (data._id === action.payload) {
-                  return { ...data, isArchived: false };
-                }
-                return data;
-            });
+            state.data = action.payload;
         })
         .addCase(unArchiveMessage.pending, (state) => {state.statusArchive = "pending"})
         .addCase(unArchiveMessage.rejected, (state, action) => {

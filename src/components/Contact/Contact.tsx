@@ -5,7 +5,8 @@ import { useMemo, useEffect, useState } from "react";
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-import { archiveMessage, deleteMessage, getAllMessages, unArchiveMessage } from "../../features/slices/contactSlice";
+import { archiveMessage, deleteMessage, getAllMessages, unArchiveMessage } from "../../features/thunks/contactThunk";
+import { format } from "date-fns";
 
 import { BiArchiveIn } from "react-icons/bi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
@@ -35,11 +36,8 @@ export const Contact = () => {
     const [tableRef] = useAutoAnimate();
     const dispatch = useAppDispatch();
 
-    let options: object = {year: 'numeric', month: 'long', day: 'numeric' };
-
     const allContacts = isActiveButton === 'allContacts';
     const archived = isActiveButton === 'archived';
-
 
     const handleOpenModal = (data: string, subject: string, email: string) => {
         setModalInfo({emailInfo: data, emailSubject: subject, emailUser: email});
@@ -99,8 +97,13 @@ export const Contact = () => {
             }
         })
 
+        const dataMessage = {
+            id: id,
+            archive: true
+        }
+
         if(id !== undefined) {
-            dispatch(archiveMessage(id));
+            dispatch(archiveMessage(dataMessage));
             ToastArchive.fire({
                 icon: 'success',
                 title: 'Archived successfully!'
@@ -120,22 +123,20 @@ export const Contact = () => {
             }
         })
 
+        const dataMessage = {
+            id: id,
+            archive: false
+        }
+
+
         if(id !== undefined) {
-            dispatch(unArchiveMessage(id));
+            dispatch(unArchiveMessage(dataMessage));
             ToastUnArchive.fire({
                 icon: 'success',
                 title: 'Unarchive successfully!'
             })
         }
     }
-
-    const handleSelectDate = (date: Date | string) => {
-        if (typeof date === 'string') {
-          const [year, month, day] = date.split('-');
-          return new Date(Number(year), Number(month) - 1, Number(day)).toLocaleDateString('en-EN', options);
-        }
-        return date.toLocaleDateString('en-EN', options);
-    };
 
     const contactData: ContactInterface[] = useMemo(() => {
 
@@ -144,8 +145,8 @@ export const Contact = () => {
         switch (isActiveButton) {
             case 'allContacts':
                 dataArray.sort((a, b) => {
-                    const dateA = new Date(a.date);
-                    const dateB = new Date(b.date);
+                    const dateA = new Date(a.dateTime);
+                    const dateB = new Date(b.dateTime);
                     return dateA.getTime() - dateB.getTime();;
                 });
                 break;
@@ -154,8 +155,8 @@ export const Contact = () => {
                 break;
             default:
                 dataArray.sort((a, b) => {
-                    const dateA = new Date(a.date);
-                    const dateB = new Date(b.date);
+                    const dateA = new Date(a.dateTime);
+                    const dateB = new Date(b.dateTime);
                     return dateA.getTime() - dateB.getTime();;
                 });
         }
@@ -171,11 +172,11 @@ export const Contact = () => {
 
     const cols = [
         {
-            property: 'date', label: 'Date', display: ({ date, dateTime, _id }: ContactInterface) => (
+            property: 'date', label: 'Date', display: ({dateTime, _id }: ContactInterface) => (
                 <DateContactContainer>
-                    <p>{handleSelectDate(date)}</p>
-                    <p>{dateTime}</p>
-                    <p>#{_id}</p>
+                    <p>{format(new Date(dateTime), "do/MM/yyyy")}</p>
+                    <p>at {format(new Date(dateTime), "HH:mm")}</p>
+                    <p style={{fontSize: '14px'}}>#{_id}</p>
                 </DateContactContainer>
             )
         },
@@ -191,7 +192,7 @@ export const Contact = () => {
         {
             property: 'email_subject', label: 'Email Subject && Comment', display: ({ email_subject, email_description, email }: ContactInterface) => (
                 <EmaiLContactContainer>
-                    <ViewNotesButton onClick={() => handleOpenModal(email_description, email_subject, email)}>View Notes</ViewNotesButton>
+                    <ViewNotesButton onClick={() => handleOpenModal(email_description, email_subject.toUpperCase(), email)}>View Notes</ViewNotesButton>
                 </EmaiLContactContainer>
             )
         },

@@ -10,10 +10,11 @@ import { GoSignIn } from "react-icons/go";
 
 import { MainContainer } from "../Reusables/MainContainer";
 import { LastestReview } from "./LastestReview";
-import { getAllMessages } from "../../features/slices/contactSlice";
+import { getAllMessages } from "../../features/thunks/contactThunk";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
-import { AsideContext } from "../Context/ToggleAsideContext";
 import { ContactInterface } from "../../interfaces/contactInterface";
+
+import { AsideContext } from "../Context/ToggleAsideContext";
 
 export const Dashboard = () => {
 

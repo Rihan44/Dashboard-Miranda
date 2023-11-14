@@ -14,7 +14,6 @@ import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { ContactInterface } from "../../interfaces/contactInterface";
-import { Props } from "../../interfaces/Props";
 
 interface CardProps {
     data?: ContactInterface[],
@@ -36,7 +35,7 @@ export const Card: React.FC<CardProps> = ({ data, handleOpen }) => {
                 navigation
             >
                 {data?.map((dataCard) => (
-                    <SwiperSlide key={dataCard.id}>
+                    <SwiperSlide key={dataCard._id}>
                         <CardContainer darkmode={darkMode ? 0 : 1}>
                             <EmailSubject darkmode={darkMode ? 0 : 1}>
                                 {dataCard.email_subject}
@@ -52,7 +51,7 @@ export const Card: React.FC<CardProps> = ({ data, handleOpen }) => {
                                     <p>{dataCard.phone}</p>
                                 </ProfileContainer>
                                 <ButtonContainer>
-                                    <Button view={dataCard.isArchived}><AiOutlineCheckCircle /></Button>
+                                    <Button view={!dataCard.isArchived}><AiOutlineCheckCircle /></Button>
                                     {location.pathname !== '/contact' && <ButtonOpen onClick={() => handleOpen(dataCard.email, dataCard.email_subject, dataCard.email)}><AiOutlineFullscreen /></ButtonOpen>}
                                 </ButtonContainer>
                             </InnerCard>

@@ -16,7 +16,7 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ContactInterface } from "../../interfaces/contactInterface";
-import { archiveMessage } from "../../features/slices/contactSlice";
+import { archiveMessage } from "../../features/thunks/contactThunk";
 
 interface LastetReviewProps {
     darkMode: boolean | undefined,
@@ -48,8 +48,14 @@ export const LastestReview: React.FC<LastetReviewProps> = ({ darkMode, dataDashb
 
         setModalInfo({emailInfo: data.email_description, emailSubject: data.email_subject, emailUser: data.email});
         setModalOpen(true);
+
+        const dataMessage = {
+            id: id,
+            archive: true
+        }
+
         if(id !== undefined){
-            dispatch(archiveMessage(id));
+            dispatch(archiveMessage(dataMessage));
             if(!data.isArchived) {
                 MessageChecked.fire({
                     icon: 'success',
