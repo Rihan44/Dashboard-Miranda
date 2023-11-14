@@ -23,9 +23,10 @@ export const UpdateRoom = () => {
     const [roomNumberState, setRoomNumberState] = useState<string | number>(0);
     const [priceState, setPriceState] = useState<string | number>(0);
     const [discountState, setDiscountState] = useState(0);
-    const [offerState, setOfferState] = useState(true);
+    const [offerState, setOfferState] = useState(false);
     const [amenitiesState, setAmenitiesState] = useState<string[]>([]);
     const [roomDescription, setRoomDescription] = useState('');
+    const [photoState, setPhotoState] = useState('');
 
     const {id} = useParams();
     const {asideState} = useContext(AsideContext);
@@ -67,16 +68,17 @@ export const UpdateRoom = () => {
               toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         })
-
+        
         const dataUpdate: RoomInterface = {
             _id: id,
+            room_photo: photoState,
             room_type: roomTypeState,
             room_number: roomNumberState,
             price: priceState,
             discount: offerState ? discountState : 0,
             amenities: amenitiesState,
             description: roomDescription,
-            status
+            status: 'available'
         }
 
         dispatch(updateRoom(dataUpdate));
@@ -87,6 +89,27 @@ export const UpdateRoom = () => {
         })
     }
 
+    const photosHandle = (e: React.ChangeEvent<HTMLInputElement>):void => {
+        // if(e && e.target && e.target.files) {
+        //     const fileImage = URL.createObjectURL(e.target.files?.[0] || null);
+        //     setPhotoState(fileImage);
+        // }
+
+        if (e && e.target && e.target.files) {
+            const file = e.target.files?.[0];
+            const reader = new FileReader();
+        
+            reader.onload = (event) => {
+              if (event.target) {
+                const base64String = event.target.result as string;
+                setPhotoState(base64String);
+              }
+            };
+        
+            reader.readAsDataURL(file);
+          }
+    }
+
     const handleSelectType = (e: React.ChangeEvent<HTMLInputElement>): void  => {
         setRoomTypeState(e.target.value);
     }
@@ -95,14 +118,13 @@ export const UpdateRoom = () => {
         setRoomNumberState(e.target.value);
     }
 
-    const handleSelectOffer = (e: React.ChangeEvent<HTMLInputElement>): void  => {
-        if(e.target.value === "Yes") {
-            setOfferState(false);    
-        } else {
-            setOfferState(true);    
-        }
-        console.log(offerState)
+    const handleOffer = (e: React.ChangeEvent<HTMLInputElement>): void  => {
 
+        if(e.target.checked) {
+            setOfferState(true);    
+        } else {
+            setOfferState(false);    
+        }
     }
     
     const handlePrice = (e: React.ChangeEvent<HTMLInputElement>): void  => {
@@ -135,6 +157,7 @@ export const UpdateRoom = () => {
                 setDiscountState(data.discount);
                 setAmenitiesState(data.amenities);
                 setRoomDescription(data.description);
+                setOfferState( data.discount !== 0 ? true : false);    
             } catch {
                 /* TODO CAMBIAR ESTO */
                 <ToastAlert></ToastAlert>
@@ -161,7 +184,7 @@ export const UpdateRoom = () => {
                                 <FormBoxInner>
                                     <div>
                                         <Label>Add 3 / 5 photos</Label>
-                                        <Input type="text" placeholder="Add photos..." />
+                                        <Input type="file" placeholder="Add photos..." onChange={photosHandle} multiple={false}/>
                                     </div>
                                     <div>
                                         <Label>Room Type</Label>
@@ -183,9 +206,8 @@ export const UpdateRoom = () => {
                                     </div>
                                     <div>
                                         <Label>Offer</Label>
-                                        <input type="checkbox" style={{ transform: 'scale(1.5)'}} defaultChecked={!offerState}/>
-                                        <p>No</p>
-                                        {/* <input type="checkbox" onChange={handleStatus} /> */}
+                                        <input type="checkbox" style={{ transform: 'scale(1.5)', marginLeft: '150px'}} onChange={handleOffer} checked={offerState}/>
+                                        <Label style={{marginRight: '25px'}}>{offerState ? 'Offer' : 'No Offer'}</Label>
                                     </div>
                                     <div>
                                         <Label>Price /Night</Label>
@@ -193,9 +215,9 @@ export const UpdateRoom = () => {
                                     </div>
                                     <div>
                                         <Label>Discount</Label>
-                                        {discountState === 0
-                                            ? <Input type="number" min="0" max="100" value={0} onChange={handleDiscount} disabled/>
-                                            : <Input type="number" min="0" max="100" value={discountState} onChange={handleDiscount}/>
+                                        {offerState 
+                                            ? <Input type="number" min="0" max="100" value={discountState} onChange={handleDiscount}/>
+                                            : <Input type="number" min="0" max="100" value={0} onChange={handleDiscount} disabled/>
                                         }  
                                     </div>                              
                                     <div>

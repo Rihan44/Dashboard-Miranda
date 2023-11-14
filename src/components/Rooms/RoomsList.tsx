@@ -34,7 +34,6 @@ export const RoomsList = () => {
     const statusBooked = isActiveButton === 'statusBooked';
 
     const roomsData = useAppSelector((state) => state.rooms.data);
-    const roomsDataUpdated = useAppSelector((state) => state.rooms.updatedDataRoom);
 
     const status = useAppSelector((state) => state.rooms.status);
     const statusDelete = useAppSelector((state) => state.rooms.statusDelete);
@@ -97,7 +96,7 @@ export const RoomsList = () => {
         
         if(status === 'fulfilled') {
             dataArray = [...roomsData];
-            
+
             switch (isActiveButton) {
                 case 'statusAvailable':
                     dataArray = dataArray.filter(data => data.status === 'available');
@@ -126,7 +125,7 @@ export const RoomsList = () => {
             return dataArray;
         }
 
-    }, [isActiveButton, selectData, roomsData, status, roomsDataUpdated])
+    }, [isActiveButton, selectData, roomsData, status])
 
     useEffect(() => {
         dispatch(getAllRooms());
@@ -134,9 +133,9 @@ export const RoomsList = () => {
 
     const cols = [
         {
-            property: 'image', label: 'Room Photo', display: ({ image }: RoomInterface) => (
+            property: 'image', label: 'Room Photo', display: ({ room_photo }: RoomInterface) => (
                 <TableContainerBodyContent>
-                    <img src={image || 'https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/65045f093c166fdddb4a94a5_x-65045f0266217.webp'} alt="imagen" />
+                    <img src={room_photo || 'https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/65045f093c166fdddb4a94a5_x-65045f0266217.webp'} alt="imagen" />
                 </TableContainerBodyContent>
             )
         },
@@ -161,21 +160,21 @@ export const RoomsList = () => {
             )
         },
         {
-            property: 'price', label: 'Price', display: ({ price, offer_price }: RoomInterface) => (
+            property: 'price', label: 'Price', display: ({ price, discount}: RoomInterface) => (
                 <PriceParagraph darkmode={darkMode ? 0 : 1}>
-                    {offer_price ? <><del>{price}</del><small>/Night</small></> : <>{price}<small>/Night</small></>}
+                    {discount !== 0 ? <><del>{price}</del><small>/Night</small></> : <>{price}<small>/Night</small></>}
                 </PriceParagraph>
             )
         },
         {
-            property: 'offer_price', label: 'Offer Price', display: ({ offer_price, discount, price }: RoomInterface) => (
-                <Discount darkmode={darkMode ? 0 : 1}>{offer_price === false ? <del>No Offer</del> : (Number(price) - (discount * Number(price) / 100))}</Discount>
+            property: 'offer_price', label: 'Offer Price', display: ({ discount, price }: RoomInterface) => (
+                <Discount darkmode={darkMode ? 0 : 1}>{discount === 0 ? <del>No Offer</del> : (price - (discount * price / 100)).toFixed(2)}</Discount>
             )
         },
         {
             property: 'status', label: 'Status', display: ({ status, _id }: RoomInterface) =>
                 <StatusContent>
-                    <StatusParagraph status={status}>{status}</StatusParagraph>
+                    <StatusParagraph status={status === undefined ? '' : status}>{status}</StatusParagraph>
                     <OptionsButton>
                         <BsTrash onClick={() => handleDelete(_id)} />
                         <FiEdit onClick={() => handleEdit(_id)} /> 
@@ -393,11 +392,6 @@ const TableContainerBodyContent = styled.div`
     justify-content: center;
     padding: 10px;
 
-    p {
-        font-family: inherit;
-        font-size: 1.1em;
-    }
-
     img {
         width: 100%;
         height: 120px;
@@ -415,7 +409,8 @@ const TableContainerBodyContent = styled.div`
 `;
 const IDparagraph = styled.p`
     color: #799283;
-    font-size: 16px;
+    font-size: 0.750em;
+    margin-right: 17px;
 `;
 
 const AmenitiesContainer = styled.div`

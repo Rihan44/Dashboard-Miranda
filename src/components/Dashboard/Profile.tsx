@@ -30,9 +30,7 @@ export const ProfileCompontent = () => {
             const fileImage = URL.createObjectURL(e.target.files?.[0] || null);
             setImgSrc(fileImage);
             authDispatch({type: 'UPDATE', payload: {imageSrc: fileImage}})
-        } else {
-            /* TODO HACER ALGO AQUI */
-        }
+        } 
     }
 
     const handleUser = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -194,7 +192,7 @@ const ProfileContainer = styled.div<{darkmode: number}>`
     box-shadow: 0px 20px 30px #00000014;
     text-align: center;
     position: relative;
-    margin-top: 40px;
+    margin-top: 20px;
     margin-bottom: 40px;
     background-color: ${props => props.darkmode === 0 ? '#292828' : '#ffff'};
     border-radius: 18px;

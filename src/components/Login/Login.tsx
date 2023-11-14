@@ -89,7 +89,6 @@ export const Login = () => {
                         title: 'Error with the connection'
                     });
                     console.log(error)
-                    throw new Error('Authentication failed');
                 });
         } else {
             setIsCorrect(true);

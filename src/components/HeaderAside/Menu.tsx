@@ -129,7 +129,7 @@ const AsideMenu = styled.aside<{darkmode: number, context: number}>`
 const ContainerFooter = styled.div`
     display: flex;
     flex-direction: column;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     align-items: baseline;
 `;
 

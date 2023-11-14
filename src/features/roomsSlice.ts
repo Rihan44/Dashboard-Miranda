@@ -4,7 +4,6 @@ import { getAllRooms, getRoom, createRoom, deleteTheRoom, updateRoom } from "./t
 
 const initialState: RoomsInterfaceState = {
     data: [],
-    updatedDataRoom: [],
     dataRoom: {} as RoomInterface,
     status: 'idle',
     statusDelete: 'idle',

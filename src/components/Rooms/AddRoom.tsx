@@ -21,6 +21,7 @@ export const AddRoom = () => {
     const [discountState, setDiscountState] = useState(0);
     const [amenitiesState, setAmenitiesState] = useState<string[]>([]);
     const [roomDescription, setRoomDescription] = useState('');
+    const [photoState, setPhotoState] = useState('');
 
     const [sameNumberAlert, setSameNumberAlert] = useState(false);
 
@@ -42,20 +43,11 @@ export const AddRoom = () => {
         "Jacuzzi",
     ]
 
-    const idAleatorio = () => {
-        const numeroAleatorio = Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000;
-        const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const letraAleatoria = letras.charAt(Math.floor(Math.random() * letras.length));
-
-        return numeroAleatorio + letraAleatoria;
-    }
-
     const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
     }
 
     const handleUpdate = async () => {
-        const id = idAleatorio();
 
         const roomType = roomTypeState === '' ? 'Single Bed' : roomTypeState;
         const roomNumber = roomNumberState === '' ? '0' : roomNumberState;
@@ -64,10 +56,9 @@ export const AddRoom = () => {
         const amenitiesDefault = amenitiesState.length === 0 ? ['Free Wifi', 'Air Conditioner', 'Towels', 'Television'] : amenitiesState;
 
         const dataUpdate: RoomInterface = {
-            _id: id,
+            room_photo: photoState,
             room_type: roomType,
             room_number: roomNumber,
-            offer_price: offerState,
             price: price,
             status: "available",
             discount: offerState ? discountState : 0,
@@ -120,6 +111,13 @@ export const AddRoom = () => {
             })
             dispatch(createRoom(dataUpdate));
             navigate('/rooms');
+        }
+    }
+
+    const photosHandle = (e: React.ChangeEvent<HTMLInputElement>):void => {
+        if(e && e.target && e.target.files) {
+            const fileImage = URL.createObjectURL(e.target.files?.[0] || null);
+            setPhotoState(fileImage);
         }
     }
 
@@ -176,7 +174,7 @@ export const AddRoom = () => {
                                 <FormBoxInner>
                                     <div>
                                         <Label>Add 3 / 5 photos</Label>
-                                        <Input type="text" placeholder="Add photos..." />
+                                        <Input type="file" placeholder="Add photos..." onChange={photosHandle} multiple={false}/>
                                     </div>
                                     <div>
                                         <Label>Room Type</Label>
