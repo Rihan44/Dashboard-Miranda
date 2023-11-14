@@ -8,8 +8,8 @@ import { useAppDispatch } from "../../app/hooks";
 import { MainContainer } from "../Reusables/MainContainer"
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import { createUser } from "../../features/thunks/usersThunk";
 
-import { createUser } from "../../features/usersSlice";
 import { UsersInterface } from "../../interfaces/usersInterface";
 import { usersData } from "../../data/usersData";
 
@@ -28,20 +28,11 @@ export const AddUser = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const idAleatorio = () => {
-        const numeroAleatorio = Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000;
-        const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const letraAleatoria = letras.charAt(Math.floor(Math.random() * letras.length));
-
-        return numeroAleatorio + letraAleatoria;
-    }
-
     const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
     }
 
     const handleUpdate = async() => {
-        const id = idAleatorio();
         const hireDate = userHireDate;
 
         const newDate = new Date(hireDate);
@@ -59,7 +50,6 @@ export const AddUser = () => {
         const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
         const updateData: UsersInterface = {
-            _id: id,
             name: name,
             email: email,
             employee_position: position,

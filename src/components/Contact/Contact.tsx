@@ -5,7 +5,7 @@ import { useMemo, useEffect, useState } from "react";
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-import { archiveMessage, deleteMessage, getAllMessages, unArchiveMessage } from "../../features/contactSlice";
+import { archiveMessage, deleteMessage, getAllMessages, unArchiveMessage } from "../../features/slices/contactSlice";
 
 import { BiArchiveIn } from "react-icons/bi";
 import { AiOutlineCloseCircle } from "react-icons/ai";

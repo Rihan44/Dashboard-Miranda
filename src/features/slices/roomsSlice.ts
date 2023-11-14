@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { RoomInterface, RoomsInterfaceState } from "../interfaces/roomInterface";
-import { getAllRooms, getRoom, createRoom, deleteTheRoom, updateRoom } from "./thunks/roomThunk";
+import { RoomInterface, RoomsInterfaceState } from "../../interfaces/roomInterface";
+import { getAllRooms, getRoom, createRoom, deleteTheRoom, updateRoom } from "../thunks/roomThunk";
 
 const initialState: RoomsInterfaceState = {
     data: [],

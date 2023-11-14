@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { contactMessage } from "../data/contactMessage";
-import {ContactInterface, ContactInterfaceState} from '../interfaces/contactInterface.js';
+import { contactMessage } from "../../data/contactMessage";
+import {ContactInterface, ContactInterfaceState} from '../../interfaces/contactInterface.js';
 
 const delay = (data: ContactInterface[] | string | number | ContactInterface, timeWait: number = 600) => {
     return new Promise((resolve) => {

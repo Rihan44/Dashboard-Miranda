@@ -21,7 +21,7 @@ export const UpdateRoom = () => {
 
     const [roomTypeState, setRoomTypeState] = useState('');
     const [roomNumberState, setRoomNumberState] = useState<string | number>(0);
-    const [priceState, setPriceState] = useState<string | number>(0);
+    const [priceState, setPriceState] = useState(0);
     const [discountState, setDiscountState] = useState(0);
     const [offerState, setOfferState] = useState(false);
     const [amenitiesState, setAmenitiesState] = useState<string[]>([]);
@@ -128,7 +128,7 @@ export const UpdateRoom = () => {
     }
     
     const handlePrice = (e: React.ChangeEvent<HTMLInputElement>): void  => {
-        setPriceState(e.target.value);
+        setPriceState(parseInt(e.target.value));
     }
 
     const handleDiscount = (e: React.ChangeEvent<HTMLInputElement>): void  => {

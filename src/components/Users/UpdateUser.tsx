@@ -8,11 +8,11 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { MainContainer } from "../Reusables/MainContainer";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { updateUser } from "../../features/usersSlice";
-import { AsideContext } from "../Context/ToggleAsideContext";
 import { ToastAlert } from "../Reusables/ToastAlert";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { UsersInterface } from "../../interfaces/usersInterface";
+import { updateUser } from "../../features/thunks/usersThunk";
+
 
 export const UpdateUser = () => {
 
@@ -20,7 +20,7 @@ export const UpdateUser = () => {
     const [userEmail, setUserEmail] = useState('');
     const [userPosition, setUserPosition] = useState('');
     const [userNumber, setUserNumber] = useState<string | number>(0);
-    const [userHireDate, setUserHireDate] = useState<Date | string>(new Date());
+    const [userHireDate, setUserHireDate] = useState('');
     const [userJobDescription, setUserJobDescription] = useState('');
     const [userStatus, setUserStatus] = useState(true);
     const [userPassword, setUserPassword] = useState('');
@@ -106,18 +106,18 @@ export const UpdateUser = () => {
     }
 
     useEffect(() => {
-        let data: UsersInterface[] = [...userData];
+        let data: UsersInterface = userData;
 
         if (status === 'fulfilled') {
             try {
-                setUserName(data[0].name);
-                setUserEmail(data[0].email);
-                setUserPosition(data[0].employee_position);
-                setUserNumber(data[0].phone_number);
-                setUserHireDate(data[0].hire_date);
-                setUserJobDescription(data[0].job_description);
-                setUserStatus(data[0].status);
-                setUserPassword(data[0].password_hash);
+                setUserName(data.name);
+                setUserEmail(data.email);
+                setUserPosition(data.employee_position);
+                setUserNumber(data.phone_number);
+                setUserHireDate(data.hire_date);
+                setUserJobDescription(data.job_description);
+                setUserStatus(data.status);
+                setUserPassword(data.password_hash);
             } catch (error) {
                 <ToastAlert></ToastAlert>
             }
@@ -177,7 +177,7 @@ export const UpdateUser = () => {
                                                 <CheckBoxContainer>
                                                     <div style={{width: '42%', position: 'relative'}}>
                                                         <LabelSwitch>
-                                                            <input type="checkbox" onChange={handleStatus} defaultChecked={userData[0]?.status}/> 
+                                                            <input type="checkbox" onChange={handleStatus} defaultChecked={userData.status}/> 
                                                             <span></span>
                                                         </LabelSwitch>
                                                         {userStatus 

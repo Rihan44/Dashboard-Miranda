@@ -12,7 +12,7 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { ToastAlert } from "../Reusables/ToastAlert";
-import { getBookingDetail, updateBooking } from "../../features/bookingsSlice";
+import { getBookingDetail, updateBooking } from "../../features/slices/bookingsSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { BookingsInterface } from "../../interfaces/bookingsInterface";
 

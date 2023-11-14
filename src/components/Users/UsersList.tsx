@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import Swal from 'sweetalert2';
 
+import {format} from 'date-fns';
+
 import { useMemo, useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-
-import { deleteUser, getAllUsers, getUser } from "../../features/usersSlice";
 
 import { MainContainer } from "../Reusables/MainContainer"
 
@@ -19,6 +19,8 @@ import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { UsersInterface } from "../../interfaces/usersInterface";
 
+import { getUser, deleteUser, getAllUsers, createUser } from "../../features/thunks/usersThunk";
+
 export const UsersList = () => {
     const {asideState} = useContext(AsideContext);
     let darkMode: boolean = asideState?.darkMode || false;
@@ -27,7 +29,6 @@ export const UsersList = () => {
     const [searchData, setSearchData] = useState('');
 
     const usersData = useAppSelector((state) => state.users.data);
-    const usersUpdatedData = useAppSelector((state) => state.users.updatedUsers);
 
     const status = useAppSelector((state) => state.users.status);
     const statusDelete = useAppSelector((state) => state.users.statusDelete);
@@ -89,47 +90,43 @@ export const UsersList = () => {
         }
     }
 
-    const handleSelectDate = (date: Date | string) => {
-        if (typeof date === 'string') {
-          const [year, month, day] = date?.split('-');
-          return new Date(Number(year), Number(month) - 1, Number(day)).toLocaleDateString('en-EN', options);
-        }
-        return date.toLocaleDateString('en-EN', options);
-    };
-
     const dataUsers = useMemo(() => {
 
-        let dataArray: UsersInterface[] = usersUpdatedData.length !== 0 ? [ ...usersUpdatedData] : [...usersData];
+        let dataArray: UsersInterface[] = [];
 
-        if (searchData !== '') {
-            dataArray = dataArray.filter(data => data.name.toLowerCase().includes(searchData));
+        if(status === 'fulfilled') { 
+            dataArray = [...usersData];
+
+            if (searchData !== '') {
+                dataArray = dataArray.filter(data => data.name.toLowerCase().includes(searchData));
+            }
+            
+            switch (isActiveButton) {
+                case 'allEmployee':
+                    dataArray.sort((a, b) => {
+                        const dateA = new Date(a.hire_date);
+                        const dateB = new Date(b.hire_date);
+                        return dateA.getTime() - dateB.getTime();
+                    });
+                    break;
+                case 'activeEmployee':
+                    dataArray = dataArray.filter(data => data.status);
+                    break;
+                case 'inactiveEmployee':
+                    dataArray = dataArray.filter(data => !data.status);
+                    break;
+                default:
+                    dataArray.sort((a, b) => {
+                        const dateA = new Date(a.hire_date);
+                        const dateB = new Date(b.hire_date);
+                        return dateA.getTime() - dateB.getTime();
+                    });
+            }
+
+            return dataArray;
         }
-        
-        switch (isActiveButton) {
-            case 'allEmployee':
-                dataArray.sort((a, b) => {
-                    const dateA = new Date(a.hire_date);
-                    const dateB = new Date(b.hire_date);
-                    return dateA.getTime() - dateB.getTime();
-                });
-                break;
-            case 'activeEmployee':
-                dataArray = dataArray.filter(data => data.status);
-                break;
-            case 'inactiveEmployee':
-                dataArray = dataArray.filter(data => !data.status);
-                break;
-            default:
-                dataArray.sort((a, b) => {
-                    const dateA = new Date(a.hire_date);
-                    const dateB = new Date(b.hire_date);
-                    return dateA.getTime() - dateB.getTime();
-                });
-        }
 
-        return dataArray;
-
-    }, [isActiveButton, searchData, status, usersData, usersUpdatedData])
+    }, [isActiveButton, searchData, status, usersData])
 
     useEffect(() => {
         dispatch(getAllUsers());
@@ -140,6 +137,7 @@ export const UsersList = () => {
             property: 'photo', label: 'User Photo', display: ({photo, name}: UsersInterface) => (
                 <NameContainer>
                     <img src={'https://robohash.org/'+ name} alt="img" />
+                    {/* <img src={photo} alt="img" /> */}
                 </NameContainer>
             )
         },
@@ -148,8 +146,8 @@ export const UsersList = () => {
                     <NameInner darkmode={darkMode ? 0 : 1}>
                         <h4>{name}</h4>
                         <p>{email}</p>
-                        <p style={{color: '#799283', fontSize: '16px'}}>{_id}</p>
-                        <p>Joined on {handleSelectDate(hire_date)}</p>
+                        <p style={{fontSize: '14px'}}>Joined on {format(new Date(hire_date), "do/MM/yyyy")}</p>
+                        <p style={{color: '#799283', fontSize: '12px'}}>{_id}</p>
                     </NameInner>
             )
         },
@@ -364,11 +362,15 @@ const Call = styled(NavLink)<{darkmode: number}>`
     text-decoration: none;
     width: 90%;
     justify-content: space-around;
-    font-size: 20px;
+    font-size: 14px;
     color: ${props => props.darkmode === 0 ? '#fff' : '#212121'};
     letter-spacing: 2px;
     align-items: center;
     transition: 0.5s;
+
+    svg {
+        font-size: 2em;
+    }
 
     &:hover {
         transform: scale(1.1, 1.1);

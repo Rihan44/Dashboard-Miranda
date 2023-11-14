@@ -11,7 +11,7 @@ import { BsShieldCheck } from "react-icons/bs";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
 import { MainContainer } from "../Reusables/MainContainer";
-import { getBookingDetail } from "../../features/bookingsSlice";
+import { getBookingDetail } from "../../features/slices/bookingsSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { BookingsInterface } from "../../interfaces/bookingsInterface";
 import { AsideContext } from "../Context/ToggleAsideContext";

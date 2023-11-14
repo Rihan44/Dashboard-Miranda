@@ -9,7 +9,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 
 import { MainContainer } from "../Reusables/MainContainer";
-import { deleteBooking, getAllBookings, getBookingDetail} from "../../features/bookingsSlice";
+import { deleteBooking, getAllBookings, getBookingDetail} from "../../features/slices/bookingsSlice";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";

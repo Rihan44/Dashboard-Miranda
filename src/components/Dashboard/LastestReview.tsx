@@ -16,7 +16,7 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ContactInterface } from "../../interfaces/contactInterface";
-import { archiveMessage } from "../../features/contactSlice";
+import { archiveMessage } from "../../features/slices/contactSlice";
 
 interface LastetReviewProps {
     darkMode: boolean | undefined,
@@ -103,7 +103,7 @@ export const LastestReview: React.FC<LastetReviewProps> = ({ darkMode, dataDashb
                                         </ProfileContainer>
                                         <ButtonContainer>
                                             <Button view={data.isArchived ? 0 : 1}><AiOutlineCheckCircle /></Button>
-                                            <ButtonOpen onClick={() => handleOpen(data, data.id)}><AiOutlineFullscreen /></ButtonOpen>
+                                            <ButtonOpen onClick={() => handleOpen(data, data._id)}><AiOutlineFullscreen /></ButtonOpen>
                                         </ButtonContainer>
                                     </InnerCard>
                                 </Card>

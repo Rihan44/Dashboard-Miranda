@@ -1,9 +1,9 @@
 import {configureStore} from "@reduxjs/toolkit";
 
-import {bookingsSlice} from "../features/bookingsSlice";
-import { roomsSlice } from "../features/roomsSlice";
-import { contactSlice } from "../features/contactSlice";
-import { usersSlice } from "../features/usersSlice";
+import {bookingsSlice} from "../features/slices/bookingsSlice";
+import { roomsSlice } from "../features/slices/roomsSlice";
+import { contactSlice } from "../features/slices/contactSlice";
+import { usersSlice } from "../features/slices/usersSlice";
 
 export const Store = configureStore({
     reducer: {

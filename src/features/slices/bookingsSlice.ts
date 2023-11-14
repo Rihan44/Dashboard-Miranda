@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { bookingData } from "../data/bookingData";
-import {BookingsInterface, BookingsInterfaceState} from '../interfaces/bookingsInterface.js';
+import { bookingData } from "../../data/bookingData";
+import {BookingsInterface, BookingsInterfaceState} from '../../interfaces/bookingsInterface.js';
 
 const delay = (data: BookingsInterface[] | string | number | BookingsInterface) => {
     return new Promise((resolve) => {
