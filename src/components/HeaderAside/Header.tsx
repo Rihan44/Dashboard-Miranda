@@ -12,6 +12,8 @@ import { GoSignOut } from "react-icons/go";
 import { TbArrowsLeftRight } from "react-icons/tb";
 import { AuthContext } from "../Context/AuthContainer";
 import { AsideContext } from "../Context/ToggleAsideContext";
+import { useAppDispatch } from "../../app/hooks";
+import { loginSlice } from "../../features/slices/loginSlice";
 
 interface PropsHeader {
     title: string,
@@ -28,7 +30,10 @@ export const Header: React.FC<PropsHeader> = ({ title, subtitle, subtitleSmall }
     const {asideState} = useContext(AsideContext);
     let darkMode: boolean = asideState?.darkMode || false;
 
+    const dispatch = useAppDispatch();
+
     const handleLogOut = async() => {
+        localStorage.clear();
         const ToastLogOut = Swal.mixin({
             toast: true,
             position: 'top',
@@ -39,6 +44,8 @@ export const Header: React.FC<PropsHeader> = ({ title, subtitle, subtitleSmall }
               toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         })
+
+        dispatch(loginSlice.actions.resetStatus());
 
         const { value: accept } = await Swal.fire({
             title: 'Are you sure that you want to LogOut?',

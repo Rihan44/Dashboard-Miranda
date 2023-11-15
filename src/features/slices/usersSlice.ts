@@ -36,7 +36,7 @@ export const usersSlice = createSlice({
         .addCase(deleteUser.fulfilled, (state, action) => {
             state.status = "fulfilled";
             state.statusDelete = "fulfilled";
-            state.data = state.data.filter(data => {return data._id !== action.payload})
+            state.data = state.data.filter(data => {return data._id !== action.payload});
         })
         .addCase(deleteUser.pending, (state) => {state.statusDelete = "pending"})
         .addCase(deleteUser.rejected, (state, action) => {

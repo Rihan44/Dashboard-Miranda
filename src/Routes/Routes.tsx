@@ -22,27 +22,27 @@ export const RoutesComponent = () => {
         <>
             <Routes>
                 <Route path="/login" element={<Login />} />
-                <Route 
+                <Route
                     path="/*"
                     element={
                         <PrivateRoute>
                             <Routes>
-                                <Route index element={<Dashboard />}/>
-                                <Route path="/dashboard" element={<Dashboard />}/>
-                                <Route path="/bookings" element={<Bookings />}/>
-                                <Route path="/bookings/:id" element={<BookingFile />}/>
-                                <Route path="/bookings/update-bookings/:id" element={<UpdateBooking/>}/>
-                                <Route path="/rooms" element={<RoomsList />}/>
-                                <Route path="/rooms/add-room" element={<AddRoom/>}/>
-                                <Route path="/rooms/update-room/:id" element={<UpdateRoom/>}/>
-                                <Route path="/contact" element={<Contact />}/>
-                                <Route path="/users" element={ <UsersList /> }/>
-                                <Route path="/users/add-user" element={ <AddUser/>}/>
-                                <Route path="/users/update-user/:id" element={ <UpdateUser/>}/>
+                                <Route index element={<Dashboard />} />
+                                <Route path="/dashboard" element={<Dashboard />} />
+                                <Route path="/bookings" element={<Bookings />} />
+                                <Route path="/bookings/:id" element={<BookingFile />} />
+                                <Route path="/bookings/update-bookings/:id" element={<UpdateBooking />} />
+                                <Route path="/rooms" element={<RoomsList />} />
+                                <Route path="/rooms/add-room" element={<AddRoom />} />
+                                <Route path="/rooms/update-room/:id" element={<UpdateRoom />} />
+                                <Route path="/contact" element={<Contact />} />
+                                <Route path="/users" element={<UsersList />} />
+                                <Route path="/users/add-user" element={<AddUser />} />
+                                <Route path="/users/update-user/:id" element={<UpdateUser />} />
                             </Routes>
                         </PrivateRoute>
                     }
-             />
+                />
             </Routes>
         </>
     )

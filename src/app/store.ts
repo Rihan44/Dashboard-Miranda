@@ -4,6 +4,7 @@ import {bookingsSlice} from "../features/slices/bookingsSlice";
 import { roomsSlice } from "../features/slices/roomsSlice";
 import { contactSlice } from "../features/slices/contactSlice";
 import { usersSlice } from "../features/slices/usersSlice";
+import { loginSlice } from "../features/slices/loginSlice";
 
 export const Store = configureStore({
     reducer: {
@@ -11,6 +12,7 @@ export const Store = configureStore({
         contact: contactSlice.reducer,
         rooms: roomsSlice.reducer,
         users: usersSlice.reducer,
+        login: loginSlice.reducer
     }
 })
 

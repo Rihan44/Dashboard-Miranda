@@ -95,21 +95,21 @@ export const LastestReview: React.FC<LastetReviewProps> = ({ darkMode, dataDashb
                             <SwiperSlide key={index}>
                                 <Card darkmode={darkMode ? 0 : 1}>
                                     <EmailSubject darkmode={darkMode ? 0 : 1}>
-                                        {data.email_subject}
+                                        {data?.email_subject}
                                     </EmailSubject>
                                     <ReviewComent darkmode={darkMode ? 0 : 1}>
-                                        {data.email_description}
+                                        {data?.email_description}
                                     </ReviewComent>
                                     <InnerCard>
-                                        <ImgProfile src={'https://robohash.org/'+data.name}/>
+                                        <ImgProfile src={'https://robohash.org/'+data?.name}/>
                                         <ProfileContainer darkmode={darkMode ? 0 : 1}>
-                                            <h4>{data.name}</h4>
-                                            <p>{data.email}</p>
-                                            <p>{data.phone}</p>
+                                            <h4>{data?.name}</h4>
+                                            <p>{data?.email}</p>
+                                            <p>{data?.phone}</p>
                                         </ProfileContainer>
                                         <ButtonContainer>
-                                            <Button view={data.isArchived ? 0 : 1}><AiOutlineCheckCircle /></Button>
-                                            <ButtonOpen onClick={() => handleOpen(data, data._id)}><AiOutlineFullscreen /></ButtonOpen>
+                                            <Button view={data?.isArchived ? 0 : 1}><AiOutlineCheckCircle /></Button>
+                                            <ButtonOpen onClick={() => handleOpen(data, data?._id)}><AiOutlineFullscreen /></ButtonOpen>
                                         </ButtonContainer>
                                     </InnerCard>
                                 </Card>

@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 import { MainContainer } from "../Reusables/MainContainer"
 
@@ -11,7 +11,6 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 import { createUser } from "../../features/thunks/usersThunk";
 
 import { UsersInterface } from "../../interfaces/usersInterface";
-import { usersData } from "../../data/usersData";
 
 export const AddUser = () => {
 
@@ -48,6 +47,8 @@ export const AddUser = () => {
         const jobDescription = userJobDescription === '' ? 'lorem ipsum dolar eir' : userJobDescription;
         const password = userPassword === '' ? 'newUser12345' : userPassword;
         const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+        // const usersData = useAppSelector((state) => state.users.data);
 
         const updateData: UsersInterface = {
             name: name,
@@ -118,14 +119,14 @@ export const AddUser = () => {
     }
 
     const handleEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        const userExist = usersData.find((data) => data.email === e.target.value) || '';
+        // const userExist = usersData.find((data: any) => data.email === e.target.value) || '';
         setUserEmail(e.target.value);
 
-        if(userExist === ''){
-            setSameEmail(false);
-        } else {
-            setSameEmail(true);
-        }
+        // if(userExist === ''){
+        //     setSameEmail(false);
+        // } else {
+        //     setSameEmail(true);
+        // }
     }
 
     const handlePosition = (e: React.ChangeEvent<HTMLInputElement>): void => {

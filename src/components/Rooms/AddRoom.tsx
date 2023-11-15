@@ -9,7 +9,6 @@ import { MainContainer } from "../Reusables/MainContainer"
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { createRoom } from "../../features/thunks/roomThunk";
-import { roomsData } from "../../data/roomsData";
 import { RoomInterface } from "../../interfaces/roomInterface";
 
 export const AddRoom = () => {
@@ -17,7 +16,7 @@ export const AddRoom = () => {
     const [roomTypeState, setRoomTypeState] = useState('Single Bed');
     const [roomNumberState, setRoomNumberState] = useState('');
     const [offerState, setOfferState] = useState(false);
-    const [priceState, setPriceState] = useState('');
+    const [priceState, setPriceState] = useState(0);
     const [discountState, setDiscountState] = useState(0);
     const [amenitiesState, setAmenitiesState] = useState<string[]>([]);
     const [roomDescription, setRoomDescription] = useState('');
@@ -51,7 +50,7 @@ export const AddRoom = () => {
 
         const roomType = roomTypeState === '' ? 'Single Bed' : roomTypeState;
         const roomNumber = roomNumberState === '' ? '0' : roomNumberState;
-        const price = priceState === '' ? '30' : priceState;
+        const price = priceState === 0 ? 30 : priceState;
         const descriptionDefault = roomDescription === '' ? 'This is a default description for the room' : roomDescription;
         const amenitiesDefault = amenitiesState.length === 0 ? ['Free Wifi', 'Air Conditioner', 'Towels', 'Television'] : amenitiesState;
 
@@ -78,7 +77,7 @@ export const AddRoom = () => {
         })
 
         if (roomTypeState === 'Single Bed' && roomNumberState === '' &&
-            priceState === '' && roomDescription === '' && amenitiesState.length === 0) {
+            priceState === 0 && roomDescription === '' && amenitiesState.length === 0) {
 
             const { value: accept } = await Swal.fire({
                 title: 'Are you sure yo want to add a room with the default values?',
@@ -126,14 +125,14 @@ export const AddRoom = () => {
     }
 
     const handleRoomNumber = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        const roomExist = roomsData.find((data) => data.room_number === parseInt(e.target.value)) || '';
+        // const roomExist = roomsData.find((data) => data.room_number === parseInt(e.target.value)) || '';
         setRoomNumberState(e.target.value);
         
-        if(roomExist === ''){
-            setSameNumberAlert(false);
-        } else {
-            setSameNumberAlert(true);
-        }
+        // if(roomExist === ''){
+        //     setSameNumberAlert(false);
+        // } else {
+        //     setSameNumberAlert(true);
+        // }
         
     }
 
@@ -146,7 +145,7 @@ export const AddRoom = () => {
     }
 
     const handlePrice = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        setPriceState(e.target.value);
+        setPriceState(parseInt(e.target.value));
     }
 
     const handleDiscount = (e: React.ChangeEvent<HTMLInputElement>): void => {

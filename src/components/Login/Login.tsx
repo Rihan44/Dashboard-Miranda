@@ -1,29 +1,29 @@
 import styled from "styled-components"
 import Swal from 'sweetalert2';
 
-import fetch from 'cross-fetch';
-
-import { FormEvent, useContext, useState } from "react"
+import { FormEvent, useContext, useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
+import { login } from "../../features/thunks/loginThunk";
 
 import { AuthContext } from "../Context/AuthContainer";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 export const Login = () => {
 
-    const navigate = useNavigate();
-    const apiUrlLocal = 'http://localhost:3000/';
-    const apiUrlAtlas = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com/';
-    
     const [inputTextEmail, setInputTextEmail] = useState('');
     const [inputTextPass, setInputTextPass] = useState('');
     const [isCorrect, setIsCorrect] = useState(false);
+    const [userEmail, setUserEmail] = useState('');
+    const [userName, setUserName] = useState('');
+    const [userPhoto, setUserPhoto] = useState('');
+
     const {auth, authDispatch} = useContext(AuthContext);
 
-    const userAdmin = {
-        user: "ASdev",
-        email: "asmuela.dev@gmail.com",
-        password: 'ASdev12345'
-    }
+    const loginData = useAppSelector((state) => state.login.data);
+    const loginStatus = useAppSelector((state) => state.login.status);
+    
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     function handleChangeEmail(e: React.ChangeEvent<HTMLInputElement>): void {
         setInputTextEmail(e.target.value);   
@@ -33,7 +33,32 @@ export const Login = () => {
         setInputTextPass(e.target.value);   
     }
 
-    function handleSubmit(e: FormEvent<HTMLFormElement>): void{
+    function handleFastLogin(): void {
+        setInputTextEmail('asdev@gmail.com');   
+        setInputTextPass('admin');   
+    }
+
+    function handleSubmit(e: FormEvent<HTMLFormElement>): void {
+        e.preventDefault();
+
+        const loginUser = {
+            email: inputTextEmail,
+            password: inputTextPass
+        }
+    
+        dispatch(login(loginUser));
+    }
+
+    useEffect(() => {
+
+        const token = localStorage.getItem('token');
+        
+        if(auth.authenticated && token === loginData.token){
+            navigate('/');
+        } else {
+            navigate('/login');
+        }
+
         const ToastLogin = Swal.mixin({
             toast: true,
             position: 'top',
@@ -45,72 +70,47 @@ export const Login = () => {
             }
         })
 
-        e.preventDefault();
-
-        if(inputTextEmail === userAdmin.email && inputTextPass === userAdmin.password){
-            setIsCorrect(false);
-            
-            fetch(`${apiUrlLocal}login`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
+        if (loginStatus === 'fulfilled') {
+            authDispatch({
+                type: 'LOGIN',
+                payload: {
+                    authenticated: true,
+                    username: loginData.payload.user || 'us',
+                    email: loginData.payload.email || 'em',
+                    imageSrc: loginData.payload.userPhoto || 'ph',
                 },
+            });
 
-                body: JSON.stringify({
-                  user: userAdmin.user,
-                  email: inputTextEmail,
-                  password: inputTextPass
-                }),
-              })
-                .then((response) => {
-                  if (response.ok) {                    
-                    ToastLogin.fire({
-                        icon: 'success',
-                        title: 'Login successfully!'
-                    })
-                    return response.json();
-                  } else {
-                    ToastLogin.fire({
-                        icon: 'error',
-                        title: 'Authentication failed'
-                    });
-                    setIsCorrect(true);
-                    throw new Error('Authentication failed');
-                  }
-                })
-                .then((data) => {
-                  const tokenLogin = data.token;
-                  authDispatch({type: 'LOGIN', payload: {authenticated: true, username: userAdmin.user, email: userAdmin.email, token: tokenLogin}})
-                  navigate('/');
-                })
-                .catch((error) => {
-                    ToastLogin.fire({
-                        icon: 'error',
-                        title: 'Error with the connection'
-                    });
-                    console.log(error)
-                });
-        } else {
+            ToastLogin.fire({
+                icon: 'success',
+                title: 'Login successfully!'
+            })
+
+            setIsCorrect(false);
+
+        } else if(loginStatus === 'rejected') {
             setIsCorrect(true);
+
             ToastLogin.fire({
                 icon: 'error',
-                title: 'Error with the user or the pass'
-            })
+                title: 'Authentication failed'
+            });
         }
-    }
+    }, [loginStatus, loginData, authDispatch, navigate, auth.authenticated]);
 
     return(
         <LoginContainer>
             <Title>Login Miranda Dashboard</Title>
             <FormContainer onSubmit={handleSubmit}>
                 <Label>Email</Label>
-                <Input type="text" placeholder="email@gmail.com..." onChange={handleChangeEmail} data-cy='inputUserEmail'/>
+                <Input type="text" value={inputTextEmail || ''} placeholder="email@gmail.com..." onChange={handleChangeEmail} data-cy='inputUserEmail'/>
                 <Label>Password</Label>
-                <Input type="password" placeholder="password..." onChange={handleChangePass} data-cy='inputPasswordUser'/>
+                <Input type="password" value={inputTextPass || ''} placeholder="password..." onChange={handleChangePass} data-cy='inputPasswordUser'/>
                 <Button data-cy="loginButton">Login</Button>
-                <FormParagraph>Email Test: <small>asmuela.dev@gmail.com</small></FormParagraph>
-                <FormParagraph>Pass Test: <small>ASdev12345</small></FormParagraph>
-                {isCorrect ? <WrongParagraph data-cy="loginError">El user o la pass son incorrectos</WrongParagraph>: ''}
+                <Button style={{marginTop: '0', background: 'rgb(19, 88, 70)', color: '#ffff'}} onClick={handleFastLogin}>Fast Login</Button>
+                <FormParagraph>Email Test: <small>asdev@gmail.com</small></FormParagraph>
+                <FormParagraph>Pass Test: <small>admin</small></FormParagraph>
+                {isCorrect ? <WrongParagraph data-cy="loginError">The username or password is incorrect</WrongParagraph>: ''}
             </FormContainer>
         </LoginContainer>
     )

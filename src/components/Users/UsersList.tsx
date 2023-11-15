@@ -19,7 +19,7 @@ import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { UsersInterface } from "../../interfaces/usersInterface";
 
-import { getUser, deleteUser, getAllUsers, createUser } from "../../features/thunks/usersThunk";
+import { getUser, deleteUser, getAllUsers} from "../../features/thunks/usersThunk";
 
 export const UsersList = () => {
     const {asideState} = useContext(AsideContext);
@@ -35,8 +35,6 @@ export const UsersList = () => {
     
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-
-    let options: object = { year: 'numeric', month: 'long', day: 'numeric' };
 
     const allEmployee = isActiveButton === 'allEmployee';
     const activeEmployee = isActiveButton === 'activeEmployee';

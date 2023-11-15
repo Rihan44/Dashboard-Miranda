@@ -9,7 +9,7 @@ interface InitialStateInterface {
 }
 
 function initialAuthState(): InitialStateInterface{
-   const base = {authenticated: false, username: null, email: null, imageSrc: null, token: null}; 
+    const base = {authenticated: false, username: null, email: null, imageSrc: null}; 
     const authData = localStorage.getItem('auth') || '';
 
     if (authData) 
@@ -23,8 +23,7 @@ interface LogInInterface {
         authenticated?: boolean,
         username?: string,
         email?: string,
-        imageSrc?: string,
-        token?:string
+        imageSrc?: string
     }
 }
 
@@ -39,7 +38,7 @@ const reducer = (state: InitialStateInterface, action: Actions): InitialStateInt
         case 'LOGIN':
             return {...action.payload};
         case 'LOGOUT':
-            return {authenticated: false, username: null, email: null, imageSrc: null, token: null}; // hacer un localstorage clean
+            return {authenticated: false, username: null, email: null, imageSrc: null}; 
         case 'UPDATE':
             return {...state, ...action.payload};
         default :

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Navigate } from "react-router-dom"
+import { Navigate, useLocation } from "react-router-dom"
 import { AuthContext } from "../Context/AuthContainer";
 
 
@@ -9,15 +9,15 @@ interface Props {
 
 export const PrivateRoute: React.FC<Props> = ({children}) => {
 
-   const { auth } = useContext(AuthContext)
-
-    if(auth.authenticated){
+    const { auth } = useContext(AuthContext);
+    
+    if(!auth.authenticated){
+        return(
+            <Navigate to="/login"/>
+        )
+    } else {
         return (
             children
-            );
-        } else {
-            return(
-                <Navigate to="/login"/>
         )
     }
 } 

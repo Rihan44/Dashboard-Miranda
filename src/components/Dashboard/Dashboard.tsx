@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 import { LiaBedSolid } from "react-icons/lia";
@@ -18,7 +18,7 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 
 export const Dashboard = () => {
 
-    const [dataContact, setDataContact] = useState<ContactInterface[]>([]);
+    // const [dataContact, setDataContact] = useState<ContactInterface[]>([]);
 
     const { asideState } = useContext(AsideContext);
     let darkMode: boolean = asideState?.darkMode || false;
@@ -28,13 +28,16 @@ export const Dashboard = () => {
 
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        let dataArray: ContactInterface[] = [...contactData];
-
-        if (status === 'fulfilled') {
-            setDataContact(dataArray);
+    const dataContact = useMemo(() => {
+           
+        let dataArray: ContactInterface[] = [];
+        
+        if (status === 'fulfilled' && contactData) {
+            dataArray = [...contactData];
         }
-
+    
+        return dataArray;
+    
     }, [contactData, status]);
 
     useEffect(() => {
@@ -84,8 +87,8 @@ export const Dashboard = () => {
                 </ContainerCards>
                 {status === 'fulfilled'
                     ? <LastestReview darkMode={darkMode} dataDashboard={dataContact} />
-                    : status === 'rejected' ? alert('Algo falló')
-                        : <SpinnerLoader></SpinnerLoader>
+                    : status === 'rejected' ? '' // TODO CAMBIAR ESTO
+                    : status === 'pending' && <SpinnerLoader></SpinnerLoader>
                 }
             </MainContainer>
         </>
