@@ -9,12 +9,12 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 export const ProfileCompontent = () => {
 
     const [modalOpen, setModalOpen] = useState(false);
-    const {auth, authDispatch} = useContext(AuthContext);
+    const { auth, authDispatch } = useContext(AuthContext);
     const [imgSrc, setImgSrc] = useState(`${auth.imageSrc}` || '');
-    const [email, setUserUpdate] = useState('');
-    const [user, setEmailUpdate] = useState('');
+    const [email, setEmailUpdate] = useState(`${auth.email}` || '');
+    const [user, setUserUpdate] = useState(`${auth.username}` || '');
 
-    const {asideState} = useContext(AsideContext);
+    const { asideState } = useContext(AsideContext);
     let darkMode: boolean = asideState?.darkMode || false;
 
     const handleOpen = () => {
@@ -26,23 +26,23 @@ export const ProfileCompontent = () => {
     }
 
     const handleFile = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        if(e && e.target && e.target.files) {
+        if (e && e.target && e.target.files) {
             const fileImage = URL.createObjectURL(e.target.files?.[0] || null);
             setImgSrc(fileImage);
-            authDispatch({type: 'UPDATE', payload: {imageSrc: fileImage}})
-        } 
+            authDispatch({ type: 'UPDATE', payload: { imageSrc: imgSrc } })
+        }
     }
 
     const handleUser = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const newUser = e.target.value;
         setUserUpdate(newUser);
-        authDispatch({type: 'UPDATE', payload: {username: newUser}}) 
+        authDispatch({ type: 'UPDATE', payload: { username: user } })
     }
 
     const handleEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const newEmail = e.target.value;
         setEmailUpdate(newEmail);
-        authDispatch({type: 'UPDATE', payload: {email: newEmail}})
+        authDispatch({ type: 'UPDATE', payload: { email: email } })
     }
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
@@ -52,14 +52,14 @@ export const ProfileCompontent = () => {
             showConfirmButton: false,
             timer: 2000,
             didOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer)
-              toast.addEventListener('mouseleave', Swal.resumeTimer)
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         })
         e.preventDefault();
         setModalOpen(false);
 
-        if(user !== '' || email !== '' || imgSrc !== ''){
+        if (user !== '' || email !== '' || imgSrc !== '') {
             ToastUpdated.fire({
                 icon: 'success',
                 title: 'Profile updated successfully!'
@@ -67,31 +67,79 @@ export const ProfileCompontent = () => {
         }
     }
 
-    return(
+    const handleGitHub = () => {
+        console.log('ey');
+
+        Swal.fire({
+            title: "Submit your Github username",
+            input: "text",
+            inputAttributes: {
+                autocapitalize: "off"
+            },
+            showCancelButton: true,
+            confirmButtonText: "Look up",
+            showLoaderOnConfirm: true,
+            preConfirm: async (login) => {
+                try {
+                    const githubUrl = `
+                  https://api.github.com/users/${login}
+                `;
+                    const response = await fetch(githubUrl);
+                    if (!response.ok) {
+                        return Swal.showValidationMessage(`
+                    ${JSON.stringify(await response.json())}
+                  `);
+                    }
+                    return response.json();
+                } catch (error) {
+                    Swal.showValidationMessage(`
+                  Request failed: ${error}
+                `);
+                }
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setImgSrc(result.value.avatar_url);
+                setUserUpdate(result.value.login);
+                authDispatch({ type: 'UPDATE', payload: {username: result.value.login, email: email, imageSrc: result.value.avatar_url} })
+
+                Swal.fire({
+                    title: `${result.value.login}'s avatar`,
+                    imageUrl: result.value.avatar_url
+                });
+            }
+        });
+    }
+
+    return (
         <ProfileContainer darkmode={darkMode ? 0 : 1}>
             <Modal modalopen={modalOpen}>
                 <ModalInfo>
                     <ButtonModalClose onClick={handleCloseModal}>
                         <AiOutlineCloseCircle />
                     </ButtonModalClose>
-                    <ImageUpdate src={imgSrc === '' ? `https://robohash.org/${auth.username}` : imgSrc} alt="imgProfile"/>
+                    <ImageUpdate src={imgSrc === '' ? `https://robohash.org/${auth.username}` : imgSrc} alt="imgProfile" />
                     <form onSubmit={handleSubmit} method="post" encType="multipart/form-data" target="_blank">
-                        <Input type="file" name="img" multiple onChange={handleFile}/>
-                        <Input type="text" placeholder={auth.username} onChange={handleUser}/>
-                        <Input type="text" placeholder={auth.email} onChange={handleEmail}/>
-                        <ButtonSave type="submit">Save</ButtonSave>
+                        <Input type="file" name="img" multiple onChange={handleFile} />
+                        <Input type="text" placeholder={auth.username} onChange={handleUser} />
+                        <Input type="text" placeholder={auth.email} onChange={handleEmail} />
+                        <ContainerButton>
+                            <ButtonGitHub type="button" onClick={handleGitHub}>GitHub Photo</ButtonGitHub>
+                            <ButtonSave type="submit">Save</ButtonSave>
+                        </ContainerButton>
                     </form>
                 </ModalInfo>
             </Modal>
-            <ImageProfile src={imgSrc === '' ? `https://robohash.org/${auth.username}` : imgSrc}/>
-            <ProfileTitle darkmode={darkMode ? 0 : 1}>{auth.username}</ProfileTitle>
-            <ProfileParagraph>{auth.email}</ProfileParagraph>
+            <ImageProfile src={imgSrc === '' ? `https://robohash.org/${user}` : imgSrc} />
+            <ProfileTitle darkmode={darkMode ? 0 : 1}>{user}</ProfileTitle>
+            <ProfileParagraph>{email}</ProfileParagraph>
             <ProfileButton onClick={handleOpen}>Edit</ProfileButton>
         </ProfileContainer>
     )
 }
 
-const Modal = styled.div<{modalopen: boolean}>`
+const Modal = styled.div<{ modalopen: boolean }>`
     display: ${props => props.modalopen === true ? 'block' : 'none'};
     position: fixed; 
     z-index: 10; 
@@ -147,7 +195,16 @@ const ButtonSave = styled.button`
     }
 `;
 
-const Input = styled.input<{placeholder?: any, type: string}>`
+const ButtonGitHub = styled(ButtonSave)`
+    background: grey 0% 0% no-repeat padding-box;
+    color: #FFFF;
+
+    &:hover {
+        background: black;
+    }
+`;
+
+const Input = styled.input<{ placeholder?: any, type: string }>`
     width: 90%;
     height: 30px;
     border: none;
@@ -186,7 +243,7 @@ const ImageUpdate = styled.img`
 `;
 
 
-const ProfileContainer = styled.div<{darkmode: number}>`
+const ProfileContainer = styled.div<{ darkmode: number }>`
     width: 233px;
     height: 170px;
     box-shadow: 0px 20px 30px #00000014;
@@ -208,7 +265,7 @@ const ImageProfile = styled.img`
     border-radius: 10px;
 `;
 
-const ProfileTitle = styled.h3<{darkmode: number}>`
+const ProfileTitle = styled.h3<{ darkmode: number }>`
     color: ${props => props.darkmode === 0 ? '#ffff' : '#393939'};
     font-size: 16px;
     font-family: 
@@ -243,4 +300,8 @@ const ProfileButton = styled.button`
         background: #799283 0% 0% no-repeat padding-box;
         color: #EBF1EF;
     }
+`;
+
+const ContainerButton = styled.div`
+    display: flex;
 `;
