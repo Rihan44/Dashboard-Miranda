@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import error_image from '../../assets/error_image3.png';
+
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
@@ -85,7 +87,7 @@ export const Dashboard = () => {
                 </ContainerCards>
                 {status === 'fulfilled'
                     ? <LastestReview darkMode={darkMode} dataDashboard={dataContact} />
-                    : status === 'rejected' ? <h1>Error Something went wrong try to reload the page</h1>
+                    : status === 'rejected' ? <ImageRejected src={error_image}/>
                     : status === 'pending' && <SpinnerLoader></SpinnerLoader>
                 }
             </MainContainer>
@@ -161,3 +163,9 @@ const Card = styled.div<{darkmode: number}>`
     } 
 `;
 
+const ImageRejected = styled.img`
+    width:  600px;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-top: 140px;
+`;
