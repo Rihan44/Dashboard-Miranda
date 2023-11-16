@@ -5,14 +5,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
+import error_image from '../../assets/error_image3.png';
+
 import { MainContainer } from "../Reusables/MainContainer";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { ToastAlert } from "../Reusables/ToastAlert";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { UsersInterface } from "../../interfaces/usersInterface";
 import { updateUser } from "../../features/thunks/usersThunk";
-
 
 export const UpdateUser = () => {
 
@@ -119,7 +119,7 @@ export const UpdateUser = () => {
                 setUserStatus(data.status);
                 setUserPassword(data.password_hash);
             } catch (error) {
-                <ToastAlert></ToastAlert>
+                console.log(error);
             }
         }
     }, [userData, status]);
@@ -193,7 +193,7 @@ export const UpdateUser = () => {
                                 </Form>
                             </FormContainer>
                         </>
-                        : status === 'rejected' ? <ToastAlert></ToastAlert>
+                        : status === 'rejected' ? <ImageRejected src={error_image}/>
                             : <SpinnerLoader></SpinnerLoader>}
                 </UpdateUserContainer>
             </MainContainer>
@@ -454,4 +454,11 @@ const StatusContainer = styled.div`
     div {
         margin-right: 10px;
     }
+`;
+
+const ImageRejected = styled.img`
+    width:  600px;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-top: 140px;
 `;

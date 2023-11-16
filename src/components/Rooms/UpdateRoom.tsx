@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Swal from 'sweetalert2';
 
+import error_image from '../../assets/error_image3.png';
+
 import { FormEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useContext } from "react";
@@ -14,7 +16,6 @@ import { getRoom, updateRoom } from "../../features/thunks/roomThunk";
 import { AsideContext } from "../Context/ToggleAsideContext";
 
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
-import { ToastAlert } from "../Reusables/ToastAlert";
 import { RoomInterface } from "../../interfaces/roomInterface";
 
 export const UpdateRoom = () => {
@@ -158,9 +159,8 @@ export const UpdateRoom = () => {
                 setAmenitiesState(data.amenities);
                 setRoomDescription(data.description);
                 setOfferState( data.discount !== 0 ? true : false);    
-            } catch {
-                /* TODO CAMBIAR ESTO */
-                <ToastAlert></ToastAlert>
+            } catch(error) {
+                console.log(error)
             }
         }
 
@@ -244,7 +244,7 @@ export const UpdateRoom = () => {
                         </Form>
                     </FormContainer>
                     </>
-                    : status === 'rejected' ? <ToastAlert></ToastAlert>
+                    : status === 'rejected' ? <ImageRejected src={error_image}/>
                         : <SpinnerLoader></SpinnerLoader>}
             </UpdateRoomContainer>
         </MainContainer>
@@ -434,4 +434,11 @@ const ButtonBack = styled(Button)`
         transform: scale(1.1);
         background: #135846;
      }
+`;
+
+const ImageRejected = styled.img`
+    width:  600px;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-top: 140px;
 `;

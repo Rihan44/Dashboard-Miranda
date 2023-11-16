@@ -47,8 +47,6 @@ export const BookingFile = () => {
         status: ''
     });
 
-    const [facilities, setFacilities] = useState([]);
-
     const bookingDataDetail = useAppSelector((state) => state.bookings.dataBooking);
     const status = useAppSelector((state) => state.bookings.status);
 
