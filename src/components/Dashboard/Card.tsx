@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, A11y } from 'swiper/modules';
 import { useLocation } from "react-router-dom";
 import { useContext } from "react";
-
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
-import 'swiper/css/scrollbar'
 
 import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineCheckCircle } from "react-icons/ai";
@@ -124,7 +124,7 @@ const ProfileContainer = styled.div<{darkmode: number}>`
     p {
         color: #799283;
         font-family: 'Poppins', sans-serif;
-        font-size: 14px;
+        font-size: 12px;
         margin-bottom: 10px;
     }
 

@@ -43,7 +43,7 @@ export const getBookingDetail = createAsyncThunk("bookings/getBookingDetail", as
 
     const { result } = await response.json();
 
-    const roomsUrl = 'http://localhost:3000/rooms/';
+    // const roomsUrl = 'http://localhost:3000/rooms/';
     const roomsUrlAtlas = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com/rooms/';
 
     const getRoom = await fetch(`${roomsUrlAtlas}${result.roomID}`, {

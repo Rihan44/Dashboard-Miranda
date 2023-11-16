@@ -94,6 +94,7 @@ export const Login = () => {
                 title: 'Authentication failed'
             });
         }
+        
     }, [loginStatus, loginData, authDispatch, navigate, auth.authenticated]);
 
     return(

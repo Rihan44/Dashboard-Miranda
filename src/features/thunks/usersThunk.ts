@@ -2,8 +2,8 @@ import fetch from 'cross-fetch';
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { UsersInterface } from "../../interfaces/usersInterface";
 
-const apiUrlLocal = 'http://localhost:3000/users';
-// const apiUrlLocal = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com/users';
+// const apiUrlLocal = 'http://localhost:3000/users';
+const apiUrlLocal = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com/users';
 
 export const getAllUsers = createAsyncThunk<UsersInterface[]>("users/getAllUsers", async () => {
   const token  = localStorage.getItem('token') || '';
