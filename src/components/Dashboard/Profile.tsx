@@ -10,7 +10,7 @@ export const ProfileCompontent = () => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const {auth, authDispatch} = useContext(AuthContext);
-    const [imgSrc, setImgSrc] = useState('');
+    const [imgSrc, setImgSrc] = useState(`${auth.imageSrc}` || '');
     const [email, setUserUpdate] = useState('');
     const [user, setEmailUpdate] = useState('');
 

@@ -71,7 +71,6 @@ export const AddUser = () => {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         })
-        console.log(userName, userEmail, userNumber, userPassword, userJobDescription)
 
         if(userName === ''  && userEmail === '' && userNumber === 0 
         && userPassword === '' && userJobDescription === '') {

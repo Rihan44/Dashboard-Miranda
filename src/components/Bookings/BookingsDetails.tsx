@@ -125,8 +125,11 @@ export const BookingFile = () => {
                             </FacilitiesInner>
                         </FacilitiesRooms>
                     </InfoContainer>
-                    <ImageContainer url={'https://www.gannett-cdn.com/-mm-/05b227ad5b8ad4e9dcb53af4f31d7fbdb7fa901b/c=0-64-2119-1259/local/-/media/USATODAY/USATODAY/2014/08/13/1407953244000-177513283.jpg?width=2560'}>
-                    {/* <ImageContainer url={dataBooking.room_photo}> */}
+                    <ImageContainer>
+                        {dataBooking?.room_photo 
+                            ? <ImageRoom src={dataBooking.room_photo}/>
+                            : <ImageRoom src='https://www.gannett-cdn.com/-mm-/05b227ad5b8ad4e9dcb53af4f31d7fbdb7fa901b/c=0-64-2119-1259/local/-/media/USATODAY/USATODAY/2014/08/13/1407953244000-177513283.jpg?width=2560'/>        
+                        }      
                         <StatusDecoration status={dataBooking.status}>
                             {dataBooking.status.toUpperCase()}
                         </StatusDecoration>
@@ -290,15 +293,20 @@ const SmallFacilitie = styled(FacilitiesTab)`
     justify-content: center;
 `;
 
-const ImageContainer = styled.div<{url: string}>` 
+const ImageContainer = styled.div` 
     width: 50%;
     overflow: hidden;
     position: relative;
     background-color: #C5C5C5;
-    background: url(${props => props.url !== '' ? props.url : ''}) no-repeat fixed center;
     border-radius: 0px 10px 10px 0px;
     display: flex;
     height: 100%;
+`;
+
+const ImageRoom = styled.img`
+    width: 100%;
+    height: 100%;
+    position: absolute;
 `;
 
 const ImageDescription = styled.div`

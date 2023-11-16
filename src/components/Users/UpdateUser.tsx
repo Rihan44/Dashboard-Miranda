@@ -39,6 +39,7 @@ export const UpdateUser = () => {
     }
 
     const handleUpdate = () => {
+        
         const ToastUpdated = Swal.mixin({
             toast: true,
             position: 'top',
