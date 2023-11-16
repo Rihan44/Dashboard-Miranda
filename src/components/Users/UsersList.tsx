@@ -3,6 +3,8 @@ import Swal from 'sweetalert2';
 
 import {format} from 'date-fns';
 
+import error_image from '../../assets/error_image3.png';
+
 import { useMemo, useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -206,7 +208,7 @@ export const UsersList = () => {
                     </FilterContainer>            
                     {status === 'fulfilled'
                         ? <Tabla cols={cols} data={dataUsers} totalCols={5} totalHeaders={5}/>
-                        : status === 'rejected' ? alert('Algo falló')
+                        : status === 'rejected' ? <ImageRejected src={error_image}/>
                             : <SpinnerLoader></SpinnerLoader>
                     }
                 </UsersListContainer>
@@ -407,4 +409,11 @@ const OptionsButton = styled(Buttons)`
             transform: scale(1.1, 1.1);
         }
     }
+`;
+
+const ImageRejected = styled.img`
+    width:  600px;
+    border-radius: 10px;
+    margin-top: 140px;
+    margin-left: 350px;
 `;

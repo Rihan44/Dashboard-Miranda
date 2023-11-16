@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import error_image from '../../assets/error_image3.png';
 
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 import { LiaBedSolid } from "react-icons/lia";

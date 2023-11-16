@@ -3,8 +3,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { RoomInterface } from "../../interfaces/roomInterface";
 
-const apiUrlLocal = 'http://localhost:3000/rooms';
-// const apiUrlLocal = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com/rooms';
+// const apiUrlLocal = 'http://localhost:3000/rooms';
+const apiUrlLocal = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com/rooms';
 
 export const getAllRooms = createAsyncThunk<RoomInterface[]>("rooms/getAllRooms", async () => {
   const token  = localStorage.getItem('token') || '';

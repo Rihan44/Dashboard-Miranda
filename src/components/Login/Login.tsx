@@ -14,9 +14,6 @@ export const Login = () => {
     const [inputTextEmail, setInputTextEmail] = useState('');
     const [inputTextPass, setInputTextPass] = useState('');
     const [isCorrect, setIsCorrect] = useState(false);
-    const [userEmail, setUserEmail] = useState('');
-    const [userName, setUserName] = useState('');
-    const [userPhoto, setUserPhoto] = useState('');
 
     const {auth, authDispatch} = useContext(AuthContext);
 

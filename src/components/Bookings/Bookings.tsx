@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import Swal from 'sweetalert2';
+
 import { format } from "date-fns";
+
+import error_image from '../../assets/error_image3.png';
 
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -273,7 +276,7 @@ export const Bookings = () => {
                     {status === 'fulfilled'
                         ? <Tabla cols={cols} data={dataBooking} totalCols={7} totalHeaders={7} />
                         : status === 'rejected' 
-                            ? <ToastAlert></ToastAlert>
+                            ? <ImageRejected src={error_image}/>
                             : <SpinnerLoader></SpinnerLoader>
                     }
                 </BookingContainer>
@@ -545,7 +548,11 @@ const OptionsButton = styled(Buttons)`
 const StatusContent = styled(TableContainerBodyContent)`
     display: flex;
     flex-direction: row;
-
-  
 `;
 
+const ImageRejected = styled.img`
+    width:  600px;
+    border-radius: 10px;
+    margin-top: 140px;
+    margin-left: 350px;
+`;
