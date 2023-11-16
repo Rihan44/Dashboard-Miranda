@@ -1,14 +1,14 @@
 import styled from "styled-components";
 import Swal from 'sweetalert2';
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 import { MainContainer } from "../Reusables/MainContainer"
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { createUser } from "../../features/thunks/usersThunk";
+import { createUser, getAllUsers } from "../../features/thunks/usersThunk";
 
 import { UsersInterface } from "../../interfaces/usersInterface";
 
@@ -22,17 +22,39 @@ export const AddUser = () => {
     const [userJobDescription, setUserJobDescription] = useState('');
     const [userStatus, setUserStatus] = useState(false);
     const [userPassword, setUserPassword] = useState('');
-    const [sameEmail, setSameEmail] = useState(false);
+    const [sameEmail, setSameEmail] = useState(true);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+
+    const status = useAppSelector((state) => state.users.status);
+    
+    useEffect(() => {
+        if(status === 'rejected') {
+            setSameEmail(false);
+        }
+    }, [status])
+    
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
     }
 
+    const generateRandomId =() =>{
+        const letters = 'abcdefghijklmnopqrstuvwxyz';
+        let randomId = '';
+      
+        for (let i = 0; i < 20; i++) {
+          const randomIndex = Math.floor(Math.random() * letters.length);
+          randomId += letters.charAt(randomIndex);
+        }
+      
+        return randomId;
+      }
+
     const handleUpdate = async() => {
         const hireDate = userHireDate;
+        const randomId = generateRandomId();
 
         const newDate = new Date(hireDate);
         const year = newDate.getFullYear();
@@ -48,11 +70,13 @@ export const AddUser = () => {
         const password = userPassword === '' ? 'newUser12345' : userPassword;
         const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
-        // const usersData = useAppSelector((state) => state.users.data);
+
 
         const updateData: UsersInterface = {
+            _id: randomId,
             name: name,
             email: email,
+            photo: `https://robohash.org/${name}`,
             employee_position: position,
             phone_number: number,
             hire_date: formatedDate,
@@ -85,16 +109,24 @@ export const AddUser = () => {
 
             if(accept){
                 dispatch(createUser(updateData));
-                navigate('/users');
+
+                if(sameEmail){
+                    Swal.fire({
+                        title: 'You cant add a user if the email already exists',
+                        icon: 'warning',
+                        confirmButtonColor: '#135846',
+                        confirmButtonText: 'Ok'
+                    })
+
+                } else {
+                    dispatch(createUser(updateData))
+                        .then(() => {
+                            dispatch(getAllUsers());
+                            navigate('/users');
+                        });
+                }
             }
 
-        } else if(sameEmail) {
-            Swal.fire({
-                title: 'You cant add a user if the email already exists',
-                icon: 'warning',
-                confirmButtonColor: '#135846',
-                confirmButtonText: 'Ok'
-            })
         } else if(!emailRegex.test(userEmail)) {
             Swal.fire({
                 title: 'The email has to be a real email',
@@ -102,15 +134,31 @@ export const AddUser = () => {
                 confirmButtonColor: '#135846',
                 confirmButtonText: 'Ok'
             })
+
         } else if(!sameEmail) {
             ToastAdd.fire({
                 icon: 'success',
                 title: 'Added user successfully!'
             })
 
-            dispatch(createUser(updateData));
-            navigate('/users');
+            dispatch(createUser(updateData))
+                .then(() => {
+                    dispatch(getAllUsers());
+                    navigate('/users');
+                });
+        } else {
+            ToastAdd.fire({
+                icon: 'success',
+                title: 'Added user successfully!'
+            })
+
+            dispatch(createUser(updateData))
+                .then(() => {
+                    dispatch(getAllUsers());
+                    navigate('/users');
+                });
         }
+        
     }
 
     const handleName = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -118,14 +166,7 @@ export const AddUser = () => {
     }
 
     const handleEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        // const userExist = usersData.find((data: any) => data.email === e.target.value) || '';
         setUserEmail(e.target.value);
-
-        // if(userExist === ''){
-        //     setSameEmail(false);
-        // } else {
-        //     setSameEmail(true);
-        // }
     }
 
     const handlePosition = (e: React.ChangeEvent<HTMLInputElement>): void => {

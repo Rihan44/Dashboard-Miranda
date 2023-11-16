@@ -16,6 +16,6 @@ export interface UsersInterfaceState {
     dataUser: UsersInterface,
     status: string,
     statusDelete: string,
-    error: string | null | undefined
+    error: string | null | undefined | boolean
 }
 

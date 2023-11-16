@@ -79,7 +79,7 @@ export const UsersList = () => {
                     icon: 'success',
                     title: 'Deleted User successfully!'
                   })
-            }, 850)
+            }, 500)
         }
     }
 

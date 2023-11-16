@@ -104,7 +104,7 @@ export const createUser = createAsyncThunk("users/createUser", async (data: User
   const token  = localStorage.getItem('token') || '';
 
   try {
-    await fetch(`${apiUrlLocal}`, {
+    const response = await fetch(`${apiUrlLocal}`, {
       mode: 'cors',
       method: 'POST',
       headers: {
@@ -125,6 +125,11 @@ export const createUser = createAsyncThunk("users/createUser", async (data: User
       }),
     });
 
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      throw new Error(errorResponse.message);
+    }
+  
   } catch (error) {
     throw new Error(`Failed to create user: ${error}`);
   }
