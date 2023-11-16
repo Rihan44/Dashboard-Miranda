@@ -18,8 +18,6 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 
 export const Dashboard = () => {
 
-    // const [dataContact, setDataContact] = useState<ContactInterface[]>([]);
-
     const { asideState } = useContext(AsideContext);
     let darkMode: boolean = asideState?.darkMode || false;
 
@@ -87,7 +85,7 @@ export const Dashboard = () => {
                 </ContainerCards>
                 {status === 'fulfilled'
                     ? <LastestReview darkMode={darkMode} dataDashboard={dataContact} />
-                    : status === 'rejected' ? '' // TODO CAMBIAR ESTO
+                    : status === 'rejected' ? <h1>Error Something went wrong try to reload the page</h1>
                     : status === 'pending' && <SpinnerLoader></SpinnerLoader>
                 }
             </MainContainer>

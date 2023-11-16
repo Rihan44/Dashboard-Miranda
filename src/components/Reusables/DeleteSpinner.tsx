@@ -6,7 +6,7 @@ export const DeleteSpinner = () => {
     return (
         <RotatingsContainer>
             <RotatingLines
-                strokeColor="#E23428"
+                strokeColor="#135846"
                 strokeWidth="5"
                 animationDuration="0.75"
                 width="96"
@@ -18,6 +18,6 @@ export const DeleteSpinner = () => {
 const RotatingsContainer = styled.div`
     position: fixed;
     top: 35%;
-    left: 53%;
+    left: 47%;
     z-index: 10;
 `;

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Swal from 'sweetalert2';
 
-import fetch from 'cross-fetch';
+import error_image from '../../assets/error_image3.png';
 
 import { useMemo, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ import { StatusParagraph } from "../Reusables/StatusParagraph";
 import { RoomInterface } from "../../interfaces/roomInterface";
 
 export const RoomsList = () => {
-
+    
     const {asideState} = useContext(AsideContext);
     let darkMode: boolean = asideState?.darkMode || false;
 
@@ -37,8 +37,6 @@ export const RoomsList = () => {
 
     const status = useAppSelector((state) => state.rooms.status);
     const statusDelete = useAppSelector((state) => state.rooms.statusDelete);
-
-    const error = useAppSelector((state) => state.rooms.error);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -155,7 +153,6 @@ export const RoomsList = () => {
         {
             property: 'amenities', label: 'Amenities', display: ({ amenities }: RoomInterface) => (
                 <AmenitiesContainer>
-                    {/* TODO MEJORAR LAS AMENITIES */}
                     <p>{amenities !== undefined ? amenities?.join(', ') : ''}</p>
                 </AmenitiesContainer>
             )
@@ -213,7 +210,7 @@ export const RoomsList = () => {
                     </FilterContainer>
                     {status === 'fulfilled' || status === 'loading'
                         ? <Tabla cols={cols} data={dataRooms} totalCols={7} totalHeaders={7} />
-                        : status === 'rejected' ? <p>Error con la petición: {error}</p> // TODO CAMBIAR ESTO POR UN ERROR BIEN HECHO
+                        : status === 'rejected' ? <ImageRejected src={error_image}/>
                             : <SpinnerLoader></SpinnerLoader>
                     }
                 </RoomsContainer>
@@ -440,3 +437,9 @@ const Discount = styled.div<{darkmode: number}>`
     transition: 0.5s;
 `;
 
+const ImageRejected = styled.img`
+    width:  600px;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-top: 140px;
+`;

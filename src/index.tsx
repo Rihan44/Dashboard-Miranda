@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import { Store } from './app/store';
 import { ToggleAsideContext } from './components/Context/ToggleAsideContext';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root')!);
 
 root.render(
     <Provider store={Store}>

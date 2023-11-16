@@ -7,6 +7,7 @@ import { login } from "../../features/thunks/loginThunk";
 
 import { AuthContext } from "../Context/AuthContainer";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 
 export const Login = () => {
 
@@ -50,7 +51,7 @@ export const Login = () => {
     }
 
     useEffect(() => {
-
+        
         const token = localStorage.getItem('token');
         
         if(auth.authenticated && token === loginData.token){
@@ -102,6 +103,7 @@ export const Login = () => {
         <LoginContainer>
             <Title>Login Miranda Dashboard</Title>
             <FormContainer onSubmit={handleSubmit}>
+                {loginStatus === 'pending' && <DeleteSpinner></DeleteSpinner>}
                 <Label>Email</Label>
                 <Input type="text" value={inputTextEmail || ''} placeholder="email@gmail.com..." onChange={handleChangeEmail} data-cy='inputUserEmail'/>
                 <Label>Password</Label>

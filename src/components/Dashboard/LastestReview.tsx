@@ -321,7 +321,7 @@ const ProfileContainer = styled.div<{darkmode: number}>`
     p {
         color: #799283;
         font-family: 'Poppins', sans-serif;
-        font-size: 14px;
+        font-size: 12px;
         margin-bottom: 10px;
     }
 
