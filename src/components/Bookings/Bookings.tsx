@@ -121,14 +121,6 @@ export const Bookings = () => {
         }    
     }
 
-    const handleSelectDate = (date: Date | string) => {
-        if (typeof date === 'string') {
-          const [year, month, day] = date?.split('-');
-          return new Date(Number(year), Number(month) - 1, Number(day)).toLocaleDateString('en-EN', options);
-        }
-        return date.toLocaleDateString('en-EN', options);
-    };
-
     const dataBooking  = useMemo(() => {
         let dataArray: BookingsInterface[] = [];
 
@@ -157,9 +149,14 @@ export const Bookings = () => {
             switch (selectData) {
                 case 'Order Date':
                     dataArray.sort((a, b) => {
-                        const dateA = new Date(a.order_date);
-                        const dateB = new Date(b.order_date);
-                        return dateA.getTime() - dateB.getTime();
+                        const dateA = a.order_date ? new Date(a.order_date) : null;
+                        const dateB = b.order_date ? new Date(b.order_date) : null;
+
+                        if (dateA && dateB) {
+                            return dateA.getTime() - dateB.getTime();
+                        }
+            
+                        return 0;
                     });
                     break;
                 case 'Guest':
@@ -227,7 +224,7 @@ export const Bookings = () => {
         {
             property: 'status', label: 'Status', display: ({ status, _id }: BookingsInterface) => (
                 <StatusContent>
-                    <StatusParagraph status={status}>{status}</StatusParagraph>
+                    <StatusParagraph status={status || ''}>{status}</StatusParagraph>
                     <OptionsButton>
                         <BsTrash onClick={() => handleDelete(_id)} />
                         <FiEdit onClick={() => handleUpdate(_id)} />

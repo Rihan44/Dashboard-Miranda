@@ -2,6 +2,8 @@ import { useEffect, useState, useContext } from "react"
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
+import error_image from '../../assets/error_image3.png';
+
 import styled from "styled-components";
 import { format } from "date-fns";
 
@@ -136,7 +138,7 @@ export const BookingFile = () => {
                         </ImageDescription>
                     </ImageContainer>
                 </FileBookingContainer>
-                : status === 'rejected' ? <>Mensaje fallo</>
+                : status === 'rejected' ? <ImageRejected src={error_image}/>
                     : <SpinnerLoader></SpinnerLoader>}
         </MainContainer>
     )
@@ -413,3 +415,9 @@ const ButtonBack = styled(Button)`
      }
 `;
 
+const ImageRejected = styled.img`
+    width:  600px;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-top: 140px;
+`;

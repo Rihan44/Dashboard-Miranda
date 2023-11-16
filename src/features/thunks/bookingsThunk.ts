@@ -2,8 +2,8 @@ import fetch from 'cross-fetch';
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BookingsInterface } from '../../interfaces/bookingsInterface.js';
 
-const apiUrlLocal = 'http://localhost:3000/bookings';
-// const apiUrlLocal = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com/bookings';
+// const apiUrlLocal = 'http://localhost:3000/bookings';
+const apiUrlLocal = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com/bookings';
 
 export const getAllBookings = createAsyncThunk<BookingsInterface[]>("bookings/getAllBookings", async () => {
   const token  = localStorage.getItem('token') || '';
@@ -43,7 +43,10 @@ export const getBookingDetail = createAsyncThunk("bookings/getBookingDetail", as
 
     const { result } = await response.json();
 
-    const getRoom = await fetch(`http://localhost:3000/rooms/${result.roomID}`, {
+    const roomsUrl = 'http://localhost:3000/rooms/';
+    const roomsUrlAtlas = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com/rooms/';
+
+    const getRoom = await fetch(`${roomsUrlAtlas}${result.roomID}`, {
       mode: 'cors',
       method: 'GET',
       headers: {

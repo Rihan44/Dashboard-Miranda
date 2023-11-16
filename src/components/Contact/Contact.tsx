@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Swal from 'sweetalert2';
 
+import error_image from '../../assets/error_image3.png';
+
 import { useMemo, useEffect, useState } from "react";
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -248,7 +250,7 @@ export const Contact = () => {
                 </FilterContainer>
                 {status === 'fulfilled'
                         ? <Tabla cols={cols} data={contactData} totalCols={4} totalHeaders={4}/>
-                        : status === 'rejected' ? alert('Algo falló')
+                        : status === 'rejected' ? <ImageRejected src={error_image}/>
                             : <SpinnerLoader></SpinnerLoader>
                     }
             </ContactContainer>
@@ -462,4 +464,11 @@ const ViewNotesButton = styled(Buttons)`
         background: #135846;
         color: #EEF9F2;
     }
+`;
+
+const ImageRejected = styled.img`
+    width:  600px;
+    border-radius: 10px;
+    margin-top: 140px;
+    margin-left: 350px;
 `;
