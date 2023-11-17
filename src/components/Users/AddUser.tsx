@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { MainContainer } from "../Reusables/MainContainer"
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { createUser, getAllUsers } from "../../features/slices/users/usersThunk";
+import { createUser} from "../../features/slices/users/usersThunk";
 import { RotatingLines } from 'react-loader-spinner';
 
 import { UsersInterface } from "../../interfaces/usersInterface";
@@ -23,7 +23,6 @@ export const AddUser = () => {
     const [userJobDescription, setUserJobDescription] = useState('');
     const [userStatus, setUserStatus] = useState(false);
     const [userPassword, setUserPassword] = useState('');
-    const [sameEmail, setSameEmail] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();

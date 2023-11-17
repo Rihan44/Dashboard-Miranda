@@ -12,7 +12,8 @@ import { MainContainer } from "../Reusables/MainContainer";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { UsersInterface } from "../../interfaces/usersInterface";
-import { getAllUsers, getUser, updateUser } from "../../features/slices/users/usersThunk";
+import { getUser, updateUser } from "../../features/slices/users/usersThunk";
+import { RotatingLines } from 'react-loader-spinner';
 
 export const UpdateUser = () => {
 
@@ -40,17 +41,6 @@ export const UpdateUser = () => {
 
     const handleUpdate = () => {
         
-        const ToastUpdated = Swal.mixin({
-            toast: true,
-            position: 'top',
-            showConfirmButton: false,
-            timer: 2000,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer)
-              toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        })
-
         const updateData: UsersInterface = {
             _id: id,
             name: userName,
@@ -62,15 +52,43 @@ export const UpdateUser = () => {
             status: userStatus,
             password_hash: userPassword
         }
-        dispatch(updateUser(updateData)) 
-            .then(() => {
-                dispatch(getAllUsers());
-                navigate('/users');
-            });
-        ToastUpdated.fire({
-            icon: 'success',
-            title: `User with id: ${id} updated successfully!`
+
+        const ToastUpdate = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 2000,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
         })
+
+        const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        
+        dispatch(updateUser(updateData))
+                .then((resp) => {          
+                    if(resp.type === "users/updateUser/rejected") {
+                        ToastUpdate.fire({
+                            icon: 'error',
+                            title: 'The email already exist'
+                        });
+                    } else {
+                        if(!emailRegex.test(userEmail) || userEmail.trim() === '') {
+                            ToastUpdate.fire({
+                                icon: 'error',
+                                title: 'The email has to be a real email'
+                            });
+                        } else {
+                            ToastUpdate.fire({
+                                icon: 'success',
+                                title: `User with id: ${id} updated successfully!`
+                            });
+                            navigate('/users');
+                            console.clear();
+                        }
+                    }
+                });
     }
 
     const handleName = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -108,7 +126,7 @@ export const UpdateUser = () => {
     const handlePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setUserPassword(e.target.value);
     }
-
+    
     useEffect(() => {
         let data: UsersInterface = userData;
         
@@ -125,18 +143,16 @@ export const UpdateUser = () => {
             } catch (error) {
                 console.log(error);
             }
-        } else if(status === 'idle'){
+        } else if(status === 'pending' || status === 'idle'){
             dispatch(getUser(id || ''));
         }
 
-    }, [userData, status]);
+    }, [userData]);
     
     return (
         <>
             <MainContainer>
                 <UpdateUserContainer>
-                    {status === 'fulfilled' ?
-                        <>
                             <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft /></ButtonBack>
                             <FormContainer>
                                 <Title>Update User: {id}</Title>
@@ -196,12 +212,16 @@ export const UpdateUser = () => {
                                             </StatusContainer>
                                         </FormBoxInner>
                                     </FormBox>
-                                    <Button onClick={handleUpdate}>Update User</Button>
+                                    {status === 'pending' 
+                                        ? <div style={{marginBottom: '30px', width: '60px', marginRight: '20px', position: 'relative'}}> <RotatingLines
+                                            strokeColor="#135846"
+                                            strokeWidth="5"
+                                            animationDuration="0.75"
+                                            width="96"
+                                        /> </div>
+                                        : <Button onClick={handleUpdate}>Update User</Button>}
                                 </Form>
                             </FormContainer>
-                        </>
-                        : status === 'rejected' ? <ImageRejected src={error_image}/>
-                            : status === 'pending' && <SpinnerLoader></SpinnerLoader>}
                 </UpdateUserContainer>
             </MainContainer>
         </>
