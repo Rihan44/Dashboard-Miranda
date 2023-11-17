@@ -27,7 +27,7 @@ export const fetchFunction = async({url = '', method = '', bodyData = undefined,
             },
             body: JSON.stringify(bodyData)
           });
-
+          
         if (response.status === 401) {
             localStorage.clear()
             window.location.href = '/login'

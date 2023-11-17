@@ -101,7 +101,7 @@ export const Contact = () => {
 
         const dataMessage = {
             id: id,
-            archive: true
+            isArchived: true
         }
 
         if(id !== undefined) {
@@ -127,7 +127,7 @@ export const Contact = () => {
 
         const dataMessage = {
             id: id,
-            archive: false
+            isArchived: false
         }
 
 
@@ -234,7 +234,7 @@ export const Contact = () => {
                 <CardsContainer ref={tableRef}>  
                     {status === 'fulfilled'
                         ? <Card handleOpen={handleOpenModal} data={contactData}></Card>
-                        : status === 'rejected' ? alert('Algo falló')
+                        : status === 'rejected' ? <ImageRejected src={error_image}/>
                             : <SpinnerLoader></SpinnerLoader>
                     }
                 </CardsContainer>
