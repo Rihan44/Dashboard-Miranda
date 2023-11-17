@@ -7,7 +7,7 @@ import { useMemo, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-import { deleteTheRoom, getAllRooms, getRoom } from "../../features/thunks/roomThunk";
+import { deleteTheRoom, getAllRooms, getRoom } from "../../features/slices/rooms/roomThunk";
 
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";

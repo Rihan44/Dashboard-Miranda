@@ -8,7 +8,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { MainContainer } from "../Reusables/MainContainer"
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { createRoom, getAllRooms } from "../../features/thunks/roomThunk";
+import { createRoom, getAllRooms } from "../../features/slices/rooms/roomThunk";
 import { RoomInterface } from "../../interfaces/roomInterface";
 
 export const AddRoom = () => {

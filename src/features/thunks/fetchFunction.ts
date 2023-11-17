@@ -1,11 +1,15 @@
+import { BookingsInterface } from "../../interfaces/bookingsInterface";
+import { ContactInterface } from "../../interfaces/contactInterface";
 import { RoomInterface } from "../../interfaces/roomInterface";
+import { UsersInterface } from "../../interfaces/usersInterface";
 
 const urlApi = import.meta.env.VITE_URL_API;
 
 interface FetchFunctionOptions {
     url?: string;
     method?: string;
-    bodyData?: RoomInterface | undefined;
+    bodyData?: RoomInterface | UsersInterface | ContactInterface
+    | BookingsInterface | undefined;
     returnData?: boolean;
     id?: string;
   }
@@ -32,7 +36,7 @@ export const fetchFunction = async({url = '', method = '', bodyData = undefined,
                 return id;
             }
         } else {
-            throw new Error("Error fetching the rooms");
+            throw new Error("Error fetching");
         }
   
     } catch (error) {

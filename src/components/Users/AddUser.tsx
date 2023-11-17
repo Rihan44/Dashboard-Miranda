@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { MainContainer } from "../Reusables/MainContainer"
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { createUser, getAllUsers } from "../../features/thunks/usersThunk";
+import { createUser, getAllUsers } from "../../features/slices/users/usersThunk";
 
 import { UsersInterface } from "../../interfaces/usersInterface";
 

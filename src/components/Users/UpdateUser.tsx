@@ -12,7 +12,7 @@ import { MainContainer } from "../Reusables/MainContainer";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { UsersInterface } from "../../interfaces/usersInterface";
-import { getAllUsers, getUser, updateUser } from "../../features/thunks/usersThunk";
+import { getAllUsers, getUser, updateUser } from "../../features/slices/users/usersThunk";
 
 export const UpdateUser = () => {
 

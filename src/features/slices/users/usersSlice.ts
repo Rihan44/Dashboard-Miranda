@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { UsersInterface, UsersInterfaceState } from "../../interfaces/usersInterface";
-import { getAllUsers, getUser, deleteUser, updateUser, createUser } from "../thunks/usersThunk";
+import { UsersInterface, UsersInterfaceState } from "../../../interfaces/usersInterface";
+import { getAllUsers, getUser, deleteUser, updateUser, createUser } from "./usersThunk";
 
 const initialState: UsersInterfaceState = {
     data: [],

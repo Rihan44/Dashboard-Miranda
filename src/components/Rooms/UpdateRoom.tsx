@@ -12,7 +12,7 @@ import { MainContainer } from "../Reusables/MainContainer";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
-import { getAllRooms, getRoom, updateRoom } from "../../features/thunks/roomThunk";
+import { getAllRooms, getRoom, updateRoom } from "../../features/slices/rooms/roomThunk";
 import { AsideContext } from "../Context/ToggleAsideContext";
 
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
