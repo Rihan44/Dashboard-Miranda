@@ -54,7 +54,6 @@ export const AddUser = () => {
 
     const handleUpdate = async() => {
         const hireDate = userHireDate;
-        const randomId = generateRandomId();
 
         const newDate = new Date(hireDate);
         const year = newDate.getFullYear();
@@ -70,10 +69,7 @@ export const AddUser = () => {
         const password = userPassword === '' ? 'newUser12345' : userPassword;
         const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
-
-
         const updateData: UsersInterface = {
-            _id: randomId,
             name: name,
             email: email,
             photo: `https://robohash.org/${name}`,

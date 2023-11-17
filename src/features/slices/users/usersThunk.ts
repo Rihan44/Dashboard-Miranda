@@ -1,9 +1,7 @@
-import fetch from 'cross-fetch';
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { UsersInterface } from "../../../interfaces/usersInterface";
 import { fetchFunction } from '../fetchFunction';
 
-const urlApi = import.meta.env.VITE_URL_API;
 const endPoint = '/users';
 
 export const getAllUsers = createAsyncThunk<UsersInterface[]>("users/getAllUsers", async () => {
@@ -26,38 +24,5 @@ export const updateUser = createAsyncThunk("users/updateUser", async (data: User
 });
 
 export const createUser = createAsyncThunk("users/createUser", async (data: UsersInterface) => {
-  const token  = localStorage.getItem('token') || '';
-  
-  try {
-    const response = await fetch(`${urlApi}/users`, {
-      mode: 'cors',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        token: token
-      },
-
-      body: JSON.stringify({
-        name: data.name,
-        email: data.email,
-        employee_position: data.employee_position,
-        phone_number: data.phone_number,
-        hire_date: data.hire_date,
-        job_description: data.job_description,
-        status: data.status,
-        photo: data.photo,
-        password_hash: data.password_hash
-      }),
-    });
-
-    if (!response.ok) {
-      const errorResponse = await response.json();
-      throw new Error(errorResponse.message);
-    }
-  
-  } catch (error) {
-    throw new Error(`Failed to create user: ${error}`);
-  }
-  // await fetchFunction({url: `${endPoint}`, method: 'POST', returnData: false, bodyData: data});
-
+  await fetchFunction({url: `${endPoint}`, method: 'POST', returnData: false, bodyData: data});
 });
