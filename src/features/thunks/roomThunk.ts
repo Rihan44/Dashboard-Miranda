@@ -2,31 +2,19 @@ import fetch from 'cross-fetch';
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { RoomInterface } from "../../interfaces/roomInterface";
+import { fetchFunction } from './fetchFunction';
 
 // const apiUrlLocal = 'http://localhost:3000/rooms';
-const apiUrlLocal = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com/rooms';
+const apiUrlLocal = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com';
 
 export const getAllRooms = createAsyncThunk<RoomInterface[]>("rooms/getAllRooms", async () => {
-  const token  = localStorage.getItem('token') || '';
-
-  try {
-    const response = await fetch(apiUrlLocal, {
-      mode: 'cors',
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        token: token
-      },
-    });
-
-    const data = await response.json();
-
-    return data.rooms;
-
-  } catch (error) {
-    throw new Error(`Failed to fetch rooms: ${error}`);
+  const params = {
+    url: `${apiUrlLocal}/rooms`,
+    method: 'GET',
+    returnData: true
   }
-
+  const response = await fetchFunction(params);
+  return response;
 });
 
 export const getRoom = createAsyncThunk("rooms/getRoom", async (id: string | number) => {

@@ -1,22 +1,31 @@
 
-export const fetchFunction = async({url = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com', method = '', data = {}}) => {
+export const fetchFunction = async({url = '', method = '', bodyData = null, returnData = true, id = ''}) => {
     const token  = localStorage.getItem('token') || '';
 
     try {
-      const response = await fetch(``, {
-        mode: 'cors',
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          token: token
-        },
-      });
-  
-      const data = await response.json();
-  
-      return data.rooms;
+        const response = await fetch(url, {
+            mode: 'cors',
+            method: method,
+            headers: {
+              'Content-Type': 'application/json',
+              token: token
+            },
+          });
+        
+        if(response.ok) {
+            if(returnData) {
+                const data = await response.json();
+                return data.result;
+            } else {
+                return id;
+            }
+        } else {
+            throw new Error("Error fetching the rooms");
+        }
   
     } catch (error) {
-      throw new Error(`Failed to fetch rooms: ${error}`);
+      throw new Error(`Failed to connect: ${error}`);
     }
 }
+
+
