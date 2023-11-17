@@ -16,7 +16,7 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ContactInterface } from "../../interfaces/contactInterface";
-import { archiveMessage } from "../../features/thunks/contactThunk";
+import { archiveMessage } from "../../features/slices/contact/contactThunk";
 
 interface LastetReviewProps {
     darkMode: boolean | undefined,

@@ -2,7 +2,7 @@ import {configureStore} from "@reduxjs/toolkit";
 
 import {bookingsSlice} from "../features/slices/bookingsSlice";
 import { roomsSlice } from "../features/slices/rooms/roomsSlice";
-import { contactSlice } from "../features/slices/contactSlice";
+import { contactSlice } from "../features/slices/contact/contactSlice";
 import { usersSlice } from "../features/slices/users/usersSlice";
 import { loginSlice } from "../features/slices/loginSlice";
 

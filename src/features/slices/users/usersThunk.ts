@@ -3,10 +3,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { UsersInterface } from "../../../interfaces/usersInterface";
 import { fetchFunction } from '../../thunks/fetchFunction';
 
-// const apiUrlLocal = 'http://localhost:3000/users';
-const apiUrlLocal = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com/users';
+const urlApi = import.meta.env.VITE_URL_API;
 const endPoint = '/users';
-
 
 export const getAllUsers = createAsyncThunk<UsersInterface[]>("users/getAllUsers", async () => {
   const response = await fetchFunction({url: `${endPoint}`, method: 'GET', returnData: true});
@@ -31,7 +29,7 @@ export const createUser = createAsyncThunk("users/createUser", async (data: User
   const token  = localStorage.getItem('token') || '';
   
   try {
-    const response = await fetch(`${apiUrlLocal}`, {
+    const response = await fetch(`${urlApi}/users`, {
       mode: 'cors',
       method: 'POST',
       headers: {

@@ -28,6 +28,11 @@ export const fetchFunction = async({url = '', method = '', bodyData = undefined,
             body: JSON.stringify(bodyData)
           });
 
+        if (response.status === 401) {
+            localStorage.clear()
+            window.location.href = '/login'
+        }
+        
         if(response.ok) {
             if(returnData) {
                 const data = await response.json();

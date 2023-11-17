@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {ContactInterfaceState} from '../../interfaces/contactInterface.js';
-import { getAllMessages, archiveMessage, unArchiveMessage, deleteMessage } from "../thunks/contactThunk.js";
+import {ContactInterfaceState} from '../../../interfaces/contactInterface.js';
+import { getAllMessages, archiveMessage, unArchiveMessage, deleteMessage } from "./contactThunk.js";
 
 const initialState: ContactInterfaceState = {
     data: [],

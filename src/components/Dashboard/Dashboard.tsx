@@ -12,7 +12,7 @@ import { GoSignIn } from "react-icons/go";
 
 import { MainContainer } from "../Reusables/MainContainer";
 import { LastestReview } from "./LastestReview";
-import { getAllMessages } from "../../features/thunks/contactThunk";
+import { getAllMessages } from "../../features/slices/contact/contactThunk";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { ContactInterface } from "../../interfaces/contactInterface";
 

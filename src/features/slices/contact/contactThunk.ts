@@ -1,50 +1,19 @@
 import fetch from 'cross-fetch';
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ContactInterface } from '../../interfaces/contactInterface.js';
+import { ContactInterface } from '../../../interfaces/contactInterface.js';
+import { fetchFunction } from '../../thunks/fetchFunction.js';
 
-// const apiUrlLocal = 'http://localhost:3000/contacts';
-const apiUrlLocal = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com/contacts';
+const urlApi = import.meta.env.VITE_URL_API;
+const endPoint = '/contacts';
 
 export const getAllMessages = createAsyncThunk<ContactInterface[]>("contact/getAllRooms", async () => {
-  const token  = localStorage.getItem('token') || '';
-  
-  try {
-    const response = await fetch(apiUrlLocal, {
-      mode: 'cors',
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        token: token
-      },
-    });
-
-    const { result } = await response.json();
-
-    return result;
-
-  } catch (error) {
-    throw new Error(`Failed to fetch messages: ${error}`);
-  }
+  const response = await fetchFunction({url: `${endPoint}`, method: 'GET', returnData: true});
+  return response;
 });
 
-export const deleteMessage = createAsyncThunk("contact/deleteMessage", async (id: string | number) => {
-  const token  = localStorage.getItem('token') || '';
-
-  try {
-    await fetch(`${apiUrlLocal}/${id}`, {
-      mode: 'cors',
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        token: token
-      },
-    });
-
-    return id;
-
-  } catch (error) {
-    throw new Error(`Failed to delete message: ${error}`);
-  }
+export const deleteMessage = createAsyncThunk("contact/deleteMessage", async (id: string) => {
+  const response = await fetchFunction({url: `${endPoint}/${id}`, method: 'DELETE', returnData: false, id: id});
+  return response;
 });
 
 export const archiveMessage = createAsyncThunk("contact/archiveMessage", async (data: any) => {
@@ -52,7 +21,7 @@ export const archiveMessage = createAsyncThunk("contact/archiveMessage", async (
 
   try {
 
-    await fetch(`${apiUrlLocal}/${data.id}`, {
+    await fetch(`${urlApi}${endPoint}/${data.id}`, {
       mode: 'cors',
       method: 'PUT',
       headers: {
@@ -65,7 +34,7 @@ export const archiveMessage = createAsyncThunk("contact/archiveMessage", async (
       }),
     });
 
-    const response = await fetch(apiUrlLocal, {
+    const response = await fetch(`${urlApi}${endPoint}`, {
       mode: 'cors',
       method: 'GET',
       headers: {
@@ -80,6 +49,7 @@ export const archiveMessage = createAsyncThunk("contact/archiveMessage", async (
   } catch (error) {
     throw new Error(`Failed to archive message: ${error}`);
   }
+
 });
 
 export const unArchiveMessage = createAsyncThunk("contact/unArchiveMessage", async (data: any) => {
@@ -87,7 +57,7 @@ export const unArchiveMessage = createAsyncThunk("contact/unArchiveMessage", asy
 
   try {
 
-    await fetch(`${apiUrlLocal}/${data.id}`, {
+    await fetch(`${urlApi}${endPoint}/${data.id}`, {
       mode: 'cors',
       method: 'PUT',
       headers: {
@@ -100,7 +70,7 @@ export const unArchiveMessage = createAsyncThunk("contact/unArchiveMessage", asy
       }),
     });
 
-    const response = await fetch(apiUrlLocal, {
+    const response = await fetch(`${urlApi}${endPoint}`, {
       mode: 'cors',
       method: 'GET',
       headers: {

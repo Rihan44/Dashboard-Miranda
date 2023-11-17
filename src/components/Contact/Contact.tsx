@@ -7,7 +7,7 @@ import { useMemo, useEffect, useState } from "react";
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-import { archiveMessage, deleteMessage, getAllMessages, unArchiveMessage } from "../../features/thunks/contactThunk";
+import { archiveMessage, deleteMessage, getAllMessages, unArchiveMessage } from "../../features/slices/contact/contactThunk";
 import { format } from "date-fns";
 
 import { BiArchiveIn } from "react-icons/bi";
@@ -54,7 +54,7 @@ export const Contact = () => {
         setIsActiveButton(activeButton);
     }
 
-    const handleDelete = async(id: string | number | undefined) => {
+    const handleDelete = async(id: string | undefined) => {
         const ToastDelete = Swal.mixin({
             toast: true,
             position: 'top',

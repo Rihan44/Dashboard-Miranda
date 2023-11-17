@@ -15,7 +15,7 @@ import { AuthContext } from "../Context/AuthContainer";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { loginSlice } from "../../features/slices/loginSlice";
-import { getAllMessages } from "../../features/thunks/contactThunk";
+import { getAllMessages } from "../../features/slices/contact/contactThunk";
 import { ContactInterface } from "../../interfaces/contactInterface";
 
 interface PropsHeader {
