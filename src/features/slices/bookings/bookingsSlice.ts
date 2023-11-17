@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {BookingDetailInterface, BookingsInterface, BookingsInterfaceState} from '../../interfaces/bookingsInterface.js';
-import { getAllBookings, getBookingDetail, deleteBooking, updateBooking } from "../thunks/bookingsThunk";
+import {BookingDetailInterface, BookingsInterface, BookingsInterfaceState} from '../../../interfaces/bookingsInterface.js';
+import { getAllBookings, getBookingDetail, deleteBooking, updateBooking } from "./bookingsThunk.js";
 
 const initialState: BookingsInterfaceState = {
     data: [],

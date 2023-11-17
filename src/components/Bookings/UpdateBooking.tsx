@@ -8,7 +8,7 @@ import { MainContainer } from "../Reusables/MainContainer";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
-import { getBookingDetail, updateBooking } from "../../features/thunks/bookingsThunk";
+import { getBookingDetail, updateBooking } from "../../features/slices/bookings/bookingsThunk";
 
 import { AsideContext } from "../Context/ToggleAsideContext";
 

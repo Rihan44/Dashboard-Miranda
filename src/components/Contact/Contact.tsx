@@ -7,7 +7,7 @@ import { useMemo, useEffect, useState } from "react";
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-import { archiveMessage, deleteMessage, getAllMessages, unArchiveMessage } from "../../features/slices/contact/contactThunk";
+import { archiveMessage, deleteMessage, getAllMessages, unArchiveMessage } from "../../features/slices/contacts/contactThunk";
 import { format } from "date-fns";
 
 import { BiArchiveIn } from "react-icons/bi";

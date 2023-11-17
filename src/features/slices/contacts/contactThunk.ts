@@ -1,7 +1,7 @@
 import fetch from 'cross-fetch';
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ContactInterface } from '../../../interfaces/contactInterface.js';
-import { fetchFunction } from '../../thunks/fetchFunction.js';
+import { fetchFunction } from '../fetchFunction.js';
 
 const urlApi = import.meta.env.VITE_URL_API;
 const endPoint = '/contacts';

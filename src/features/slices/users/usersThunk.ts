@@ -1,7 +1,7 @@
 import fetch from 'cross-fetch';
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { UsersInterface } from "../../../interfaces/usersInterface";
-import { fetchFunction } from '../../thunks/fetchFunction';
+import { fetchFunction } from '../fetchFunction';
 
 const urlApi = import.meta.env.VITE_URL_API;
 const endPoint = '/users';

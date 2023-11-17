@@ -20,7 +20,7 @@ import { FaBath } from "react-icons/fa";
 import { BiBath } from "react-icons/bi";
 import { BsEmojiHeartEyes } from "react-icons/bs";
 
-import { getBookingDetail } from "../../features/thunks/bookingsThunk";
+import { getBookingDetail } from "../../features/slices/bookings/bookingsThunk";
 
 import { MainContainer } from "../Reusables/MainContainer";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";

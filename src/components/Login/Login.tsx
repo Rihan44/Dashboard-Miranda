@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 
 import { FormEvent, useContext, useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-import { login } from "../../features/thunks/loginThunk";
+import { login } from "../../features/slices/login/loginThunk";
 
 import { AuthContext } from "../Context/AuthContainer";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";

@@ -12,7 +12,7 @@ import { BsTrash } from "react-icons/bs";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 
-import { deleteBooking, getAllBookings, getBookingDetail} from "../../features/thunks/bookingsThunk";
+import { deleteBooking, getAllBookings, getBookingDetail} from "../../features/slices/bookings/bookingsThunk";
 
 import { MainContainer } from "../Reusables/MainContainer";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
@@ -80,7 +80,7 @@ export const Bookings = () => {
         setModalOpen(true);
     }
 
-    const handleDelete = async (id: string | number | undefined) => {
+    const handleDelete = async (id: string | undefined) => {
         const ToastDelete = Swal.mixin({
             toast: true,
             position: 'top',

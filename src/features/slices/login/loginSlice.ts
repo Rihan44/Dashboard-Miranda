@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login } from "../thunks/loginThunk";
+import { login } from "./loginThunk";
 
 const initialState: LoginInterfaceState = {
     data: {} as LoginInterface,

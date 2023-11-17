@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { RoomInterface } from "../../../interfaces/roomInterface";
-import { fetchFunction } from '../../thunks/fetchFunction';
+import { fetchFunction } from '../fetchFunction';
 
 const endPoint = '/rooms';
 
@@ -25,7 +25,5 @@ export const updateRoom = createAsyncThunk("rooms/updateRoom", async (dataUpdate
 });
 
 export const createRoom = createAsyncThunk("users/createRoom", async (data: RoomInterface) => {
-  console.log(data);
-  
   await fetchFunction({url: `${endPoint}`, method: 'POST', returnData: false, bodyData: data});
 });

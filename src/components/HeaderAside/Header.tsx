@@ -14,8 +14,8 @@ import { TbArrowsLeftRight } from "react-icons/tb";
 import { AuthContext } from "../Context/AuthContainer";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { loginSlice } from "../../features/slices/loginSlice";
-import { getAllMessages } from "../../features/slices/contact/contactThunk";
+import { loginSlice } from "../../features/slices/login/loginSlice";
+import { getAllMessages } from "../../features/slices/contacts/contactThunk";
 import { ContactInterface } from "../../interfaces/contactInterface";
 
 interface PropsHeader {
