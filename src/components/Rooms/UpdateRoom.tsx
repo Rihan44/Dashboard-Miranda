@@ -18,6 +18,7 @@ import { AsideContext } from "../Context/ToggleAsideContext";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { RoomInterface } from "../../interfaces/roomInterface";
 
+// TODO AÑADIR QUE SE PUEDA ACTUALIZAR EL ESTADO
 export const UpdateRoom = () => {
 
     const [roomTypeState, setRoomTypeState] = useState('');

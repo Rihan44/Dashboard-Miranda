@@ -2,7 +2,8 @@ import styled from "styled-components";
 import Swal from 'sweetalert2';
 
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
+import { NavLink } from "react-router-dom";
 
 import moon from '../../assets/moon.png';
 
@@ -12,8 +13,10 @@ import { GoSignOut } from "react-icons/go";
 import { TbArrowsLeftRight } from "react-icons/tb";
 import { AuthContext } from "../Context/AuthContainer";
 import { AsideContext } from "../Context/ToggleAsideContext";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { loginSlice } from "../../features/slices/loginSlice";
+import { getAllMessages } from "../../features/thunks/contactThunk";
+import { ContactInterface } from "../../interfaces/contactInterface";
 
 interface PropsHeader {
     title: string,
@@ -27,8 +30,12 @@ export const Header: React.FC<PropsHeader> = ({ title, subtitle, subtitleSmall }
     const { authDispatch } = useContext(AuthContext);
     const { asideDispatch } = useContext(AsideContext);
 
+
     const {asideState} = useContext(AsideContext);
     let darkMode: boolean = asideState?.darkMode || false;
+
+    const status = useAppSelector((state) => state.contact.status);
+    const contactData = useAppSelector((state) => state.contact.data);
 
     const dispatch = useAppDispatch();
 
@@ -77,6 +84,12 @@ export const Header: React.FC<PropsHeader> = ({ title, subtitle, subtitleSmall }
         asideDispatch({ type: 'Dark_mode' });
     }
 
+    
+    const dataContact = useMemo(() => {
+        return contactData.filter((data) => data.isArchived === false);
+        
+    }, [contactData]);
+    
     return (
         <HeaderTag darkmode={darkMode ? 0 : 1}>
             <NavIcons darkmode={darkMode ? 0 : 1}>
@@ -88,8 +101,14 @@ export const Header: React.FC<PropsHeader> = ({ title, subtitle, subtitleSmall }
                     </InnerContainerTitle>
                 </ContainerTitle>
                 <ContainerIcons>
-                    <HiOutlineMail/>
-                    <LuBell/>
+                    <NavLink to={'/contact'} style={{textDecoration: 'none', position: 'relative'}}>
+                        <HiOutlineMail/>
+                        <Notifications contact={contactData.length}>{contactData.length}</Notifications>
+                    </NavLink>
+                    <NavLink to={'/contact'} style={{textDecoration: 'none', position: 'relative'}}>
+                        <LuBell/>
+                        <Notifications contact={dataContact?.length}>{dataContact?.length}</Notifications>
+                    </NavLink>
                     <Button onClick={handleLogOut}>
                         <GoSignOut />
                     </Button>
@@ -268,6 +287,23 @@ const Label = styled.label`
         transform: translateX(calc(var(--button-width) - var(--toggle-wider) - var(--button-toggle-offset)));
     }
 
+`;
+
+const Notifications = styled.div<{contact: number}>`
+    color: #FFFF;
+    background: #E23428;
+    width: 22px;
+    height: 22px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    font-size: 12px;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    visibility: ${props => props.contact === 0 ? 'hidden' : 'visible'};
 `;
 
 

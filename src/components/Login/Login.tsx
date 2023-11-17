@@ -108,8 +108,6 @@ export const Login = () => {
                 <Input type="password" value={inputTextPass || ''} placeholder="password..." onChange={handleChangePass} data-cy='inputPasswordUser'/>
                 <Button data-cy="loginButton">Login</Button>
                 <Button style={{marginTop: '0', background: 'rgb(19, 88, 70)', color: '#ffff'}} onClick={handleFastLogin}>Fast Login</Button>
-                <FormParagraph>Email Test: <small>asdev@gmail.com</small></FormParagraph>
-                <FormParagraph>Pass Test: <small>admin</small></FormParagraph>
                 {isCorrect ? <WrongParagraph data-cy="loginError">The username or password is incorrect</WrongParagraph>: ''}
             </FormContainer>
         </LoginContainer>

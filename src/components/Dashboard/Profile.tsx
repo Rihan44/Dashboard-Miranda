@@ -249,7 +249,7 @@ const ProfileContainer = styled.div<{ darkmode: number }>`
     box-shadow: 0px 20px 30px #00000014;
     text-align: center;
     position: relative;
-    margin-top: 20px;
+    margin-top: 40px;
     margin-bottom: 40px;
     background-color: ${props => props.darkmode === 0 ? '#292828' : '#ffff'};
     border-radius: 18px;

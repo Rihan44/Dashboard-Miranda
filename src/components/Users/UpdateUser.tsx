@@ -12,7 +12,7 @@ import { MainContainer } from "../Reusables/MainContainer";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { UsersInterface } from "../../interfaces/usersInterface";
-import { updateUser } from "../../features/thunks/usersThunk";
+import { getAllUsers, getUser, updateUser } from "../../features/thunks/usersThunk";
 
 export const UpdateUser = () => {
 
@@ -62,8 +62,11 @@ export const UpdateUser = () => {
             status: userStatus,
             password_hash: userPassword
         }
-        dispatch(updateUser(updateData));
-        navigate('/users');
+        dispatch(updateUser(updateData)) 
+            .then(() => {
+                dispatch(getAllUsers());
+                navigate('/users');
+            });
         ToastUpdated.fire({
             icon: 'success',
             title: `User with id: ${id} updated successfully!`
@@ -108,7 +111,7 @@ export const UpdateUser = () => {
 
     useEffect(() => {
         let data: UsersInterface = userData;
-
+        
         if (status === 'fulfilled') {
             try {
                 setUserName(data.name);
@@ -122,7 +125,10 @@ export const UpdateUser = () => {
             } catch (error) {
                 console.log(error);
             }
+        } else if(status === 'idle'){
+            dispatch(getUser(id || ''));
         }
+
     }, [userData, status]);
     
     return (
@@ -195,7 +201,7 @@ export const UpdateUser = () => {
                             </FormContainer>
                         </>
                         : status === 'rejected' ? <ImageRejected src={error_image}/>
-                            : <SpinnerLoader></SpinnerLoader>}
+                            : status === 'pending' && <SpinnerLoader></SpinnerLoader>}
                 </UpdateUserContainer>
             </MainContainer>
         </>

@@ -159,6 +159,7 @@ export const AddUser = () => {
                 });
         }
         
+        /* TODO SI AÑADO PONIENDO EL MISMO EMAIL Y UN NOMBRE NO FUNCION */
     }
 
     const handleName = (e: React.ChangeEvent<HTMLInputElement>): void => {

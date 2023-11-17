@@ -36,10 +36,10 @@ export const Menu: React.FC<PropsMenu> = ({ setHeaderTitle }) => {
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: "40px",
-                marginBottom: "85px"
+                marginBottom: "65px"
             }}>
-                <ImgIcon src={hotelIcon}/>
-                <SubTitle darkmode={darkMode ? 0 : 1}>
+                <ImgIcon onClick={() => handleHeaderTitle('Dashboard')} src={hotelIcon}/>
+                <SubTitle onClick={() => handleHeaderTitle('Dashboard')} darkmode={darkMode ? 0 : 1}>
                     travl
                     <span>Hotel admin dashboard</span>
                 </SubTitle>

@@ -82,17 +82,18 @@ export const updateUser = createAsyncThunk("users/updateUser", async (data: User
         token: token
       },
 
-      body: JSON.stringify({
-        name: data.name,
-        email: data.email,
-        photo: data.photo,
-        employee_position: data.employee_position,
-        phone_number: data.phone_number,
-        hire_date: data.hire_date,
-        job_description: data.job_description,
-        status: data.status,
-        password_hash: data.password_hash
-      }),
+      // body: JSON.stringify({
+      //   name: data.name,
+      //   email: data.email,
+      //   photo: data.photo,
+      //   employee_position: data.employee_position,
+      //   phone_number: data.phone_number,
+      //   hire_date: data.hire_date,
+      //   job_description: data.job_description,
+      //   status: data.status,
+      //   password_hash: data.password_hash
+      // }),
+      body: JSON.stringify(data),
     });
 
   } catch (error) {
