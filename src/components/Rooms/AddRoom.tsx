@@ -8,7 +8,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { MainContainer } from "../Reusables/MainContainer"
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { createRoom } from "../../features/thunks/roomThunk";
+import { createRoom, getAllRooms } from "../../features/thunks/roomThunk";
 import { RoomInterface } from "../../interfaces/roomInterface";
 
 export const AddRoom = () => {
@@ -93,7 +93,7 @@ export const AddRoom = () => {
                     icon: 'success',
                     title: 'Added room successfully!'
                 })
-                dispatch(createRoom(dataUpdate));
+                dispatch(createRoom(dataUpdate)).then(() => dispatch(getAllRooms()));
                 navigate('/rooms');
             }
         } else if(sameNumberAlert){
@@ -108,7 +108,7 @@ export const AddRoom = () => {
                 icon: 'success',
                 title: 'Added room successfully!'
             })
-            dispatch(createRoom(dataUpdate));
+            dispatch(createRoom(dataUpdate)).then(() => dispatch(getAllRooms()));
             navigate('/rooms');
         }
     }

@@ -49,7 +49,7 @@ export const RoomsList = () => {
         setSelectData(e.target.value);
     }
 
-    const handleDelete = async(id: string | number | undefined) => {
+    const handleDelete = async(id: string | undefined) => {
         const ToastDelete = Swal.mixin({
             toast: true,
             position: 'top',

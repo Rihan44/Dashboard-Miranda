@@ -12,7 +12,7 @@ import { MainContainer } from "../Reusables/MainContainer";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
-import { getRoom, updateRoom } from "../../features/thunks/roomThunk";
+import { getAllRooms, getRoom, updateRoom } from "../../features/thunks/roomThunk";
 import { AsideContext } from "../Context/ToggleAsideContext";
 
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
@@ -83,7 +83,7 @@ export const UpdateRoom = () => {
             status: 'available'
         }
 
-        dispatch(updateRoom(dataUpdate));
+        dispatch(updateRoom(dataUpdate)).then(() => dispatch(getAllRooms()));
         navigate('/rooms');
         ToastUpdated.fire({
             icon: 'success',

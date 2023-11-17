@@ -1,6 +1,6 @@
 
 export interface RoomInterface {
-    _id?: string | number,
+    _id?: string | undefined,
     room_photo?: string,
     room_type: string,
     room_number: number | string,

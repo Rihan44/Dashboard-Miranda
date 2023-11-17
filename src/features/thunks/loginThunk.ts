@@ -1,14 +1,13 @@
 import fetch from 'cross-fetch';
 import { createAsyncThunk} from "@reduxjs/toolkit";
 
-// const apiUrlLocal = 'http://localhost:3000/login';
-const apiUrlLocal = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com/login';
+const urlApi = import.meta.env.VITE_URL_API;
 
 export const login = createAsyncThunk("login/userLogin", async (dataLogin: LoginInterface) => {
 
   try {
 
-    const response = await fetch(`${apiUrlLocal}`, {
+    const response = await fetch(`${urlApi}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
