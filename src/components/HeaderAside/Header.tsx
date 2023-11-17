@@ -304,6 +304,12 @@ const Notifications = styled.div<{contact: number}>`
     top: -5px;
     right: -5px;
     visibility: ${props => props.contact === 0 ? 'hidden' : 'visible'};
+    transition: 0.5s;
+
+    &:hover {
+        color: #E23428;
+        background: #ffff;
+    }
 `;
 
 
