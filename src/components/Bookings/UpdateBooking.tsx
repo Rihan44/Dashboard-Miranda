@@ -111,8 +111,6 @@ export const UpdateBooking = () => {
 
     const handleStatus = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setStatusBooking(e.target.value);
-        console.log(e.target.value);
-        
     }
 
     const handlePrice = (e: React.ChangeEvent<HTMLInputElement>): void => {

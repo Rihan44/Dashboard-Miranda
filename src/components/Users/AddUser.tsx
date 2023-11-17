@@ -9,6 +9,7 @@ import { MainContainer } from "../Reusables/MainContainer"
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { createUser, getAllUsers } from "../../features/slices/users/usersThunk";
+import { RotatingLines } from 'react-loader-spinner';
 
 import { UsersInterface } from "../../interfaces/usersInterface";
 
@@ -22,64 +23,46 @@ export const AddUser = () => {
     const [userJobDescription, setUserJobDescription] = useState('');
     const [userStatus, setUserStatus] = useState(false);
     const [userPassword, setUserPassword] = useState('');
-    const [sameEmail, setSameEmail] = useState(true);
+    const [sameEmail, setSameEmail] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
     const status = useAppSelector((state) => state.users.status);
-    
-    useEffect(() => {
-        if(status === 'rejected') {
-            setSameEmail(false);
-        }
-    }, [status])
-    
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
     }
 
-    const generateRandomId =() =>{
-        const letters = 'abcdefghijklmnopqrstuvwxyz';
-        let randomId = '';
-      
-        for (let i = 0; i < 20; i++) {
-          const randomIndex = Math.floor(Math.random() * letters.length);
-          randomId += letters.charAt(randomIndex);
-        }
-      
-        return randomId;
-      }
+    const hireDate = userHireDate;
+    const newDate = new Date(hireDate);
+    const year = newDate.getFullYear();
+    const month = String(newDate.getMonth() + 1).padStart(2, '0');
+    const day = String(newDate.getDate()).padStart(2, '0');
+    const formatedDate = `${year}-${month}-${day}`;
+
+    const name = userName === '' ? 'Joe Doe': userName;
+    const email = userEmail === '' ? 'joedoe@gmail.com' : userEmail;
+    const position = userPosition === '' ? 'Room service' : userPosition;
+    const number = userNumber === 0 ? '658741236' : userNumber;
+    const jobDescription = userJobDescription === '' ? 'lorem ipsum dolar eir' : userJobDescription;
+    const password = userPassword === '' ? '1234' : userPassword;
+    const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+    const updateData: UsersInterface = {
+        name: name,
+        email: email,
+        photo: `https://robohash.org/${name}`,
+        employee_position: position,
+        phone_number: number,
+        hire_date: formatedDate,
+        job_description: jobDescription,
+        status: userStatus,
+        password_hash: password
+    }
+
 
     const handleUpdate = async() => {
-        const hireDate = userHireDate;
-
-        const newDate = new Date(hireDate);
-        const year = newDate.getFullYear();
-        const month = String(newDate.getMonth() + 1).padStart(2, '0');
-        const day = String(newDate.getDate()).padStart(2, '0');
-        const formatedDate = `${year}-${month}-${day}`;
-
-        const name = userName === '' ? 'Joe Doe': userName;
-        const email = userEmail === '' ? 'joedoe@gmail.com' : userEmail;
-        const position = userPosition === '' ? 'Room service' : userPosition;
-        const number = userNumber === 0 ? '658741236' : userNumber;
-        const jobDescription = userJobDescription === '' ? 'lorem ipsum dolar eir' : userJobDescription;
-        const password = userPassword === '' ? 'newUser12345' : userPassword;
-        const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-
-        const updateData: UsersInterface = {
-            name: name,
-            email: email,
-            photo: `https://robohash.org/${name}`,
-            employee_position: position,
-            phone_number: number,
-            hire_date: formatedDate,
-            job_description: jobDescription,
-            status: userStatus,
-            password_hash: password
-        }
 
         const ToastAdd = Swal.mixin({
             toast: true,
@@ -104,58 +87,55 @@ export const AddUser = () => {
             })
 
             if(accept){
-                dispatch(createUser(updateData));
-
-                if(sameEmail){
-                    Swal.fire({
-                        title: 'You cant add a user if the email already exists',
-                        icon: 'warning',
-                        confirmButtonColor: '#135846',
-                        confirmButtonText: 'Ok'
-                    })
-
-                } else {
-                    dispatch(createUser(updateData))
-                        .then(() => {
-                            dispatch(getAllUsers());
-                            navigate('/users');
+                dispatch(createUser(updateData))
+                .then((resp) => {
+                    if(resp.type === "users/createUser/rejected") {
+                        ToastAdd.fire({
+                            icon: 'error',
+                            title: 'You have to change the email because email default already exist'
                         });
-                }
+                    } else {
+                        if(!emailRegex.test(userEmail)) {
+                            ToastAdd.fire({
+                                icon: 'error',
+                                title: 'The email has to be a real email'
+                            });
+                        } else {
+                            ToastAdd.fire({
+                                icon: 'success',
+                                title: 'Added user successfully!'
+                            });
+                            navigate('/users');
+                            console.clear();
+                        }
+                    }
+                });
             }
-
-        } else if(!emailRegex.test(userEmail)) {
-            Swal.fire({
-                title: 'The email has to be a real email',
-                icon: 'warning',
-                confirmButtonColor: '#135846',
-                confirmButtonText: 'Ok'
-            })
-
-        } else if(!sameEmail) {
-            ToastAdd.fire({
-                icon: 'success',
-                title: 'Added user successfully!'
-            })
-
-            dispatch(createUser(updateData))
-                .then(() => {
-                    dispatch(getAllUsers());
-                    navigate('/users');
-                });
         } else {
-            ToastAdd.fire({
-                icon: 'success',
-                title: 'Added user successfully!'
-            })
-
             dispatch(createUser(updateData))
-                .then(() => {
-                    dispatch(getAllUsers());
-                    navigate('/users');
+                .then((resp) => {
+                    if(resp.type === "users/createUser/rejected") {
+                        ToastAdd.fire({
+                            icon: 'error',
+                            title: 'The email already exist'
+                        });
+                    } else {
+                        if(!emailRegex.test(userEmail)) {
+                            ToastAdd.fire({
+                                icon: 'error',
+                                title: 'The email has to be a real email'
+                            });
+                        } else {
+                            ToastAdd.fire({
+                                icon: 'success',
+                                title: 'Added user successfully!'
+                            });
+                            navigate('/users');
+                            console.clear();
+                        }
+                    }
                 });
-        }
-        
-        /* TODO SI AÑADO PONIENDO EL MISMO EMAIL Y UN NOMBRE NO FUNCION */
+        }     
     }
 
     const handleName = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -210,11 +190,12 @@ export const AddUser = () => {
                                     </div>
                                     <div>
                                         <Label>Full Name</Label>
-                                        <Input type="text" placeholder="Olivia Johns..." onChange={handleName} />
+                                        <Input type="text" value={updateData.name} placeholder="Olivia Johns..." onChange={handleName} />
                                     </div>
                                     <div>
                                         <Label>Position</Label>
                                         <Select onChange={handlePosition}>
+                                            <Option>{updateData.employee_position}</Option>
                                             <Option>Manager</Option>
                                             <Option>Receptionist</Option>
                                             <Option>Room Service</Option>
@@ -222,23 +203,23 @@ export const AddUser = () => {
                                     </div>
                                     <div>
                                         <Label>Email</Label>
-                                        <Input type="text" placeholder="gmail@gmail.com..." onChange={handleEmail} />
+                                        <Input type="email" value={updateData.email} placeholder="gmail@gmail.com..." onChange={handleEmail} />
                                     </div>
                                     <div>
                                         <Label>Phone Number</Label>
-                                        <Input type="text" placeholder="61087632..." onChange={handleNumber} />
+                                        <Input type="text" value={updateData.phone_number} placeholder="61087632..." onChange={handleNumber} />
                                     </div>
                                     <div>
                                         <Label>Start Date</Label>
-                                        <Input type="datetime-local" onChange={handleHireDate} />
+                                        <Input type="datetime-local" value={updateData.hire_date} onChange={handleHireDate} />
                                     </div>
                                     <div>
                                         <Label>Functions Descriptions</Label>
-                                        <TextArea type="textarea" placeholder="Manage de hotel..." onChange={handleJobDescription}></TextArea>
+                                        <TextArea type="textarea" value={updateData.job_description} placeholder="Manage de hotel..." onChange={handleJobDescription}></TextArea>
                                     </div>
                                     <div>
                                         <Label>Password</Label>
-                                        <Input type="password" placeholder="Password..." onCanPlay={handlePassword} />
+                                        <Input type="password" value={updateData.password_hash} placeholder="Password..." onChange={handlePassword} />
                                     </div>
                                     <StatusContainer>
                                         <Label>Status</Label>
@@ -257,7 +238,14 @@ export const AddUser = () => {
                                     </StatusContainer>
                                 </FormBoxInner>
                             </FormBox>
-                            <Button onClick={handleUpdate}>Add User</Button>
+                            {status === 'pending' 
+                                ? <div style={{marginBottom: '30px', width: '60px', marginRight: '20px', position: 'relative'}}> <RotatingLines
+                                    strokeColor="#135846"
+                                    strokeWidth="5"
+                                    animationDuration="0.75"
+                                    width="96"
+                                /> </div>
+                                : <Button onClick={handleUpdate}>Add User</Button>}
                         </Form>
                     </FormContainer>
                 </AddUserContainer>

@@ -1,10 +1,14 @@
 import styled from "styled-components";
 
-import { RotatingLines } from 'react-loader-spinner'
+import { RotatingLines } from 'react-loader-spinner';
 
-export const DeleteSpinner = () => {
+interface SpinnerInterface {
+    position?: boolean
+}
+
+export const DeleteSpinner = ({position}: SpinnerInterface) => {
     return (
-        <RotatingsContainer>
+        <RotatingsContainer position={position}>
             <RotatingLines
                 strokeColor="#135846"
                 strokeWidth="5"
@@ -15,9 +19,9 @@ export const DeleteSpinner = () => {
     )
 }
 
-const RotatingsContainer = styled.div`
+const RotatingsContainer = styled.div<{position?: boolean}>`
     position: fixed;
     top: 35%;
-    left: 47%;
+    left: ${props => props.position ? '53%' : '47%'};
     z-index: 10;
 `;
