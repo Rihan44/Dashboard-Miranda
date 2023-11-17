@@ -14,13 +14,14 @@ import { RoomInterface } from "../../interfaces/roomInterface";
 export const AddRoom = () => {
 
     const [roomTypeState, setRoomTypeState] = useState('Single Bed');
-    const [roomNumberState, setRoomNumberState] = useState('');
+    const [roomNumberState, setRoomNumberState] = useState(0);
     const [offerState, setOfferState] = useState(false);
-    const [priceState, setPriceState] = useState(0);
+    const [priceState, setPriceState] = useState(30);
     const [discountState, setDiscountState] = useState(0);
-    const [amenitiesState, setAmenitiesState] = useState<string[]>([]);
-    const [roomDescription, setRoomDescription] = useState('');
+    const [amenitiesState, setAmenitiesState] = useState<string[]>(['Free Wifi', 'Air Conditioner', 'Towels', 'Television']);
+    const [roomDescription, setRoomDescription] = useState('This is a default description for the room');
     const [photoState, setPhotoState] = useState('');
+    const [statusRoom, setStatusRoom] = useState('available');
 
     const [sameNumberAlert, setSameNumberAlert] = useState(false);
 
@@ -48,21 +49,15 @@ export const AddRoom = () => {
 
     const handleUpdate = async () => {
 
-        const roomType = roomTypeState === '' ? 'Single Bed' : roomTypeState;
-        const roomNumber = roomNumberState === '' ? '0' : roomNumberState;
-        const price = priceState === 0 ? 30 : priceState;
-        const descriptionDefault = roomDescription === '' ? 'This is a default description for the room' : roomDescription;
-        const amenitiesDefault = amenitiesState.length === 0 ? ['Free Wifi', 'Air Conditioner', 'Towels', 'Television'] : amenitiesState;
-
         const dataUpdate: RoomInterface = {
             room_photo: photoState,
-            room_type: roomType,
-            room_number: roomNumber,
-            price: price,
-            status: "available",
+            room_type: roomTypeState,
+            room_number: roomNumberState,
+            price: priceState,
+            status: statusRoom,
             discount: offerState ? discountState : 0,
-            amenities: amenitiesDefault,
-            description: descriptionDefault
+            amenities: amenitiesState,
+            description: roomDescription
         }
         
         const ToastAdd = Swal.mixin({
@@ -76,7 +71,7 @@ export const AddRoom = () => {
             }
         })
 
-        if (roomTypeState === 'Single Bed' && roomNumberState === '' &&
+        if (roomTypeState === 'Single Bed' && roomNumberState === 0 &&
             priceState === 0 && roomDescription === '' && amenitiesState.length === 0) {
 
             const { value: accept } = await Swal.fire({
@@ -125,15 +120,7 @@ export const AddRoom = () => {
     }
 
     const handleRoomNumber = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        // const roomExist = roomsData.find((data) => data.room_number === parseInt(e.target.value)) || '';
-        setRoomNumberState(e.target.value);
-        
-        // if(roomExist === ''){
-        //     setSameNumberAlert(false);
-        // } else {
-        //     setSameNumberAlert(true);
-        // }
-        
+        setRoomNumberState(parseInt(e.target.value));
     }
 
     const handleSelectOffer = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -161,6 +148,10 @@ export const AddRoom = () => {
         setAmenitiesState((prevAmenities) => { return [...prevAmenities, value] });
     }
 
+    const handleStatus = (e: React.ChangeEvent<HTMLInputElement>): void  => {
+        setStatusRoom(e.target.value);
+    }
+
     return (
         <>
             <MainContainer>
@@ -186,7 +177,7 @@ export const AddRoom = () => {
                                     </div>
                                     <div style={{position: 'relative'}}>
                                         <Label>Room Number</Label>
-                                        <Input type="text" placeholder="049..." onChange={handleRoomNumber} />
+                                        <Input type="number" placeholder="1..." onChange={handleRoomNumber} />
                                         <ErrorNumber visible={sameNumberAlert ? 0 : 1}>The room number already exists</ErrorNumber>
                                     </div>
                                     <div>
@@ -215,8 +206,11 @@ export const AddRoom = () => {
                                         }
                                     </div>
                                     <div>
-                                        <Label>Cancellation</Label>
-                                        <TextArea type="text" placeholder="Cancellation..." ></TextArea>
+                                        <Label>Status</Label>
+                                        <Select onChange={handleStatus}>
+                                            <Option>available</Option>
+                                            <Option>booked</Option>
+                                        </Select>
                                     </div>
                                 </FormBoxInner>
                                 <AmenitiesBox>

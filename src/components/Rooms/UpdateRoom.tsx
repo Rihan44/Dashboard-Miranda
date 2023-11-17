@@ -222,8 +222,12 @@ export const UpdateRoom = () => {
                                         }  
                                     </div>                              
                                     <div>
-                                    <Label>Cancellation</Label>
-                                        <TextArea type="text" placeholder="Cancellation..." ></TextArea>
+                                        <Label>Status</Label>
+                                        <Select onChange={handleStatus}>
+                                            <Option>{satusRoom}</Option>
+                                            <Option>available</Option>
+                                            <Option>booked</Option>
+                                        </Select>
                                     </div>
                                 </FormBoxInner>
          

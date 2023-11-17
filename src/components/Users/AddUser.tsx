@@ -15,14 +15,14 @@ import { UsersInterface } from "../../interfaces/usersInterface";
 
 export const AddUser = () => {
 
-    const [userName, setUserName] = useState('');
-    const [userEmail, setUserEmail] = useState('');
-    const [userPosition, setUserPosition] = useState('');
-    const [userNumber, setUserNumber] = useState<string | number>(0);
+    const [userName, setUserName] = useState('Joe Doe');
+    const [userEmail, setUserEmail] = useState('joedoe@gmail.com');
+    const [userPosition, setUserPosition] = useState('Room service');
+    const [userNumber, setUserNumber] = useState<string | number>('658741236');
     const [userHireDate, setUserHireDate] = useState<string | Date>(new Date());
-    const [userJobDescription, setUserJobDescription] = useState('');
+    const [userJobDescription, setUserJobDescription] = useState('lorem ipsum dolar eir');
     const [userStatus, setUserStatus] = useState(false);
-    const [userPassword, setUserPassword] = useState('');
+    const [userPassword, setUserPassword] = useState('1234');
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -40,24 +40,18 @@ export const AddUser = () => {
     const day = String(newDate.getDate()).padStart(2, '0');
     const formatedDate = `${year}-${month}-${day}`;
 
-    const name = userName === '' ? 'Joe Doe': userName;
-    const email = userEmail === '' ? 'joedoe@gmail.com' : userEmail;
-    const position = userPosition === '' ? 'Room service' : userPosition;
-    const number = userNumber === 0 ? '658741236' : userNumber;
-    const jobDescription = userJobDescription === '' ? 'lorem ipsum dolar eir' : userJobDescription;
-    const password = userPassword === '' ? '1234' : userPassword;
     const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
     const updateData: UsersInterface = {
-        name: name,
-        email: email,
+        name: userName,
+        email: userEmail,
         photo: `https://robohash.org/${name}`,
-        employee_position: position,
-        phone_number: number,
+        employee_position: userPosition,
+        phone_number: userNumber,
         hire_date: formatedDate,
-        job_description: jobDescription,
+        job_description: userJobDescription,
         status: userStatus,
-        password_hash: password
+        password_hash: userPassword
     }
 
 

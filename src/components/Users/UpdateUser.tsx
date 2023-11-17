@@ -155,7 +155,7 @@ export const UpdateUser = () => {
                 <UpdateUserContainer>
                             <ButtonBack onClick={() => navigate('/users')}><AiOutlineArrowLeft /></ButtonBack>
                             <FormContainer>
-                                <Title>Update User: {id}</Title>
+                                <Title>{userName === '' ? 'Error loading the user' : `Update User: ${userName}` }</Title>
                                 <Form onSubmit={handleSubmit}>
                                     <FormBox>
                                         <FormBoxInner>
