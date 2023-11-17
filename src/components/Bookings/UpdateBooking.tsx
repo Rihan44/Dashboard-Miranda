@@ -4,6 +4,8 @@ import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from 'sweetalert2';
 
+import error_image from '../../assets/error_image3.png';
+
 import { MainContainer } from "../Reusables/MainContainer";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
@@ -13,7 +15,6 @@ import { getBookingDetail, updateBooking } from "../../features/slices/bookings/
 import { AsideContext } from "../Context/ToggleAsideContext";
 
 import { SpinnerLoader } from "../Reusables/SpinnerLoader";
-import { ToastAlert } from "../Reusables/ToastAlert";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { BookingDetailInterface, BookingsInterface } from "../../interfaces/bookingsInterface";
 
@@ -132,8 +133,8 @@ export const UpdateBooking = () => {
                 setStatusBooking(data.status);
                 setPriceState(data.price || 0);
                 setRoomNumberState(data.room_number || 0);
-            } catch {
-                <ToastAlert></ToastAlert>
+            } catch(error) {
+                console.log(error);
             }
         }
 
@@ -209,7 +210,7 @@ export const UpdateBooking = () => {
                         </Form>
                     </FormContainer>
                     </>
-                    : status === 'rejected' ? <ToastAlert></ToastAlert>
+                    : status === 'rejected' ? <ImageRejected src={error_image}/>
                         : <SpinnerLoader></SpinnerLoader>}
             </UpdateRoomContainer>
         </MainContainer>
@@ -357,4 +358,11 @@ const ButtonBack = styled(Button)`
         transform: scale(1.1);
         background: #135846;
      }
+`;
+
+const ImageRejected = styled.img`
+    width:  600px;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-top: 140px;
 `;
