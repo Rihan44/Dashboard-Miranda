@@ -177,11 +177,13 @@ export const Bookings = () => {
     const cols = [
         {
             property: 'guest', label: 'Guest', display: ({ guest, phone_number, _id }: BookingsInterface) => (
-                <TableContainerBodyContent>
+                <ButtonID onClick={() => handleBookingId(_id)}>
+                    <TableContainerBodyContent>
                     <CostumerName darkmode={darkMode ? 0 : 1}>{guest}</CostumerName>
                     <Paragraphs>{phone_number}</Paragraphs>
-                    <ButtonID onClick={() => handleBookingId(_id)}>#{_id}</ButtonID>
-                </TableContainerBodyContent>
+                    <ParagraphID>#{_id}</ParagraphID>
+                    </TableContainerBodyContent>
+                </ButtonID>
             )
         },
         {
@@ -430,6 +432,16 @@ const Paragraphs = styled.p`
     margin-bottom: 5px;
 `;
 
+const ParagraphID = styled.p`
+    color: #799283;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    &:hover {
+        color: #135846;
+    }
+`;
+
 const TableContainerBodyContent = styled.div`
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
@@ -457,14 +469,10 @@ const CostumerName = styled.p<{darkmode: number}>`
 `;
 
 const ButtonID = styled.button`
-    color: #799283;
     transition: 0.2s;
     border: none;
     background: none;
     cursor: pointer;
-    &:hover {
-        color: #135846;
-    }
 `;
 
 const OrderDate = styled.p`
