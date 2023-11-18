@@ -20,7 +20,6 @@ import { Tabla } from "../Reusables/Tabla";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
 import { AsideContext } from "../Context/ToggleAsideContext";
 import { StatusParagraph } from "../Reusables/StatusParagraph";
-import { ToastAlert } from "../Reusables/ToastAlert";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { BookingsInterface } from "../../interfaces/bookingsInterface";
 
@@ -50,12 +49,10 @@ export const Bookings = () => {
 
     const navigate = useNavigate();
 
-    let options: object = { year: 'numeric', month: 'long', day: 'numeric' };
-
     const handleSelect = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setSelectData(e.target.value);
     }
-
+    
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchData(e.target.value.toLowerCase());
     }
@@ -133,7 +130,7 @@ export const Bookings = () => {
     
             switch (isActiveButton) {
                 case 'allBookings':
-                    return dataArray;
+                    break;
                 case 'checkIn':
                     dataArray = dataArray.filter(data => data.status === 'check_in');
                     break;
