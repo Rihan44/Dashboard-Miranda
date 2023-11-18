@@ -29,6 +29,7 @@ export const UpdateRoom = () => {
     const [amenitiesState, setAmenitiesState] = useState<string[]>([]);
     const [roomDescription, setRoomDescription] = useState('');
     const [photoState, setPhotoState] = useState('');
+    const [statusRoom, setStatusRoom] = useState('');
 
     const {id} = useParams();
     const {asideState} = useContext(AsideContext);
@@ -83,7 +84,7 @@ export const UpdateRoom = () => {
             status: 'available'
         }
 
-        dispatch(updateRoom(dataUpdate)).then(() => dispatch(getAllRooms()));
+        dispatch(updateRoom(dataUpdate));
         navigate('/rooms');
         ToastUpdated.fire({
             icon: 'success',
@@ -149,6 +150,10 @@ export const UpdateRoom = () => {
         setRoomDescription(e.target.value);
     }
 
+    const handleStatus = (e: React.ChangeEvent<HTMLInputElement>): void  => {
+        setStatusRoom(e.target.value);
+    }
+
     useEffect(() => {
         let data: RoomInterface = roomData;
         if(status === 'fulfilled') { 
@@ -157,6 +162,7 @@ export const UpdateRoom = () => {
                 setRoomNumberState(data.room_number);
                 setPriceState(data.price);
                 setDiscountState(data.discount);
+                setStatusRoom(data.status || '');
                 setAmenitiesState(data.amenities);
                 setRoomDescription(data.description);
                 setOfferState( data.discount !== 0 ? true : false);    
@@ -224,7 +230,7 @@ export const UpdateRoom = () => {
                                     <div>
                                         <Label>Status</Label>
                                         <Select onChange={handleStatus}>
-                                            <Option>{satusRoom}</Option>
+                                            <Option>{statusRoom}</Option>
                                             <Option>available</Option>
                                             <Option>booked</Option>
                                         </Select>

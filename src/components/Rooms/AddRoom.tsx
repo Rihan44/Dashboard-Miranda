@@ -8,7 +8,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { MainContainer } from "../Reusables/MainContainer"
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { createRoom, getAllRooms } from "../../features/slices/rooms/roomThunk";
+import { createRoom } from "../../features/slices/rooms/roomThunk";
 import { RoomInterface } from "../../interfaces/roomInterface";
 
 export const AddRoom = () => {
@@ -22,8 +22,6 @@ export const AddRoom = () => {
     const [roomDescription, setRoomDescription] = useState('This is a default description for the room');
     const [photoState, setPhotoState] = useState('');
     const [statusRoom, setStatusRoom] = useState('available');
-
-    const [sameNumberAlert, setSameNumberAlert] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -59,7 +57,7 @@ export const AddRoom = () => {
             amenities: amenitiesState,
             description: roomDescription
         }
-        
+
         const ToastAdd = Swal.mixin({
             toast: true,
             position: 'top',
@@ -72,7 +70,7 @@ export const AddRoom = () => {
         })
 
         if (roomTypeState === 'Single Bed' && roomNumberState === 0 &&
-            priceState === 0 && roomDescription === '' && amenitiesState.length === 0) {
+            priceState === 30 && roomDescription === 'This is a default description for the room') {
 
             const { value: accept } = await Swal.fire({
                 title: 'Are you sure yo want to add a room with the default values?',
@@ -84,32 +82,45 @@ export const AddRoom = () => {
             })
 
             if (accept) {
-                ToastAdd.fire({
-                    icon: 'success',
-                    title: 'Added room successfully!'
-                })
-                dispatch(createRoom(dataUpdate)).then(() => dispatch(getAllRooms()));
-                navigate('/rooms');
+                dispatch(createRoom(dataUpdate))
+                    .then((resp) => {
+                        if (resp.type === 'users/createRoom/rejected') {
+                            ToastAdd.fire({
+                                icon: 'error',
+                                title: 'The room number already exist!'
+                            })
+                        } else {
+                            ToastAdd.fire({
+                                icon: 'success',
+                                title: 'Added room successfully!'
+                            })
+                            console.clear();
+                            navigate('/rooms');
+                        }
+                    })
             }
-        } else if(sameNumberAlert){
-            Swal.fire({
-                title: 'You cant add a room if the room number already exists',
-                icon: 'warning',
-                confirmButtonColor: '#135846',
-                confirmButtonText: 'Ok'
-            })
-        } else if(!sameNumberAlert) {
-            ToastAdd.fire({
-                icon: 'success',
-                title: 'Added room successfully!'
-            })
-            dispatch(createRoom(dataUpdate)).then(() => dispatch(getAllRooms()));
-            navigate('/rooms');
+        } else {
+            dispatch(createRoom(dataUpdate))
+                .then((resp) => {
+                    if (resp.type === 'users/createRoom/rejected') {
+                        ToastAdd.fire({
+                            icon: 'error',
+                            title: 'The room number already exist!'
+                        })
+                    } else {
+                        ToastAdd.fire({
+                            icon: 'success',
+                            title: 'Added room successfully!'
+                        })
+                        console.clear();
+                        navigate('/rooms');
+                    }
+                })
         }
     }
 
-    const photosHandle = (e: React.ChangeEvent<HTMLInputElement>):void => {
-        if(e && e.target && e.target.files) {
+    const photosHandle = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        if (e && e.target && e.target.files) {
             const fileImage = URL.createObjectURL(e.target.files?.[0] || null);
             setPhotoState(fileImage);
         }
@@ -148,7 +159,7 @@ export const AddRoom = () => {
         setAmenitiesState((prevAmenities) => { return [...prevAmenities, value] });
     }
 
-    const handleStatus = (e: React.ChangeEvent<HTMLInputElement>): void  => {
+    const handleStatus = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setStatusRoom(e.target.value);
     }
 
@@ -163,8 +174,8 @@ export const AddRoom = () => {
                             <FormBox>
                                 <FormBoxInner>
                                     <div>
-                                        <Label>Add 3 / 5 photos</Label>
-                                        <Input type="file" placeholder="Add photos..." onChange={photosHandle} multiple={false}/>
+                                        <Label>Add a photo</Label>
+                                        <Input type="file" placeholder="Add photos..." onChange={photosHandle} multiple={false} />
                                     </div>
                                     <div>
                                         <Label>Room Type</Label>
@@ -175,14 +186,13 @@ export const AddRoom = () => {
                                             <Option>Deluxe</Option>
                                         </Select>
                                     </div>
-                                    <div style={{position: 'relative'}}>
+                                    <div style={{ position: 'relative' }}>
                                         <Label>Room Number</Label>
-                                        <Input type="number" placeholder="1..." onChange={handleRoomNumber} />
-                                        <ErrorNumber visible={sameNumberAlert ? 0 : 1}>The room number already exists</ErrorNumber>
+                                        <Input type="number" value={roomNumberState} placeholder="1..." onChange={handleRoomNumber} />
                                     </div>
                                     <div>
                                         <Label>Description</Label>
-                                        <TextArea type="text" placeholder="This rooms have single bed, is beautiful..." onChange={handleDescription}></TextArea>
+                                        <TextArea type="text" value={roomDescription} placeholder="This rooms have single bed, is beautiful..." onChange={handleDescription}></TextArea>
                                     </div>
                                     <div>
                                         <Label>Offer</Label>
@@ -193,7 +203,7 @@ export const AddRoom = () => {
                                     </div>
                                     <div>
                                         <Label>Price /Night</Label>
-                                        <Input type="text" placeholder="145..." onChange={handlePrice} />
+                                        <Input type="text" value={priceState} placeholder="145..." onChange={handlePrice} />
                                     </div>
                                     <div>
                                         {!offerState
@@ -420,9 +430,9 @@ const ButtonBack = styled(Button)`
         transform: scale(1.1);
         background: #135846;
      }
-`; 
+`;
 
-const ErrorNumber = styled.p<{visible: number}>`
+const ErrorNumber = styled.p<{ visible: number }>`
     position: absolute;
     bottom: -15px;
     font-size: 14px;
