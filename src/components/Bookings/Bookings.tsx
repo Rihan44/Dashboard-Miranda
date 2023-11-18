@@ -177,7 +177,7 @@ export const Bookings = () => {
     const cols = [
         {
             property: 'guest', label: 'Guest', display: ({ guest, phone_number, _id }: BookingsInterface) => (
-                <ButtonID onClick={() => handleBookingId(_id)}>
+                <ButtonID title="Go to booking detail" onClick={() => handleBookingId(_id)}>
                     <TableContainerBodyContent>
                     <CostumerName darkmode={darkMode ? 0 : 1}>{guest}</CostumerName>
                     <Paragraphs>{phone_number}</Paragraphs>
