@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Swal from 'sweetalert2';
 
-import error_image from '../../assets/error_image3.png';
+import { RotatingLines } from 'react-loader-spinner';
 
 import { FormEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -12,10 +12,9 @@ import { MainContainer } from "../Reusables/MainContainer";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
-import { getAllRooms, getRoom, updateRoom } from "../../features/slices/rooms/roomThunk";
+import { getRoom, updateRoom } from "../../features/slices/rooms/roomThunk";
 import { AsideContext } from "../Context/ToggleAsideContext";
 
-import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { RoomInterface } from "../../interfaces/roomInterface";
 
 // TODO AÑADIR QUE SE PUEDA ACTUALIZAR EL ESTADO
@@ -31,8 +30,8 @@ export const UpdateRoom = () => {
     const [photoState, setPhotoState] = useState('');
     const [statusRoom, setStatusRoom] = useState('');
 
-    const {id} = useParams();
-    const {asideState} = useContext(AsideContext);
+    const { id } = useParams();
+    const { asideState } = useContext(AsideContext);
 
     const roomData = useAppSelector((state) => state.rooms.dataRoom);
 
@@ -67,11 +66,11 @@ export const UpdateRoom = () => {
             showConfirmButton: false,
             timer: 2000,
             didOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer)
-              toast.addEventListener('mouseleave', Swal.resumeTimer)
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         })
-        
+
         const dataUpdate: RoomInterface = {
             _id: id,
             room_photo: photoState,
@@ -81,18 +80,28 @@ export const UpdateRoom = () => {
             discount: offerState ? discountState : 0,
             amenities: amenitiesState,
             description: roomDescription,
-            status: 'available'
+            status: statusRoom
         }
 
-        dispatch(updateRoom(dataUpdate));
-        navigate('/rooms');
-        ToastUpdated.fire({
-            icon: 'success',
-            title: `Room with id: ${id} updated successfully!`
-        })
+        dispatch(updateRoom(dataUpdate))
+            .then((resp) => {
+                if (resp.type === 'rooms/updateRoom/rejected') {
+                    ToastUpdated.fire({
+                        icon: 'error',
+                        title: 'The room number already exist!'
+                    })
+                } else {
+                    ToastUpdated.fire({
+                        icon: 'success',
+                        title: 'Updated room successfully!'
+                    })
+                    console.clear();
+                    navigate('/rooms');
+                }
+            })
     }
 
-    const photosHandle = (e: React.ChangeEvent<HTMLInputElement>):void => {
+    const photosHandle = (e: React.ChangeEvent<HTMLInputElement>): void => {
         // if(e && e.target && e.target.files) {
         //     const fileImage = URL.createObjectURL(e.target.files?.[0] || null);
         //     setPhotoState(fileImage);
@@ -101,62 +110,62 @@ export const UpdateRoom = () => {
         if (e && e.target && e.target.files) {
             const file = e.target.files?.[0];
             const reader = new FileReader();
-        
+
             reader.onload = (event) => {
-              if (event.target) {
-                const base64String = event.target.result as string;
-                setPhotoState(base64String);
-              }
+                if (event.target) {
+                    const base64String = event.target.result as string;
+                    setPhotoState(base64String);
+                }
             };
-        
+
             reader.readAsDataURL(file);
-          }
+        }
     }
 
-    const handleSelectType = (e: React.ChangeEvent<HTMLInputElement>): void  => {
+    const handleSelectType = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setRoomTypeState(e.target.value);
     }
 
-    const handleRoomNumber = (e: React.ChangeEvent<HTMLInputElement>): void  => {
+    const handleRoomNumber = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setRoomNumberState(e.target.value);
     }
 
-    const handleOffer = (e: React.ChangeEvent<HTMLInputElement>): void  => {
+    const handleOffer = (e: React.ChangeEvent<HTMLInputElement>): void => {
 
-        if(e.target.checked) {
-            setOfferState(true);    
+        if (e.target.checked) {
+            setOfferState(true);
         } else {
-            setOfferState(false);    
+            setOfferState(false);
         }
     }
-    
-    const handlePrice = (e: React.ChangeEvent<HTMLInputElement>): void  => {
+
+    const handlePrice = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setPriceState(parseInt(e.target.value));
     }
 
-    const handleDiscount = (e: React.ChangeEvent<HTMLInputElement>): void  => {
+    const handleDiscount = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setDiscountState(parseInt(e.target.value));
     }
 
-    const handleAmenities = (e: React.ChangeEvent<HTMLInputElement>, amenity: string): void  => {
+    const handleAmenities = (e: React.ChangeEvent<HTMLInputElement>, amenity: string): void => {
         if (e.target.checked) {
             setAmenitiesState([...amenitiesState, amenity]);
-          } else {
+        } else {
             setAmenitiesState(amenitiesState.filter((item) => item !== amenity));
-          }
+        }
     }
 
     const handleDescription = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setRoomDescription(e.target.value);
     }
 
-    const handleStatus = (e: React.ChangeEvent<HTMLInputElement>): void  => {
+    const handleStatus = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setStatusRoom(e.target.value);
     }
 
     useEffect(() => {
         let data: RoomInterface = roomData;
-        if(status === 'fulfilled') { 
+        if (status === 'fulfilled') {
             try {
                 setRoomTypeState(data.room_type);
                 setRoomNumberState(data.room_number);
@@ -165,98 +174,103 @@ export const UpdateRoom = () => {
                 setStatusRoom(data.status || '');
                 setAmenitiesState(data.amenities);
                 setRoomDescription(data.description);
-                setOfferState( data.discount !== 0 ? true : false);    
-            } catch(error) {
+                setOfferState(data.discount !== 0 ? true : false);
+            } catch (error) {
                 console.log(error)
             }
+        } else if (status === 'pending' || status === 'idle') {
+            dispatch(getRoom(id || ''));
         }
 
-    }, [roomData, status]);
+    }, [roomData]);
 
     useEffect(() => {
-        if(id !== undefined)
+        if (id !== undefined)
             dispatch(getRoom(id));
     }, [dispatch, id]);
 
-    return(
+    return (
         <MainContainer>
             <UpdateRoomContainer>
-            {status === 'fulfilled' ?
-                <>
-                    <ButtonBack onClick={() => navigate('/rooms')}><AiOutlineArrowLeft/></ButtonBack>
-                    <FormContainer>
-                        <Title>Update Room: {id}</Title>
-                        <Form onSubmit={handleSubmit} darkmode={asideState.darkMode ? 0 : 1}>
-                        <FormBox>
-                                <FormBoxInner>
-                                    <div>
-                                        <Label>Add 3 / 5 photos</Label>
-                                        <Input type="file" placeholder="Add photos..." onChange={photosHandle} multiple={false}/>
-                                    </div>
-                                    <div>
-                                        <Label>Room Type</Label>
-                                        <Select onChange={handleSelectType}>
-                                            <Option>{roomTypeState}</Option>
-                                            <Option>Single Bed</Option>
-                                            <Option>Double Bed</Option>
-                                            <Option>Suite</Option>
-                                            <Option>Deluxe</Option>
-                                        </Select>
-                                    </div>
-                                    <div>
-                                        <Label>Room Number</Label>
-                                        <Input type="text" value={roomNumberState} onChange={handleRoomNumber}/>
-                                    </div>
-                                    <div>
-                                        <Label>Description</Label>
-                                        <TextArea type="text" value={roomDescription} onChange={handleDescription}></TextArea>
-                                    </div>
-                                    <div>
-                                        <Label>Offer</Label>
-                                        <input type="checkbox" style={{ transform: 'scale(1.5)', marginLeft: '150px'}} onChange={handleOffer} checked={offerState}/>
-                                        <Label style={{marginRight: '25px'}}>{offerState ? 'Offer' : 'No Offer'}</Label>
-                                    </div>
-                                    <div>
-                                        <Label>Price /Night</Label>
-                                        <Input type="text" value={priceState} onChange={handlePrice}/>
-                                    </div>
-                                    <div>
-                                        <Label>Discount</Label>
-                                        {offerState 
-                                            ? <Input type="number" min="0" max="100" value={discountState} onChange={handleDiscount}/>
-                                            : <Input type="number" min="0" max="100" value={0} onChange={handleDiscount} disabled/>
-                                        }  
-                                    </div>                              
-                                    <div>
-                                        <Label>Status</Label>
-                                        <Select onChange={handleStatus}>
-                                            <Option>{statusRoom}</Option>
-                                            <Option>available</Option>
-                                            <Option>booked</Option>
-                                        </Select>
-                                    </div>
-                                </FormBoxInner>
-         
-                                <AmenetiesBox>
-                                    <Label>Amenities</Label>
-                                    <CheckBoxContainer>
-                                        {amenitiesList.map((amenity, index) =>
-                                            <div key={index}>
-                                                <Label>{amenity}</Label>
-                                                <Input type="checkbox" checked={amenitiesState.includes(amenity)} onChange={(e:React.ChangeEvent<HTMLInputElement> ) => handleAmenities(e, amenity)}/>
-                                            </div>
-                                        )}
- 
-                                    </CheckBoxContainer>
-                                </AmenetiesBox>
-                                    
-                            </FormBox>
-                            <Button onClick={handleUpdate}>Update Room</Button>
-                        </Form>
-                    </FormContainer>
-                    </>
-                    : status === 'rejected' ? <ImageRejected src={error_image}/>
-                        : <SpinnerLoader></SpinnerLoader>}
+                        <ButtonBack onClick={() => navigate('/rooms')}><AiOutlineArrowLeft /></ButtonBack>
+                        <FormContainer>
+                            <Title>Update Room: {id}</Title>
+                            <Form onSubmit={handleSubmit} darkmode={asideState.darkMode ? 0 : 1}>
+                                <FormBox>
+                                    <FormBoxInner>
+                                        <div>
+                                            <Label>Add 3 / 5 photos</Label>
+                                            <Input type="file" placeholder="Add photos..." onChange={photosHandle} multiple={false} />
+                                        </div>
+                                        <div>
+                                            <Label>Room Type</Label>
+                                            <Select onChange={handleSelectType}>
+                                                <Option>{roomTypeState}</Option>
+                                                <Option>Single Bed</Option>
+                                                <Option>Double Bed</Option>
+                                                <Option>Suite</Option>
+                                                <Option>Deluxe</Option>
+                                            </Select>
+                                        </div>
+                                        <div>
+                                            <Label>Room Number</Label>
+                                            <Input type="text" value={roomNumberState} onChange={handleRoomNumber} />
+                                        </div>
+                                        <div>
+                                            <Label>Description</Label>
+                                            <TextArea type="text" value={roomDescription} onChange={handleDescription}></TextArea>
+                                        </div>
+                                        <div>
+                                            <Label>Offer</Label>
+                                            <input type="checkbox" style={{ transform: 'scale(1.5)', marginLeft: '150px' }} onChange={handleOffer} checked={offerState} />
+                                            <Label style={{ marginRight: '25px' }}>{offerState ? 'Offer' : 'No Offer'}</Label>
+                                        </div>
+                                        <div>
+                                            <Label>Price /Night</Label>
+                                            <Input type="text" value={priceState} onChange={handlePrice} />
+                                        </div>
+                                        <div>
+                                            <Label>Discount</Label>
+                                            {offerState
+                                                ? <Input type="number" min="0" max="100" value={discountState} onChange={handleDiscount} />
+                                                : <Input type="number" min="0" max="100" value={0} onChange={handleDiscount} disabled />
+                                            }
+                                        </div>
+                                        <div>
+                                            <Label>Status</Label>
+                                            <Select onChange={handleStatus}>
+                                                <Option>{statusRoom}</Option>
+                                                <Option>available</Option>
+                                                <Option>booked</Option>
+                                            </Select>
+                                        </div>
+                                    </FormBoxInner>
+
+                                    <AmenetiesBox>
+                                        <Label>Amenities</Label>
+                                        <CheckBoxContainer>
+                                            {amenitiesList.map((amenity, index) =>
+                                                <div key={index}>
+                                                    <Label>{amenity}</Label>
+                                                    <Input type="checkbox" checked={amenitiesState.includes(amenity)} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleAmenities(e, amenity)} />
+                                                </div>
+                                            )}
+
+                                        </CheckBoxContainer>
+                                    </AmenetiesBox>
+
+                                </FormBox>
+                                {status === 'pending'
+                                    ? <div style={{ marginBottom: '60px', width: '60px', marginRight: '20px', position: 'relative' }}> 
+                                    <RotatingLines
+                                        strokeColor="#135846"
+                                        strokeWidth="5"
+                                        animationDuration="0.75"
+                                        width="96"
+                                    /> </div>
+                                    : <Button onClick={handleUpdate}>Update Room</Button>}
+                            </Form>
+                        </FormContainer>
             </UpdateRoomContainer>
         </MainContainer>
     )
@@ -283,7 +297,7 @@ const Title = styled.h2`
     font-family: 'Poppins', sans-serif;
 `;
 
-const Form = styled.form<{darkmode: number}>`
+const Form = styled.form<{ darkmode: number }>`
     width: 1050px;
     height: 660px;
     box-shadow: 0px 3px 10px #00000030;
@@ -323,7 +337,7 @@ const FormBoxInner = styled.div`
     }
 `;
 
-const Select = styled.select<{onChange: any}>`
+const Select = styled.select<{ onChange: any }>`
     width: 140px; 
     height: 30px;
     border: 1px solid #135846;
@@ -340,7 +354,7 @@ const Option = styled.option`
     background: #ffffff;
 `;
 
-const TextArea = styled.textarea<{type?: string, onChange?: any, placeholder?: string}>`
+const TextArea = styled.textarea<{ type?: string, onChange?: any, placeholder?: string }>`
     width: 150px;
     resize: none;
     border: none;
@@ -352,7 +366,7 @@ const TextArea = styled.textarea<{type?: string, onChange?: any, placeholder?: s
     color: #262626;
 `;
 
-const Input = styled.input<{type?: string, value?: number | string}>`
+const Input = styled.input<{ type?: string, value?: number | string }>`
     margin-left: 20px;
     margin-bottom: 10px;
     width: 150px;

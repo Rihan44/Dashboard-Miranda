@@ -84,7 +84,7 @@ export const AddRoom = () => {
             if (accept) {
                 dispatch(createRoom(dataUpdate))
                     .then((resp) => {
-                        if (resp.type === 'users/createRoom/rejected') {
+                        if (resp.type === 'rooms/createRoom/rejected') {
                             ToastAdd.fire({
                                 icon: 'error',
                                 title: 'The room number already exist!'

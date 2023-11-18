@@ -5,12 +5,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-import error_image from '../../assets/error_image3.png';
-
 import { MainContainer } from "../Reusables/MainContainer";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { SpinnerLoader } from "../Reusables/SpinnerLoader";
 import { UsersInterface } from "../../interfaces/usersInterface";
 import { getUser, updateUser } from "../../features/slices/users/usersThunk";
 import { RotatingLines } from 'react-loader-spinner';
