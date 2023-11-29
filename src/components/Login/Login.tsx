@@ -5,6 +5,8 @@ import { FormEvent, useContext, useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import { login } from "../../features/slices/login/loginThunk";
 
+import hotel_icon from '../../assets/hotel_icon.png';
+
 import { AuthContext } from "../Context/AuthContainer";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { DeleteSpinner } from "../Reusables/DeleteSpinner";
@@ -99,6 +101,7 @@ export const Login = () => {
 
     return(
         <LoginContainer>
+            <ImageHotel src={hotel_icon}/>
             <Title>Login Miranda Dashboard</Title>
             <FormContainer onSubmit={handleSubmit}>
                 {loginStatus === 'pending' && <DeleteSpinner></DeleteSpinner>}
@@ -107,7 +110,7 @@ export const Login = () => {
                 <Label>Password</Label>
                 <Input type="password" value={inputTextPass || ''} placeholder="password..." onChange={handleChangePass} data-cy='inputPasswordUser'/>
                 <Button data-cy="loginButton">Login</Button>
-                <Button style={{marginTop: '0', background: 'rgb(19, 88, 70)', color: '#ffff'}} onClick={handleFastLogin}>Fast Login</Button>
+                <ButtonDemo onClick={handleFastLogin}>Demo Login</ButtonDemo>
                 {isCorrect ? <WrongParagraph data-cy="loginError">The username or password is incorrect</WrongParagraph>: ''}
             </FormContainer>
         </LoginContainer>
@@ -123,6 +126,15 @@ const LoginContainer = styled.div`
     align-items: center;
 `;
 
+const ImageHotel = styled.img` 
+    position: absolute;
+    z-index: -2;
+    width: 750px;
+    top: 65px;
+    left: 265px;
+    opacity: 0.7;
+`;
+
 const Title = styled.h2`
     font-size: 2em;
     color: #135846;
@@ -133,6 +145,7 @@ const FormContainer = styled.form`
     width: 350px;
     height: auto;
     box-shadow: 0px 3px 10px #00000030;
+    background-color: #fff;
     margin-top: 50px;
     border-radius: 10px;
     display: flex;
@@ -162,21 +175,30 @@ const Label = styled.label`
 `;
 
 const Button = styled.button` 
-    background: #EBF1EF 0% 0% no-repeat padding-box;
+    background: rgb(19, 88, 70);
     border-radius: 8px;
-    color: #135846;
+    color: #EBF1EF;
+    
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
     width: 158px;
     height: 47px;
     border: none;
     cursor: pointer;
-    transition: .4s;
+    transition: .3s;
     margin: 20px 30px;
 
     &:hover {
-        background: #799283 0% 0% no-repeat padding-box;
-        color: #EBF1EF;
+        transform: scale(1.1);
+    }
+`;
+
+const ButtonDemo = styled(Button)`
+    margin-top: 0;
+    transition: .3s;
+
+    &:hover {
+        transform: scale(1.1);
     }
 `;
 
