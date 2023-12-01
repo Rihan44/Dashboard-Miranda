@@ -89,6 +89,13 @@ export const RoomsList = () => {
         } 
     }
 
+    const handleRoomDetail = (id: string | number | undefined)=> {
+        if (id !== undefined) {
+            navigate(`/rooms/${id}`);
+            dispatch(getRoom(id));
+        }
+    }
+
     const dataRooms = useMemo(() => {
         let dataArray: RoomInterface[] = [];
         
@@ -131,9 +138,11 @@ export const RoomsList = () => {
 
     const cols = [
         {
-            property: 'image', label: 'Room Photo', display: ({ room_photo }: RoomInterface) => (
+            property: 'image', label: 'Room Photo', display: ({ room_photo, _id }: RoomInterface) => (
                 <TableContainerBodyContent>
-                    <img src={room_photo || 'https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/65045f093c166fdddb4a94a5_x-65045f0266217.webp'} alt="imagen" />
+                    <ButtonID title="Go to booking detail" onClick={() => handleRoomDetail(_id)}>
+                        <img src={room_photo || 'https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/65045f093c166fdddb4a94a5_x-65045f0266217.webp'} alt="imagen" />
+                    </ButtonID>
                 </TableContainerBodyContent>
             )
         },
@@ -442,4 +451,11 @@ const ImageRejected = styled.img`
     border-radius: 10px;
     margin: 0 auto;
     margin-top: 140px;
+`;
+
+const ButtonID = styled.button`
+    transition: 0.2s;
+    border: none;
+    background: none;
+    cursor: pointer;
 `;

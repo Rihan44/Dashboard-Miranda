@@ -51,7 +51,7 @@ export const LastestReview: React.FC<LastetReviewProps> = ({ darkMode, dataDashb
 
         const dataMessage = {
             id: id,
-            archive: true
+            isArchived: true
         }
 
         if(id !== undefined){

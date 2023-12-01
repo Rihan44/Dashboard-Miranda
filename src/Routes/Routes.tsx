@@ -14,6 +14,7 @@ import { AddUser } from "../components/Users/AddUser"
 import { UpdateRoom } from "../components/Rooms/UpdateRoom"
 import { UpdateUser } from "../components/Users/UpdateUser"
 import { UpdateBooking } from "../components/Bookings/UpdateBooking"
+import { RoomDetail } from "../components/Rooms/RoomDetails"
 
 
 export const RoutesComponent = () => {
@@ -33,6 +34,7 @@ export const RoutesComponent = () => {
                                 <Route path="/bookings/:id" element={<BookingFile />} />
                                 <Route path="/bookings/update-bookings/:id" element={<UpdateBooking />} />
                                 <Route path="/rooms" element={<RoomsList />} />
+                                <Route path="/rooms/:id" element={<RoomDetail />} />
                                 <Route path="/rooms/add-room" element={<AddRoom />} />
                                 <Route path="/rooms/update-room/:id" element={<UpdateRoom />} />
                                 <Route path="/contact" element={<Contact />} />
