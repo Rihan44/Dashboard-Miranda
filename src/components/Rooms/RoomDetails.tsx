@@ -70,13 +70,11 @@ export const RoomDetail = () => {
         <MainContainer>
             {status === 'fulfilled' ?
                 <FileRoomContainer>
-                    <ButtonBack onClick={() => navigate('/bookings')}><AiOutlineArrowLeft /></ButtonBack>
+                    <ButtonBack onClick={() => navigate('/rooms')}><AiOutlineArrowLeft /></ButtonBack>
                     <InfoContainer>
-                        <NameContainer >
-                            <NameTitle darkmode={darkMode ? 0 : 1}></NameTitle>
+                        <NameContainer>
                             <NameParagraph>{dataRoom._id}</NameParagraph>
                         </NameContainer>
-
                         <RoomInfoContainer>
                             <InnerInfo>
                                 <InnerInfoContainer>
@@ -91,8 +89,26 @@ export const RoomDetail = () => {
                             <RoomDescription darkmode={darkMode ? 0 : 1}>{dataRoom.description}</RoomDescription>
                         </RoomInfoContainer>
                         <FacilitiesRooms darkmode={darkMode ? 0 : 1}>
-                            <h3>Facilities</h3>
+                            <h3>Amenities</h3>
                             <FacilitiesInner>
+                                {dataRoom.amenities.map((e) => {
+                                    return (
+                                        <BigFacilitie key={e}>
+                                            {e === '1/3 Bed Space' && <LiaBedSolid />}
+                                            {e === '24-Hour Guard' && <BsShieldCheck />}
+                                            {e === 'Free Wifi' && <AiOutlineWifi />}
+                                            {e === 'Air Conditioner' && <MdAir />}
+                                            {e === 'Television' && <PiTelevisionSimpleBold />}
+                                            {e === 'Towels' && <GiTowel />}
+                                            {e === 'Mini Bar' && <MdOutlineLocalBar />}
+                                            {e === 'Coffee Set' && <FaCoffee />}
+                                            {e === 'Bathtub' && <FaBath />}
+                                            {e === 'Jacuzzi' && <BiBath />}
+                                            {e === 'Nice Views' && <BsEmojiHeartEyes/>}
+                                            {e}
+                                        </BigFacilitie>
+                                    );
+                                })}
                             </FacilitiesInner>
                         </FacilitiesRooms>
                     </InfoContainer>
@@ -131,47 +147,12 @@ const InfoContainer = styled.div`
 
 const NameContainer = styled.div``;
 
-const NameTitle = styled.h3<{ darkmode: number }>`
-    font-family: 'Poppins', sans-serif;
-    font-size: 30px;
-    margin-bottom: 13px;
-    color: ${props => props.darkmode === 0 ? '#ffff' : '#212121'};
-    transition: 0.5s;
-`;
-
 const NameParagraph = styled.p`
     color: #799283;
     font-family: 'Poppins', sans-serif;
-`;
-
-const CheckContainer = styled.div<{darkmode: number}>`
-    display: flex;
-    width: 80%;
-    justify-content: space-between;
     margin-top: 50px;
-    margin-bottom: 30px;
-    border-bottom: ${props => props.darkmode === 0 ? '1px solid #ffff' : ' 1px solid #00000010'};
-    padding-bottom: 50px;   
-    transition: 0.5s;
+    font-size: 2em;
 `;
-
-const CheckInfo = styled.div``
-
-const CheckTitle = styled.h3<{ darkmode: number }>`
-    font-size: 14px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 400;
-    color: ${props => props.darkmode === 0 ? '#ffff' : '#6E6E6E'};
-    transition: 0.5s;
-`;
-
-const CheckParagraph = styled.p<{ darkmode: number }>`
-    color: ${props => props.darkmode === 0 ? '#ffff' : '#212121'};
-    font-family: 'Poppins', sans-serif;
-    font-size: 16px;
-    margin-right: 50px;
-    transition: 0.5s;
-`
 
 const RoomInfoContainer = styled.div``;
 
@@ -180,6 +161,7 @@ const InnerInfo = styled.div`
     width: 80%;
     justify-content: space-between;
     margin-bottom: 35px;
+    margin-top: 50px;
 `;
 
 const InnerInfoContainer = styled.div``;
@@ -213,6 +195,7 @@ const RoomDescription = styled.p<{ darkmode: number }>`
     font-family: 'Poppins', sans-serif;
     margin-bottom: 30px;
     overflow-x: scroll;
+    margin-top: 50px;
 `;
 
 const FacilitiesRooms = styled.div<{ darkmode: number }>`
@@ -223,12 +206,14 @@ const FacilitiesRooms = styled.div<{ darkmode: number }>`
         font-weight: 400;
         transition: 0.5s;
     }
+    margin-top: 50px;
 `;
 
 const FacilitiesInner = styled.div` 
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    margin-top: 50px;
 `;
 
 const FacilitiesTab = styled.div` 
@@ -248,14 +233,6 @@ const BigFacilitie = styled(FacilitiesTab)`
         font-size: 20px;
         margin-right: 15px;
     }
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
-
-const SmallFacilitie = styled(FacilitiesTab)`
-    width: 121px;
-    height: 43px;
     display: flex;
     align-items: center;
     justify-content: center;
