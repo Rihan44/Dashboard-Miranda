@@ -59,7 +59,7 @@ jobs:
         file_name: .env
         fail_on_empty: false
         sort_keys: false
-        directory: .
+        directory: '/'
     - name: Upload to AWS
       uses: jakejarvis/s3-sync-action@master
       env:
