@@ -1,7 +1,8 @@
 import fetch from 'cross-fetch';
 import { createAsyncThunk} from "@reduxjs/toolkit";
 
-const urlApi = import.meta.env.VITE_URL_API;
+// const urlApi = import.meta.env.VITE_URL_API;
+const urlApi = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com';
 
 export const login = createAsyncThunk("login/userLogin", async (dataLogin: LoginInterface) => {
 
