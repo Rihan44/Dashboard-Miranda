@@ -3,7 +3,9 @@ import { ContactInterface } from "../../interfaces/contactInterface";
 import { RoomInterface } from "../../interfaces/roomInterface";
 import { UsersInterface } from "../../interfaces/usersInterface";
 
-const urlApi = import.meta.env.VITE_URL_API;
+// const urlApi = import.meta.env.VITE_URL_API;
+const urlApi = 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com';
+
 
 interface FetchFunctionOptions {
     url?: string;
