@@ -43,28 +43,27 @@ name: Upload Dashboard Miranda
 on:
   push:
     branches:
-      - actions
-
+    - actions
 jobs:
-  create-envfile:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Make envfile
-        uses: SpicyPizza/create-envfile@v2.0
-        with:
-          envkey_DEBUG: false
-          envkey_SOME_API_KEY: ${{ secrets.VITE_URL_API }}
-          file_name: .env
-          fail_on_empty: false
-          sort_keys: false
 
-      - name: Upload to AWS
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --acl public-read --follow-symlinks --delete
-        env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: 'eu-west-3'
-          SOURCE_DIR: 'build'
+  create-envfile:
+ 
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - name: Make envfile
+      uses: SpicyPizza/create-envfile@v2.0
+      with:
+        envkey_DEBUG: false
+        envkey_SOME_API_KEY: ${{ vars.VITE_URL_API }}
+        file_name: .env
+        fail_on_empty: false
+        sort_keys: false
+    - name: Upload to AWS
+      uses: jakejarvis/s3-sync-action@master
+      env:
+        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'eu-west-3'
+        SOURCE_DIR: 'build'
