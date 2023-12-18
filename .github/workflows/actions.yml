@@ -25,11 +25,6 @@ jobs:
         with:
           args: --acl public-read --follow-symlinks --delete
           node-version: '18.16.1'
-          envkey_DEBUG: false
-          envkey_SOME_API_KEY: ${{ vars.VITE_URL_API }}
-          file_name: .env
-          fail_on_empty: false
-          sort_keys: false
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
