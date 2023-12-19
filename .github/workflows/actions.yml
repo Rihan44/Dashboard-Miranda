@@ -5,9 +5,7 @@ on:
     branches:
     - actions
 jobs:
-
   create-envfile:
- 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -20,8 +18,11 @@ jobs:
         run: npm run build
         env:
           VITE_URL_API: ${{secrets.VITE_URL_API}}
+
       - name: Make envfile
         run: echo "VITE_URL_API=${{secrets.VITE_URL_API}}" > env.local
+
+      - name: Upload to AWS
         uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
