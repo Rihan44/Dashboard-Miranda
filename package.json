@@ -1,6 +1,7 @@
 {
   "name": "dashboard",
   "version": "0.1.0",
+  "homepage": "http://dashboard-prueba-actions.s3-website.eu-west-3.amazonaws.com/",
   "private": true,
   "dependencies": {
     "@formkit/auto-animate": "^0.8.0",
