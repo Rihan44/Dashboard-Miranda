@@ -1,4 +1,4 @@
-name: Upload Dashboard Mirand
+name: Upload Dashboard Miranda
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
       - name: Run Build
         run: npm run build
         env:
-          VITE_URL_API: ${{secrets.VITE_URL_API}}
+          VITE_URL_API: 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com'
 
       - name: Make envfile
         run: echo "VITE_URL_API=${{secrets.VITE_URL_API}}" > .env
