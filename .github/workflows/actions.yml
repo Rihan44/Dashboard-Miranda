@@ -16,8 +16,6 @@ jobs:
 
       - name: Run Build
         run: npm run build
-        env:
-          VITE_URL_API: 'https://rx3866rpnh.execute-api.eu-west-1.amazonaws.com'
 
       - name: Make envfile
         run: echo "VITE_URL_API=${{secrets.VITE_URL_API}}" > .env
@@ -28,6 +26,7 @@ jobs:
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
+          VITE_URL_API: ${{secrets.VITE_URL_API}}
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
