@@ -5,14 +5,14 @@ on:
     branches:
     - actions
 jobs:
-  create-envfile:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Clean and Install Dependencies
-        run: npm ci
+        run: npm i
 
       - name: Run Build
         run: npm run build
@@ -20,7 +20,7 @@ jobs:
           VITE_URL_API: ${{secrets.VITE_URL_API}}
 
       - name: Make envfile
-        run: echo "VITE_URL_API=${{secrets.VITE_URL_API}}" > .env
+        run: echo "VITE_URL_API=${{secrets.VITE_URL_API}}" >> .env.local
 
       - name: Upload to AWS
         uses: jakejarvis/s3-sync-action@master
@@ -32,3 +32,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'eu-west-3'
           SOURCE_DIR: 'build'
+
+
+
+
