@@ -19,9 +19,6 @@ jobs:
         env:
           VITE_URL_API: ${{secrets.VITE_URL_API}}
 
-      - name: Make envfile
-        run: echo "VITE_URL_API=${{secrets.VITE_URL_API}}" > .env
-
       - name: Upload to AWS
         uses: jakejarvis/s3-sync-action@master
 
